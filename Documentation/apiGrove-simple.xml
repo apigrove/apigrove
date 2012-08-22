@@ -1,0 +1,49 @@
+<api>
+  <id>twitter</id>
+  <displayName>twitter</displayName>
+  <version>1.0</version>
+  <type>PassThrough</type>
+  <endpoint>twitter</endpoint>
+  <https>false</https>
+  <authentication>
+    <supportedTypes>
+      <type>noAuth</type>
+</supportedTypes>
+  </authentication>
+  <tdrEnabled>
+    <enabled>false</enabled>
+  </tdrEnabled>
+  <status>active</status>
+  <contexts>
+    <context id="Test" default="true">
+      <status>active</status>
+      <loadBalancing type="roundRobin"></loadBalancing>
+      <targetHosts>
+        <targetHost>
+          <url>http://search.twitter.com/search.json</url>
+          <site>http://search.twitter.com/search.json</site>
+          <authentication>
+            <type></type>
+            <data>
+              <key name="key">value</key>
+            </data>
+          </authentication>
+        </targetHost>
+      </targetHosts>
+      <maxRateLimitTPSThreshold>1000</maxRateLimitTPSThreshold>
+      <maxRateLimitTPSWarning>1.0</maxRateLimitTPSWarning>
+      <maxRateLimitTPMThreshold>1000</maxRateLimitTPMThreshold>
+      <maxRateLimitTPMWarning>1.0</maxRateLimitTPMWarning>
+    </context>
+  </contexts>
+  <tdrOnUse type=""/>
+  <tdrOnLimitReached type=""/>
+  <tdr/>
+  <properties>
+    <property name="q">olympics</property>
+  </properties>
+  <headerTransEnabled>false</headerTransEnabled>
+  <headerTransformations/>
+  <allowedHttpMethods/>
+</api>
+
