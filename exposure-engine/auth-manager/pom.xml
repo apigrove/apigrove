@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>exposure-engine</artifactId>
+		<groupId>com.alu.e3</groupId>
+		<version>1.0.1</version>
+		<relativePath>..</relativePath>
+	</parent>
+
+	<artifactId>auth-manager</artifactId>
+	<name>E3 Auth Manager</name>
+	<url>http://www.alcatel-lucent.com</url>
+	<description></description>
+
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+	   <groupId>org.apache.httpcomponents</groupId>
+	   <artifactId>httpclient-osgi</artifactId>
+	   <version>4.1.2</version>
+	   <scope>provided</scope>
+	  </dependency>
+  		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-http</artifactId>
+			<version>2.6.0-fuse-01-09</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>tools</artifactId>
+					<groupId>com.sun</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>3.0.5.RELEASE</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>3.0.5.RELEASE</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.alu.e3</groupId>
+			<artifactId>gateway-common</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.alu.e3</groupId>
+			<artifactId>common</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>  
+			<version>1.9.0</version> 
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+</project>

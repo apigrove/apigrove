@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/osgi
+	http://www.springframework.org/schema/osgi/spring-osgi.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<context:annotation-config />
+
+	<bean id="apiDeploymentManager" class="com.alu.e3.gateway.ApiDeploymentManager" init-method="init" destroy-method="destroy">
+	   <property name="dataManager" ref="dataManager" />
+	</bean>
+	
+	<bean id="keyListener" class="com.alu.e3.gateway.config.certshuffle.KeyListener" init-method="init" destroy-method="destroy">
+		<property name="dataManager" ref="dataManager" />
+		<property name="keyStoreService" ref="keyStoreFileService" />
+		<property name="keyStoreKeyPassword" value="${e3.keystore.keypassword}"/>
+	</bean>
+	
+	<bean id="trustStoreListener" class="com.alu.e3.gateway.config.certshuffle.TrustStoreListener" init-method="init" destroy-method="destroy">
+		<property name="dataManager" ref="dataManager" />
+		<property name="trustStoreService" ref="trustStoreFileService" />
+	</bean>
+	
+	<bean id="crlListener" class="com.alu.e3.gateway.config.certshuffle.CrlListener" init-method="init" destroy-method="destroy">
+		<property name="dataManager" ref="dataManager" />
+	</bean>
+	
+	<bean id="gatewayInfo" class="com.alu.e3.gateway.GatewayInfo" init-method="init" destroy-method="destroy">
+        <property name="cacheManager" ref="cacheManager" />
+        <property name="instanceInfo" ref="instanceInfo" />
+	</bean>
+	
+	<bean id="gatewayWatcher" class="com.alu.e3.gateway.GatewayWatcher" init-method="init" destroy-method="destroy">
+		<property name="gatewayInfo" ref="gatewayInfo" />
+  		<property name="healthCheckFactory" ref="healthCheckFactory" />
+	</bean>
+	
+	
+    <bean id="tdrCollectorWatcher" class="com.alu.e3.data.topology.TDRCollectorInstanceWatcher" init-method="init" destroy-method="destroy">
+    	<property name="topologyClient" ref="topologyClient"/>
+    </bean>
+	
+    <!-- USED BY ROUTE -->	
+	<bean id="logCorrelationIDGenerator" class="com.alu.e3.gateway.common.camel.processor.LogCorrelationIDGenerator" />
+	<bean id="subscriberIDGenerator" class="com.alu.e3.gateway.common.camel.processor.SubscriberIDGenerator" />
+	<bean id="logCorrelationIDExtractor" class="com.alu.e3.gateway.common.camel.processor.LogCorrelationIDExtractor" />
+	<bean id="subscriberIDExtractor" class="com.alu.e3.gateway.common.camel.processor.SubscriberIDExtractor" >
+        <property name="dataManager" ref="dataManager" />
+	</bean>
+	<bean id="notifyUrlHeaderProcessor" class="com.alu.e3.gateway.common.camel.processor.NotifyUrlHeaderProcessor" />
+	<bean id="notifyUrlWSAProcessor" class="com.alu.e3.gateway.common.camel.processor.NotifyUrlWSAProcessor" />
+	
+	<osgi:service id="logCorrelationIDGenerator_Exposed" ref="logCorrelationIDGenerator" interface="org.apache.camel.Processor" />
+	<osgi:service id="subscriberIDGenerator_Exposed" ref="subscriberIDGenerator" interface="org.apache.camel.Processor" />
+	<osgi:service id="logCorrelationIDExtractor_Exposed" ref="logCorrelationIDExtractor" interface="org.apache.camel.Processor" />
+	<osgi:service id="subscriberIDExtractor_Exposed" ref="subscriberIDExtractor" interface="org.apache.camel.Processor" />
+	<osgi:service id="notifyUrlHeaderProcessor_Exposed" ref="notifyUrlHeaderProcessor" interface="org.apache.camel.Processor" />
+	<osgi:service id="notifyUrlWSAProcessor_Exposed" ref="notifyUrlWSAProcessor" interface="org.apache.camel.Processor" />
+    <!--/USED BY ROUTE -->
+	
+</beans>

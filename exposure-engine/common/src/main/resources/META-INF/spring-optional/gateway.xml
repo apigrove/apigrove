@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+    <!-- Read configuration file to know which features (manager/gateway/speaker) have to be enabled -->
+    <context:property-placeholder location="file:${user.home}/configuration.properties" />
+
+	<import resource="classpath:META-INF/spring-optional/gateway-common.beans.xml" />
+	<import resource="classpath:META-INF/spring-optional/gateway-lb.beans.xml" />
+	<import resource="classpath:META-INF/spring-optional/gateway-common.jetty-http-component-context.xml" />
+	<import resource="classpath:META-INF/spring-optional/auth-manager.beans.xml" />
+	<import resource="classpath:META-INF/spring-optional/tdr.osgi-context.xml" />
+	<import resource="classpath:META-INF/spring-optional/tdr.tdr-writer-context.xml" />
+	<import resource="classpath:META-INF/spring-optional/gateway-rate.beans.xml" />
+
+	<import resource="classpath:META-INF/spring-optional/gateway-extended.xml" />
+
+</beans>

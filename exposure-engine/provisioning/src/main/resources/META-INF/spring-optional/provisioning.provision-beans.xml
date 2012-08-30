@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cxf="http://camel.apache.org/schema/cxf"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+http://camel.apache.org/schema/cxf http://activemq.apache.org/camel/schema/cxf/camel-cxf.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+	
+
+	<bean id="deploymentManager" class="com.alu.e3.prov.deployment.DeploymentManager" />
+	
+	
+	<bean id="jaxbProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider">
+		<property name="schemaHandler" ref="schemaHolder" />
+	</bean>
+
+	<bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.JSONProvider">
+		<property name="schemaHandler" ref="schemaHolder" />
+	</bean>
+
+	<bean id="schemaHolder" class="org.apache.cxf.jaxrs.utils.schemas.SchemaHandler">
+		<property name="schemas" ref="theSchemas" />
+	</bean>
+
+	<bean id="E3ExceptionMapper" class="com.alu.e3.prov.E3ExceptionMapper" />
+
+	<util:list id="theSchemas">
+		<value>classpath:/provisioning/prov.xsd</value>
+	</util:list>
+		
+	
+	<bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor" />
+	<bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
+	
+	<bean id="cdataAdapter" class="com.alu.e3.prov.restapi.util.CDataWriterInterceptor" />
+	
+	<bean name="apiJarBuilder" class="com.alu.e3.prov.service.ApiJarBuilder">
+		<constructor-arg index="0" type="org.springframework.core.io.Resource" value="classpath:soap/soap-1.1.xsd" />
+		<constructor-arg index="1" type="org.springframework.core.io.Resource" value="classpath:soap/soap-1.2.xsd" />
+		<constructor-arg index="2" type="org.springframework.core.io.Resource" value="classpath:soap/xml.xsd" />
+		
+		<property name="workingDir" value="${provisioning.working.dir}"/>
+		<property name="archiveDir" value="${provisioning.archive.dir}"/>
+		<property name="generateJarInFile" value="${provisioning.generate.jar.in.file}" />
+		
+	</bean>
+	
+	<bean name="commonApiCheck" class="com.alu.e3.prov.service.CommonApiCheck"/>
+	<bean name="featuredApiCheck" class="com.alu.e3.prov.service.FeaturedApiCheck"/>
+	
+	<bean name="apiService" id="apiService" class="com.alu.e3.prov.service.ApiService">
+		<property name="dataManager" ref="dataManager"/>
+		<property name="deploymentManager" ref="deploymentManager"/>
+		<property name="apiJarBuilder" ref="apiJarBuilder"/>	
+		<property name="commonApiCheck" ref="commonApiCheck"/>	
+		<property name="featuredApiCheck" ref="featuredApiCheck"/>	
+	</bean>	
+	
+	<bean id="apiManager" class="com.alu.e3.prov.restapi.ApiManager">
+		<property name="apiService" ref="apiService"/>		
+	</bean>	
+	
+	<bean id="policyManager" class="com.alu.e3.prov.restapi.PolicyManager">
+		<property name="dataManager" ref="dataManager"/>		
+	</bean>
+	
+	<bean id="authManager" class="com.alu.e3.prov.restapi.AuthManager" >
+		<property name="dataManager" ref="dataManager"/>		
+	</bean>
+	
+	<bean id="bulkManager" class="com.alu.e3.prov.restapi.BulkPolicyQuotaRLBucketsManager">
+		<property name="dataManager" ref="dataManager"/>		
+	</bean>
+	
+	<bean id="keyCertManager" class="com.alu.e3.prov.restapi.KeyCertManager">
+		<property name="dataManager" ref="dataManager"/>
+	</bean>
+	
+	<bean id="trustStoreManager" class="com.alu.e3.prov.restapi.TrustStoreManager">
+		<property name="dataManager" ref="dataManager"/>		
+	</bean>
+	
+	<bean id="proxySettingsManager" class="com.alu.e3.prov.restapi.ProxySettingsManager">
+		<property name="dataManager" ref="dataManager"/>		
+	</bean>
+	
+	<!-- Auto-deployer for 1Way default Key/Cert couple -->
+	<bean class="com.alu.e3.prov.security.Default1WayKeyCertDeployer" init-method="init" destroy-method="destroy">
+		<property name="defaultKeyCertDirectory" value="${default.key.cert.directory}" />
+		<property name="topology" ref="topology" />
+		<property name="dataManager" ref="dataManager" />
+	</bean>
+</beans>

@@ -1,0 +1,64 @@
+E3 is a Maven based JAVA project.
+
+Tools advised to manage, build and run project are:
+- Eclipse STS
+- Maven 3.0.3 -> Packaged with Eclipse STS
+- RedHat based Linux VM to use one line installation
+
+
+USING SOURCE CODE:
+- Get the project
+- Copy /maven/settings.xml on the {user.home}/.m2/ directory
+- Create a new project:
+    - Right click in the Package Explorer window -> New -> Project...
+    - Choose general/Project
+    - Give a name (E3 for our example) and click Finish
+- Import files in STS:
+    - Load source code by using the archive example:
+        - Right click in the Package Explorer window -> Import...
+        - Choose general/Archive File
+        - Choose the archive with all files into your new folder and click Finish
+    - OR Load source by another way if you prefer : SVN, Git, File System
+- Import the Maven project under exposure-engine directory:
+    - Right click in the Package Explorer window -> Import...
+    - Choose Maven/Existing Maven Projects
+    - Select only all project under exposure-engine/pom.xml and click Finish
+- Wait until your workspace is building, all dependencies must be found by Maven on the Internet
+
+--> Project is set up on your Eclipse STS.
+
+
+BUILD THE PROJECT:
+- Right click on your E3 project -> Run as -> Run configurations...
+- Select Maven Build and click on New icon on the top
+- Give a name to your configuration
+- Choose your E3 project on base directory -> Browse Workspace... -> E3 -> OK
+- Type "clean install -f pom-assembly.xml" in Goals textbox
+- Type "build-modules,assembly" in Profiles textbox
+- Click on Apply to save and on Run to make a first build
+
+--> Your installer module is build on the E3/target/server-side
+
+!!!!!!!!!!!!!!!
+!!! WARNING !!!
+!!!!!!!!!!!!!!!
+Installation scripts make some modifications on your RedHat installation:
+- Add an E3 user to run application
+- Set the number of file descriptors open to the maximum
+- Modify IPTABLES configuration : 
+    - FLUSH standard settings
+    - Open all needed ports for E3
+    - Add a setting to block all other ports
+
+--> See scripts on the /packaging/src/main/resources folder to see all modifications the installer made
+
+
+INSTALL AND RUN THE PROJECT: (See the installation guide for more details)
+- Transfer the e3-installer-module_XXX.tar.gz archive on your RedHat Linux VM in a temporary directory
+- untar them using tar -xf e3-installer-module_XXX.tar.gz
+- Go to {temp_directory}/bin directory
+- run install_e3_aib.sh script : sh install_e3_aib.sh
+
+--> Your installation is ready on the directory /home/e3/ !
+
+--> You can go to the /tests/HOW_TO_RUN_TESTS file to run SoapUI functionnal tests and validate your installation

@@ -1,0 +1,754 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.alu.e3</groupId>
+  <artifactId>e3-bundle</artifactId>
+  <name>E3 Bundle</name>
+  <version>1.0.1</version>
+  
+  <packaging>bundle</packaging>
+  
+  	<properties>
+		<fuse.version>4.3.1-fuse-01-09</fuse.version>
+		<camel.version>2.6.0-fuse-01-09</camel.version>
+		<jaxb.api.version>2.2</jaxb.api.version>
+		<servicemix.specs.version>1.7.0</servicemix.specs.version>
+		<commons-httpclient.bundle.version>3.1_5</commons-httpclient.bundle.version>
+		<cxf.version>2.3.3</cxf.version>
+		<org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+		<spring.osgi.version>1.2.0</spring.osgi.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	
+	</properties>
+	
+  	<dependencies>
+  
+  		<!-- Please keep the dependencies in alphabetical order -->
+  
+  		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast</artifactId>
+			<version>2.0.1</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast-client</artifactId>
+			<version>2.0.1</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast-hibernate</artifactId>
+			<version>2.0.1</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast-spring</artifactId>
+			<version>2.0.1</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.jayway.restassured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>1.6</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.45</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.4</version>
+			<scope>provided</scope>
+		</dependency>
+
+  		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<artifactId>isorelax</artifactId>
+			<groupId>isorelax</groupId>
+			<version>20030108</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.aries.jmx</groupId>
+			<artifactId>org.apache.aries.jmx</artifactId>
+			<version>0.2-incubating</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+			<version>${camel.version}</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.sun</groupId>
+					<artifactId>tools</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-cxf</artifactId>
+			<version>${camel.version}</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>tools</artifactId>
+					<groupId>com.sun</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-freemarker</artifactId>
+			<version>${camel.version}</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>tools</artifactId>
+					<groupId>com.sun</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-http</artifactId>
+			<version>2.6.0-fuse-01-09</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>tools</artifactId>
+					<groupId>com.sun</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jetty</artifactId>
+			<version>${camel.version}</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>tools</artifactId>
+					<groupId>com.sun</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-spring</artifactId>
+			<version>${camel.version}</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.sun</groupId>
+					<artifactId>tools</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test</artifactId>
+			<version>2.0.0</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-bundle</artifactId>
+			<version>2.3.3</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.woodstox</groupId>
+					<artifactId>woodstox-core-asl</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.codehaus.woodstox</groupId>
+					<artifactId>stax2-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+			<version>2.3.3-fuse-01-09</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.woodstox</groupId>
+					<artifactId>woodstox-core-asl</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.framework</artifactId>
+			<version>3.0.9-fuse-03-11</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.commons-dbcp</artifactId>
+			<version>1.2.2_6</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.commons-httpclient</artifactId>
+			<version>${commons-httpclient.bundle.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.commons-io</artifactId>
+			<version>1.4_1</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.openjpa</artifactId>
+			<version>1.2.1_3</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>org.apache.servicemix.specs</groupId>
+			<artifactId>org.apache.servicemix.specs.java-persistence-api-1.1.1</artifactId>
+			<version>1.7.0</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.servicemix.specs</groupId>
+			<artifactId>org.apache.servicemix.specs.jaxb-api-${jaxb.api.version}</artifactId>
+			<version>${servicemix.specs.version}</version>
+			<scope>provided</scope>
+		</dependency>		
+		
+		<dependency>
+			<groupId>org.apache.servicemix.specs</groupId>
+			<artifactId>org.apache.servicemix.specs.jsr311-api-1.1</artifactId>
+			<version>1.7.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk16</artifactId>
+			<version>1.46</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.codehaus.woodstox</groupId>
+			<artifactId>stax2-api</artifactId>
+			<version>3.0.3</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<!-- This version is custom-set to match the dev environment.
+			     The version that camel-jetty automatically uses is 7.2.2.v20101205 -->
+			<version>7.3.1.v20110307</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>com.springsource.org.hsqldb</artifactId>
+			<version>1.8.0.10</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.ops4j.pax.logging</groupId>
+			<artifactId>pax-logging-api</artifactId>
+			<version>1.5.3</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>3.0.5.RELEASE</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.osgi</groupId>
+			<artifactId>spring-osgi-core</artifactId>
+			<version>${spring.osgi.version}</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>org.springframework.aop</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>org.springframework.beans</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>org.springframework.context</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>org.springframework.core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.osgi</groupId>
+			<artifactId>spring-osgi-extender</artifactId>
+			<version>${spring.osgi.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.osgi</groupId>
+			<artifactId>spring-osgi-io</artifactId>
+			<version>${spring.osgi.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>auth-manager</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>common</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gateway-common</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gateway-rate-limits-manager</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>provisioning</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>system-manager</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tdr-lib</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>topology</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+  		<!-- Please keep the dependencies in alphabetical order -->
+
+  </dependencies>
+  
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-dependency-plugin</artifactId>
+		        <version>2.4</version>
+		        <executions>
+		          <execution>
+		            <id>unpack-dependencies</id>
+		            <phase>compile</phase>
+		            <goals>
+		              	<goal>unpack-dependencies</goal>
+		            </goals>
+		            <configuration>
+				       	<includeGroupIds>${project.groupId}</includeGroupIds>
+		             	<outputDirectory>target/classes</outputDirectory>
+		            </configuration>
+		          </execution>
+		        </executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.4</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
+
+						<Require-Bundle>org.apache.cxf.bundle</Require-Bundle>
+						
+				  		<!-- Please keep the packages in alphabetical order -->
+
+						<Import-Package>
+							!jp.co.swiftinc.relax.*,
+							!org.jaxen.*,
+							!com.sun.msv.datatype.*,
+							javax.ws.rs,
+							javax.wsdl,
+							javax.xml.bind,
+							javax.xml.bind.annotation,
+							META-INF.cxf,
+							META-INF.cxf.osgi,
+							org.aopalliance.aop,
+							org.apache.camel,
+							org.apache.commons.httpclient,
+							org.apache.commons.httpclient.methods,
+							org.apache.cxf.binding,
+							org.apache.cxf.bus,
+							org.apache.cxf.bus.resource,
+							org.apache.cxf.bus.spring,
+							org.apache.cxf.configuration.spring,
+							org.apache.cxf.jaxrs.ext,
+							org.apache.cxf.jaxrs.utils,
+							org.apache.cxf.resource,
+							org.apache.cxf.transport.http_osgi,
+							org.slf4j,
+							org.springframework.aop,
+							org.springframework.aop.framework,
+							org.springframework.beans.factory.annotation,
+							org.springframework.beans.factory.config,
+							org.springframework.context,
+							org.springframework.remoting.rmi,
+							org.springframework.scheduling.concurrent,
+                            org.springframework.scheduling.config,
+                            org.springframework.scheduling.support,
+							org.springframework.scheduling.timer,
+							*
+						</Import-Package>
+						
+				  		<!-- Please keep the packages in alphabetical order -->
+
+						<DynamicImport-Package>
+							bsh,
+							com.caucho.burlap.client,
+							com.caucho.burlap.io,
+							com.caucho.burlap.server,
+							com.caucho.hessian,
+							com.caucho.hessian.client,
+							com.caucho.hessian.io,
+							com.caucho.hessian.server,
+							com.hazelcast.*,
+							com.ibm.wsspi.uow,
+							com.jamonapi,
+							com.jcraft.jzlib,
+							com.jcraft.jzlib.*,
+							com.sun.net.httpserver,
+							com.sun.syndication.feed,
+							com.sun.syndication.feed.atom,
+							com.sun.syndication.feed.rss,
+							com.sun.syndication.io,
+							com.sun.xml.fastinfoset.sax,
+							com.sun.xml.fastinfoset.stax,
+							edu.emory.mathcs.backport.java.util.concurrent,
+							groovy.lang,
+							javax.annotation,
+							javax.crypto,
+							javax.crypto.*,
+							javax.crypto.interfaces.*,
+							javax.crypto.spec,
+							javax.crypto.spec.*,
+							javax.ejb,
+							javax.el,
+							javax.faces.application,
+							javax.faces.component,
+							javax.faces.context,
+							javax.faces.el,
+							javax.faces.event,
+							javax.imageio,
+							javax.imageio.metadata,
+							javax.imageio.stream,
+							javax.inject,
+							javax.interceptor,
+							javax.jms,
+							javax.jws,
+							javax.management,
+							javax.management.modelmbean,
+							javax.management.openmbean,
+							javax.management.remote,
+							javax.naming,
+							javax.naming.spi,
+							javax.net,
+							javax.net.ssl,
+							javax.persistence.spi,
+							javax.portlet,
+							javax.resource,
+							javax.resource.cci,
+							javax.resource.spi,
+							javax.resource.spi.endpoint,
+							javax.resource.spi.work,
+							javax.rmi,
+							javax.security.auth,
+							javax.security.auth.callback,
+							javax.security.auth.login,
+							javax.security.auth.x500,
+							javax.servlet,
+							javax.servlet.descriptor,
+							javax.servlet.http,
+							javax.servlet.jsp,
+							javax.servlet.jsp.el,
+							javax.servlet.jsp.tagext,
+							javax.transaction,
+							javax.transaction.xa,
+							javax.validation,
+							javax.validation.bootstrap,
+							javax.validation.metadata,
+							javax.validation.spi,
+							javax.ws.rs.*,
+							javax.xml.datatype,
+							javax.xml.namespace,
+							javax.xml.parsers,
+							javax.xml.parsers.*,
+							javax.xml.rpc,
+							javax.xml.rpc.server,
+							javax.xml.rpc.soap,
+							javax.xml.soap,
+							javax.xml.transform,
+							javax.xml.transform.dom,
+							javax.xml.transform.sax,
+							javax.xml.transform.stax,
+							javax.xml.transform.stream,
+							javax.xml.validation,
+							javax.xml.ws,
+							javax.xml.ws.handler,
+							javax.xml.ws.soap,
+							javax.xml.xpath,
+							junit.framework,
+							junit.textui,
+							net.sf.cglib.asm,
+							net.sf.cglib.core,
+							net.sf.cglib.proxy,
+							net.sf.cglib.transform.impl,
+							org.apache.abdera,
+							org.apache.abdera.factory,
+							org.apache.abdera.model,
+							org.apache.abdera.parser,
+							org.apache.abdera.writer,
+							org.apache.commons.fileupload,
+							org.apache.commons.fileupload.disk,
+							org.apache.commons.fileupload.servlet,
+							org.apache.commons.lang,
+							org.apache.commons.lang.builder,
+							org.apache.commons.pool,
+							org.apache.commons.pool.impl,
+							org.apache.cxf.aegis,
+							org.apache.cxf.aegis.type,
+							org.apache.geronimo.osgi.registry.api,
+							org.apache.log,
+							org.apache.log4j,
+							org.apache.log4j.spi,
+							org.apache.xml.resolver,
+							org.apache.xml.resolver.helpers,
+							org.apache.xml.resolver.tools,
+							org.apache.xmlbeans,
+							org.aspectj.bridge,
+							org.aspectj.lang,
+							org.aspectj.lang.annotation,
+							org.aspectj.lang.reflect,
+							org.aspectj.runtime.internal,
+							org.aspectj.util,
+							org.aspectj.weaver,
+							org.aspectj.weaver.ast,
+							org.aspectj.weaver.bcel,
+							org.aspectj.weaver.internal.tools,
+							org.aspectj.weaver.loadtime,
+							org.aspectj.weaver.patterns,
+							org.aspectj.weaver.reflect,
+							org.aspectj.weaver.tools,
+							org.codehaus.groovy.control,
+							org.codehaus.jackson,
+							org.codehaus.jackson.map,
+							org.codehaus.jackson.map.type,
+							org.codehaus.jackson.type,
+							org.hibernate,
+							org.hibernate.cache,
+							org.hibernate.cache.access,
+							org.hibernate.cache.entry,
+							org.hibernate.cache.impl.bridge,
+							org.hibernate.cfg,org.hibernate.classic,
+							org.hibernate.engine,
+							org.hibernate.util,
+							org.hibernate.validator.messageinterpolation,
+							org.hibernate.validator.resourceloading,
+							org.ietf.jgss.*,
+							org.joda.time,
+							org.joda.time.format,
+							org.jruby,
+							org.jruby.ast,
+							org.jruby.exceptions,
+							org.jruby.javasupport,
+							org.jruby.runtime,
+							org.jruby.runtime.builtin,
+							org.junit,
+							org.jvnet.fastinfoset,
+							org.jvnet.staxex,
+							org.mockito,
+							org.objectweb.asm,org.omg.CORBA,
+							org.osgi.framework,
+							org.osgi.service.event,
+							org.osgi.util.tracker,
+							org.relaxng.datatype,
+							org.slf4j.*,
+							org.springframework.instrument,
+							org.springframework.osgi.context,
+							org.springframework.oxm,
+							org.w3c.dom,
+							org.w3c.dom.*,
+							org.xml.sax,
+							org.xml.sax.ext,
+							org.xml.sax.helpers
+						</DynamicImport-Package>
+
+				  		<!-- Please keep the packages in alphabetical order -->
+
+						<Export-Package>
+							com.alu.e3.common.osgi.api;-split-package:=merge-first,
+							com.alu.e3.gateway.*;-split-package:=merge-first,
+							com.alu.e3.rate.model;-split-package:=merge-first
+						</Export-Package>
+
+                        <Private-Package>
+                            com.alu.e3,
+                            com.alu.e3.common.logging
+                        </Private-Package>
+
+						<Include-Resource>target/classes</Include-Resource>
+
+						<Embed-Dependency>*;scope=runtime</Embed-Dependency>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>

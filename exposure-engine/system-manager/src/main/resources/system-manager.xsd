@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="key" type="SSLKeyType" />
+	<xs:element name="cert" type="SSLCertType" />
+	<xs:element name="response" type="ResponseType" />
+	<xs:element name="logResponse" type="LogLevelResponseType" />
+
+	<xs:simpleType name="StatusEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="active" />
+			<xs:enumeration value="inactive" />
+			<xs:enumeration value="pending" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="BasicResponseType">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string" maxOccurs="1"
+				minOccurs="0">
+			</xs:element>
+			<xs:element name="ids" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="id" type="xs:string" maxOccurs="unbounded"
+							minOccurs="0">
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="error" type="ErrorType" maxOccurs="1"
+				minOccurs="0">
+			</xs:element>
+			<xs:element name="status" type="ResponseStatusEnum"
+				maxOccurs="1" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="ResponseStatusEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SUCCESS" />
+			<xs:enumeration value="FAILURE" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="ErrorType">
+		<xs:all>
+			<xs:element name="errorText" type="xs:string" maxOccurs="1"
+				minOccurs="0"></xs:element>
+			<xs:element name="errorCode" type="xs:string" maxOccurs="1"
+				minOccurs="0"></xs:element>
+			<xs:element name="errorType" type="xs:string" maxOccurs="1"
+				minOccurs="0"></xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="TypeAttribute">
+		<xs:attribute name="type" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="ResponseType">
+		<xs:complexContent>
+			<xs:extension base="BasicResponseType">
+				<xs:sequence>
+					<xs:element name="key" type="SSLKeyType"
+						maxOccurs="1" minOccurs="0" />
+					<xs:element name="cert" type="SSLCertType"
+						maxOccurs="1" minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="SSLKeyType">
+		<xs:sequence>
+			<xs:element name="activeCertId" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="content" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="displayName" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="type" type="xs:string" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="SSLCertType">
+		<xs:sequence>
+			<xs:element name="expirationDate" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+			<xs:element name="content" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="displayName" type="xs:string" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" />
+	</xs:complexType>
+
+	<xs:simpleType name="IP">
+		<xs:restriction base="xs:string"> <!-- IPv6 |([0-9a-f]{1,4}:){7}([0-9a-f]){1,4} -->
+			<xs:pattern
+				value="((([01]?\d\d?|2[0-4]\d|25[0-5])\.){3}([01]?\d\d?|2[0-4]\d|25[0-5])|([0-9a-f]{1,4}:){7}([0-9a-f]){1,4})"></xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="LogLevelType">
+		<xs:all>
+			<xs:element name="Level" type="xs:string" maxOccurs="1"
+				minOccurs="1"></xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="LogLevelResponseType">
+		<xs:complexContent>
+			<xs:extension base="BasicResponseType">
+				<xs:sequence>
+					<xs:element name="logLevel" type="xs:string" 
+						maxOccurs="1" minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+
+</xs:schema>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/tdr_schema"
+	xmlns:tns="http://www.example.org/tdr_schema" elementFormDefault="qualified">
+	<element name="TDRS">
+		<complexType>
+			<sequence>
+				<element name="TDR" minOccurs="1">
+					<complexType>
+						<sequence>
+							<!-- These are all of the values that occur for each transactional TDR 
+							(TDRs that get generated for each call) -->
+							<element name="Environment" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="OverQuota" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="SystemID" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="QuotaAction" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="ClientEndPoint" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="APITargetRequestTimestamp" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="API" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="TransactionID" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="OverMinuteRateLimit" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="ClientResponseTimestamp" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="OverMonthQuota" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="ClientIP" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="ClientRequestTimestamp" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="OverSecondRateLimit" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="OverDayQuota" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="OverWeekQuota" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="HTTPStatusCode" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="APIAction" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="AuthMethod" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="APITargetResponseTimestamp" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="TimeStamp" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="HTTPMethod" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="SOAPAction" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="APIType" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="TargetIP" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="PayloadSize" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="TargetEndpoint" type="string" minOccurs="1" maxOccurs="1" />
+							
+							<!-- There can also be custom TDR values appended that cannot be specified here because their names are not known  -->
+							
+						</sequence>
+						<attribute name="id" type="string" />
+
+					</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

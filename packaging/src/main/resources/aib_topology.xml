@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LabInstanceDescriptor type="internal">
+
+    <NodesList>
+    	<!-- Manager + Gateway -->
+    	<Node name="E3_FULL_DEPLOYMENT_TEST_0M">
+            <Type type="E3Manager"/>
+            <ExternalDNS url="localhost"/>
+            <ExternalIP ip="localhost"/>
+            <InternalIP ip="localhost"/>
+            <Area name="sophia"/>
+        </Node>
+        <Node name="E3_FULL_DEPLOYMENT_TEST_1G">
+            <Type type="E3Gateway"/>
+            <ExternalDNS url="localhost"/>
+            <ExternalIP ip="localhost"/>
+            <InternalIP ip="localhost"/>
+            <Area name="sophia"/>
+        </Node>
+        <Node name="E3_FULL_DEPLOYMENT_TEST_2S">
+            <Type type="E3Speaker"/>
+            <ExternalDNS url="localhost"/>
+            <ExternalIP ip="localhost"/>
+            <InternalIP ip="localhost"/>
+            <Area name="sophia"/>
+        </Node>
+    </NodesList>
+    
+</LabInstanceDescriptor>

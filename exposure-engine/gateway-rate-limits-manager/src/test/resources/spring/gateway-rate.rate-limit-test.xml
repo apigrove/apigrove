@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:osgi="http://www.springframework.org/schema/osgi" xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:cxf="http://camel.apache.org/schema/cxf" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:hz="http://www.hazelcast.com/schema/spring"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring-2.1.0.xsd
+http://camel.apache.org/schema/cxf http://activemq.apache.org/camel/schema/cxf/camel-cxf.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+http://www.hazelcast.com/schema/spring
+http://www.hazelcast.com/schema/spring/hazelcast-spring-2.0.xsd">
+
+	<camel:camelContext xmlns="http://camel.apache.org/schema/spring" id="ctxTest">
+		<onException>
+			<exception>java.lang.Exception</exception>
+			<handled>
+				<constant>true</constant>
+			</handled>
+			<to uri="mock:handleException" />
+		</onException>
+
+		<route>
+			<from uri="direct:test" />
+			<to uri="mock:checkAuth" />
+			<to uri="mock:checkRate" />
+			<to uri="mock:testMessage" />
+		</route>
+	</camel:camelContext>
+
+</beans>

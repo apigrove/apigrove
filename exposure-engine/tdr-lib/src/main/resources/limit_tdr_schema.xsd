@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/tdr_schema"
+	xmlns:tns="http://www.example.org/tdr_schema" elementFormDefault="qualified">
+	<element name="TDRS">
+		<complexType>
+			<sequence>
+				<element name="TDR" minOccurs="1">
+					<complexType>
+						<sequence>
+							<!-- These are all of the values that occur for each limit based
+								TDR (TDRs that get generated when quotas/rate limits are violated) -->
+							<element name="Environment" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="Count" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="SystemID" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="Expiration" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="Type" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="Warning" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="TimeStamp" type="string" minOccurs="1" maxOccurs="1" />
+
+							<element name="TransactionID" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="Threshold" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="ClientResponseTimestamp" type="string" minOccurs="1" maxOccurs="1" />
+
+							<element name="APIType" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="UsagePercent" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="ClientIP" type="string" minOccurs="1" maxOccurs="1" />
+
+
+							<!-- There can also be custom TDR values appended that cannot be specified 
+								here because their names are not known -->
+
+						</sequence>
+						<attribute name="id" type="string" />
+
+					</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

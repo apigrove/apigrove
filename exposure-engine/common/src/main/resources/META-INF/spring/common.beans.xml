@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements. See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership. The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License. You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied. See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+    xmlns:osgi="http://www.springframework.org/schema/osgi"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+    <context:annotation-config />
+
+    
+    <!-- Read configuration file to know which features (manager/gateway/speaker) have to be enabled -->
+    <context:property-placeholder location="file:${user.home}/configuration.properties" />
+	
+	<bean id="basicAuthFilter" class="com.alu.e3.security.BasicAuthenticationFilter">
+		<property name="enabled" value="${e3.provisioning.restapi.security.basicauth.enable}"/>
+		<property name="username" value="${e3.provisioning.restapi.security.basicauth.username}"/>
+		<property name="password" value="${e3.provisioning.restapi.security.basicauth.password}"/>	
+	</bean>
+	
+	<bean id="keyStoreFileService" class="com.alu.e3.security.KeyStoreFileService" init-method="init" destroy-method="destroy">
+		<property name="storePath" value="${e3.keystore.path}"/>
+        <property name="storePassword" value="${e3.keystore.password}"/>
+	</bean>
+
+	<bean id="trustStoreFileService" class="com.alu.e3.security.TrustStoreFileService" init-method="init" destroy-method="destroy">
+		<property name="storePath" value="${e3.truststore.path}"/>
+        <property name="storePassword" value="${e3.truststore.password}"/>
+	</bean>
+	
+	<!-- The following beans instantiations need to be explained a little. -->
+	<!-- There is a triangular dependency between the three below beans : -->
+	<!-- A. dataManager -->
+	<!-- B. topologyClient -->
+	<!-- C. cacheManager -->
+	<!-- CacheTables produced by the cacheManager need to produce them with a topologyClient reference -->
+	<!-- TopologyClient, to be initialized completely, need a reference on cacheManager to create its internal topology table -->
+	<!-- Finally, dataManager need complete initialization of both above to be able to initialize itself. -->
+	<!-- The order here of these three following beans is essential: -->
+	<!-- 1. dataManager is just eagerly cached waiting topologyClient and cacheManager to be created. No init call on it. -->
+	<!-- 2. topologyClient is just eagerly cached waiting cacheManager to be created. No init call on it. -->
+	<!-- 3. cacheManager can receive a topologyClient. Init is called on it. Future CacheTables will contain the topologyClient reference -->
+	<!-- 4. cacheManager is now created and ready. topologyClient is set with it. Init is called on it. TopologyClient can create its internal topology CacheTable -->
+	<!-- 5. dataManager can receive cacheManager and topologyClient (both ready). Init is called on it. -->
+	
+	<bean id="dataManager" class="com.alu.e3.data.DataManager" init-method="init" destroy-method="destroy">
+		<property name="manager" value="${e3.manager}" />
+		<property name="topologyClient" ref="topologyClient" />
+		<property name="cacheManager" ref="cacheManager" />
+	</bean>
+	
+	<bean id="topologyClient" class="com.alu.e3.data.TopologyClient" init-method="init">
+		<property name="cacheManager" ref="cacheManager" />
+	</bean>
+	
+	<osgi:service id="topologyClient_Exposed" ref="topologyClient" interface="com.alu.e3.common.osgi.api.ITopologyClient" /> 
+	
+	<bean id="cacheManager" class="com.alu.e3.common.caching.HazelcastCacheManager" init-method="init" destroy-method="destroy" >
+		<property name="topologyClient" ref="topologyClient" />
+	</bean>
+	
+	<!-- Keep the declaration order of the three above beans -->
+	
+	<bean id="logLevelListener" class="com.alu.e3.common.logging.LogLevelListener" init-method="init" destroy-method="destroy">
+		<property name="dataManager" ref="dataManager"/>
+	</bean>
+	
+	<bean id="healthCheckFactory" class="com.alu.e3.common.healthcheck.HealthCheckFactory" />
+	
+	<bean id="instanceInfo" class="com.alu.e3.common.info.InstanceInfo" />
+	
+	
+    <!-- Import beans according to the configuration file values using a bootstrapper bean (placeholder in import statement not available in Spring < 3.1) -->
+    <bean name="bootstrap" class="com.alu.e3.common.spring.SpringContextBootstrapper" init-method="init" destroy-method="destroy">
+    	<property name="manager" value="${e3.manager}" />
+    	<property name="gateway" value="${e3.gateway}" />
+		<property name="propertyFile" value="${user.home}/configuration.properties" />
+    	<property name="managerComponents" value="classpath:/META-INF/spring-optional/manager.xml" />
+    	<property name="gatewayComponents" value="classpath:/META-INF/spring-optional/gateway.xml" />
+	</bean>
+	
+	
+	
+</beans>

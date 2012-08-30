@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+		http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		
+	<bean id="topologyWatcher" class="com.alu.e3.installer.TopologyWatcher">
+        <property name="topology" ref="topology" />
+	</bean>
+	
+    <!-- 
+        The property placeholder (used to resolve ${} properties) is defined in 'spring-optional/manager.xml' in the 'common' project.
+        Spring searches for properties defined in property files first, then searches for JVM properties and finally system properties. 
+    -->
+
+	<camel:camelContext xmlns="http://camel.apache.org/schema/spring" >
+		
+		<camel:endpoint id="topologyIn" uri="file:${user.home}?fileName=topology.xml&amp;noop=true"/>
+		<camel:endpoint id="systemTopologyIn" uri="file:${user.home}?fileName=system_topology.xml&amp;noop=true"/>
+	
+		<route>
+			<from ref="topologyIn" />
+			<to uri="bean:topologyWatcher?method=processTopology"/>
+		</route>
+		
+		<route>
+			<from uri="systemTopologyIn" />
+			<to uri="bean:topologyWatcher?method=processSystemTopology"/>
+		</route>
+		
+	</camel:camelContext>
+	
+</beans>

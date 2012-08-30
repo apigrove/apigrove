@@ -1,0 +1,163 @@
+<application xmlns="http://wadl.dev.java.net/2009/02" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <grammars/>
+   <resources base="http://192.168.3.103:8181/cxf/e3">
+      <resource path="/system-manager/logging">
+         <resource path="/activeLogLines/{numLines}">
+            <param name="numLines" style="template" type="xs:string"/>
+            <method name="GET">
+               <doc>REST API to retrieve a specified number of log lines from the active log files.</doc>
+               <request/>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+         </resource>
+         <resource path="/collectedLogLines/{numLines}">
+            <param name="numLines" style="template" type="xs:string"/>
+            <method name="GET">
+               <doc>REST API to retrieve a specified number of log lines from the collected (rotated) logs.</doc>
+               <request/>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+         </resource>
+         <resource path="/forceLogCollection">
+            <method name="GET">
+               <doc>REST API to trigger log collection across all instances in the topology.</doc>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+         </resource>
+         <resource path="/instances/{instanceId}/logLevel">
+            <param name="instanceId" style="template" type="xs:string"/>
+            <method name="GET">
+               <doc>REST API to retrieve the java log level for an instance (1 for localhost, 0 for global).</doc>
+               <request/>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+            <method name="PUT">
+               <doc>REST API to set the java log level for an instance (1 for localhost, 0 for global).</doc>
+               <request>
+                  <representation mediaType="application/octet-stream">
+                     <param name="request" style="plain" type="xs:string"/>
+                  </representation>
+               </request>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+         </resource>
+         <resource path="/instances/{instanceId}/smxlogLevel">
+            <param name="instanceId" style="template" type="xs:string"/>
+            <method name="GET">
+               <doc>REST API to retrieve the servicemix level for an instance (1 for localhost, 0 for global).</doc>
+               <request/>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+            <method name="PUT">
+               <doc>REST API to set the servicemix level for an instance (1 for localhost, 0 for global).</doc>
+               <request>
+                  <representation mediaType="application/octet-stream">
+                     <param name="request" style="plain" type="xs:string"/>
+                  </representation>
+               </request>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+         </resource>
+         <resource path="/instances/{instanceId}/syslogLevel">
+            <param name="instanceId" style="template" type="xs:string"/>
+            <method name="GET">
+               <doc>REST API to retrieve the syslog level for an instance (1 for localhost, 0 for global).</doc>
+               <request/>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+            <method name="PUT">
+               <doc>REST API to set the syslog level for an instance (1 for localhost, 0 for global).</doc>
+               <request>
+                  <representation mediaType="application/octet-stream">
+                     <param name="request" style="plain" type="xs:string"/>
+                  </representation>
+               </request>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+         </resource>
+         <resource path="/logAllLevels">
+            <method name="GET">
+               <doc>REST API to test the LoggingManager by logging a message at each log level.</doc>
+               <response>
+                  <representation mediaType="application/octet-stream"/>
+               </response>
+            </method>
+         </resource>
+         <resource path="/logLevel">
+            <method name="GET">
+               <doc>REST API to retrieve the global java log level.</doc>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+            <method name="PUT">
+               <doc>REST API to set the global java log level.</doc>
+               <request>
+                  <representation mediaType="application/octet-stream">
+                     <param name="request" style="plain" type="xs:string"/>
+                  </representation>
+               </request>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+         </resource>
+         <resource path="/smxlogLevel">
+            <method name="GET">
+               <doc>REST API to retrieve the global servicemix log level.</doc>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+            <method name="PUT">
+               <doc>REST API to set the global servicemix log level.</doc>
+               <request>
+                  <representation mediaType="application/octet-stream">
+                     <param name="request" style="plain" type="xs:string"/>
+                  </representation>
+               </request>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+         </resource>
+         <resource path="/syslogLevel">
+            <method name="GET">
+               <doc>REST API to retrieve the global syslog level.</doc>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+            <method name="PUT">
+               <doc>REST API to set the global syslog level.</doc>
+               <request>
+                  <representation mediaType="application/octet-stream">
+                     <param name="request" style="plain" type="xs:string"/>
+                  </representation>
+               </request>
+               <response>
+                  <representation mediaType="application/xml"/>
+               </response>
+            </method>
+         </resource>
+      </resource>
+   </resources>
+</application>

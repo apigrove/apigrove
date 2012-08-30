@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+	<mirrors>
+		<!-- Official mirror -->
+		<mirror>
+			<id>UK</id>
+			<name>UK Central</name>
+			<url>http://central.maven.org/maven2</url>
+			<mirrorOf>central, maven-central-repository</mirrorOf>
+		</mirror>
+	</mirrors>
+
+	<profiles>
+		<profile>
+			<id>e3-repository</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<!-- list of useful repositories -->
+				<repository>
+					<id>com.springsource.repository.bundles.external</id>
+					<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
+					<url>http://repository.springsource.com/maven/bundles/external</url>
+				</repository>
+				<repository>
+					<id>maven</id>
+					<name>maven Repository</name>
+					<url>http://repo2.maven.org/maven2</url>
+				</repository>
+				<repository>
+					<id>Fuse Source</id>
+					<name>Fuse Source Repository</name>
+					<url>http://repo.fusesource.com/nexus/content/groups/public/</url>
+				</repository>
+			</repositories>
+		</profile>
+	</profiles>
+</settings>

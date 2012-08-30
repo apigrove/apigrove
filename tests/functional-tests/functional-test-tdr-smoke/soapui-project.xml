@@ -1,0 +1,927 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright © 2012 Alcatel-Lucent.
+
+    See the NOTICE file distributed with this work for additional
+    information regarding copyright ownership.
+    Licensed to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+             http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<con:soapui-project name="tdr-smoke" resourceRoot="" soapui-version="4.5.1" abortOnError="false" runType="PARALLELL" activeEnvironment="Default" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="request" type="rest" basePath="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>http://${#Project#E3Gateway}/api-parameters-endpoint1?param1=value1&amp;key=api-parameters-key1&amp;param2=value2</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/api-parameters-endpoint2/five?key=api-parameters-key2</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/api-parameters-endpoint2/three/five?key=api-parameters-key2</con:endpoint></con:endpoints><con:resource name="apiauth" path="{apiauth}"><con:settings/><con:parameters><con:parameter><con:name>apiauth</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/></con:parameter></con:parameters><con:method name="get, 1 param, 1 key" method="GET"><con:settings/><con:parameters><con:parameter><con:name>key</con:name><con:value>mykey</con:value><con:style>QUERY</con:style><con:default>mykey</con:default></con:parameter><con:parameter><con:name>param1</con:name><con:style>QUERY</con:style></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403 500 429</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="get, 3 params, key first" method="GET"><con:settings/><con:parameters><con:parameter><con:name>key</con:name><con:value>mykey</con:value><con:style>QUERY</con:style><con:default>mykey</con:default></con:parameter><con:parameter><con:name>param1</con:name><con:value>value1</con:value><con:style>QUERY</con:style><con:default>value1</con:default></con:parameter><con:parameter><con:name>param2</con:name><con:value>value2</con:value><con:style>QUERY</con:style><con:default>value2</con:default></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="get, 3 params, key middle" method="GET"><con:settings/><con:parameters><con:parameter><con:name>param1</con:name><con:value>value1</con:value><con:style>QUERY</con:style><con:default>value1</con:default></con:parameter><con:parameter required="false" disableUrlEncoding="false"><con:name>key</con:name><con:value>mykey</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>mykey</con:default><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>param2</con:name><con:value>value2</con:value><con:style>QUERY</con:style><con:default>value2</con:default></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="get, 3 params, key last" method="GET"><con:settings/><con:parameters><con:parameter><con:name>param1</con:name><con:value>value1</con:value><con:style>QUERY</con:style><con:default>value1</con:default></con:parameter><con:parameter><con:name>param2</con:name><con:value>value2</con:value><con:style>QUERY</con:style><con:default>value2</con:default></con:parameter><con:parameter required="false" disableUrlEncoding="false"><con:name>key</con:name><con:value>mykey</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>mykey</con:default><con:description xsi:nil="true"/></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="get, 0 params, no key" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="get, 1 param, no key" method="GET"><con:settings/><con:parameters><con:parameter><con:name>param1</con:name><con:style>QUERY</con:style></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403 500 429</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="get, 1 key, no params" method="GET"><con:settings/><con:parameters><con:parameter><con:name>key</con:name><con:style>QUERY</con:style></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403 500 429</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="get, endpoint/path2 to target/path2" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="get, simple" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="apiauth/three" path="apiauth/path2"><con:settings/><con:parameters/><con:method name="get, endpoint/path2 to target/path2" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="get, target/path2, 1 param" method="GET"><con:settings/><con:parameters><con:parameter><con:name>param1</con:name><con:style>QUERY</con:style></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="get, target/path2, 1 param, 1 key" method="GET"><con:settings/><con:parameters><con:parameter><con:name>param1</con:name><con:style>QUERY</con:style></con:parameter><con:parameter><con:name>key</con:name><con:style>QUERY</con:style></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="get, target/path2, 1 key" method="GET"><con:settings/><con:parameters><con:parameter><con:name>key</con:name><con:style>QUERY</con:style></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="/apiauth/three/" path="apiauth/path2/"><con:settings/><con:parameters/><con:method name="get, endpoint/path2/ to target/path2" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="get, target/path2, 1 param" method="GET"><con:settings/><con:parameters><con:parameter><con:name>param1</con:name><con:style>QUERY</con:style></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="get, target/path2, 1 param, 1 key" method="GET"><con:settings/><con:parameters><con:parameter><con:name>param1</con:name><con:style>QUERY</con:style></con:parameter><con:parameter><con:name>key</con:name><con:style>QUERY</con:style></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="apiauth/" path="apiauth/"><con:settings/><con:parameters/><con:method name="get, 0 params, no key" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="apiauth/four" path="apiauth/four"><con:settings/><con:parameters/><con:method name="get, 0 params, no key" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403 500</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html; charset=iso-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="apiauth/four/five.html" path="apiauth/four/five.html"><con:settings/><con:parameters/><con:method name="get, 0 params, no key" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=ISO-8859-1</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="root" path="/"><con:settings/><con:parameters/><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>403 500</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings/><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="EndPoint-test" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<con:settings/>
+		
+		<con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>http://${#Project#E3Gateway}/auth-extended-endpoint1?key=auth-extended-key1</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/auth-extended-endpoint1</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/auth-extended-endpoint2</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/api-header-transform-endpoint1?key=api-header-transform-key1</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/api-header-transform-endpoint2?key=api-header-transform-key2</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/api-header-transform-endpoint3?key=api-header-transform-key3</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/provision-api-ext-endpoint1</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/provision-api-ext-endpoint3?key=provision-api-ext-key3</con:endpoint><con:endpoint>https://${#Project#E3Gateway}/tls2ways-call-expired-endpoint1</con:endpoint><con:endpoint>https://${#Project#E3Gateway}/tls2ways-call-ko-endpoint1</con:endpoint><con:endpoint>https://${#Project#E3Gateway}/tls2ways-call-no-cert-endpoint1</con:endpoint><con:endpoint>https://${#Project#E3Gateway}/tls2ways-call-ok-endpoint1</con:endpoint><con:endpoint>https://${#Project#E3Gateway}:25101/provision-sslkey-endpoint3</con:endpoint><con:endpoint>https://${#Project#E3Gateway}:25101/provision-sslkey-endpoint4?key=provision-sslkey-key4</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/tdr-smoke-endpoint1?key=tdr-smoke-key1</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/tdr-endpoint1?key=tdr-key1</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/rate-limit-aib-and-cluster-endpoint2?key=rate-limit-aib-and-cluster-key2</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/rate-limit-aib-and-cluster-endpoint3?key=rate-limit-aib-and-cluster-key3</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/rate-limit-aib-endpoint2</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/rate-limit-aib-endpoint3?key=rate-limit-aib-key3</con:endpoint></con:endpoints>
+		<con:resource name="EndPoint Target" path="">
+			<con:settings/>
+			<con:parameters/>
+			<con:method name="GET With AuthKey" method="GET">
+				<con:settings/>
+				<con:parameters><con:parameter required="true"><con:name>key</con:name><con:value/><con:style>QUERY</con:style><con:default/></con:parameter></con:parameters>
+				<con:representation type="RESPONSE">
+					<con:mediaType>text/html</con:mediaType>
+					<con:status>200</con:status>
+					<con:params/>
+					<con:element>html</con:element>
+				</con:representation>
+				<con:representation type="RESPONSE">
+					<con:mediaType xsi:nil="true"/>
+					<con:status>0</con:status>
+					<con:params/>
+					<con:element>data</con:element>
+				</con:representation>
+				<con:representation type="FAULT">
+					<con:mediaType>text/plain</con:mediaType>
+					<con:status>500 403 401 429</con:status>
+					<con:params/>
+					<con:element>data</con:element>
+				</con:representation>
+				<con:representation type="RESPONSE">
+					<con:mediaType xsi:nil="true"/>
+					<con:status>200</con:status>
+					<con:params/>
+					<con:element>data</con:element>
+				</con:representation>
+				<con:representation type="RESPONSE">
+					<con:mediaType xsi:nil="true"/>
+					<con:status>200</con:status>
+					<con:params/>
+					<con:element>data</con:element>
+				</con:representation>
+				<con:representation type="FAULT">
+					<con:mediaType>text/html</con:mediaType>
+					<con:status>404</con:status>
+					<con:params/>
+					<con:element>html</con:element>
+				</con:representation>
+				<con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation>
+			<con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/xml</con:mediaType><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request - Valid AuthKey" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="WAIT" value="0"/>
+  &lt;con:entry key="SIZE" value="100"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}/endpoint1</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="key" value="e88ba0c1e4c34f25bf95733eebd8574f" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request><con:request name="Request - Invalid AuthKey" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="WAIT" value="0"/>
+  &lt;con:entry key="SIZE" value="100"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}/endpoint1</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method>
+		<con:method name="GET With No Param" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>401 403 429 500</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/xml</con:mediaType><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request - With No Param" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="WAIT" value="0"/>
+  &lt;con:entry key="SIZE" value="100"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}/endpoint1</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="GET With Authorization Header" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>401 500 429</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/xml</con:mediaType><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:request name="Request - Valid Basic" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="Basic dGVzdGVyOnRlc3RlcnBhc3N3b3Jk"/>
+  &lt;con:entry key="WAIT" value="0"/>
+  &lt;con:entry key="SIZE" value="100"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}/endpoint1</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request><con:request name="Request - Invalid Basic" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="Basic invalidbasic"/>
+  &lt;con:entry key="WAIT" value="0"/>
+  &lt;con:entry key="SIZE" value="100"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}/endpoint1</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="m1" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>text/xml</con:mediaType><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="WAIT" value="0"/>
+  &lt;con:entry key="SIZE" value="100"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}/endpoint1?key=e88ba0c1e4c34f25bf95733eebd8574f</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource>
+	</con:interface><con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="smoke" type="rest" basePath="/cxf/e3/prov/v1" definitionUrl="http://${#Project#E3Gateway}:8181/cxf/e3/prov/v1?_wadl&amp;_type=xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://${#Project#E3Gateway}:8181/cxf/e3/prov/v1?_wadl&amp;_type=xml"><con:part><con:url>http://${#Project#E3Gateway}:8181/cxf/e3/prov/v1?_wadl&amp;_type=xml</con:url><con:content><![CDATA[<application xmlns="http://wadl.dev.java.net/2009/02" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <grammars/>
+  <resources base="http://${#Project#E3Gateway}:8181/cxf/e3/prov/v1">
+    <resource path="/apis">
+      <doc>E3 REST API to create, update or delete an API</doc>
+      <method name="GET">
+        <doc>Used to get all API IDs.</doc>
+        <response>
+          <representation mediaType="application/xml"/>
+        </response>
+      </method>
+      <method name="POST">
+        <doc>This REST API is used to create an API.</doc>
+        <request>
+          <representation mediaType="application/xml"/>
+        </request>
+        <response>
+          <representation mediaType="application/xml"/>
+        </response>
+      </method>
+      <resource path="/{API_ID}">
+        <param name="API_ID" style="template" type="xs:string"/>
+        <method name="DELETE">
+          <doc>This REST API is used to delete an API.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="GET">
+          <doc>Used to get an API by this ID.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="PUT">
+          <doc>This REST API is used to update an API.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+    </resource>
+    <resource path="/policies">
+      <doc>E3 REST API to create, update or delete a policy</doc>
+      <method name="GET">
+        <doc>This REST API is used to fetch all policy ids.</doc>
+        <response>
+          <representation mediaType="application/xml"/>
+        </response>
+      </method>
+      <method name="POST">
+        <doc>This REST API is used to create a policy.</doc>
+        <request>
+          <representation mediaType="application/xml"/>
+        </request>
+        <response>
+          <representation mediaType="application/xml"/>
+        </response>
+      </method>
+      <resource path="/{POLICY_ID}">
+        <param name="POLICY_ID" style="template" type="xs:string"/>
+        <method name="DELETE">
+          <doc>This REST API is used to delete a policy.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="GET">
+          <doc>This REST API is used to fetch policy data.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="PUT">
+          <doc>This REST API is used to update a policy.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="/{POLICY_ID}/quotaRLBuckets">
+        <param name="POLICY_ID" style="template" type="xs:string"/>
+        <method name="POST">
+          <doc>This REST API is used to create a QuotaRLBucket in a policy.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="/{POLICY_ID}/quotaRLBuckets/{BUCKET_ID}">
+        <param name="POLICY_ID" style="template" type="xs:string"/>
+        <param name="BUCKET_ID" style="template" type="xs:string"/>
+        <method name="DELETE">
+          <doc>This REST API is used to remove a bucket from a policy.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="PUT">
+          <doc>This REST API is used to append auths to a bucket.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="/{POLICY_ID}/quotaRLBuckets/{BUCKET_ID}/auths/{AUTH_ID}">
+        <param name="POLICY_ID" style="template" type="xs:string"/>
+        <param name="BUCKET_ID" style="template" type="xs:string"/>
+        <param name="AUTH_ID" style="template" type="xs:string"/>
+        <method name="DELETE">
+          <doc>This REST API is used to remove an auth from a bucket.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+    </resource>
+    <resource path="/auths">
+      <doc>E3 REST API provision authentications on E3 subsystem</doc>
+      <method name="GET">
+        <doc>This REST API is used to get all authentications from E3 subsystem.</doc>
+        <response>
+          <representation mediaType="application/xml"/>
+        </response>
+      </method>
+      <method name="POST">
+        <doc>This REST API is used to create an authentication element on E3 subsystem.</doc>
+        <request>
+          <representation mediaType="application/xml"/>
+        </request>
+        <response>
+          <representation mediaType="application/xml"/>
+        </response>
+      </method>
+      <resource path="/{AUTH_ID}">
+        <param name="AUTH_ID" style="template" type="xs:string"/>
+        <method name="DELETE">
+          <doc>This REST API is used to delete an Auth.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="GET">
+          <doc>This REST API is used to get an authentication by ID from E3 subsystem.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="PUT">
+          <doc>This REST API is used to update an authentication.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+    </resource>
+    <resource path="/bulk/policies/quotaRLBuckets">
+      <doc>E3 REST API to create or delete a bucket of auths associated to a list of policies</doc>
+      <method name="POST">
+        <doc>This REST API is used to create a bucket linked to a list of policies.</doc>
+        <request>
+          <representation mediaType="application/xml"/>
+        </request>
+        <response>
+          <representation mediaType="application/xml"/>
+        </response>
+      </method>
+      <resource path="/{BUCKET_ID}">
+        <param name="BUCKET_ID" style="template" type="xs:string"/>
+        <method name="PUT">
+          <doc>This REST API is used to append auths to a bucket for several policies.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="/{BUCKET_ID}/delete">
+        <param name="BUCKET_ID" style="template" type="xs:string"/>
+        <method name="PUT">
+          <doc>This REST API is used to remove a bucket from a list of policies.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+    </resource>
+    <resource path="/keys">
+      <doc>E3 REST API provision SSLKeys and SSLCerts on E3 subsystem</doc>
+      <method name="GET">
+        <doc>This REST API is used to get all SSLKeys from E3 subsystem.</doc>
+        <response>
+          <representation mediaType="application/xml"/>
+        </response>
+      </method>
+      <method name="POST">
+        <doc>This REST API is used to create an SSLKey element on E3 subsystem.</doc>
+        <request>
+          <representation mediaType="application/xml"/>
+        </request>
+        <response>
+          <representation mediaType="application/xml"/>
+        </response>
+      </method>
+      <resource path="/{KEY_ID}">
+        <param name="KEY_ID" style="template" type="xs:string"/>
+        <method name="DELETE">
+          <doc>This REST API is used to delete an SSLKey.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="GET">
+          <doc>This REST API is used to get an SSLKey by ID from E3 subsystem.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="PUT">
+          <doc>This REST API is used to update an SSLKey.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="/{KEY_ID}/certs">
+        <param name="KEY_ID" style="template" type="xs:string"/>
+        <method name="GET">
+          <doc>This REST API is used to get all SSLCerts for a key.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="POST">
+          <doc>This REST API is used to create an SSLCert element on E3 subsystem.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="/{KEY_ID}/certs/{CERT_ID}">
+        <param name="KEY_ID" style="template" type="xs:string"/>
+        <param name="CERT_ID" style="template" type="xs:string"/>
+        <method name="DELETE">
+          <doc>This REST API is used to delete an SSLCert.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="GET">
+          <doc>This REST API is used to get an SSLKey by ID from E3 subsystem.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="PUT">
+          <doc>This REST API is used to update an SSLKey.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="/{KEY_ID}/csr">
+        <param name="KEY_ID" style="template" type="xs:string"/>
+        <method name="GET">
+          <doc>This REST API is used to get a CSR for the given SSLKey ID from E3 subsystem.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="/{KEY_ID}/selfsign">
+        <param name="KEY_ID" style="template" type="xs:string"/>
+        <method name="GET">
+          <doc>This REST API is used to create a self-signed cert for an existing Key</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+    </resource>
+    <resource path="/truststore">
+      <doc>E3 REST API to add/update/delete trusted CAs and CRLs</doc>
+      <resource path="/certs">
+        <method name="GET">
+          <doc>This REST API is used to fetch all trusted certificates authorithies.</doc>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="POST">
+          <doc>This REST API is used to add a trusted Certificate Authority.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="/certs/{CA_ID}">
+        <param name="CA_ID" style="template" type="xs:string"/>
+        <method name="DELETE">
+          <doc>This REST API is used to remove a trusted Certificate Authority.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="GET">
+          <doc>This REST API is used to fetch trusted Certificate Authority.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="PUT">
+          <doc>This REST API is used to update a trusted Certificate Authority.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="/crls">
+        <method name="GET">
+          <doc>This REST API is used to fetch trusted Certificate Authority.</doc>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="POST">
+          <doc>This REST API is used to add a Certificate Revocation List for this Certificate Authority.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="/crls/{CRL_ID}">
+        <param name="CRL_ID" style="template" type="xs:string"/>
+        <method name="DELETE">
+          <doc>This REST API is used to remove a certificate revocation list from a certificate authority.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="GET">
+          <doc>This REST API is used to fetch Certificate Revocation List.</doc>
+          <request/>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="PUT">
+          <doc>This REST API is used to update a certificate revocation list.</doc>
+          <request>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+      </resource>
+    </resource>
+  </resources>
+</application>]]></con:content><con:type>http://wadl.dev.java.net/2009/02</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint></con:endpoints><con:resource name="/apis" path="/apis"><con:settings/><con:parameters/><con:resource name="/{API_ID}" path="/{API_ID}"><con:settings/><con:parameters><con:parameter><con:name>API_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="DELETE" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="POST" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/policies" path="/policies"><con:settings/><con:parameters/><con:resource name="/{POLICY_ID}" path="/{POLICY_ID}"><con:settings/><con:parameters><con:parameter><con:name>POLICY_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="DELETE" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/{POLICY_ID}/quotaRLBuckets" path="/{POLICY_ID}/quotaRLBuckets"><con:settings/><con:parameters><con:parameter><con:name>POLICY_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="POST" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/{POLICY_ID}/quotaRLBuckets/{BUCKET_ID}" path="/{POLICY_ID}/quotaRLBuckets/{BUCKET_ID}"><con:settings/><con:parameters><con:parameter><con:name>POLICY_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter><con:parameter><con:name>BUCKET_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="DELETE" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" mediaType="application/xml" postQueryString="false"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="/{POLICY_ID}/quotaRLBuckets/{BUCKET_ID}/auths/{AUTH_ID}" path="/{POLICY_ID}/quotaRLBuckets/{BUCKET_ID}/auths/{AUTH_ID}"><con:settings/><con:parameters><con:parameter><con:name>POLICY_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter><con:parameter><con:name>BUCKET_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter><con:parameter><con:name>AUTH_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="DELETE" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="POST" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/auths" path="/auths"><con:settings/><con:parameters/><con:resource name="/{AUTH_ID}" path="/{AUTH_ID}"><con:settings/><con:parameters><con:parameter><con:name>AUTH_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="DELETE" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="POST" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" mediaType="application/xml" postQueryString="false"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="/bulk/policies/quotaRLBuckets" path="/bulk/policies/quotaRLBuckets"><con:settings/><con:parameters/><con:resource name="/{BUCKET_ID}" path="/{BUCKET_ID}"><con:settings/><con:parameters><con:parameter><con:name>BUCKET_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/{BUCKET_ID}/delete" path="/{BUCKET_ID}/delete"><con:settings/><con:parameters><con:parameter><con:name>BUCKET_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:method name="POST" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/keys" path="/keys"><con:settings/><con:parameters/><con:resource name="/{KEY_ID}" path="/{KEY_ID}"><con:settings/><con:parameters><con:parameter><con:name>KEY_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="DELETE" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/{KEY_ID}/certs" path="/{KEY_ID}/certs"><con:settings/><con:parameters><con:parameter><con:name>KEY_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="POST" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/{KEY_ID}/certs/{CERT_ID}" path="/{KEY_ID}/certs/{CERT_ID}"><con:settings/><con:parameters><con:parameter><con:name>KEY_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter><con:parameter><con:name>CERT_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="DELETE" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/{KEY_ID}/csr" path="/{KEY_ID}/csr"><con:settings/><con:parameters><con:parameter><con:name>KEY_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/{KEY_ID}/selfsign" path="/{KEY_ID}/selfsign"><con:settings/><con:parameters><con:parameter><con:name>KEY_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="POST" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/truststore" path="/truststore"><con:settings/><con:parameters/><con:resource name="/certs" path="/certs"><con:settings/><con:parameters/><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="POST" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/certs/{CA_ID}" path="/certs/{CA_ID}"><con:settings/><con:parameters><con:parameter><con:name>CA_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="DELETE" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/crls" path="/crls"><con:settings/><con:parameters/><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="POST" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/crls/{CRL_ID}" path="/crls/{CRL_ID}"><con:settings/><con:parameters><con:parameter><con:name>CRL_ID</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="DELETE" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource></con:resource></con:interface><con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="targertest" type="rest" basePath="" definitionUrl="D:\Documents and Settings\mtobiasz\Desktop\targertest_1.wadl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/D:/Documents%20and%20Settings/mtobiasz/Desktop/targertest_1.wadl"><con:part><con:url>file:/D:/Documents%20and%20Settings/mtobiasz/Desktop/targertest_1.wadl</con:url><con:content><![CDATA[<application xmlns="http://wadl.dev.java.net/2009/02">
+  <doc xml:lang="en" title="targertest"/>
+  <resources base="http://${#Project#E3Gateway}/endpoint1?key=e88ba0c1e4c34f25bf95733eebd8574a">
+    <resource path="" id="resname">
+      <doc xml:lang="en" title="resname"/>
+      <method name="GET" id="Method 1">
+        <doc xml:lang="en" title="Method 1"/>
+        <request/>
+        <response status="0">
+          <representation mediaType=""/>
+        </response>
+        <response status="200">
+          <representation mediaType="text/html"/>
+        </response>
+      </method>
+      <method name="POST" id="Method 2 (POST)">
+        <doc xml:lang="en" title="Method 2 (POST)"/>
+        <request>
+          <representation mediaType="application/xml"/>
+        </request>
+        <response status="0">
+          <representation mediaType=""/>
+        </response>
+        <response status="">
+          <representation mediaType="application/xml"/>
+        </response>
+        <response status="403 405 429">
+          <representation mediaType="text/plain"/>
+        </response>
+        <response status="200">
+          <representation mediaType="text/xml" element="response"/>
+        </response>
+      </method>
+      <method name="PUT" id="Method 3 (PUT)">
+        <doc xml:lang="en" title="Method 3 (PUT)"/>
+        <request>
+          <representation mediaType="application/xml"/>
+        </request>
+        <response status="">
+          <representation mediaType="application/xml"/>
+        </response>
+        <response status="405 429">
+          <representation mediaType="text/plain"/>
+        </response>
+        <response status="200">
+          <representation mediaType="text/xml" element="response"/>
+        </response>
+      </method>
+      <method name="DELETE" id="Method 4 (DELETE)">
+        <doc xml:lang="en" title="Method 4 (DELETE)"/>
+        <request/>
+        <response status="405 429">
+          <representation mediaType="text/plain"/>
+        </response>
+        <response status="200">
+          <representation mediaType="text/xml" element="response"/>
+        </response>
+      </method>
+      <method name="HEAD" id="Method 5 (HEAD)">
+        <doc xml:lang="en" title="Method 5 (HEAD)"/>
+        <request/>
+        <response status="0">
+          <representation mediaType=""/>
+        </response>
+        <response status="405">
+          <representation mediaType="text/plain"/>
+        </response>
+        <response status="200">
+          <representation mediaType="text/xml"/>
+        </response>
+      </method>
+    </resource>
+  </resources>
+</application>]]></con:content><con:type>http://wadl.dev.java.net/2009/02</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/api-http-method-endpoint1?key=api-http-method-key1</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/api-http-method-endpoint2?key=api-http-method-key2</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/api-http-method-endpoint3?key=api-http-method-key3</con:endpoint><con:endpoint>http://${#Project#E3Gateway}/api-http-method-endpoint4?key=api-http-method-key4</con:endpoint></con:endpoints><con:resource name="resname" path=""><con:settings/><con:parameters/><con:method name="Method 1 - Method 1" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType/><con:status>0</con:status><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings/><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="Method 2 (POST) - Method 2 (POST)" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType/><con:status>0</con:status><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:status/><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="FAULT" id=""><con:mediaType>text/plain</con:mediaType><con:status>403 405 429</con:status><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>text/xml</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://wadl.dev.java.net/2009/02">ns:response</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:parameters/></con:request></con:method><con:method name="Method 3 (PUT) - Method 3 (PUT)" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:status/><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="FAULT" id=""><con:mediaType>text/plain</con:mediaType><con:status>405 429</con:status><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>text/xml</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://wadl.dev.java.net/2009/02">ns:response</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:parameters/></con:request></con:method><con:method name="Method 4 (DELETE) - Method 4 (DELETE)" method="DELETE"><con:settings/><con:parameters/><con:representation type="FAULT" id=""><con:mediaType>text/plain</con:mediaType><con:status>405 429</con:status><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>text/xml</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://wadl.dev.java.net/2009/02">ns:response</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:parameters/></con:request></con:method><con:method name="Method 5 (HEAD) - Method 5 (HEAD)" method="HEAD"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType/><con:status>0</con:status><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="FAULT" id=""><con:mediaType>text/plain</con:mediaType><con:status>405</con:status><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>text/xml</con:mediaType><con:status>200</con:status><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://${#Project#E3Gateway}</con:endpoint><con:parameters/></con:request></con:method></con:resource></con:interface><con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="smoke-system-manager" type="rest" basePath="/cxf/e3" definitionUrl="http://${#Project#E3Manager}:8181/cxf/e3?_wadl&amp;_type=xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT"/><con:endpoints><con:endpoint>http://135.248.213.24:8181</con:endpoint></con:endpoints><con:resource name="/system-manager/" path="/system-manager/"><con:settings/><con:parameters/><con:resource name="install/{pathToConfigFilesDirectory}" path="install/{pathToConfigFilesDirectory}"><con:settings/><con:parameters><con:parameter><con:name>pathToConfigFilesDirectory</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/octet-stream</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="version" path="version"><con:settings/><con:parameters/><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/octet-stream</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource></con:resource><con:resource name="/system-manager/logging" path="/system-manager/logging"><con:settings/><con:parameters/><con:resource name="/activeLogLines/{numLines}" path="/activeLogLines/{numLines}"><con:settings/><con:parameters><con:parameter><con:name>numLines</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="/collectedLogLines/{numLines}" path="/collectedLogLines/{numLines}"><con:settings/><con:parameters><con:parameter><con:name>numLines</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="/forceLogCollection" path="/forceLogCollection"><con:settings/><con:parameters/><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="/instances/{instanceId}/logLevel" path="/instances/{instanceId}/logLevel"><con:settings/><con:parameters><con:parameter><con:name>instanceId</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/octet-stream</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="/instances/{instanceId}/smxlogLevel" path="/instances/{instanceId}/smxlogLevel"><con:settings/><con:parameters><con:parameter><con:name>instanceId</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/octet-stream</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="/instances/{instanceId}/syslogLevel" path="/instances/{instanceId}/syslogLevel"><con:settings/><con:parameters><con:parameter><con:name>instanceId</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/octet-stream</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="/logAllCategories" path="/logAllCategories"><con:settings/><con:parameters/><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/octet-stream</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="/logAllLevels" path="/logAllLevels"><con:settings/><con:parameters/><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/octet-stream</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="/logLevel" path="/logLevel"><con:settings/><con:parameters/><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/octet-stream</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="/loggingCategories" path="/loggingCategories"><con:settings/><con:parameters/><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="/smxlogLevel" path="/smxlogLevel"><con:settings/><con:parameters/><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/octet-stream</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="/syslogLevel" path="/syslogLevel"><con:settings/><con:parameters/><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method><con:method name="PUT" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST" id=""><con:mediaType>application/octet-stream</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://135.248.213.24:8181</con:endpoint><con:parameters/></con:request></con:method></con:resource></con:resource></con:interface><con:testSuite name="tdr-smoke">
+		<con:description>TestSuite generated for REST Service
+			[functional-test-provision-api]</con:description>
+		<con:settings/>
+		<con:runType>SEQUENTIAL</con:runType>
+		
+		
+		
+		<con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TDR Creation TestCase" searchProperties="true">
+			<con:description>TestCase generated for REST Resource [/apis] located
+				at [/apis]</con:description>
+			<con:settings/>
+			<con:testStep type="groovy" name="Test If Windows"><con:settings/><con:config><script>if (System.properties['os.name'].toLowerCase().contains('windows')) {
+	log.info("Windows OS Detected: disabling the rest of the test.")
+	testSteps = context.testCase.getTestStepList().each{
+		it.disabled = true
+	}
+	context.testCase.getTestStepAt(0).disabled = false
+} else {
+	testSteps = context.testCase.getTestStepList().each{
+		it.disabled = false
+	}
+	context.testCase.getTestStepAt(10).disabled = true
+}</script></con:config></con:testStep>
+			<con:testStep type="restrequest" name="Delete API (if exists)">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis/{API_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Delete API (if exists)" mediaType="application/xml" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request/>
+						
+						
+						
+						<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters><entry key="API_ID" value="tdr-smoke-api1" xmlns="http://eviware.com/soapui/config"/></con:parameters>
+					</con:restRequest>
+				</con:config>
+			</con:testStep>
+			<con:testStep type="restrequest" name="Delete auth (if exists)"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/auths/{AUTH_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete auth (if exists)" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="AUTH_ID" value="tdr-smoke-auth1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep>
+			<con:testStep type="restrequest" name="Delete policy (if exists)"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/policies/{POLICY_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete policy (if exists)" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="POLICY_ID" value="tdr-smoke-policy1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep>
+			
+			<con:testStep type="groovy" name="Delete Destination TDR Files"><con:settings/><con:config><script>def remote_host = testRunner.testCase.testSuite.project.getPropertyValue( "E3Gateway" )
+def remove_files_command = "rm -f /home/e3/apache-servicemix/data/TDR/txTDR/tdrs.*.xml"
+
+def cmd = "ssh -o StrictHostKeyChecking=no root@${remote_host} ${remove_files_command}"
+log.info("Running command: [${cmd}]")
+Process p = cmd.execute()
+p.waitFor()
+if (p.exitValue()) {
+	log.error("There was an error (${p.exitValue()}) removing old TDR files: ${p.err.text}")
+	testRunner.fail("Could not remove old TDR files")
+} 
+
+log.info("Removed old TDR files.")
+</script></con:config></con:testStep><con:testStep type="restrequest" name="Create API">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Create API" mediaType="application/xml" postQueryString="false" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request><![CDATA[<api>
+   <id>tdr-smoke-api1</id>
+   <displayName>tdr-smoke-api1</displayName>
+   <type>PassThrough</type>
+   <status>active</status>
+   <endpoint>tdr-smoke-endpoint1</endpoint>
+   <https>false</https>
+   <authentication>
+      <supportedTypes>
+         <type>authKey</type>
+      </supportedTypes>
+      <authKey>
+         <keyName>key</keyName>
+      </authKey>
+   </authentication>
+   <tdrEnabled>
+      <enabled>true</enabled>
+   </tdrEnabled>
+   <contexts>
+      <context id="tdr-smoke-api-context1" default="true">
+         <status>active</status>
+         <targetHosts>
+            <targetHost>
+               <url>http://${#Project#Target1}:8080/proxySize</url>
+               <authentication>
+                  <type>NoAuth</type>
+                  <data>
+                     <key name="aKey00">key000Val</key>
+                  </data>
+               </authentication>
+            </targetHost>
+         </targetHosts>
+         <maxRateLimitTPSThreshold>10</maxRateLimitTPSThreshold>
+         <maxRateLimitTPSWarning>0.0</maxRateLimitTPSWarning>
+         <maxRateLimitTPMThreshold>200</maxRateLimitTPMThreshold>
+         <maxRateLimitTPMWarning>1.0</maxRateLimitTPMWarning>
+      </context>
+   </contexts>
+   <tdr>
+      <static tdrPropName="company" value="ALU"/>
+      <static tdrPropName="bundle" value="B1"/>
+      <dynamic tdrPropName="cust1" httpHeaderName="X-CUST1"/>
+      <dynamic tdrPropName="cust2" httpHeaderName="X-CUST2"/>
+   </tdr>
+</api>]]></con:request>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration><codes>200</codes></con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath Match">
+							<con:configuration>
+								<path>/response/status</path>
+								<content>SUCCESS</content>
+								<allowWildcards>false</allowWildcards>
+								<ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+								<ignoreComments>false</ignoreComments>
+							</con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath apiID">
+							<con:configuration><path>/response/id</path><content>tdr-smoke-api1</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion>
+						<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep>
+			<con:testStep type="restrequest" name="Create auth"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/auths" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create auth" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request><![CDATA[<auth>
+   <id>tdr-smoke-auth1</id>
+   <status>active</status>
+   <type>authKey</type>
+   <policyContext id="tdr-smoke-policy-context1"/>
+   <apiContext id="tdr-smoke-api-context1"/>
+   <authKeyAuth>
+      <keyValue>tdr-smoke-key1</keyValue>
+   </authKeyAuth>
+   <tdr>
+      <static tdrPropName="company" value="ALU"/>
+      <static tdrPropName="bundle" value="B1">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </static>
+      <dynamic tdrPropName="cust1" httpHeaderName="X-CUST1"/>
+      <dynamic tdrPropName="cust2" httpHeaderName="X-CUST2">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </dynamic>
+   </tdr>
+</auth>]]></con:request><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/id</path><content>tdr-smoke-auth1</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match 1"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create policy"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/policies" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create policy" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request><![CDATA[<policy>
+   <id>tdr-smoke-policy1</id>
+   <apiIds>
+      <apiId>tdr-smoke-api1</apiId>
+   </apiIds>
+   <authIds>
+      <quotaRLBucket id="app1">
+         <authId>tdr-smoke-auth1</authId>
+      </quotaRLBucket>
+   </authIds>
+   <contexts>
+      <context id="tdr-smoke-policy-context1">
+         <status>active</status>
+         <rateLimitPerMinute>
+            <status>active</status>
+            <action>reject</action>
+            <warning>2</warning>
+            <threshold>2</threshold>
+         </rateLimitPerMinute>
+      </context>
+   </contexts>
+</policy>]]></con:request><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/id</path><content>tdr-smoke-policy1</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match 1"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Request Test API">
+				<con:settings/>
+				<con:config service="EndPoint-test" resourcePath="" methodName="GET With No Param" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Request Test API" mediaType="application/xml" accept="">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="SIZE" value="10" xmlns="http://eviware.com/soapui/config"/></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Gateway}/tdr-smoke-endpoint1?key=tdr-smoke-key1</con:endpoint>
+						<con:request/>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration><codes>200</codes></con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath Match" disabled="true"><con:configuration><path>/data</path><content>9876543210</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Request Test API 2 (Warning TDR)">
+				<con:settings/>
+				<con:config service="EndPoint-test" resourcePath="" methodName="GET With No Param" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Request Test API 2 (Warning TDR)" mediaType="application/xml" accept="">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="SIZE" value="10" xmlns="http://eviware.com/soapui/config"/></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Gateway}/tdr-smoke-endpoint1?key=tdr-smoke-key1</con:endpoint>
+						<con:request/>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration>
+								<codes>200</codes>
+							</con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath Match" disabled="true"><con:configuration><path>/data</path><content>9876543210</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Request Test API 3 (Over Limit TDR)">
+				<con:settings/>
+				<con:config service="EndPoint-test" resourcePath="" methodName="GET With No Param" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Request Test API 3 (Over Limit TDR)" mediaType="application/xml" accept="">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="SIZE" value="10" xmlns="http://eviware.com/soapui/config"/></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Gateway}/tdr-smoke-endpoint1?key=tdr-smoke-key1</con:endpoint>
+						<con:request/>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration><codes>429</codes></con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath Match" disabled="true"><con:configuration><path>/data</path><content>9876543210</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Delete API">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis/{API_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Delete API" mediaType="application/xml" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						<con:setting id="com.eviware.soapui.settings.CommonSettings@entitizeProperties">false</con:setting></con:settings>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request/>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration><codes>200</codes></con:configuration>
+						</con:assertion>
+						
+						<con:assertion type="XPath Match" name="XPath Match - status">
+							<con:configuration>
+								<path>/response/status</path>
+								<content>SUCCESS</content>
+								<allowWildcards>false</allowWildcards>
+								<ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+								<ignoreComments>false</ignoreComments>
+							</con:configuration>
+						</con:assertion>
+						<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters><entry key="API_ID" value="tdr-smoke-api1" xmlns="http://eviware.com/soapui/config"/></con:parameters>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Delete auth"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/auths/{AUTH_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete auth" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="AUTH_ID" value="tdr-smoke-auth1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Delete policy"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/policies/{POLICY_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete policy" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="POLICY_ID" value="tdr-smoke-policy1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="Verify Destination TDR Files"><con:settings/><con:config><script>sleep(90 * 1000) 
+
+String remote_user = "root"
+String remote_host = testRunner.testCase.testSuite.project.getPropertyValue( "E3Gateway" )
+String remote_dir = "/home/e3/apache-servicemix/data/TDR/txTDR"
+String tmp_tdr = "tmp_tdr"
+
+log.info("Checking ${remote_host} for TDR files in ${remote_dir}")
+
+def remoteExecutor = new RemoteCommandExecutor(remote_user, remote_host)
+def slurper = new XmlSlurper()
+
+File localDir = new File(tmp_tdr);
+def output = remoteExecutor.listFiles("${remote_dir}")
+log.info("New TDR files: [${output}]")
+
+localDir.mkdirs();
+output.eachLine {
+    log.info("File: ${it}")
+
+    String localPathname = tmp_tdr + "/" + "${it}";
+    File localFile = new File(localPathname);
+    localFile.delete();
+    remoteExecutor.fetchFile("${remote_dir}/${it}", localPathname);
+
+    def rootNode = slurper.parse(localFile)
+    localFile.delete();
+    def tdrNodes = rootNode.TDR
+    log.info(tdrNodes.size())
+    assert 0 &lt; tdrNodes.size()
+}
+localDir.delete()
+
+
+class RemoteCommandExecutor {
+
+    private final String remoteUser;
+    private final String remoteHost;
+
+    RemoteCommandExecutor(String remoteUser, String remoteHost) {
+        this.remoteUser = remoteUser;
+        this.remoteHost = remoteHost;
+    }
+
+    String listFiles(String pathname) {
+    	   return runCommand("ssh -o StrictHostKeyChecking=no ${remoteUser}@${remoteHost} ls ${pathname}")
+    }
+
+    String fetchFile(String remotePathname, String localPathname) {
+        runCommand("scp  -o StrictHostKeyChecking=no ${remoteUser}@${remoteHost}:${remotePathname} ${localPathname}");
+        return localPathname;
+    }
+
+    private String runCommand(String cmd) {
+        Process p = cmd.execute();
+        p.waitFor();
+        if (p.exitValue()) {
+            throw new RuntimeException("${cmd}: Command returned ${p.exitValue()}: {$p.err.text}");
+        }
+        return p.text;
+    }
+}
+</script></con:config></con:testStep><con:properties/>
+		</con:testCase>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<con:properties/>
+	</con:testSuite><con:properties><con:property><con:name>E3Manager</con:name><con:value>135.248.213.24</con:value></con:property><con:property><con:name>E3Gateway</con:name><con:value>135.248.213.24</con:value></con:property><con:property><con:name>Target1</con:name><con:value>10.168.168.49</con:value></con:property><con:property><con:name>uniq</con:name><con:value>delete</con:value></con:property><con:property><con:name>LOG4J_LEVEL_VALUES</con:name><con:value>(ALL|TRACE|DEBUG|INFO|WARN|ERROR|FATAL|OFF)</con:value></con:property><con:property><con:name>STATUS_SUCCESS</con:name><con:value>SUCCESS</con:value></con:property><con:property><con:name>SYSLOG_LEVEL_VALUES</con:name><con:value>(DEBUG|INFO|NOTICE|WARNING|ERR|CRIT|ALERT|EMERG)</con:value></con:property></con:properties><con:wssContainer/><con:sensitiveInformation/></con:soapui-project>

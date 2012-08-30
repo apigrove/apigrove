@@ -1,0 +1,71 @@
+<application xmlns="http://wadl.dev.java.net/2009/02" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<grammars>
+		<include href="system-manager.xsd">
+			<doc xml:lang="en" title="E3 System Management XML Schemas" />
+		</include>
+	</grammars>
+	
+	<resources base="http://localhost:8181/cxf/e3/system-manager">
+
+		<resource path="install/{pathToConfigFilesDirectory}">
+			<param name="pathToConfigFilesDirectory" style="template" type="xs:string"/>
+			<method name="GET">
+				<doc>Ask the SystemManager to install E3 on the machines described in the topology configuration file. The path specified should contain the configuration files installer-config.xml and topology.xml.</doc>
+				<request></request>
+				<response><representation mediaType="application/octet-stream"/></response>
+			</method>
+		</resource>
+		<resource path="version">
+			<method name="GET">
+				<response><representation mediaType="application/octet-stream">
+				<param name="result" style="plain" type="xs:string"/></representation></response>
+			</method>
+		</resource>
+
+		<resource path="logging">
+			<resource path="instances/{instanceId}/logLevel">
+				<param name="instanceId" style="template" type="xs:string"/>
+				<method name="GET">
+					<doc>REST API to retrieve the log level for an instance (1 for localhost, 0 for global).</doc>
+					<request></request>
+					<response><representation mediaType="application/xml"/></response>
+				</method>
+				<method name="PUT">
+					<doc>REST API to set the log level for an instance (1 for localhost, 0 for global).</doc>
+					<request><representation mediaType="text/plain">
+						<param name="request" style="plain" type="xs:string" required="true"/></representation>
+					</request>
+					<response><representation mediaType="application/xml"/></response>
+				</method>
+			</resource>
+			<resource path="logLevel">
+				<method name="GET">
+					<doc>REST API to retrieve the global log level.</doc>
+					<response><representation mediaType="application/xml"/></response>
+				</method>
+				<method name="PUT">
+					<doc>REST API to set the global log level.</doc>
+					<request><representation mediaType="text/plain">
+						<param name="request" style="plain" type="xs:string" required="true"/></representation>
+					</request>
+					<response><representation mediaType="application/xml"/></response>
+				</method>
+			</resource>
+			<resource path="logLines/{numLines}">
+				<param name="numLines" style="template" type="xs:string"/>
+				<method name="GET">
+					<request></request>
+					<response><representation mediaType="application/xml"/></response>
+				</method>
+			</resource>
+			<resource path="/logAllLevels">
+				<method name="GET">
+					<doc>REST API to test the LoggingManager by logging a message at each log level.</doc>
+					<response><representation mediaType="application/octet-stream"><param name="result" style="plain" type="xs:string"/></representation></response>
+				</method>
+			</resource>
+		</resource>
+	
+	</resources>
+</application>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:osgi="http://www.springframework.org/schema/osgi" xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:cxf="http://camel.apache.org/schema/cxf" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring-2.1.0.xsd
+http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-http.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-http-jetty.xml" />
+
+
+	<bean id="basicAuthFilter" class="com.alu.e3.security.BasicAuthenticationFilter">
+		<property name="username" value="changeit" />
+		<property name="password" value="changeit" />
+		<property name="enabled" value="true"/>
+	</bean>
+
+	<!--  To test basic authentication security separately  see SecuredRestApiTest -->
+	<jaxrs:server id="secured-jaxrs-prov-test"
+		address="http://localhost:2667/cxf/e3/prov/#{T(com.alu.e3.common.E3Constant).REST_API_VERSION}">
+		<jaxrs:serviceBeans>
+			<ref bean="apiManager" />
+			<ref bean="policyManager" />
+			<ref bean="authManager" />
+			<ref bean="bulkManager" />
+			<ref bean="trustStoreManager" />
+		</jaxrs:serviceBeans>
+
+		<jaxrs:providers>
+			<ref bean="basicAuthFilter" />
+			<ref bean="jaxbProvider" />
+			<ref bean="jsonProvider" />
+			<ref bean="E3ExceptionMapper" />
+		</jaxrs:providers>
+
+		<jaxrs:inInterceptors>
+			<ref bean="logInbound" />
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<ref bean="cdataAdapter" />
+			<ref bean="logOutbound" />
+		</jaxrs:outInterceptors>
+		<jaxrs:outFaultInterceptors>
+			<ref bean="logOutbound" />
+		</jaxrs:outFaultInterceptors>
+		<jaxrs:inFaultInterceptors>
+			<ref bean="logInbound" />
+		</jaxrs:inFaultInterceptors>
+
+	</jaxrs:server>
+
+	<jaxrs:server id="jaxrs-prov-test"
+		address="http://localhost:2666/cxf/e3/prov/#{T(com.alu.e3.common.E3Constant).REST_API_VERSION}">
+
+		<jaxrs:serviceBeans>
+			<ref bean="apiManager" />
+			<ref bean="policyManager" />
+			<ref bean="authManager" />
+			<ref bean="bulkManager" />
+			<ref bean="trustStoreManager" />
+		</jaxrs:serviceBeans>
+
+		<jaxrs:providers>
+			<ref bean="jaxbProvider" />
+			<ref bean="jsonProvider" />
+			<ref bean="E3ExceptionMapper" />
+		</jaxrs:providers>
+
+		<jaxrs:inInterceptors>
+			<ref bean="logInbound" />
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<ref bean="cdataAdapter" />
+			<ref bean="logOutbound" />
+		</jaxrs:outInterceptors>
+		<jaxrs:outFaultInterceptors>
+			<ref bean="logOutbound" />
+		</jaxrs:outFaultInterceptors>
+		<jaxrs:inFaultInterceptors>
+			<ref bean="logInbound" />
+		</jaxrs:inFaultInterceptors>
+
+	</jaxrs:server>
+
+</beans>

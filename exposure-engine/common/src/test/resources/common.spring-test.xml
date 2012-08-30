@@ -1,0 +1,40 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:hz="http://www.hazelcast.com/schema/spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                http://www.hazelcast.com/schema/spring
+                http://www.hazelcast.com/schema/spring/hazelcast-spring-2.0.xsd">
+
+	<hz:hazelcast id="instance">
+		<hz:config>
+			<hz:properties>
+				<hz:property name="hazelcast.mancenter.enabled">false</hz:property>
+				<hz:property name="hazelcast.memcache.enabled">false</hz:property>
+				<hz:property name="hazelcast.rest.enabled">false</hz:property>
+				<hz:property name="hazelcast.version.check.enabled">false</hz:property>
+				<hz:property name="hazelcast.socket.bind.any">false</hz:property>
+			</hz:properties>
+		
+			<hz:network port="5701" port-auto-increment="true">
+				<hz:join>
+					<hz:multicast enabled="false" />
+				</hz:join>
+			</hz:network>
+
+			<hz:queue name="bundles-to-deploy" max-size-per-jvm="10" />
+			<hz:queue name="deployment-result" max-size-per-jvm="10" />
+
+			<hz:map name="auth-cache" eviction-policy="LRU" />
+		</hz:config>
+	</hz:hazelcast>
+
+	<bean id="authCache" class="com.alu.e3.common.caching.HazelcastCache">
+		<property name="map" value="#{instance.getMap('auth-cache')}" />
+	</bean>
+
+	<bean id="bundlesToDeployListener" class="com.alu.e3.common.caching.BundlesToDeployListener">
+		<constructor-arg value="#{instance.getQueue('bundles-to-deploy')}" />
+		<constructor-arg value="#{instance.getQueue('deployment-result')}" />
+	</bean> 
+	
+</beans>

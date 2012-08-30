@@ -1,0 +1,38 @@
+<DeploymentConfigurations>
+	<!-- Each installer packages contains it's dependencies ; paths are relative to zip root -->
+	
+	<!-- E3 Manager Master -->
+	<Configuration 
+		type="E3ManagerMaster"
+		packageURL="file:///tmp/E3.zip"
+		installerCmd="bin/install.sh manager-master"
+		sanityCheckCmd="bin/sanitycheck.sh manager"
+		remotePath="/tmp"
+	/>
+	<Configuration
+		type="E3ManagerMaster"
+		packageURL="file:///tmp/E3ManagerAddOn.zip"
+		installerCmd="bin/install.sh"
+		sanityCheckCmd="bin/sanitycheck.sh"
+		remotePath="/tmp"
+	/>
+	
+	<!-- E3 Manager Slave -->
+	<Configuration
+		type="E3ManagerSlave"
+		packageURL="file:///tmp/E3.zip"
+		installerCmd="bin/install.sh manager-slave"
+		sanityCheckCmd="bin/sanitycheck.sh manager"
+	/>
+	
+	<!-- E3 Gateway -->
+	<Configuration
+		type="E3Gateway"
+		packageURL="file:///tmp/E3.zip"
+		installerCmd="bin/install.sh gateway"
+		sanityCheckCmd="bin/sanitycheck.sh gateway"
+		remotePath="/tmp"
+		generateNatureCmd="sh bin/generateNature.sh gateway"
+	/>
+	
+</DeploymentConfigurations>

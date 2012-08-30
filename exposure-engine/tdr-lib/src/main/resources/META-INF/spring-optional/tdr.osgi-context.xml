@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+	
+	<bean id="tdrQueueService" class="com.alu.e3.tdr.service.impl.TdrQueueService" init-method="init">
+		<property name="queueWaitingSize" value="5000" />
+	</bean>
+
+	<bean id="tdrRule" class="com.alu.e3.tdr.camel.component.TdrRuleComponent">
+		<property name="tdrQueueService" ref="tdrQueueService" />
+	</bean>
+	<!-- USED BY ROUTE -->
+	<osgi:service ref="tdrRule" interface="org.apache.camel.Component" />
+    <!--/USED BY ROUTE -->
+	
+	
+</beans>

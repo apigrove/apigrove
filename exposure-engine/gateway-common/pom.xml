@@ -1,0 +1,102 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>exposure-engine</artifactId>
+		<groupId>com.alu.e3</groupId>
+		<version>1.0.1</version>
+		<relativePath>..</relativePath>
+	</parent>
+
+	<artifactId>gateway-common</artifactId>
+	<name>E3 Gateway Common</name>
+	<url>http://www.alcatel-lucent.com</url>
+	<description></description>
+
+	<packaging>jar</packaging>
+	
+	<properties>
+		<fuse.version>4.3.1-fuse-01-09</fuse.version>
+		<camel.version>2.6.0-fuse-01-09</camel.version>
+		<jaxb.api.version>2.2</jaxb.api.version>
+		<servicemix.specs.version>1.7.0</servicemix.specs.version>
+		<commons-httpclient.bundle.version>3.1_5</commons-httpclient.bundle.version>
+		<cxf.version>2.3.3</cxf.version>
+		<org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+		<spring.osgi.version>1.2.0</spring.osgi.version>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk16</artifactId>
+			<version>1.46</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.alu.e3</groupId>
+			<artifactId>common</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.framework</artifactId>
+			<version>3.0.9-fuse-03-11</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jetty</artifactId>
+			<version>${camel.version}</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>tools</artifactId>
+					<groupId>com.sun</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.camel</groupId>
+		    <artifactId>camel-http4</artifactId>
+		    <version>${camel.version}</version>
+		    <scope>provided</scope>
+		    <exclusions>
+		    	<exclusion>
+		    		<artifactId>tools</artifactId>
+		    		<groupId>com.sun</groupId>
+		    	</exclusion>
+		    </exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.osgi</groupId>
+			<artifactId>spring-osgi-extender</artifactId>
+			<version>1.2.0</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>org.springframework.aop</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>org.springframework.beans</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>org.springframework.context</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>org.springframework.core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+
+</project>

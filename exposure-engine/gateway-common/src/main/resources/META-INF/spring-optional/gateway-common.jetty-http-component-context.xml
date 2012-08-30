@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+	 
+	<!-- Jetty HTTP Component (max threads will be 100 + 100) --> 
+	<!-- USED BY ROUTE -->
+    <bean id="jetty" class="org.apache.camel.component.jetty.JettyHttpComponent">
+        <property name="minThreads" value="100" />
+        <property name="maxThreads" value="500" />
+        <property name="httpClientMinThreads" value="100" />
+        <property name="httpClientMaxThreads" value="500" />
+        <property name="httpBinding">
+        	<bean class="com.alu.e3.gateway.common.camel.component.E3HttpBinding"/>
+        </property>
+    </bean>
+    <osgi:service ref="jetty" interface="org.apache.camel.Component"/>
+
+	<!-- SslJetty connector loaded separately -->
+	<context:annotation-config />
+	<bean class="com.alu.e3.gateway.security.SslJettyComponentReloader" init-method="init" destroy-method="destroy">
+		<property name="contextXmlClasspath" value="classpath:META-INF/spring-optional/gateway-common.reloadable-jetty-https-component-context.xml" />
+		<property name="keyStoreService" ref="keyStoreFileService" />
+		<property name="trustStoreService" ref="trustStoreFileService" />
+	</bean>
+
+    <bean id="clientCertificateValidator" class="com.alu.e3.gateway.common.camel.processor.ClientCertificateValidator">
+    </bean>
+    
+    <osgi:service ref="clientCertificateValidator" interface="org.apache.camel.Processor"/>
+    
+    <!-- Processor for error handling -->
+    <bean id="gatewayErrorProcessor" class="com.alu.e3.gateway.common.camel.processor.GatewayErrorProcessor"/>
+    <osgi:service ref="gatewayErrorProcessor" interface="org.apache.camel.Processor"/>
+    <!--/USED BY ROUTE -->
+    
+    <!-- Patch for camel VM component to block the queue when full and avoid excessive copies -->
+    <!-- TODO: Clean deprecated code about TDR
+    <bean id="vmPatched" class="com.alu.e3.gateway.common.camel.component.E3VMComponent"/>    
+    <osgi:service id="vmPatchSvc" ref="vmPatched" interface="org.apache.camel.Component"/>
+    -->          
+     
+</beans>

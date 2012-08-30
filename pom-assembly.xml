@@ -1,0 +1,166 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.alu.opensource</groupId>
+	<artifactId>e3</artifactId>
+	<version>1.0.1</version>
+	<packaging>pom</packaging>
+	<name>e3</name>
+
+	<properties>
+		<e3.module.name>${project.name}-${project.version}</e3.module.name>
+		
+		<!-- Dependencies -->
+		<version.bouncycastle>1.46</version.bouncycastle>
+
+		<e3.package.url>file:///su/${e3.module.name}/${e3.module.name}.tar.gz</e3.package.url>
+		<e3.package.version>${project.version}</e3.package.version>
+		<e3.package.name>${project.name}</e3.package.name>
+		<e3.install.front.end.module.name>apigrove-installer-front-end-module_${project.version}</e3.install.front.end.module.name>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.2.2</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>build-modules</id>
+			<modules>
+				<module>./pom.xml</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>build-front-end-module</id>
+			<modules>
+				<module>front-end</module>
+			</modules>
+		</profile>
+		
+		<!-- Profile to produce assembly package -->
+		<profile>
+			<id>assembly</id>
+			<build>
+				<!-- Allow filtering resources -->
+				<resources>
+            		<resource>
+                		<directory>packaging/src/main/resources</directory>
+                		<filtering>true</filtering>
+            		</resource>
+        		</resources>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<finalName>${e3.module.name}</finalName>
+							<outputDirectory>target/server-side</outputDirectory>
+							<descriptors>
+								<descriptor>packaging/src/main/assembly/main.xml</descriptor>
+							</descriptors>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					
+					
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>2.5</version>
+						<executions>
+							<execution>
+								<id>gen-resources</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>resources</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+
+		<!-- Profile to produce front-end package -->
+		<profile>
+			<id>assembly-front-end</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<finalName>${e3.install.front.end.module.name}</finalName>
+							<outputDirectory>target/front-end</outputDirectory>
+							<descriptors>
+								<descriptor>packaging-front-end/src/main/assembly/main.xml</descriptor>
+							</descriptors>
+						</configuration>
+						<executions>
+							<execution>
+								<id>Front End packaging PHP and Installer</id>
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-install-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>default-install</id>
+								<phase>none</phase>
+								<configuration>
+									<skip>true</skip>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>com.alu.opensource</groupId>
+					<artifactId>front-end</artifactId>
+					<!-- Take the latest version -->
+					<version>[0.0.1-SNAPSHOT,)</version>
+					<type>zip</type>
+				</dependency>
+			</dependencies>
+		</profile>
+		
+	</profiles>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk16</artifactId>
+			<version>${version.bouncycastle}</version>
+			<type>jar</type>
+		</dependency>
+	</dependencies>
+</project>

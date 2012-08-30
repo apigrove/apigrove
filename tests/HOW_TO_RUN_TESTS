@@ -1,0 +1,14 @@
+In order to run the tests, you will need to download SoapUI 4.x from http://www.soapui.org/
+
+In each SoapUI project, there are several variables to modify:
+- IP_ADDRESS_OF_MANAGER: Should be the IP address of the E3 Manager.
+- IP_ADDRESS_OF_GATEWAY: Should be the IP address of the E3 Gateway (can be the same as the Manager, which is the default when installing with install_e3_aib.sh).
+- IP_ADDRESS_OF_FIRST_TARGET: Should be the IP address of a mock endpoint, simulating a target service.
+- IP_ADDRESS_OF_SECOND_TARGET: Should be the IP address of a mock endpoint, simulating a target service (can be the same).
+- IP_ADDRESS_OF_THIRD_TARGET: Should be the IP address of a mock endpoint, simulating a target service (can be the same).
+
+Each of the simulated services should be running a PHP Web Server on port 8080, with the scripts compositeEndpoint.php, parametersEndpoint.php and proxySize.php (see tests\src\site).
+Those "target" services should be accessible with an URL such as:
+        
+        http://aaa.bbb.ccc.ddd:8080/proxySize
+

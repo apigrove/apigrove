@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LabInstanceDescriptor type="internal">
+
+    <NodesList>
+        <Node name="DataStorage_1">
+            <Type type="DataStorage"/>
+            <ExternalIP ip="127.0.0.1"/>
+            <InternalIP ip="127.0.0.1"/>
+            <Port port="389"/>
+            <Area name="sophia"/>
+            <Credentials user="cn=Directory Manager" password="pwd"/>
+        </Node>
+    </NodesList>
+    
+</LabInstanceDescriptor>

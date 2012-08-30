@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://camel.apache.org/schema/spring
+						http://camel.apache.org/schema/spring/camel-spring.xsd">
+						
+	<bean id="preProc" class="com.alu.e3.tdr.PreProxyProcessor" />
+	<bean id="postProc" class="com.alu.e3.tdr.PostProxyProcessor" />
+	
+	<camelContext xmlns="http://camel.apache.org/schema/spring">
+		<route>
+			<from uri="direct:service" />
+			<process ref="preProc" />
+			<to uri="mock:target" />
+			<process ref="postProc" />
+			<wireTap uri="direct:writetdr" />
+			<to uri="log:com.alu.e3.tdr" />
+		</route>
+		
+		<route>	
+			<from uri="direct:writetdr" />
+			<to uri="tdr:writer?headers=CamelHttpResponseCode,A-NONEXISTANT-HEADER" />
+			<to uri="mock:tdrendpoint" />
+			<to uri="log:com.alu.e3.tdr" />
+		</route>
+				
+	</camelContext>
+</beans>

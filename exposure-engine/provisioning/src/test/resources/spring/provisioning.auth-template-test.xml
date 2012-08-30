@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:osgi="http://www.springframework.org/schema/osgi" xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:cxf="http://camel.apache.org/schema/cxf" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring-2.1.0.xsd
+http://camel.apache.org/schema/cxf http://activemq.apache.org/camel/schema/cxf/camel-cxf.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<camel:camelContext xmlns="http://camel.apache.org/schema/spring" id="ctxTest">
+		<route>
+			<from uri="direct:test" />
+			<to uri="mock:setup" />
+			<to uri="freemarker:ftl/META-INF/spring/route-context.xml.ftl" />
+			<to uri="mock:testMessage" />
+			<to uri="log:com.alu.e3" />
+		</route>
+	</camel:camelContext>
+
+</beans>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cxf="http://camel.apache.org/schema/cxf"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+http://camel.apache.org/schema/cxf http://activemq.apache.org/camel/schema/cxf/camel-cxf.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+	
+	<!-- 
+		The property-placeholder must be set to allow provisioning.provision-beans.xml to access properties with ${...}
+		In production, the property-placeholder uses /home/e3/configuration.properties
+	 -->
+	<context:property-placeholder location="classpath:configuration.properties"/>
+	
+	<import resource="classpath:META-INF/spring-optional/provisioning.provision-beans.xml" />
+	
+	<!-- Mock to override real deployment manager  -->
+	<bean id="deploymentManager" class="com.alu.e3.prov.deployment.MockDeploymentManager" />
+	
+</beans>

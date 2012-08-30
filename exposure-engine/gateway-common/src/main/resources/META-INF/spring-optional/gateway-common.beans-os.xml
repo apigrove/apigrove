@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/osgi
+	http://www.springframework.org/schema/osgi/spring-osgi.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+	
+    <!-- USED BY ROUTE -->
+	<!-- Validation route beans -->
+
+	<bean id="validator" class="com.alu.e3.gateway.valid.camel.component.ValidatorComponent" >
+	</bean>
+		
+	<osgi:service ref="validator" interface="org.apache.camel.Component" />
+    <!--/USED BY ROUTE -->
+	
+</beans>

@@ -1,0 +1,6 @@
+The following files are automatically loaded by FUSE ESB to contribute with new embedded component.
+
+'tdr' file declares a new endpoint uri scheme to be used in route xmls like :
+<to uri="tdr"/>
+
+It refers the implementation TDRComponent class.

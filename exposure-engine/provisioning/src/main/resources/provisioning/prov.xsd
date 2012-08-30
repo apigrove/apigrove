@@ -1,0 +1,838 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="api" type="ApiType" />
+	<xs:element name="auth" type="AuthType" />
+	<xs:element name="policy" type="PolicyDataType" />
+	<xs:element name="quotaRLBucket" type="AuthIdsNoIdType" />
+	<xs:element name="bulk" type="BulkQuotaRLBucketType" />
+	<xs:element name="key" type="SSLKeyType" />
+	<xs:element name="cert" type="SSLCertType" />
+	<xs:element name="crl" type="SSLCRLType" />
+	<xs:element name="forwardProxy" type="ForwardProxyType" />
+
+	<xs:element name="response" type="ResponseType" />
+
+	<xs:simpleType name="StatusEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="active" />
+			<xs:enumeration value="inactive" />
+			<xs:enumeration value="pending" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="LoadBalancingEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="roundRobin" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="TLSModeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1Way" />
+			<xs:enumeration value="2Way" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="AuthTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="noAuth" />
+			<xs:enumeration value="basic" />
+			<xs:enumeration value="authKey" />
+			<xs:enumeration value="ipWhiteList" />
+			<xs:enumeration value="oAuth" />
+			<xs:enumeration value="wsse" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="WsseAuthPassTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PlainText" />
+			<xs:enumeration value="PasswordDigest" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ExtractFromEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Request" />
+			<xs:enumeration value="Response" />
+			<xs:enumeration value="Either" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="BasicResponseType">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string" maxOccurs="1"
+				minOccurs="0">
+			</xs:element>
+			<xs:element name="ids" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="id" type="xs:string" maxOccurs="unbounded"
+							minOccurs="0">
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="error" type="ErrorType" maxOccurs="1"
+				minOccurs="0">
+			</xs:element>
+			<xs:element name="status" type="ResponseStatusEnum"
+				maxOccurs="1" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="ResponseStatusEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SUCCESS" />
+			<xs:enumeration value="FAILURE" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="ErrorType">
+		<xs:all>
+			<xs:element name="errorText" type="xs:string" maxOccurs="1"
+				minOccurs="0"></xs:element>
+			<xs:element name="errorCode" type="xs:string" maxOccurs="1"
+				minOccurs="0"></xs:element>
+			<xs:element name="errorType" type="xs:string" maxOccurs="1"
+				minOccurs="0"></xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="TDRsType">
+		<xs:sequence>
+			<xs:element name="type" type="xs:string" minOccurs="1"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="StaticTDRType">
+		<xs:sequence>
+			<xs:element name="types" type="TDRsType" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="tdrPropName" type="xs:string" use="required" />
+		<xs:attribute name="value" type="xs:string" use="optional" />
+		<xs:attribute name="property" type="xs:string" use="optional" />
+	</xs:complexType>
+
+	<xs:complexType name="DynamicTDRType">
+		<xs:sequence>
+			<xs:element name="types" type="TDRsType" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="tdrPropName" type="xs:string" use="required" />
+		<xs:attribute name="httpHeaderName" type="xs:string" use="required" />
+		<xs:attribute name="extractFrom" type="ExtractFromEnum"
+			use="optional" />
+	</xs:complexType>
+
+	<xs:complexType name="TdrType">
+		<xs:sequence>
+			<xs:element name="static" type="StaticTDRType" minOccurs="0"
+				maxOccurs="unbounded" />
+			<xs:element name="dynamic" type="DynamicTDRType"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<!-- xs:include schemaLocation="api.xsd" / -->
+
+
+	<xs:complexType name="KeyType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute type="xs:string" name="name" use="required" />
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="DataType">
+		<xs:sequence>
+			<xs:element type="KeyType" name="key" maxOccurs="unbounded"
+				minOccurs="1">
+				<xs:annotation>
+					<xs:documentation>value value value</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AuthkeyType">
+		<xs:all>
+			<xs:element type="xs:string" name="keyName" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element type="xs:string" name="headerName" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Optional ; If omitted, will use X-App-AuthKey</xs:documentation>
+				</xs:annotation>
+				</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="ProvisionAuthenticationType">
+		<xs:all>
+			<xs:element name="supportedTypes" type="SupportedTypes"
+				minOccurs="1" />
+			<xs:element name="authKey" type="AuthkeyType" minOccurs="0"
+				maxOccurs="1" />
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="SupportedTypes">
+		<xs:sequence>
+			<xs:element name="type" type="AuthTypeEnum" minOccurs="1"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AuthenticationType">
+		<xs:all>
+			<xs:element type="xs:string" name="type" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element type="DataType" name="data" minOccurs="1"
+				maxOccurs="1" />
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="TargetHostType">
+		<xs:all>
+			<xs:element type="xs:string" name="url" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="site" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The corresponding site name for this target url.
+						If another site provide the same target service (redundancy, HA,
+						clustering, etc), it will be added as more targetHost elements.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element type="AuthenticationType" name="authentication"
+				minOccurs="0" maxOccurs="1" />
+			<xs:element type="ConnectionParametersType" name="connectionParameters"
+				minOccurs="0" maxOccurs="1" />
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="TargetHostsType">
+		<xs:sequence>
+			<xs:element type="TargetHostType" name="targetHost"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ConnectionParametersType">
+		<xs:all>
+			<xs:element name="maxConnections" type="xs:int" maxOccurs="1"
+				minOccurs="0" />
+			<xs:element name="connectionTimeout" type="xs:int"
+				maxOccurs="1" minOccurs="0" />
+			<xs:element name="socketTimeout" type="xs:int" maxOccurs="1"
+				minOccurs="0" />
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="FailOverType">
+		<xs:sequence>
+			<xs:element name="onResponseCode " type="xs:string"
+				minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="TargetHealthCheckType">
+		<xs:attribute name="type" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="LoadBalancingType">
+		<xs:all>
+			<xs:element name="targetHealthCheck " type="TargetHealthCheckType"
+				maxOccurs="1" minOccurs="0" />
+			<xs:element type="FailOverType" name="failOver" maxOccurs="1"
+				minOccurs="0" />
+		</xs:all>
+		<xs:attribute name="type" type="LoadBalancingEnum" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="TdrEnabledType">
+		<xs:sequence>
+			<xs:element type="xs:string" name="enabled" minOccurs="1"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>true/false</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ApiType">
+		<xs:all>
+			<xs:element type="xs:string" name="id" minOccurs="0"
+				maxOccurs="1" />
+			<xs:element type="xs:string" name="displayName" maxOccurs="1"
+				minOccurs="0" />
+			<xs:element type="xs:string" name="version" maxOccurs="1"
+				minOccurs="0" />
+			<xs:element type="ValidationType" name="validation"
+				maxOccurs="1" minOccurs="0" nillable="false">
+				<xs:annotation>
+					<xs:documentation>xml/soap/wsdl/xsd validations</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="type" type="ApiTypeEnum" minOccurs="1"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The basic API type can be PassThrough or
+						Composite.
+						The PassThrough type is the classic case.
+						In Composite
+						mode, a X-LogCorrelationID header is generated or
+						extracted on,
+						respectively, outgoing southBound message or
+						incoming southBound
+						notification.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subscriptionStep" type="SubscriptionStepEnum"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>subscription determines if E3 should generate or
+						extract X-SubsriberID headers and make subscriber following.
+						If
+						subscriptionStep is Subscription, outgoing southBound messages
+						will contain a generated X-SubscriberID.
+						If subscriptionStep is
+						Notification, incoming southBound messages
+						must contain the good
+						X-SubscriberID (obtained after a preliminar
+						subscription).
+						If
+						subscriptionStep is not present, none of the above is done (means
+						Subscribers are not followed)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="notificationFormat" type="NotificationFormat"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>notificationFormat is way how url to notify is
+						extracted from notifications.
+						Header extraction or WS-Addressing
+						extraction are supported.
+						Header extraction extracts the header
+						notifyUrl.
+						WS-Addressing extracts the xml tag To.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element type="xs:string" name="endpoint" minOccurs="1"
+				maxOccurs="1" />
+
+			<xs:element name="https" type="HTTPSType" minOccurs="0"
+				maxOccurs="1" />
+
+			<xs:element type="ProvisionAuthenticationType" name="authentication"
+				minOccurs="1" maxOccurs="1" />
+
+			<xs:element type="TdrEnabledType" name="tdrEnabled"
+				maxOccurs="1" minOccurs="0" />
+
+			<xs:element name="status" type="StatusEnum" />
+
+			<xs:element name="contexts" type="APIContextsType" />
+
+			<xs:element name="tdrOnUse" type="TypeAttribute"
+				minOccurs="0" />
+			<xs:element name="tdrOnLimitReached" type="TypeAttribute"
+				minOccurs="0" />
+
+			<xs:element name="tdr" type="TdrType" minOccurs="0" />
+
+			<xs:element name="properties" type="PropertiesType"
+				minOccurs="0" />
+			<xs:element name="headerTransEnabled" type="xs:boolean"
+				maxOccurs="1" minOccurs="0" />
+			<xs:element name="headerTransformations" type="HeaderTransformationsType"
+				minOccurs="0" />
+			<xs:element name="allowedHttpMethods" type="AllowedHttpMethodsType"
+				minOccurs="0" />
+
+			<xs:element name="proxySettings" type="ApiProxySettingsType"
+				minOccurs="0" maxOccurs="1" />
+
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="TypeAttribute">
+		<xs:attribute name="type" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:simpleType name="ApiTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PassThrough" />
+			<xs:enumeration value="Composite" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="ResponseType">
+		<xs:complexContent>
+			<xs:extension base="BasicResponseType">
+				<xs:sequence>
+					<xs:element name="api" type="ApiType" maxOccurs="1"
+						minOccurs="0" />
+					<xs:element name="auth" type="AuthType" maxOccurs="1"
+						minOccurs="0" />
+					<xs:element name="policy" type="PolicyDataType"
+						maxOccurs="1" minOccurs="0" />
+					<xs:element name="key" type="SSLKeyType" maxOccurs="1"
+						minOccurs="0" />
+					<xs:element name="cert" type="SSLCertType" maxOccurs="1"
+						minOccurs="0" />
+					<xs:element name="forwardProxy" type="ForwardProxyType"
+						maxOccurs="1" minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="APIContextsType">
+		<xs:sequence>
+			<xs:element name="context" type="APIContextType"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APIContextType">
+		<xs:all>
+			<xs:element name="status" type="StatusEnum" />
+			<xs:element name="loadBalancing" type="LoadBalancingType"
+				minOccurs="0" maxOccurs="1" />
+			<xs:element name="targetHosts" type="TargetHostsType"
+				minOccurs="0" />
+			<xs:element name="maxRateLimitTPSThreshold" type="xs:int" />
+			<xs:element name="maxRateLimitTPSWarning" type="xs:float" />
+			<xs:element name="maxRateLimitTPMThreshold" type="xs:int" />
+			<xs:element name="maxRateLimitTPMWarning" type="xs:float" />
+		</xs:all>
+		<xs:attribute name="id" type="xs:string" use="required" />
+		<xs:attribute name="default" type="xs:boolean" use="optional" />
+	</xs:complexType>
+
+	<xs:complexType name="ValidationType">
+
+		<xs:all minOccurs="1">
+			<xs:element name="schema" minOccurs="0" maxOccurs="1">
+
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="type" type="SchemaValidationTypeEnum" />
+						<xs:element name="resources" type="ResourcesListType" />
+					</xs:all>
+				</xs:complexType>
+
+			</xs:element>
+			<xs:element name="xml" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:restriction base="xs:anyType" />
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="soap" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:all maxOccurs="1" minOccurs="1">
+						<xs:element name="version" type="SoapVersionEnum" />
+					</xs:all>
+				</xs:complexType>
+
+			</xs:element>
+		</xs:all>
+
+	</xs:complexType>
+
+	<xs:complexType name="ResourcesListType">
+		<xs:sequence maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="resource" type="ResourceItemType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ResourceItemType">
+
+		<xs:all>
+			<xs:element name="name" type="xs:string" minOccurs="1" />
+			<!-- XSD:WSDL CONTENT; MUST BE A CDATA ELEMENT -->
+			<xs:element name="grammar" type="xs:base64Binary"
+				minOccurs="1" />
+
+			<xs:element name="isMain" type="xs:boolean" minOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Only one resource must be designated as main
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+
+	</xs:complexType>
+
+	<xs:simpleType name="SchemaValidationTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="wsdl" />
+			<xs:enumeration value="xsd" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="SoapVersionEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1.1" />
+			<xs:enumeration value="1.2" />
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:complexType name="AuthType">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string" minOccurs="0" />
+			<xs:element name="status" type="StatusEnum" />
+			<xs:element name="type" type="AuthTypeEnum" />
+
+			<xs:element name="policyContext" type="IDAttribute" />
+			<xs:element name="apiContext" type="IDAttribute" />
+
+			<xs:choice minOccurs="1" maxOccurs="1">
+
+				<xs:element name="ipWhiteListAuth" type="IPWhiteListAuth" />
+				<xs:element name="authKeyAuth" type="AuthKeyAuth" />
+				<xs:element name="basicAuth" type="BasicAuth" />
+				<xs:element name="wsseAuth" type="WsseAuth" />
+				<xs:element name="oAuth" type="OAuth" />
+
+			</xs:choice>
+
+			<xs:element name="tdr" type="TdrType" minOccurs="0" />
+			<xs:element name="properties" type="PropertiesType"
+				minOccurs="0" />
+			<xs:element name="headerTransformations" type="HeaderTransformationsType"
+				minOccurs="0" />
+		</xs:sequence>
+
+	</xs:complexType>
+
+	<xs:complexType name="SSLKeyType">
+		<xs:sequence>
+			<xs:element name="activeCertId" type="xs:string"
+				minOccurs="0" maxOccurs="1" />
+			<xs:element name="keyPassphrase" type="xs:string"
+				minOccurs="0" maxOccurs="1" />
+			<xs:element name="content" type="xs:string" minOccurs="0"
+				maxOccurs="1" />
+			<xs:element name="displayName" type="xs:string" minOccurs="0"
+				maxOccurs="1" />
+			<xs:element name="type" type="xs:string" minOccurs="0"
+				maxOccurs="1" />
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="SSLCertType">
+		<xs:sequence>
+			<xs:element name="content" type="xs:string" minOccurs="0"
+				maxOccurs="1" />
+			<xs:element name="displayName" type="xs:string" minOccurs="0"
+				maxOccurs="1" />
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="SSLCRLType">
+		<xs:sequence>
+			<xs:element name="content" type="xs:string" minOccurs="0"
+				maxOccurs="1" />
+			<xs:element name="displayName" type="xs:string" minOccurs="0"
+				maxOccurs="1" />
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="HTTPSType">
+		<xs:simpleContent>
+			<xs:extension base="xs:boolean">
+				<xs:attribute name="tlsMode" type="TLSModeEnum" use="optional" />
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+
+	<xs:complexType name="ApiProxySettingsType">
+		<xs:sequence minOccurs="1" maxOccurs="1">
+
+			<xs:choice>
+				<xs:element name="globalProxy">
+					<xs:annotation>
+						<xs:documentation>To use the global proxy setting. This element must be empty when defined.
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:restriction base="xs:anyType" />
+						</xs:complexContent>
+					</xs:complexType>
+
+				</xs:element>
+				<xs:element name="localProxy" type="ForwardProxyType"
+					minOccurs="0" maxOccurs="1" >
+					<xs:annotation>
+						<xs:documentation>To use the the proxy setting specific for the current api.
+						</xs:documentation>
+					</xs:annotation>	
+				</xs:element>
+			</xs:choice>
+
+
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ForwardProxyType">
+		<xs:all>
+			<xs:element name="proxyHost" type="xs:string" />
+			<xs:element name="proxyPort" type="xs:string" />
+			<xs:element name="proxyUser" type="xs:string" />
+			<xs:element name="proxyPass" type="xs:string" />
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="IDAttribute">
+		<xs:attribute name="id" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="IPWhiteListAuth">
+		<xs:sequence>
+			<xs:element name="ip" type="IP" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="BasicAuth">
+		<xs:all>
+			<xs:element name="username" type="xs:string" />
+			<xs:element name="password" type="xs:base64Binary" />
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="WsseAuth">
+		<xs:all>
+			<xs:element name="username" type="xs:string" />
+			<xs:element name="password" type="xs:base64Binary" />
+			<xs:element name="passwordType" type="WsseAuthPassTypeEnum" />
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="OAuth">
+		<xs:all>
+			<xs:element name="clientId" type="xs:string" />
+			<xs:element name="clientSecret" type="xs:string" />
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="AuthKeyAuth">
+		<xs:sequence>
+			<xs:element name="keyValue" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="IP">
+		<xs:restriction base="xs:string"> <!-- IPv6 |([0-9a-f]{1,4}:){7}([0-9a-f]){1,4} -->
+			<xs:pattern
+				value="((([01]?\d\d?|2[0-4]\d|25[0-5])\.){3}([01]?\d\d?|2[0-4]\d|25[0-5])|([0-9a-f]{1,4}:){7}([0-9a-f]){1,4})"></xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- xs:include schemaLocation="policy.xsd" / -->
+
+	<xs:complexType name="PolicyIdsType">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string" minOccurs="1"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="BulkQuotaRLBucketType">
+		<xs:all>
+			<xs:element name="policies" type="PolicyIdsType"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="quotaRLBucket" type="AuthIdsNoIdType"
+				minOccurs="0" maxOccurs="1" />
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="PolicyDataType">
+		<xs:all>
+			<xs:element name="id" type="xs:string" minOccurs="0" />
+			<xs:element name="apiIds" type="APIIDType" minOccurs="0" />
+			<xs:element name="authIds" type="QuotaRLBucketType"
+				minOccurs="0" />
+			<xs:element name="contexts" type="PolicyContextsType"
+				minOccurs="1" />
+
+			<xs:element name="tdrOnLimitReached" type="TypeAttribute"
+				minOccurs="0" />
+
+			<xs:element name="tdr" type="TdrType" minOccurs="0" />
+
+			<xs:element name="properties" type="PropertiesType"
+				minOccurs="0" />
+			<xs:element name="headerTransformations" type="HeaderTransformationsType"
+				minOccurs="0" />
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="APIIDType">
+		<xs:sequence>
+			<xs:element name="apiId" type="xs:string" minOccurs="1"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="QuotaRLBucketType">
+		<xs:sequence>
+			<xs:element name="quotaRLBucket" type="AuthIdsType"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AuthIdsType">
+		<xs:sequence>
+			<xs:element name="authId" type="xs:string" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="AuthIdsNoIdType">
+		<xs:sequence>
+			<xs:element name="authId" type="xs:string" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" use="optional" />
+	</xs:complexType>
+
+	<xs:complexType name="PolicyContextsType">
+		<xs:sequence>
+			<xs:element name="context" type="PolicyContextType"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PolicyContextType">
+		<xs:all>
+			<xs:element name="status" type="StatusEnum" minOccurs="1" />
+			<xs:element name="quotaPerDay" type="CounterType"
+				minOccurs="0" />
+			<xs:element name="quotaPerWeek" type="CounterType"
+				minOccurs="0" />
+			<xs:element name="quotaPerMonth" type="CounterType"
+				minOccurs="0" />
+			<xs:element name="rateLimitPerSecond" type="CounterType"
+				minOccurs="0" />
+			<xs:element name="rateLimitPerMinute" type="CounterType"
+				minOccurs="0" />
+		</xs:all>
+		<xs:attribute name="id" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="CounterType">
+		<xs:all>
+			<xs:element name="status" type="StatusEnum" minOccurs="1" />
+			<xs:element name="action" type="ActionType" minOccurs="1" />
+			<xs:element name="warning" type="xs:float" minOccurs="1" />
+			<xs:element name="threshold" type="xs:int" minOccurs="1" />
+		</xs:all>
+	</xs:complexType>
+
+
+	<xs:simpleType name="ActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ignore" />
+			<xs:enumeration value="reject" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="AuthRefType">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="id" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:simpleType name="SubscriptionStepEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Subscription"></xs:enumeration>
+			<xs:enumeration value="Notification"></xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="NotificationFormat">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Header"></xs:enumeration>
+			<xs:enumeration value="WS-Addressing"></xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="PropertiesType">
+		<xs:sequence>
+			<xs:element name="property" type="KeyType" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="HeaderTransformationsType">
+		<xs:sequence>
+			<xs:element name="headerTransformation" type="HeaderTransformation"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="HeaderTransformation">
+		<xs:sequence />
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="property" type="xs:string" use="optional" />
+		<xs:attribute name="value" type="xs:string" use="optional" />
+		<xs:attribute name="type" type="headerTransformationType"
+			use="required" />
+		<xs:attribute name="action" type="headerTransformationAction"
+			use="required" />
+	</xs:complexType>
+
+	<xs:simpleType name="headerTransformationType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Request" />
+			<xs:enumeration value="Response" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="headerTransformationAction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Add" />
+			<xs:enumeration value="Remove" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="AllowedHttpMethodsType">
+		<xs:sequence>
+			<xs:element name="httpMethod" type="httpMethod" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="httpMethod">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="GET" />
+			<xs:enumeration value="POST" />
+			<xs:enumeration value="PUT" />
+			<xs:enumeration value="DELETE" />
+			<xs:enumeration value="HEAD" />
+			<xs:enumeration value="TRACE" />
+			<xs:enumeration value="OPTIONS" />
+			<xs:enumeration value="CONNECT" />
+			<xs:enumeration value="PATCH" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>tests</artifactId>
+    <groupId>com.alu.e3</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+    <relativePath>..</relativePath>
+  </parent>
+  <groupId>com.alu.e3.functional-tests</groupId>
+  <artifactId>functional-tests</artifactId>
+  <packaging>pom</packaging>
+  <modules>
+  <!-- Do not forget to add the test to /packaging/src/main/assembly/main-source.xml -->
+  	<module>functional-test-provision-api</module>
+  	<module>functional-test-provision-api-ext</module>
+  	<module>functional-test-provision-policy</module>
+	<module>functional-test-provision-auth</module>
+	<module>functional-test-auth-basic</module>
+	<module>functional-test-rate-limit</module>
+	<module>provision-sslkey</module>
+  	<module>functional-test-ca-prov</module>  
+	<module>functional-test-header-transform</module>
+	<module>functional-test-http-method</module>
+<!-- 	<module>functional-test-tdr-smoke</module>  -->
+  </modules>
+</project>

@@ -1,0 +1,69 @@
+The Free and Open Source Software (“FOSS”) products identified below are either
+packaged separately or integrated together with Alcatel-Lucent product.
+Each of these FOSS products was released under a license as indicated below.
+Unless otherwise dictated by a FOSS license (such as GPL, LGPL, and Affero GPL)
+that requires Alcatel-Lucent to grant the same rights to the parties to whom we
+distribute the FOSS, your rights to use, copy, and further distribute (if applicable)
+the FOSS are governed by the Alcatel-Lucent license packaged with the Alcatel-Lucent
+product with which the FOSS is provided.
+
+For the avoidance of doubt, and without limiting any rights you may obtain independent
+of Alcatel-Lucent, except as set forth in the Alcatel-Lucent license packaged
+with the Alcatel-Lucent product with which the FOSS is provided:
+   (i)	no right is granted by Alcatel-Lucent to reproduce, modify and/or redistribute
+		FOSS that was released under and governed by a license (such as MIT, original BSD,
+		new BSD, Apache, CDDL, CPL, EPL  and Mozilla) that DOES NOT require Alcatel-Lucent
+		to grant the same rights to the parties to whom we distribute the FOSS, and 
+        
+  (ii)	no other licenses, express or implied, are granted, with respect to Alcatel-Lucent
+		intellectual property, including, without limitation, Alcatel-Lucent copyrights,
+		patents, trade secrets, trademarks or logos.
+
+ (iii)	In the event you are permitted to and do in fact modify any FOSS,
+ 		then notwithstanding any other provisions to the contrary, Alcatel-Lucent will
+ 		have no further liability or obligation to provide support, maintenance, warranty
+ 		or indemnity with respect to the Alcatel-Lucent products with which
+ 		the modified version of the FOSS interacts.
+ 		
+===============================================================================
+FOSS used by this project are referenced below:
+
+Fuse ESB                  | 4.3.1-fuse-01-09                            | Apache Software License, Version 2.0                            | Licenses/esb_license.txt
+hazelcast                 | com.hazelcast:hazelcast:2.0.1               | Apache Software License, Version 2.0                            | Licenses/asl-2.0-license.txt
+bcprov-jdk16              | org.bouncycastle:bcprov-jdk16:1.46          | Bouncy Castle License                                           | Licenses/bc-license.txt
+isorelax                  | isorelax:isorelax:20030108                  | MIT License                                                     | Licenses/mit-license.txt
+JSch                      | com.jcraft:jsch:0.1.45                      | Revised BSD                                                     | Licenses/jsch-license.txt, http://www.jcraft.com/jsch/
+
+===============================================================================
+= 
+== Acknowledgements and Notices
+====
+<This product includes software developed by the Apache Software Foundation (http://www.apache.org/).>
+
+=
+== FUSE ESB related notice
+====
+Fuse ESB related notice are visible in Licenses/esb_notices.txt
+
+=
+== Guava Notice | Apache Software License, Version 2.0 | Licenses/asl-2.0-license.txt, http://code.google.com/p/guava-libraries/
+====
+This project contains modified source code from the Google Guava library.
+The original source code copyright notice is pasted below.
+
+Copyright (C) 2008 The Guava Authors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+=
+== Other eventual notices

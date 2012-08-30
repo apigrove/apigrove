@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<bean id="tdrQueueService" class="com.alu.e3.tdr.service.impl.TdrQueueService" init-method="init">
+		<property name="queueWaitingSize" value="5000" />
+	</bean>
+
+	<bean id="tdrRule" class="com.alu.e3.tdr.camel.component.TdrRuleComponent">
+		<property name="tdrQueueService" ref="tdrQueueService" />
+	</bean>
+
+	<!-- The writer instance -->
+	<bean id="tdrXMLWriter" class="com.alu.e3.tdr.service.impl.TdrXMLWriter" init-method="init">
+		<property name="tdrQueueService" ref="tdrQueueService" />
+		<property name="bulkWriteSize" value="1000" />
+		<property name="outputDirectory" value="./target/tdrs" />
+	</bean>
+
+	<bean id="tdrXMLWriterTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+		<!-- wait 1 seconds before starting repeated execution -->
+		<property name="delay" value="1000" />
+		<!-- re-run every 10 seconds -->
+		<property name="period" value="10000" />
+		<property name="timerTask" ref="tdrXMLWriter" />
+	</bean>
+
+	<bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean">
+		<property name="scheduledTimerTasks">
+			<list>
+				<ref bean="tdrXMLWriterTask" />
+			</list>
+		</property>
+	</bean>
+
+
+	<camel:camelContext id="tdrWriterContext" xmlns="http://camel.apache.org/schema/spring">
+		<route>
+			<from uri="direct:tdrWriterTest" />
+			<to uri="tdrRule:COMMON" />
+			<to uri="tdrRule:STATIC?propName=StaticProperty&amp;staticValue=A static value along the route" />
+			<to uri="tdrRule:DYNAMIC?propName=TheDynamicProp&amp;headerName=DynamicHeader" />
+			<to uri="tdrRule:EMIT" />
+			<to uri="mock:tdrWriter" />
+		</route>
+	</camel:camelContext>
+</beans>

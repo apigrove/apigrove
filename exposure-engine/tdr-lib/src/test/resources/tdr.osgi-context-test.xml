@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+		
+   <bean id="tdrQueueService" class="com.alu.e3.tdr.service.impl.TdrQueueService" init-method="init">
+		<property name="queueWaitingSize" value="5000" />
+	</bean>
+
+	<bean id="tdrRule" class="com.alu.e3.tdr.camel.component.TdrRuleComponent">
+		<property name="tdrQueueService" ref="tdrQueueService" />
+	</bean>
+   
+   <camel:camelContext id="tdrRuleContext" xmlns="http://camel.apache.org/schema/spring">
+		<route>
+			<from uri="direct:tdrRuleTest1" />
+			<to uri="tdrRule:STATIC?propName=PropertyOne&amp;staticValue=Static&amp;tdrTypeName=txTDR" />
+			<to uri="tdrRule:STATIC?propName=PropertyOneTwo&amp;staticValue=OtherValue&amp;tdrTypeName=txTDR" />
+			<to uri="mock:tdrRuleResult1" />
+		</route>
+		<route>
+			<from uri="direct:tdrRuleTest2" />
+			<to uri="tdrRule:STATIC?propName=PropertyTwo&amp;staticValue=Static value with space&amp;tdrTypeName=txTDR" />
+			<to uri="tdrRule:STATIC?propName=PropertyTwoTwo&amp;staticValue=OtherValue&amp;tdrTypeName=txTDR" />
+			<to uri="mock:tdrRuleResult2" />
+		</route>
+		<route>
+			<from uri="direct:tdrRuleTest3" />
+			<to uri="tdrRule:STATIC?propName=PropertyThree&amp;staticValue=What kind of complex value we should have ?&amp;tdrTypeName=txTDR" />
+			<to uri="tdrRule:STATIC?propName=PropertyThreeTwo&amp;staticValue=OtherValue&amp;tdrTypeName=txTDR" />
+			<to uri="mock:tdrRuleResult3" />
+		</route>
+
+		<route>
+			<from uri="direct:tdrRuleTest4" />
+			<to uri="tdrRule:DYNAMIC?propName=PropertyFour&amp;headerName=Header1&amp;tdrTypeName=txTDR" />
+			<to uri="tdrRule:STATIC?propName=PropertyFourTwo&amp;staticValue=OtherValue&amp;tdrTypeName=txTDR" />
+			<to uri="mock:tdrRuleResult4" />
+		</route>
+
+		<route>
+			<from uri="direct:tdrRuleTest5" />
+			<to uri="tdrRule:STATIC?propName=PropertyFive&amp;staticValue=OtherValue&amp;tdrTypeName=txTDR" />
+			<to uri="tdrRule:DYNAMIC?propName=DynamicHeader&amp;headerName=DynamicHeader&amp;tdrTypeName=txTDR" />
+			<to uri="tdrRule:EMIT" />
+			<to uri="mock:tdrRuleResult5" />
+		</route>
+
+		<route>
+			<from uri="direct:tdrRuleTest6" />
+			<to uri="tdrRule:COMMON" />
+			<to uri="tdrRule:STATIC?propName=PropertySeven&amp;staticValue=SevenValue&amp;tdrTypeName=txTDR" />
+			<to uri="tdrRule:DYNAMIC?propName=Property8&amp;headerName=DynamicHeader8&amp;tdrTypeName=txTDR" />
+			<to uri="tdrRule:EMIT" />
+			<to uri="mock:tdrRuleResult6" />
+		</route>
+	</camel:camelContext>
+	
+	
+	
+</beans>

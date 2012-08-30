@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LabInstanceDescriptor type="internal">
+
+    <NodesList>
+
+        <Node name="TDRCollector1">
+            <Type type="TDRCollector"/>
+            <ExternalIP ip="44.44.44.44"/>
+            <InternalIP ip="44.44.44.44"/>
+        </Node>
+        
+        <Node name="DataStorage1">
+            <Type type="DataStorage"/>
+            <ExternalIP ip="55.55.55.55"/>
+            <InternalIP ip="55.55.55.55"/>
+            <Port port="10389"/>
+            <Area name="area1"/>
+            <Credentials user="cn=Directory Manager" password="test"/>
+        </Node>
+        
+       <Node name="LoadBalancer1">
+            <Type type="LoadBalancer"/>
+            <ExternalIP ip="66.66.66.66"/>
+            <InternalIP ip="66.66.66.66"/>
+            <Area name="area1"/>
+        </Node>
+
+    </NodesList>
+    
+</LabInstanceDescriptor>

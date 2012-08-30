@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LabInstanceDescriptor type="internal">
+ 
+     <!-- SSH keys associated to the user "root", can be removed from /home/e3/topology.xml after installation process -->
+	<Key name="id_dsa">
+		<PublicKey><![CDATA[SSH PUBLIC KEY]]></PublicKey>
+		<PrivateKey><![CDATA[SSH PRIVATE KEY]]></PrivateKey>
+	</Key>
+
+    <!-- Description of a cluster: 1 manager and 2 gateways, one gateway is also a speaker -->
+    <NodesList>
+
+        <Node name="id_node_1">
+            <Type type="E3Manager"/>
+            <ExternalDNS url="11.11.11.11"/>
+            <ExternalIP ip="11.11.11.11"/>
+            <InternalIP ip="11.11.11.11"/>
+            <Area name="area1"/>
+            <Credentials key="id_dsa" user="root" />
+        </Node>
+        
+        <Node name="id_node_2">
+            <Type type="E3Gateway"/>
+            <ExternalDNS url="22.22.22.22"/>
+            <ExternalIP ip="22.22.22.22"/>
+            <InternalIP ip="22.22.22.22"/>
+            <Area name="area1"/>
+            <Credentials key="id_dsa" user="root" />
+        </Node>
+        
+        <Node name="id_node_3">
+            <Type type="E3Gateway"/>
+            <ExternalDNS url="33.33.33.33"/>
+            <ExternalIP ip="33.33.33.33"/>
+            <InternalIP ip="33.33.33.33"/>
+            <Area name="area1"/>
+            <Credentials key="id_dsa" user="root" />
+        </Node>
+        
+        <Node name="id_node_4">
+            <Type type="E3Speaker"/>
+            <ExternalDNS url="22.22.22.22"/>
+            <ExternalIP ip="22.22.22.22"/>
+            <InternalIP ip="22.22.22.22"/>
+            <Area name="area1"/>
+            <Credentials key="id_dsa" user="root" />
+        </Node> 
+
+    </NodesList>
+    
+</LabInstanceDescriptor>

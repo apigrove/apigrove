@@ -1,0 +1,4 @@
+api1234       appKey1234  user:pass active   127.0.0.1  ::ffff:7f00:1  ::1  noauth:true
+apiASDF       appKeyASDF  foo:bar   inactive 127.0.0.1  ::ffff:7f00:1  ::1  noauth:false
+api29192      1232123               pending  127.0.0.1  ::ffff:7f00:1  ::1  noauth:false
+api123123123  4123                  active   127.0.0.1  ::ffff:7f00:1  ::1  noauth:false

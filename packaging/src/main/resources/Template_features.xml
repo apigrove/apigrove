@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features name="E3 Repository">
+  <feature name="camel-http4-patched">
+    <feature version="2.6.0-fuse-01-09">camel-core</feature>
+    <bundle>mvn:org.apache.httpcomponents/httpcore-osgi/4.1.2</bundle>
+    <bundle>mvn:org.apache.httpcomponents/httpclient-osgi/4.1.2</bundle>
+    <bundle>mvn:org.apache.geronimo.specs/geronimo-servlet_3.0_spec/1.0</bundle>
+    <bundle>mvn:org.apache.camel/camel-http4/2.6.0-fuse-01-09</bundle>
+  </feature>
+  <feature name="E3-std-deps">
+  	<feature>camel-jetty</feature>
+  	<feature>camel-cxf</feature>
+  	<feature>camel-freemarker</feature>
+  	<feature>camel-http4-patched</feature>
+  </feature>
+  <feature name="E3-JCE-provider">
+  	<bundle>file:$$PATH$$/../bundles/bcprov-jdk16-1.46.jar</bundle>
+  </feature>
+  <feature name="E3">
+  	<bundle>file:$$PATH$$/../bundles/e3-bundle-${e3.package.version}.jar</bundle>
+  	<feature>E3-std-deps</feature>
+  	<feature>E3-JCE-provider</feature>
+  </feature>
+</features>
+
