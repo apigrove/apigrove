@@ -1,4 +1,4 @@
-apigrove
+apiGrove
 ========
 
 <a href="https://github.com/apigrove/apigrove/wiki">Please see the wiki</a> for the latest build/installation documentation and tutorials. 
