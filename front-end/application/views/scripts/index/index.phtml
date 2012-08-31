@@ -1,0 +1,46 @@
+<?
+/**
+ * Copyright © 2012 Alcatel-Lucent.
+ *
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership. Licensed to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ */
+
+?>
+<? if(Zend_Auth::getInstance()->getIdentity() == null): ?>
+<div class="sidebar" align="right">
+    <form method="POST" class="form-horizontal" action="/login">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label" for="username">Username</label>
+                <div class="controls">
+                    <input type="text" class="input-medium" name="username" id="username"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="password">Password</label>
+                <div class="controls">
+                    <input type="password" class="input-medium" name="password" id="password"/>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-inverse" value="Login"/>
+        </fieldset>
+    </form>
+</div>
+<? endif;?><div class="container">
+    <span class="hero-logo center"></span>
+    <div style="width:80%" class="center">
+        <div class="page-header" align='center'>
+            <h1>Welcome to apiGrove</h1>
+        </div>
+        <div class="well well-small">
+            <p style="font-size: 18px;">The graphical interface to apiGrove does not provide all the capability of the command line tools, but it will handle most common tasks.</p>
+            <p style="font-size: 18px;">For tutorials, please see the <a href="https://github.com/apigrove/apigrove/tree/master/Documentation">documentation</a> in the apiGrove GitHub repository. If you have questions or feedback, please see the <a href="http://apigrove.net/forum/">apiGrove Forum</a>.</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,103 @@
+<?php
+/**
+ * Copyright © 2012 Alcatel-Lucent.
+ *
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership. Licensed to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ */
+
+/**
+ * Created by JetBrains PhpStorm.
+ * User: David
+ * Date: 8/22/12
+ * Time: 6:53 PM
+ * To change this template use File | Settings | File Templates.
+ *
+ */
+require_once APPLICATION_PATH . '/models/LogConfig.class.php';
+?>
+
+<div class="container">
+    <h1>Logging Configuration</h1>
+    <? if($this->warning){print $this->warning;}?>
+    <div class="well">
+    <form class="form-horizontal" action="/logging/config" method="POST">
+        <fieldset>
+            <label class="control-label"><strong>Java Log Level</strong></label>
+            <div class="btn-toolbar">
+            <div class="btn-group controls" data-toggle="buttons-radio" id="java_level_buttons" style="margin-left:40px;">
+                <?php foreach (LogConfig::$log4JLevels as $level): ?>
+                    <?php $classVal = "btn hiddenValue".(($level === $this->javaLogLevel) ? " active" : ""); ?>
+                    <a class="<?php echo $classVal; ?>" inputId="log_level_java" value="<?php echo $level; ?>" ><?php echo $this->escape($level); ?></a>
+                <?php endforeach ?>
+                <input type="hidden" id="log_level_java" name="log_level[java]" value="<?php echo $this->javaLogLevel; ?>" />
+            </div>
+            <div class="btn-group">
+            <input type="submit" class="btn btn-inverse" value="Save" />
+            </div>
+<!--        <label>Current level: --><?php //echo $this->escape($this->javaLogLevel); ?><!--</label>-->
+        </fieldset>
+    </form>
+
+    <form class="form-horizontal" action="/logging/config" method="POST">
+        <fieldset>
+            <label class="control-label"><strong>ServiceMix Log Level</strong></label>
+            <div class="btn-toolbar">
+            <div class="btn-group controls" data-toggle="buttons-radio" id="smx_level_buttons" style="margin-left:40px;">
+                <?php foreach (LogConfig::$log4JLevels as $level): ?>
+                    <?php $classVal = "btn hiddenValue".(($level === $this->smxLogLevel) ? " active" : ""); ?>
+                    <a class="<?php echo $classVal; ?>" inputId="log_level_smx" value="<?php echo $level; ?>" ><?php echo $this->escape($level); ?></a>
+                <?php endforeach ?>
+                <input type="hidden" id="log_level_smx" name="log_level[smx]" value="<?php echo $this->smxLogLevel; ?>" />
+            </div>
+            <div class="btn-group">
+                <input type="submit" class="btn btn-inverse" value="Save" />
+            </div>
+<!--            <label>Current level: --><?php //echo $this->smxLogLevel ?><!--</label>-->
+        </fieldset>
+    </form>
+
+    <form class="form-horizontal" action="/logging/config" method="POST">
+        <fieldset>
+            <label class="control-label"><strong>Syslog Log Level</strong></label>
+            <div class="btn-toolbar">
+            <div class="btn-group controls" data-toggle="buttons-radio" id="syslog_level_buttons" style="margin-left:40px;">
+                <?php foreach (LogConfig::$syslogLevels as $level): ?>
+                    <?php $classVal = "btn hiddenValue".(($level === $this->syslogLogLevel) ? " active" : ""); ?>
+                    <a class="<?php echo $classVal; ?>" inputId="log_level_syslog" value="<?php echo $level; ?>" ><?php echo $this->escape($level); ?></a>
+                <?php endforeach ?>
+                <input type="hidden" id="log_level_syslog" name="log_level[syslog]" value="<?php echo $this->syslogLogLevel; ?>" />
+            </div>
+            <div class="btn-group">
+                <input type="submit" class="btn btn-inverse" value="Save" />
+            </div>
+        </fieldset>
+    </form>
+
+    <form class="form-horizontal" action="/logging/config" method="POST">
+        <fieldset>
+            <label class="control-label"><strong>Logging Categories</strong></label>
+            <div class="btn-toolbar">
+            <div class="btn-group controls" data-toggle="buttons-checkbox" id="category_buttons" style="margin-left:40px;">
+                <?php foreach ($this->loggingCategories as $category): ?>
+                    <?php $enabled = $category->getEnabled(); ?>
+                    <?php $escName = $this->escape($category->getName()); ?>
+                    <?php $classVal = "btn hiddenValue".($enabled ? " active" : ""); ?>
+                    <?php $elementName = "enabled_logging_category[".$escName."]"; ?>
+                    <a class="<?php echo $classVal; ?>"  inputId="<?php echo $escName ?>"<?php if ($enabled) { echo ' checked="checked"'; } ?>>
+                    <?php echo $escName; ?></a>
+                    <input type="hidden" id="<?php echo $escName ?>" name="<?php echo $elementName; ?>" value="<?php echo $enabled ? "1" : "0"; ?>" />
+                <?php endforeach ?>
+            </div>
+                <div class="btn-group">
+                <input type="submit" class="btn btn-inverse" value="Save" />
+            </div>
+        </fieldset>
+    </form>
+    </div>
+</div> <!-- /container -->

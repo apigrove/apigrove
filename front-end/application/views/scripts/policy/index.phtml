@@ -1,0 +1,68 @@
+<?
+/**
+ * Copyright © 2012 Alcatel-Lucent.
+ *
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership. Licensed to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ */
+
+$policies = $this->policies;
+$auths = $this->auths;
+$apis = $this->apis;
+?>
+<div class="container">
+    <div class="hero-unit">
+        <h1>Policies</h1>
+        <p>Choose a Policy from the list below to edit</p>
+    </div>
+    <div class="well">
+        <div id="list">
+            <div class="listItem">
+                <div class="item-div pull-left"><label class="item1"><strong>Policy ID</strong></label></div>
+                <div class="item-div pull-left"><span class="item2"><strong>APIs</strong></span></div>
+                <div class="item-div pull-left"><span class="item3"><strong>Auths</strong></span></div>
+                <span class="clearfix"></span>
+            </div>
+            <?
+            /**
+             * @var Policy $policy
+             */
+            foreach($policies as $policy){?>
+                <div class="listItem">
+                    <div class="item-div pull-left"><label class="item1"><a href="/policy/<?=$policy->id?>"><strong><?if(strlen($policy->id) > 15){ echo substr($policy->id, 0, 15) . "...";}else{ echo $policy->id;} ;?></strong></a></label></div>
+                    <div class="item-div pull-left"><span class="item2">
+                       <?= empty($policy->apiIds)?"None":""?>
+                       <? foreach($policy->apiIds as $apiId):
+                        /** @var Api $api */
+                        $api = $apis[$apiId]; ?>
+                        <?= $api->displayName; ?> ( <?=$api->endpoint ?> )<br/>
+                        <? endforeach;?>
+                    </span></div>
+                    <div class="item-div pull-left">
+                        <span class="item3">
+                        <? if(empty($policy->authIds)): echo "None";
+                            else:
+                                foreach($policy->authIds[0]->authIds as $authId):
+                                /** @var Auth $auth */
+                                $auth = $auths[$authId]; ?>
+                                <?= $auth->type ?>
+                                <?endforeach?>
+                         <? endif ?>
+                        </span>
+                    </div>
+                    <div class="item-div pull-left">
+                        <span class="item4">
+                        <a href="/policy/<?=$policy->id?>/delete" class="btn btn-danger">Delete</a>
+                        </span>
+                    </div>
+                    <span class="clearfix"></span>
+                </div>
+                <?}?>
+        </div>
+    </div>
+</div> <!-- /container -->

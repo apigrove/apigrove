@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ * Copyright © 2012 Alcatel-Lucent.
+ *
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership. Licensed to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ *-->
+<flow>
+   <state id="form1" view="api-flow-form1">
+      <on-enter callback="fill_form"/>
+      <transition on="submit" to="validateForm1" />
+      <transition on="cancel" to="cancelled" />
+   </state>
+
+   <state id="validateForm1" >
+      <on-enter callback="api_validate_form1"/>
+      <transition on="valid" to="form2" flashMessage="Valid Submission"/>
+      <transition on="invalid" to="form1" flashMessage="Invalid Submission" />
+   </state>
+
+   <state id="form2" view="api-flow-form2">
+      <on-enter callback="fill_form"/>
+   	  <transition on="back" to="form1" />
+      <transition on="submit" to="validateForm2" />
+      <transition on="cancel" to="cancelled" />
+   </state>
+   
+   <state id="validateForm2" >
+      <on-enter callback="api_validate_form2"/>
+      <transition on="valid" to="apiPost" flashMessage="Valid Submission"/>
+      <transition on="invalid" to="form2" flashMessage="Invalid Submission" />
+   </state>
+   
+   <state id="apiPost" >
+      <on-enter callback="api_post_new"/>
+      <transition on="success" to="success" flashMessage="Valid Submission"/>
+      <transition on="failed" to="form2" flashMessage="Invalid Submission" />
+   </state>
+
+   <state id="success" view="api-flow-success">
+       <on-enter callback="api_success" />
+   </state>
+
+</flow>
+

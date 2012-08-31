@@ -1,0 +1,240 @@
+<?php
+/**
+ * Copyright © 2012 Alcatel-Lucent.
+ *
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership. Licensed to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ */
+
+/**
+ * Detail view for APIs
+ *
+ * User: Jonathan Samples -
+ * Date: 8/20/12
+ *
+ */
+ 
+// This file is crazy, and not done. Many of these references will error because they reference objects, not strings.
+$api = 1==1 ? $this->api : new Api();
+
+?>
+		<div class="api-full" >
+			<div class="property">
+				<div class="property-name">ID</div>
+				<div class="property-value"><?=$api->id?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">DisplayName</div>
+				<div class="property-value"><?=$api->getDisplayName()?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Endpoint</div>
+				<div class="property-value"><?=$api->endpoint?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Auth</div>
+				<div class="property-value">
+					<div class="api-auth-full">
+<?php 					$i = 0;
+						foreach( $api->authentication->auths as $auth ){ ?>
+							<div class="api-auth-auth">
+								<div class="name">Auth <?=$i?></div>
+								<div class="value"><?=$auth?></div>
+							</div>
+<?php 						$i = $i++;
+						} ?>
+						<div class="property">
+							<div class="property-name">Auth Key</div>
+							<div class="property-value"><?=$api->authentication->authKey?></div>
+						</div>
+					</div>
+				</div>
+			<div class="property">
+				<div class="property-name">Type</div>
+				<div class="property-value"><?=$api->type?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Version</div>
+				<div class="property-value"><?=$api->version?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Tdrs Enabled</div>
+				<div class="property-value"><?=$api->tdrEnabled?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Tdr Data</div>
+				<div class="property-value">
+					<div class="api-tdr-data-full">
+<?php 					if( $api->tdrData->staticTdrs !== null ){ ?>
+							<div class="property">
+								<div class="property-name">Static Tdrs</div>
+								<div class="property-value">
+<?php 								foreach( $api->tdrData->staticTdrs as $staticTdr ){ ?>
+										<div class="api-static-tdr">
+											<div class="property">
+												<div class="property-name">Tdr Prop Name</div>
+												<div class="property-value"><?=$staticTdr->tdrPropName?></div>
+											</div>
+<?php 												$i = 0;
+													foreach( $staticTdr->types as $type ){ ?>
+														<div class="dynamic-tdr-type">
+															<div class="name">Type <?=$i?></div>
+															<div class="value"><?=$type?></div>
+														</div>
+<?php 													$i = $i++;
+													} ?>
+											<div class="property">
+												<div class="property-name">Property</div>
+												<div class="property-value"><?=$staticTdr->property?></div>
+											</div>
+											<div class="property">
+												<div class="property-name">Value</div>
+												<div class="property-value"><?=$staticTdr->value?></div>
+											</div>
+										</div>
+<?php 								} ?>
+								</div>
+							</div>
+<?php 					} // end tdrData->staticTdr !== null
+						if( $api->tdrData->dynamicTdrs !== null ){ ?>
+						<div class="property">
+							<div class="property-name">Dynamic Tdrs</div>
+							<div class="property-value">
+<?php 							foreach( $api->tdrData->dynamicTdrs as $dynamicTdr ){ ?>
+									<div class="api-static-tdr">
+										<div class="property">
+											<div class="property-name">Tdr Prop Name</div>
+											<div class="property-value"><?=$dynamicTdr->tdrPropName?></div>
+										</div>
+										<div class="property">
+											<div class="property-name">Types</div>
+											<div class="property-value">
+<?php 											$i = 0;
+												foreach( $dynamicTdr->types as $type ){ ?>
+													<div class="dynamic-tdr-type">
+														<div class="name">Type <?=$i?></div>
+														<div class="value"><?=$type?></div>
+													</div>
+<?php 												$i = $i++;
+												} ?>
+											</div>
+										</div>
+										<div class="property">
+											<div class="property-name">Http Header Name</div>
+											<div class="property-value"><?=$dynamicTdr->httpHeaderName?></div>
+										</div>
+										<div class="property">
+											<div class="property-name">Extract From</div>
+											<div class="property-value"><?=$dynamicTdr->extractFrom?></div>
+										</div>
+									</div>
+<?php 							} ?>
+							</div>
+						</div>
+<?php 					} ?>
+					</div>
+				</div>
+			</div>
+			<div class="property">
+				<div class="property-name">Tdr On Limit Reached</div>
+				<div class="property-value"><?=$api->tdrOnLimitReached?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Tdr On Use</div>
+				<div class="property-value"><?=$api->tdrOnUse?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Status</div>
+				<div class="property-value"><?=$api->status?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Contexts</div>
+				<div class="property-value"><?=$api->contexts?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Https</div>
+				<div class="property-value">
+					<div class="https-full">
+						<div class="property">
+							<div class="property-name">Enabled</div>
+							<div class="property-value"><?=$api->https->enabled?></div>
+						</div>
+						<div class="property">
+							<div class="property-name">Contexts</div>
+							<div class="property-value"><?=$api->https->tlsMode?></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="property">
+				<div class="property-name">Validation</div>
+				<div class="property-value">
+					<div class="api-validation-full">
+						<div class="property">
+							<div class="property-name">Type</div>
+							<div class="property-value"><?=$api->validation->type?></div>
+						</div>
+						<div class="property">
+							<div class="property-name">Xml</div>
+							<div class="property-value"><?=$api->validation->xml?></div>
+						</div>
+						<div class="property">
+							<div class="property-name">Soap Version</div>
+							<div class="property-value"><?=$api->validation->soapVersion?></div>
+						</div>
+						<div class="property">
+							<div class="property-name">Validation Files</div>
+							<div class="property-value">
+<?php 							foreach( $api->validation->validationFiles as $file ){ ?>
+									<div class="api-validation-file">
+										<div class="property">
+											<div class="property-name">Name</div>
+											<div class="property-value"><?=$file->name?></div>
+										</div>
+										<div class="property">f
+											<div class="property-name">Is Main</div>
+											<div class="property-value"><?=$file->isMain?></div>
+										</div>
+										<div class="property">
+											<div class="property-name">Grammar</div>
+											<div class="property-value"><?=$file->grammar?></div>
+										</div>
+									</div>
+<?php 							} ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="property">
+				<div class="property-name">Subscription Step</div>
+				<div class="property-value"><?=$api->subscriptionStep?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Notification Format</div>
+				<div class="property-value"><?=$api->notificationFormat?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Header Transformations</div>
+				<div class="property-value"><?=$api->headerTransformations?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Header Transformations Enabled</div>
+				<div class="property-value"><?=$api->headerTransformationEnabled?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Allowed Http Methods</div>
+				<div class="property-value"><?=$api->allowedHttpMethods?></div>
+			</div>
+			<div class="property">
+				<div class="property-name">Properties</div>
+				<div class="property-value"><?=$api->properties?></div>
+			</div>
+		
+		
+		</div><!-- end of api div -->

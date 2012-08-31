@@ -1,0 +1,59 @@
+<?
+/**
+ * Copyright © 2012 Alcatel-Lucent.
+ *
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership. Licensed to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ */
+
+$user = $this->user;
+$validationErrors = $this->validationErrors;
+?>
+
+<div class="container">
+    <h1><?=empty($user['id'])?"Create New User":"User Settings"?></h1>
+    <? if(!empty($this->flashMessage)): ?>
+    <div class="control-group success"><span class="help-block"><?=$this->flashMessage?></span></div>
+    <? endif ?>
+    <? if(!empty($validationErrors['default'])): ?>
+    <div class="control-group error"><span class="help-block"><?=$validationErrors['default']?></span></div>
+    <? endif ?>
+    <form method="POST" class="well form-horizontal">
+        <fieldset>
+            <div class="control-group <?=empty($validationErrors['username'])?"":"error"?>">
+                <label class="control-label" for="username">Username</label>
+                <div class="controls">
+                    <input type="text" name="user[username]" id="username" value="<?=@$user['username']?>"/>
+                    <span class="help-inline"><?=@$validationErrors['username']?></span>
+                </div>
+            </div>
+            <div class="control-group <?=empty($validationErrors['password'])?"":"error"?>">
+                <label class="control-label" for="password">Password</label>
+                <div class="controls">
+                    <input type="password" name="user[password]" id="password" value="<?=@$user['password']?>"/>
+                    <span class="help-inline"><?=@$validationErrors['password']?></span>
+                </div>
+            </div>
+            <div class="control-group <?=empty($validationErrors['passwordConfirm'])?"":"error"?>">
+                <label class="control-label" for="passwordConfirm">Confirm Password</label>
+                <div class="controls">
+                    <input type="password" name="user[passwordConfirm]" id="passwordConfirm" value="<?=@$user['passwordConfirm']?>"/>
+                    <span class="help-inline"><?=@$validationErrors['passwordConfirm']?></span>
+                </div>
+            </div>
+            <div class="control-group <?=empty($validationErrors['real_name'])?"":"error"?>">
+                <label class="control-label" for="real_name">Real Name</label>
+                <div class="controls">
+                    <input type="text" name="user[real_name]" id="real_name" value="<?=@$user['real_name']?>"/>
+                    <span class="help-inline"><?=@$validationErrors['real_name']?></span>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Save"/>
+        </fieldset>
+    </form>
+</div>

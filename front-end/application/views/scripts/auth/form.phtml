@@ -1,0 +1,129 @@
+<?
+/**
+ * Copyright © 2012 Alcatel-Lucent.
+ *
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership. Licensed to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ */
+
+/**
+ * View File for the Auth form
+ */
+/**
+ * @var Flow
+ */
+$flow = $this->flow;
+
+/**
+ * @var Auth $auth
+ */
+$auth = $flow->flowScope['auth'];
+$validationErrors = @$flow->flowScope['validationErrors'];
+$username = "";
+$password = "";
+if($auth->type === AuthType::$BASIC){
+    $username = $auth->basicAuth->username;
+    $password = $auth->basicAuth->password;
+}
+else if($auth->type === AuthType::$WSSE){
+    $username = $auth->wsseAuth->username;
+    $password = $auth->wsseAuth->password;
+}
+?>
+<div class="container">
+    <h1><?=($flow->flowScope['isNew'])?"Create":"Update"?> Auth</h1>
+<? if(!empty($validationErrors['default'])):?>
+    <div class="control-group error">
+        <span class="help-inline">Server Error: <?=$validationErrors['default']?></span>
+    </div>
+<? endif; ?>
+    <form class="well form-horizontal" method="POST">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label" for="input01">ID</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="input01" name="authid" value="<?=$auth->id==="create"?"":$auth->id?>" <?=($flow->flowScope['isNew'])?"":"disabled"?>/>
+                </div>
+            </div>
+            <div class="control-group ">
+                <label class="control-label" for="authCheck" reado>Type</label>
+                <div class="controls">
+                    <div class="btn-group" data-toggle="buttons-radio" id="authCheck">
+                        <a class="btn auth hiddenValue <?=$auth->type==="basic"?"active":""?>" inputId="type" value="basic">Basic</a>
+                        <a class="btn auth hiddenValue <?=$auth->type==="authKey"?"active":""?>" inputId="type" value="authKey">Auth Key</a>
+                        <a class="btn auth hiddenValue <?=$auth->type==="wsse"?"active":""?>" inputId="type" value="wsse">WSSE</a>
+                        <a class="btn auth hiddenValue <?=$auth->type==="ipWhiteList"?"active":""?>" inputId="type" value="ipWhiteList">IP Whitelist</a>
+                    </div>
+                    <input type="hidden" name="type" value="<?=$auth->type?>" id="type"/>
+                </div>
+            </div>
+            <span id="un-pw" style="display:none">
+                <div id="userName"class="control-group <?=(!empty($validationErrors['username']))?"error":""?>">
+                    <label class="control-label" for="userName0">Username</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" id="userName0" name="username" value="<?=$username?>"/>
+                        <span class="help-inline"><?=@$validationErrors['username']?></span>
+                    </div>
+                </div>
+                <div id="password" class="control-group <?=(!empty($validationErrors['password']))?"error":""?>">
+                    <label class="control-label" for="password0">Password</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" id="password0" name="password" value="<?=$password?>"/>
+                        <span class="help-inline"><?=@$validationErrors['password']?></span>
+                    </div>
+                </div>
+            </span>
+            <div id="authKey" class="control-group <?=!empty($validationErrors['authKey'])?"error":""?>" style="display:none">
+                <label class="control-label" for="authKey0">Auth Key</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="authKey0" name="authKey" value="<?=$auth->authKeyAuth->keyValue?>"/>
+                    <span class="help-inline"><?=@$validationErrors['authKey']?></span>
+                </div>
+            </div>
+            <div id="IPs" class="control-group <?=!empty($validationErrors['ipWhiteList'])?"error":""?>" style="display:none">
+                <label class="control-label" for="selectIPs">IPs</label>
+                <div class="controls">
+                    <textarea type="text" class="input-xlarge" id="selectIPs" name="ipWhiteList" ><?=implode(",",$auth->ipWhiteListAuth->ips) ?></textarea>
+                    <span class="help-inline">Comma separated<br/> <?=@$validationErrors['ipWhiteList']?></span>
+                </div>
+            </div>
+            <? $advancedOpen = (!empty($auth->headerTransformations) || !empty($auth->properties)
+                            || !empty($auth->tdrData->dynamicTdrs)
+                            || !empty($auth->tdrData->staticTdrs)
+                            || $auth->status !== 'active');?>
+            <div class="control-group property">
+                <label class="control-label"><button class="btn" id="showAdvanced"><strong>Advanced</strong>
+                    <i class="icon-chevron-down advbtn" <?=!$advancedOpen?"":"style=\"display:none\""?>></i><i class="icon-chevron-up advbtn" <?=$advancedOpen?"":"style=\"display:none\""?>></i>
+                </button></label>
+            </div>
+
+            <div id="advancedSection" class="well well-small" style="background-color: #DCDCDC; <?= $advancedOpen?"":"display:none"?>">
+                <div class="control-group">
+                    <label class="control-label" for="enabled">Enabled</label>
+                    <div class="controls">
+                        <div class="btn-group" data-toggle="buttons-radio" id="enabled">
+                            <button class="btn auth enabled <?=$auth->status==="active"?"active":""?>" name="enabled-true" value="active">Enabled</button>
+                            <button class="btn auth enabled <?=$auth->status!=="active"?"active":""?>" name="enabled-false" value="inactive">Disabled</button>
+                        </div>
+                        <input type="hidden" class="enabled-true" name="status" value="<?=$auth->status?>" id="status"/>
+                    </div>
+                </div>
+
+                <? SharedViewUtility::includePropertiesSnippet($auth->properties, $validationErrors); ?>
+
+                <? SharedViewUtility::includeHeaderTransformationsSnippet($auth->headerTransformations, $validationErrors); ?>
+
+                <? SharedViewUtility::includeTdrRulesSnippet($auth->tdrData, $validationErrors); ?>
+
+
+            </div>
+            <input type="hidden" name="_faction" value="submit" />
+            <input type="submit" class="btn confirm-toggle btn-primary" value="Save" />
+        </fieldset>
+    </form>
+</div> <!-- /container -->

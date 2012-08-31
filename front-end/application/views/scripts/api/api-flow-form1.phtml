@@ -1,0 +1,102 @@
+<?php
+/**
+ * Copyright © 2012 Alcatel-Lucent.
+ *
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership. Licensed to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ */
+
+
+$flow = $this->flow;
+/**
+ * @var Api $api
+ */
+$api = $flow->flowScope["api"];
+$apiid = $flow->flowScope["apiid"];
+
+
+$validationErrors = $flow->flowScope["validationErrors"];
+
+$messages = $this->messages;
+?>
+
+<div class="container">
+    <h1>Create API</h1>
+<?  if(isset($validationErrors["default"]) && !empty($validationErrors["default"])): ?>
+    <div class="warning">
+        <p><?=$validationErrors["default"]?></p>
+    </div>
+<?  endif; ?>
+    <form id="form1" class="well form-horizontal" method="post" data-behavior="confirm" action="<?=$flow->flowURI()?>&_faction=submit">
+        <fieldset>
+            <div class="control-group <?=isset($validationErrors["name"])?"error":""?>">
+                <label class="control-label" for="input01">Name</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="input01" name="apiName"
+                        <?= $api !== null ? 'value="'.$api->getDisplayName().'"' : "" ?>
+                        >
+                </div>
+                <span class="help-inline"><?=@$validationErrors['name']?></span>
+            </div>
+            <div class="control-group <?=isset($validationErrors["endpoint"])?"error":""?>">
+                <label class="control-label" for="input03">Endpoint</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="input03" name="apiEndpoint"
+                        <?= $api !== null ? 'value="'.$api->getEndpoint().'"' : "" ?>
+                        >
+                </div>
+                <span class="help-inline"><?=@$validationErrors['endpoint']?></span>
+            </div>
+<?php       if(count($api->getContexts()) < 1): ?>
+                <div class="control-group targetHost <?=isset($validationErrors["targethost0"])?"error":""?>" id="targetHostGroup0">
+                    <label class="control-label" for="targetHost0">Target Host</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" id="targetHost0" name="targetHost0" >
+                        <button class="btn newItem" type="targetHost" title="Add additional target host"><i class="icon-plus"></i></button>
+                    </div>
+                    <span class="help-inline"><?=@$validationErrors['targethost0']?></span>
+                </div>
+<?php       else:
+                if(count($api->getContexts()) > 1):
+                    print "<p>Only the first context of this api is displayed!</p>";
+                endif;
+                $contexts = $api->getContexts();
+                /**
+                 * @var ApiContext $context
+                 */
+                $context = $contexts[0];
+                /**
+                 * @var array(TargetHost) $targetHosts
+                 */
+                $targetHosts = $context->getTargetHosts();
+                $th = $targetHosts[0]; ?>
+                <div class="control-group targetHost <?=isset($validationErrors["targethost0"])?"error":""?>" id="targetHostGroup0">
+                    <label class="control-label" for="targetHost0">Target Host</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" id="targetHost0" name="targetHost0" value="<?=$th->getUrl()?>" >
+                        <button class="btn newItem" type="targetHost" title="Add additional target host"><i class="icon-plus"></i></button>
+                    </div>
+                    <span class="help-inline"><?=@$validationErrors['targethost0']?></span>
+                </div>
+<?php       $i = 1;
+            foreach(array_splice($targetHosts,1) as $th): ?>
+                <div class="control-group targetHost <?=isset($validationErrors["targethost".$i])?"error":""?>" id="targetHostGroup<?=$i?>">
+                    <label class="control-label" for="targetHost<?=$i?>">&nbsp;</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" name="targethost<?=$i?>" id="targetHost<?=$i?>" value="<?=$th->getUrl()?>">
+                        <button class="btn removeItem" type="targetHost" number="<?=$i?>" title="Remove target host"><i class="icon-minus"></i></button>
+                    </div>
+                    <span class="help-inline"><?=@$validationErrors['targethost'.$i]?></span>
+                </div>
+<?php           $i = $i + 1;
+            endforeach;
+        endif; ?>
+            <input class="btn" type="submit" value="Part 2" />
+        </fieldset>
+    </form>
+</div> <!-- /container -->

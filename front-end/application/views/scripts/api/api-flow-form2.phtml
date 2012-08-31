@@ -1,0 +1,197 @@
+<?php
+/**
+ * Copyright © 2012 Alcatel-Lucent.
+ *
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership. Licensed to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ */
+
+$flow = $this->flow;
+/**
+ * @var Api $api
+ */
+$api = $flow->flowScope["api"];
+$apiid = $flow->flowScope["apiid"];
+
+$validationErrors = $flow->flowScope["validationErrors"];
+$messages = $this->messages;
+
+
+$auth_noAuth = in_array("noAuth",$api->getAuthentication()->getAuths()) ? true : false;
+$auth_basic = in_array("basic",$api->getAuthentication()->getAuths()) ? true : false;
+$auth_authKey = in_array("authKey",$api->getAuthentication()->getAuths()) ? true : false;
+$auth_wsse = in_array("wsse",$api->getAuthentication()->getAuths()) ? true : false;
+$auth_ipWhiteList = in_array("ipWhiteList",$api->getAuthentication()->getAuths()) ? true : false;
+
+$authkey_key="";
+if($auth_authKey && $api->getAuthentication()->getAuthKey() !== null){
+    $authkey_key = $api->getAuthentication()->getAuthKey();
+}
+
+$https = false;
+if($api->getHttps() !== null ){
+    $https = (boolean)$api->getHttps()->getEnabled();
+}
+
+$tlsmode = null;
+if($https){
+    $tlsmode = $api->getHttps()->getTlsMode();
+}
+if(empty($tlsmode)){
+    $tlsmode = TLSMode::$OneWay;
+}
+
+$methods = $api->getAllowedHttpMethods();
+
+$get = in_array("GET", $methods);
+$post = in_array("POST", $methods);
+$put = in_array("PUT", $methods);
+$delete = in_array("DELETE", $methods);
+
+
+$tps_warn = "";
+$tps_threshold = "";
+$tpm_warn = "";
+$tpm_threshold = "";
+
+$contexts = $api->getContexts();
+if(!empty($contexts)){
+    /**
+     * @var ApiContext $context
+     */
+    $context = $contexts[0];
+    $tps_warn = strval($context->getMaxRateLimitTPSWarning());
+    $tps_threshold = strval($context->getMaxRateLimitTPSThreshold());
+    $tpm_warn = strval($context->getMaxRateLimitTPMWarning());
+    $tpm_threshold = strval($context->getMaxRateLimitTPMThreshold());
+}
+
+?>
+
+<div class="container">
+    <h1>Create API</h1>
+<?  if(isset($validationErrors["default"]) && !empty($validationErrors["default"])): ?>
+        <div class="warning">
+            <p><?=$validationErrors["default"]?></p>
+        </div>
+<?  endif; ?>
+    <form id="form1" class="well form-horizontal" method="post" data-behavior="confirm" action="<?=$flow->flowURI()?>&_faction=submit" >
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label" for="enabled">Enabled</label>
+                <div class="controls">
+                    <div class="btn-group" data-toggle="buttons-radio" id="enabled">
+                        <a class="btn api <?=$api->getStatus()===Status::$ACTIVE?"active":""?>" inputId="apienabled" value="1">Enabled</a>
+                        <a class="btn api <?=$api->getStatus()===Status::$ACTIVE?"":"active"?>" inputId="apienabled" value="0">Disabled</a>
+                    </div>
+                    <input type="hidden" id="apienabled" name="apienabled" value="<?=$api->getStatus()===Status::$ACTIVE?"1":"0"?>" />
+                </div>
+            </div>
+            <div class="control-group <?=isset($validationErrors["auth"])?"error":""?>">
+                <label class="control-label" for="authCheck" >Type</label>
+                <div class="controls">
+                    <div class="btn-group" data-toggle="buttons-checkbox" id="authCheck">
+                        <a class="btn api hiddenValue <?=$auth_noAuth?'active" checked="checked"':'"'?> inputId="provauth-noAuth" >No Auth</a>
+                        <a class="btn api hiddenValue <?=$auth_basic ? 'active" checked="checked"': '"'?> inputId="provauth-basic" >Basic</a>
+                        <a class="btn api hiddenValue <?=$auth_authKey ? 'active" checked="checked"': '"'?> inputId="provauth-authKey" >Auth Key</a>
+                        <a class="btn api hiddenValue <?=$auth_wsse ? 'active" checked="checked"': '"'?> inputId="provauth-wsse" >WSSE</a>
+                        <a class="btn api hiddenValue <?=$auth_ipWhiteList ? 'active" checked="checked"': '"'?> inputId="provauth-ipWhiteList" >IP Whitelist</a>
+                    </div>
+                    <input type="hidden" id="provauth-noAuth" name="auth-noAuth" value="<?=$auth_noAuth ? "1": "0"?>" />
+                    <input type="hidden" id="provauth-basic" name="auth-basic" value="<?=$auth_basic ? "1": "0"?>" />
+                    <input type="hidden" id="provauth-authKey" name="auth-authKey" value="<?=$auth_authKey ? "1": "0"?>" />
+                    <input type="hidden" id="provauth-wsse" name="auth-wsse" value="<?=$auth_wsse ? "1": "0"?>" />
+                    <input type="hidden" id="provauth-ipWhiteList" name="auth-ipWhiteList" value="<?=$auth_ipWhiteList ? "1": "0"?>" />
+                    <span class="help-inline"><?=@$validationErrors['auth']?></span>
+                    <p class="help-block">Choose all that apply.</p>
+                </div>
+            </div>
+            <span id="authkey-key-span" style="display:none;">
+                <div id="key" class="control-group <?=(!empty($validationErrors['authkey-key']))?"error":""?>">
+                    <label class="control-label" for="authkey-key">Auth Key Key</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" id="authkey-key" name="authkey-key" value="<?=$authkey_key?>"/>
+                        <span class="help-inline"><?=@$validationErrors['authkey-key']?></span>
+                    </div>
+                </div>
+            </span>
+            <div class="control-group">
+                <label class="control-label" for="httpscheckbox" >Secured</label>
+                <div class="controls">
+                    <div class="btn-group" data-toggle="buttons-checkbox" id="httpscheckbox">
+                        <a class="btn api hiddenValue <?=$https?'active" checked="checked"':'"'?> inputId="https">HTTPS</a>
+                    </div>
+                    <input type="hidden" id="https" name="https" value="<?=$https?"1":"0"?>" />
+                </div>
+            </div>
+            <span id="https-mode-span" style="display:none;">
+                <div id="https-mode-div" class="control-group <?=(!empty($validationErrors['https-mode']))?"error":""?>">
+                    <label class="control-label" for="https-mode">Https Mode</label>
+                    <div class="controls">
+                        <div class="btn-group" data-toggle="buttons-radio" id="https-mode-group">
+                            <a class="btn api <?=$tlsmode===TLSMode::$OneWay?"active":""?>" inputId="https-mode" value="<?=TLSMode::$OneWay?>">1-Way TLS</a>
+                            <a class="btn api <?=$tlsmode===TLSMode::$TwoWay?"active":""?>" inputId="https-mode" value="<?=TLSMode::$TwoWay?>">2-Way TLS</a>
+                        </div>
+                        <input type="hidden" class="input-xlarge" id="https-mode" name="https-mode" value="<?=$tlsmode?>"/>
+                        <span class="help-inline"><?=@$validationErrors['https-mode']?></span>
+                    </div>
+                </div>
+            </span>
+
+            <div class="control-group">
+                <div class="controls">
+                    <span class="label input-small pull-left">Warning</span>
+                    <span class="label input-small pull-left">Threshhold</span>
+                </div>
+            </div>
+            <div class="control-group <?=(!empty($validationErrors['tps-warn'])||!empty($validationErrors['tps-threshold']))?"error":""?>">
+                <label class="control-label" for="TPS">TPS</label>
+                <div class="controls">
+                    <input type="text" class="input-small" id="TPS" name="tps-warn" value="<?=$tps_warn?>">
+                    <input type="text" class="input-small" name="tps-threshold" value="<?=$tps_threshold?>">
+                    <span class="help-inline"><?=@$validationErrors['tps-warn']?></span>
+                    <span class="help-inline"><?=@$validationErrors['tps-threshold']?></span>
+                </div>
+            </div>
+            <div class="control-group <?=(!empty($validationErrors['tpm-warn'])||!empty($validationErrors['tpm-threshold']))?"error":""?>">
+                <label class="control-label" for="TPM">TPM</label>
+                <div class="controls">
+                    <input type="text" class="input-small" id="TPM" name="tpm-warn" value="<?=$tpm_warn?>">
+                    <input type="text" class="input-small" name="tpm-threshold" value="<?=$tpm_threshold?>">
+                    <span class="help-inline"><?=@$validationErrors['tpm-warn']?></span>
+                    <span class="help-inline"><?=@$validationErrors['tpm-threshold']?></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="methods" reado>Methods</label>
+                <div class="controls">
+                    <div class="btn-group" data-toggle="buttons-checkbox" id="methods">
+                        <a class="btn api hiddenValue <?=$get?'active" checked="checked"':'"'?> inputId="method-get">GET</a>
+                        <a class="btn api hiddenValue <?=$post?'active" checked="checked"':'"'?> inputId="method-post">POST</a>
+                        <a class="btn api hiddenValue <?=$put?'active" checked="checked"':'"'?> inputId="method-put">PUT</a>
+                        <a class="btn api hiddenValue <?=$delete?'active" checked="checked"':'"'?> inputId="method-delete">DELETE</a>
+                    </div>
+                    <input type="hidden" id="method-get" name="method-get" value="<?=$get?"1":"0"?>" />
+                    <input type="hidden" id="method-post" name="method-post" value="<?=$post?"1":"0"?>" />
+                    <input type="hidden" id="method-put" name="method-put" value="<?=$put?"1":"0"?>" />
+                    <input type="hidden" id="method-delete" name="method-delete" value="<?=$delete?"1":"0"?>" />
+                    <p class="help-block">Choose all that apply.</p>
+                </div>
+            </div>
+
+            <? SharedViewUtility::includePropertiesSnippet($api->properties, $validationErrors); ?>
+
+            <? SharedViewUtility::includeHeaderTransformationsSnippet($api->headerTransformations, $validationErrors); ?>
+
+            <? SharedViewUtility::includeTdrRulesSnippet($api->tdrData, $validationErrors); ?>
+
+            <input class="btn" type="submit" value="Save"/>
+        </fieldset>
+    </form>
+</div> <!-- /container -->

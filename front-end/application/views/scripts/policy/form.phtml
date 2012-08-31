@@ -1,0 +1,203 @@
+<?
+/**
+ * Copyright © 2012 Alcatel-Lucent.
+ *
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership. Licensed to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ */
+
+require_once APPLICATION_PATH . '/models/Action.class.php';
+/**
+ * View File for the Policy form
+ */
+/**
+ * @var Flow
+ */
+$flow = $this->flow;
+
+/**
+ * @var Policy $policy
+ */
+$policy = empty($this->policy) ? new Policy() : $this->policy; //$flow->flowScope['policy'];
+$authBucketArray = $policy->getAuthIds();
+$authBucketId = (count($authBucketArray) > 0) ? $authBucketArray[0]->getId() : "";
+$contexts = $policy->getContexts();
+$context = empty($contexts) ? new Context() : (count($contexts) > 0 ? $contexts[0] : new Context());
+
+if (empty($this->apis)) {
+    // This should probably be an error condition; use empty array to avoid problems
+    $this->apis = array();
+}
+if (empty($this->auths)) {
+    // This should probably be an error condition; use empty array to avoid problems
+    $this->auths = array();
+}
+$validationErrors = $this->validationErrors; //@$flow->flowScope['validationErrors'];
+$id = $policy->getId();
+if (!isset($this->isNew)) { $this->isNew = empty($id); }
+$formAction = $this->isNew ? "/policy/create" : "/policy/".$id;
+?>
+<div class="container">
+    <h1><?php if ($this->isNew) {echo "Create Policy";} else {echo "Edit Policy";} ?></h1>
+    <? if(!empty($validationErrors['default'])):?>
+    <div class="control-group error">
+        <span class="help-inline">Server Error: <?=$validationErrors['default']?></span>
+    </div>
+    <? endif; ?>
+    <form class="well form-horizontal" action="<?php echo $formAction ?>" method="POST">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label" for="policy_id">ID</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="policy_id" name="policy_id" value="<?php echo $id ?>"<?php if (!$this->isNew) {echo " disabled";} ?> />
+                    <span class="help-inline"><?=@$validationErrors['policyId']?></span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="selectAPI">APIs</label>
+                <div class="controls">
+                    <select id="selectAPI" name="selected_api[]" multiple="multiple" style="width: 400px; height: 200px;">
+                    <?php foreach ($this->apis as $api): ?>
+                        <?php $apiId = $api->getId(); $policyApiIds = $policy->getApiIds(); $selectedAttr = '';
+                        if (!empty($policyApiIds)) {
+                            foreach ($policyApiIds as $policyApiId) {
+                                if ($policyApiId === $apiId) { $selectedAttr = 'selected="selected"'; break; }
+                            }
+                        } ?>
+                        <option value="<?= $this->escape($apiId); ?>" <?php echo $selectedAttr ?>><?= $this->escape($api->getEndpoint()); ?></option>
+                        <?php endforeach ?>
+                    </select>
+                    <span class="help-inline">Choose which APIs this Policy will apply to.</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="selectAuth">Auths</label>
+                <div class="controls">
+                    <select id="selectAuth" name="selected_auth[]" multiple="multiple" style="width: 400px; height: 200px;">
+                    <?php foreach ($this->auths as $auth): ?>
+                        <?php $authId = $auth->getId(); $policyAuthIds = (!empty($policy->authIds[0]) ? $policy->authIds[0]->authIds : null); $selectedAttr = '';
+                        if (!empty($policyApiIds)) {
+                            foreach ($policyAuthIds as $policyAuthId) {
+                                if ($policyAuthId === $authId) { $selectedAttr = 'selected="selected"'; break; }
+                            }
+                        } ?>
+                        <option value="<?= $this->escape($authId); ?>" <?php echo $selectedAttr ?>><?= $this->escape($authId.": ".$auth->getType()); ?></option>
+                    <?php endforeach ?>
+                    </select>
+                    <span class="help-inline">Choose which Auths this Policy will apply to.</span>
+                    <input type="hidden" class="input-xlarge" id="auth_bucket_id" name="auth_bucket_id" value="<?php echo $authBucketId ?>" />
+                </div>
+            </div>
+
+            <?
+            $per_second_counter = $context->getRateLimitPerSecond();
+            $per_second_warning = !empty($per_second_counter) ? $per_second_counter->getWarning() : null;
+            $per_second_threshold = !empty($per_second_counter) ? $per_second_counter->getThreshold() : null;
+            $per_minute_counter = $context->getRateLimitPerMinute();
+            $per_minute_warning = !empty($per_minute_counter) ? $per_minute_counter->getWarning() : null;
+            $per_minute_threshold = !empty($per_minute_counter) ? $per_minute_counter->getThreshold() : null;
+            $per_day_counter = $context->getQuotaPerDay();
+            $per_day_warning = !empty($per_day_counter) ? $per_day_counter->getWarning() : null;
+            $per_day_threshold = !empty($per_day_counter) ? $per_day_counter->getThreshold() : null;
+            $per_week_counter = $context->getQuotaPerWeek();
+            $per_week_warning = !empty($per_week_counter) ? $per_week_counter->getWarning() : null;
+            $per_week_threshold = !empty($per_week_counter) ? $per_week_counter->getThreshold() : null;
+            $per_month_counter = $context->getQuotaPerMonth();
+            $per_month_warning = !empty($per_month_counter) ? $per_month_counter->getWarning() : null;
+            $per_month_threshold = !empty($per_month_counter) ? $per_month_counter->getThreshold() : null;
+            $advancedOpen = (!empty($per_second_warning) || !empty($per_second_threshold)
+            || !empty($per_minute_warning) || !empty($per_minute_threshold)
+            || !empty($per_day_warning) || !empty($per_day_threshold)
+            || !empty($per_week_warning) || !empty($per_week_threshold)
+            || !empty($per_month_warning) || !empty($per_month_threshold)
+            || !empty($policy->headerTransformations) || !empty($policy->properties)
+            || !empty($policy->tdr->dynamicTdrs)
+            || !empty($policy->tdrData->staticTdrs));?>
+            <div class="control-group property">
+                <label class="control-label"><button class="btn" id="showAdvanced"><strong>Advanced</strong>
+                    <i class="icon-chevron-down advbtn" <?=!$advancedOpen?"":"style=\"display:none\""?>></i><i class="icon-chevron-up advbtn" <?=$advancedOpen?"":"style=\"display:none\""?>></i>
+                </button></label>
+            </div>
+            <div id="advancedSection" class="well well-small" style="background-color: #DCDCDC; <?= $advancedOpen?"":"display:none"?>">
+                <div class="control-group <?=(!empty($validationErrors['per_second']))?"error":""?>">
+                    <label class="control-label" for="TPS">TPS</label>
+                    <div class="controls">
+                        <select class="input-small" name="per_second[action]">
+                            <?php $action = !empty($per_second_counter) ? $per_second_counter->getAction() : null; ?>
+                            <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>>Ignore</option>
+                            <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>>Reject</option>
+                        </select>
+                        <input type="text" class="input-small" id="TPS" name="per_second[warning]" placeholder="Warning" <?php if (!empty($per_second_warning)) { echo 'value="'.$per_second_warning.'"';} ?>>
+                        <input type="text" class="input-small" name="per_second[threshold]" placeholder="Threshold" <?php if (!empty($per_second_threshold)) { echo 'value="'.$per_second_threshold.'"';} ?>>
+                        <span class="help-inline"><?=@$validationErrors['per_second']?></span>
+                    </div>
+                </div>
+                <div class="control-group <?=(!empty($validationErrors['per_minute']))?"error":""?>">
+                    <label class="control-label" for="TPM">TPM</label>
+                    <div class="controls">
+                        <select class="input-small" name="per_minute[action]">
+                            <?php $action = !empty($per_minute_counter) ? $per_minute_counter->getAction() : null; ?>
+                            <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>>Ignore</option>
+                            <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>>Reject</option>
+                        </select>
+                        <input type="text" class="input-small" id="TPM" name="per_minute[warning]" placeholder="Warning" <?php if (!empty($per_minute_warning)) { echo 'value="'.$per_minute_warning.'"';} ?>>
+                        <input type="text" class="input-small" name="per_minute[threshold]" placeholder="Threshold" <?php if (!empty($per_minute_threshold)) { echo 'value="'.$per_minute_threshold.'"';} ?>>
+                        <span class="help-inline"><?=@$validationErrors['per_minute']?></span>
+                    </div>
+                </div>
+                <div class="control-group <?=(!empty($validationErrors['per_day']))?"error":""?>">
+                    <label class="control-label" for="daily">Daily</label>
+                    <div class="controls">
+                        <select class="input-small" name="per_day[action]">
+                            <?php $action = !empty($per_day_counter) ? $per_day_counter->getAction() : null; ?>
+                            <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>>Ignore</option>
+                            <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>>Reject</option>
+                        </select>
+                        <input type="text" class="input-small" id="daily" name="per_day[warning]" placeholder="Warning" <?php if (!empty($per_day_warning)) { echo 'value="'.$per_day_warning.'"';} ?>>
+                        <input type="text" class="input-small" name="per_day[threshold]" placeholder="Threshold" <?php if (!empty($per_day_threshold)) { echo 'value="'.$per_day_threshold.'"';} ?>>
+                        <span class="help-inline"><?=@$validationErrors['per_day']?></span>
+                    </div>
+                </div>
+                <div class="control-group <?=(!empty($validationErrors['per_week']))?"error":""?>">
+                    <label class="control-label" for="TPW">Weekly</label>
+                    <div class="controls">
+                        <select class="input-small" name="per_week[action]">
+                            <?php $action = !empty($per_week_counter) ? $per_week_counter->getAction() : null; ?>
+                            <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>>Ignore</option>
+                            <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>>Reject</option>
+                        </select>
+                        <input type="text" class="input-small" id="TPW" name="per_week[warning]" placeholder="Warning" <?php if (!empty($per_week_warning)) { echo 'value="'.$per_week_warning.'"';} ?>>
+                        <input type="text" class="input-small" name="per_week[threshold]" placeholder="Threshold" <?php if (!empty($per_week_threshold)) { echo 'value="'.$per_week_threshold.'"';} ?>>
+                        <span class="help-inline"><?=@$validationErrors['per_week']?></span>
+                    </div>
+                </div>
+                <div class="control-group <?=(!empty($validationErrors['per_month']))?"error":""?>">
+                    <label class="control-label" for="monthly">Monthly</label>
+                    <div class="controls">
+                        <select class="input-small" name="per_month[action]">
+                            <?php $action = !empty($per_month_counter) ? $per_month_counter->getAction() : null; ?>
+                            <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>>Ignore</option>
+                            <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>>Reject</option>
+                        </select>
+                        <input type="text" class="input-small" id="monthly" name="per_month[warning]" placeholder="Warning" <?php if (!empty($per_month_warning)) { echo 'value="'.$per_month_warning.'"';} ?>>
+                        <input type="text" class="input-small" name="per_month[threshold]" placeholder="Threshold" <?php if (!empty($per_month_threshold)) { echo 'value="'.$per_month_threshold.'"';} ?>>
+                        <span class="help-inline"><?=@$validationErrors['per_month']?></span>
+                    </div>
+                </div>
+
+                <? SharedViewUtility::includePropertiesSnippet($policy->properties, $validationErrors); ?>
+
+                <? SharedViewUtility::includeHeaderTransformationsSnippet($policy->headerTransformations, $validationErrors); ?>
+
+                <? SharedViewUtility::includeTdrRulesSnippet($policy->tdr, $validationErrors); ?>
+
+            </div>
+            <input type="submit" class="btn" />
+        </fieldset>
+    </form>
+</div> <!-- /container -->

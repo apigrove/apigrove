@@ -1,0 +1,151 @@
+<div class="container">
+    <h1>Create API</h1>
+    <form class="well form-horizontal" method="post" data-behavior="confirm">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label" for="input01">Name</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="input01" name="apiName">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="input03">Endpoint</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="input03">
+                </div>
+            </div>
+            <div class="control-group targetHost" id="targetHostGroup">
+                <label class="control-label" for="targetHost01">Target Host</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="targetHost01">
+                    <button class="btn newItem" type="targetHost" title="Add additional target host"><i class="icon-plus"></i></button>
+                </div>
+            </div>
+            <div class="control-group property">
+                <label class="control-label"><button class="btn" id="showAdvanced"><strong>Advanced</strong> <i class="icon-chevron-down advbtn"></i><i class="icon-chevron-up advbtn" style="display:none"></i>
+                </button></label>
+            </div>
+            <div id="advancedSection" class="well well-small" style="background-color: #DCDCDC; display:none">
+                <div class="control-group">
+                    <label class="control-label" for="enabled">Enabled</label>
+                    <div class="controls">
+                        <div class="btn-group" data-toggle="buttons-radio" id="enabled">
+                            <button class="btn enabled" name="enabled-true">Enabled</button>
+                            <button class="btn enabled" name="enabled-false">Disabled</button>
+                        </div>
+                        <input type="hidden" class="enabled-true" name="enabled-true" value="0" />
+                        <input type="hidden" class="enabled-false" name="enabled-false" value="0" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="authCheck" reado>Type</label>
+                    <div class="controls">
+                        <div class="btn-group" data-toggle="buttons-checkbox" id="authCheck">
+                            <button class="btn auth hiddenValue" name="auth-basic" value="basic">Basic</button>
+                            <button class="btn auth hiddenValue" name="auth-key" value="authKey">Auth Key</button>
+                            <button class="btn auth hiddenValue" name="auth-wsse" value="wsse">WSSE</button>
+                            <button class="btn auth hiddenValue" name="auth-ip" value="ip">IP Whitelist</button>
+                        </div>
+                        <input type="hidden" class="auth-basic" name="auth-basic" value="0" />
+                        <input type="hidden" class="auth-key" name="auth-key" value="0" />
+                        <input type="hidden" class="auth-wsse" name="auth-wsse" value="0" />
+                        <input type="hidden" class="auth-ip" name="auth-ip" value="0" />
+                        <p class="help-block">Choose all that apply.</p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="optionsCheckbox" reado>Secured</label>
+                    <div class="controls">
+                        <div class="btn-group" data-toggle="buttons-checkbox" id="optionsCheckbox">
+                            <button class="btn auth hiddenValue" name="https" value="basic">HTTPS</button>
+                        </div>
+                        <input type="hidden" class="https" name="https" value="0" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="TPS">TPS</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" id="TPS" placeholder="Warning">
+                        <input type="text" class="input-small" placeholder="Threshold">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="TPM">TPM</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" id="TPM" placeholder="Warning">
+                        <input type="text" class="input-small" placeholder="Threshold">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="methods" reado>Methods</label>
+                    <div class="controls">
+                        <div class="btn-group" data-toggle="buttons-checkbox" id="methods">
+                            <button class="btn hiddenValue" name="method-get">GET</button>
+                            <button class="btn hiddenValue" name="method-post">POST</button>
+                            <button class="btn hiddenValue" name="method-put">PUT</button>
+                            <button class="btn hiddenValue" name="method-delete">DELETE</button>
+                        </div>
+                        <input type="hidden" class="method-get" name="method-get" value="0" />
+                        <input type="hidden" class="method-post" name="method-post" value="0" />
+                        <input type="hidden" class="method-put" name="method-put" value="0" />
+                        <input type="hidden" class="method-delete" name="method-delete" value="0" />
+                        <p class="help-block">Choose all that apply.</p>
+                    </div>
+                </div>
+                <div class="control-group property">
+                    <label class="control-label" for="properties0">Properties</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" placeholder="Key" name="propertyKey0" id="properties0">
+                        <input type="text" class="input-small" placeholder="Value" name="propertyValue0">
+                        <button class="btn newItem" type="property" title="Add additional property"><i class="icon-plus"></i></button>
+                    </div>
+                </div>
+                <div class="control-group headerTrans">
+                    <label class="control-label" for="headerTrans">Header Transformations</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" placeholder="Name" id="headerTrans">
+                        <select class="input-small" name="headerReq0">
+                            <option>Req/Resp</option>
+                            <option>Request</option>
+                            <option>Response</option>
+                        </select>
+                        <select class="input-small headerAction" item="#headerAdv0" name="headerAction0">
+                            <option>Action</option>
+                            <option>Add</option>
+                            <option>Remove</option>
+                        </select>
+                        <span id="headerAdv0" style="display:none">
+                        <select class="input-small" name="headerType0">
+                            <option>Type</option>
+                            <option>Property</option>
+                            <option>Static</option>
+                        </select>
+                        <input type="text" class="input-small" name="headerValue0" placeholder="Value"></span>
+                        <button class="btn newItem" type="headerTrans" title="Add additional header transformation"><i class="icon-plus"></i></button>
+                    </div>
+                </div>
+                <div class="control-group tdrRule">
+                    <label class="control-label" for="tdrRules">TDR Rules</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" placeholder="Name" name="tdrName0" id="tdrRules">
+                        <select class="input-small" name="tdrType0">
+                            <option>Type</option>
+                            <option>Static</option>
+                            <option>Dynamic</option>
+                            <option>Property</option>
+                        </select>
+                        <input type="text" class="input-small" placeholder="Value" name="tdrValue0">
+                        <button class="btn newItem" type="tdrRule" title="Add additional TDR rule"><i class="icon-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn">Save</button>
+            <a href="/create/api"><strong>Create API</strong></a> -
+            <a href="/create/auth"><strong>Create Auth</strong></a> -
+            <a href="/create/policy"><strong>Create Policy</strong></a> -
+            <a href="/list/api"><strong>List APIs</strong></a> -
+            <a href="/list/auth"><strong>List Auths</strong></a> -
+            <a href="/list/policy"><strong>List Policies</strong></a>
+        </fieldset>
+    </form>
+</div> <!-- /container -->

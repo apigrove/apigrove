@@ -1,0 +1,61 @@
+<?
+/**
+ * Copyright © 2012 Alcatel-Lucent.
+ *
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership. Licensed to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
+ */
+
+$messages = $this->messages;
+?>
+<div class="container">
+    <div class="hero-unit">
+        <h1>APIs</h1>
+        <p>Choose and API from the list below to edit</p>
+    </div>
+<?  if(!empty($messages)): ?>
+        <div class="warning">
+<?          foreach($messages as $m): ?>
+                <p><?=$m?></p>
+<?          endforeach; ?>
+        </div>
+<?  endif; ?>
+    <div class="well">
+
+        <div id="list">
+            <div class="listItem">
+                <div class="item-div pull-left"><label class="item1"><strong>API Name</strong></label></div>
+                <div class="item-div pull-left"><span class="item2"><strong>Endpoint</strong></div>
+                <span class="clear"></span>
+            </div>
+<?          foreach($this->apis as $api):
+                /**
+                 * @var Api $api
+                 */
+            $name = $api->getDisplayName();
+            $endpoint = $api->getEndpoint();?>
+                <div class="listItem">
+                    <div class="item-div pull-left"><label class="item1"><a href="api/<?= $api->getId()?>"><strong><?if(strlen($name) > 15){ echo substr($name, 0, 15) . "...";}else{ echo $name;} ;?></strong></a></label></div>
+                    <div class="item-div pull-left"><span class="item2"><?if(strlen($endpoint) > 15){ echo substr($endpoint, 0, 15) . "...";}else{ echo $endpoint;} ;?></span></div>
+                    <span class="clearfix"></span>
+
+                    <div class="item-div pull-left">
+                        <span class="item4">
+                            <a href="/api/<?=$api->getId()?>/call" class="btn btn-info">Call This Api</a>
+                        </span>
+                    </div>
+                    <div class="item-div pull-left">
+                        <span class="item5">
+                            <a href="/api/<?=$api->getId()?>/delete" class="btn btn-danger">Delete</a>
+                        </span>
+                    </div>
+                </div>
+<?          endforeach; ?>
+        </div>
+    </div>
+</div> <!-- /container -->

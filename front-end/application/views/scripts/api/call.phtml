@@ -1,0 +1,31 @@
+<div class="container">
+    <? if(is_null($this->url)){?>
+    <div class="well well-small warning"><strong>There was an error generating the url</strong></div>
+    <?}else{
+    $url = $this->url;?>
+    <div id="urlForm" class="well">
+        <form class="form-horizontal" action="/api/call" method="post" data-behavior="confirm">
+            <fieldset>
+                <div class="control-group parameter">
+                    <label class="control-label">Query Parameters</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" placeholder="Key" name="parameterKey0" id="parameterKey0">
+                        <input type="text" class="input-small" placeholder="Value" name="parameterValue0" id="parameterValue0">
+                        <a class="btn addParams newItem updateParams" type="parameter" title="Add query parameters"><i class="icon-plus"></i></a>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">URL</label>
+                    <div class="controls">
+                        <label style='padding-top:5px;'><strong id="showUrl"><?=$url?></strong></label>
+                        <span id="hiddenInput"><input type='hidden' id="hiddenField" url="<?=$url?>" value='<?=$url?>' name='url'/></span>
+                    </div>
+                </div>
+                <a class="btn btn-inverse makeCall" style="align:right;">Call API</a>
+            </fieldset>
+        </form>
+    </div>
+    <div class="well well-small" style="display:none" id="callWindow">
+    </div>
+    <?}?>
+</div> <!-- /container -->

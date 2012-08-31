@@ -1,0 +1,77 @@
+=============================================================================
+= API Grove Front End                                                       =
+=============================================================================
+
+1. Installation
+
+The front-end project directory is a functional Zend application. To run this
+Zend application, install Zend Framework and serve "front-end/public" with an
+http server that supports PHP.
+
+If you have neither Zend Framework installed nor a http server installed, check
+out Zend Server which conveniently packages both.
+
+Alternatively, on Red Hat or CentOS you can install with yum:
+
+yum -y install httpd php53 php53-mbstring libmcrypt php53-mcrypt php53-pdo
+
+
+1a. Installing Zend Framework
+
+The Zend Framework is a directory named "Zend" and is filled with *.php files.
+This directory must be copied to a static location on your machine. The
+absolute path to this static location must be added to php's "include_path"
+property. Set this property in your php.ini file, typically located in /etc.
+
+You must also set the appropriate permissions for the Zend Framework files. Below {ZF_HOME} refers to the
+location where you installed Zend Framework's 'Zend' directory:
+find {ZF_HOME} -type f -print0 | xargs -0 chmod -R 644
+find {ZF_HOME} -type d -print0 | xargs -0 chmod -R 755
+
+1b. Serving "front-end/public" with an http server
+
+You must have an http server that supports interpreting php files and serving
+static files. nginx and apache's httpd are both known to do this. This section
+covers apache's httpd.  
+
+To interpret php files, httpd must have at least one module of these modules 
+enabled: mod_cgi, mod_fastcgi, or mod_php (libphp5). Each of these modules is
+configured differently.
+
+A VirtualHost setting is an easy way to tell httpd what files to serve. Add a
+new virtual host to your apache config:
+
+<VirtualHost *:80>
+    ServerName somehostname
+    DocumentRoot /<some>/<path>/<to>/front-end/public
+
+    SetEnv APPLICATION_ENV "development"
+
+    <Directory /<some>/<path>/<to>/front-end/public>
+        DirectoryIndex index.php
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+    </Directory>
+</VirtualHost>
+
+You will also need to make sure that php short tags are enabled. In your php.ini file find the
+"short_open_tag" setting and make sure that it is set to "On".
+
+Next, you will need to set the appropriate permissions on the files. Make sure to edit these commands
+to point to where you have installed the front-end web app before using.
+
+find /<some>/<path>/front-end -type f -print0 | xargs -0 chmod -R 644
+find /<some>/<path>/front-end -type d -print0 | xargs -0 chmod -R 755
+find /<some>/<path>/front-end/application/data -type f -print0 | xargs -0 chmod -R 666
+find /<some>/<path>/front-end/application/configs/manager.ini -type f -print0 | xargs -0 chmod -R 666
+
+
+2. Application Details
+
+2.1 Authentication
+
+All pages except for the login form will be protected.  You must be logged in to view any page.  The default user/pass
+is admin / adminadmin
+
+
