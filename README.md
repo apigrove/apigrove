@@ -1,10 +1,6 @@
 apigrove
 ========
 
-APIgrove
+apiGrove
 
-NOTE: This is the initial pre-release version. There are known bugs relating to query parameters and redirection, which are being worked on by Luis's team.
-
-Initial installer package available here: (TBA)
-
-<a href="https://github.com/apigrove/apigrove/wiki">Link to the wiki.</a>
+<a href="https://github.com/apigrove/apigrove/wiki">Please see the wiki</a> for the latest build/installation documentation and tutorials. If you have questions or feedback, please use the <a href="http://apigrove.net/forum/">apiGrove Forum</a>.
