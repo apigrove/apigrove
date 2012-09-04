@@ -1,4 +1,4 @@
+<a href="https://github.com/apigrove/apigrove/wiki">Please see the wiki</a> for the latest 
+build/installation documentation and tutorials. 
 
-Documentation can be found here or at this URL:
-
-https://github.com/apigrove/apigrove/downloads
+If you have questions or feedback, please use the <a href="http://apigrove.net/forum/">apiGrove Forum</a>.
