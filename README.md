@@ -6,7 +6,7 @@ build/installation documentation and tutorials.
 
 If you have questions or feedback, please use the <a href="http://apigrove.net/forum/">apiGrove Forum</a>.
 
-We also have an <a href="https://github.com/apigrove/apigrove">apiGrove Google Group</a> for discussing the latest developments, planning the roadmap, and so on.
+We also have an <a href="https://groups.google.com/a/apigrove.net/forum/?hl=en#!forum/apigrove">apiGrove Google Group</a> for discussing the latest developments, planning the roadmap, and so on.
 
 
 apiGrove GUI
