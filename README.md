@@ -7,7 +7,7 @@ apiGrove
 ========
 
 Please see the <a href="https://github.com/apigrove/apigrove/wiki">wiki</a> for the latest 
-build/installation documentation and tutorials. An installer package can be found in <a href="https://github.com/apigrove/apigrove/downloads">Downloads</a>. System prerequisites can be found <a href="https://github.com/apigrove/apigrove/wiki/apiGrove-installation-guide#wiki-genpreq">here</a>.
+build/installation documentation and tutorials. System prerequisites can be found <a href="https://github.com/apigrove/apigrove/wiki/apiGrove-installation-guide#wiki-genpreq">here</a>. An installer package can be found in <a href="https://github.com/apigrove/apigrove/downloads">Downloads</a>. 
 
 If you have questions or feedback, please use the <a href="http://apigrove.net/forum/">apiGrove Forum</a>.
 
