@@ -12,7 +12,6 @@
  */
 
 /**
- * Created by JetBrains PhpStorm.
  *
  * @author Trevor Pesout <>
  * @version $Id$

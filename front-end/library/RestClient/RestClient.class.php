@@ -14,8 +14,7 @@
 require_once 'exceptions/CURLException.php';
 require_once 'exceptions/RESTAppException.php';
 require_once 'objects/RestResponse.class.php';
-require_once "Logging/POFileLogger.php";
-require_once "Logging/POLI.php";
+require_once 'Logging/LoggerInterface.php';
 
 /**
  *
@@ -30,14 +29,15 @@ class RestClient {
 	protected $protocol = null;
 	protected $basicauth = null;
 	protected $peerCertificatePath = null;
-	
-	public function __construct($host, $protocol = null, $port = null, $basicauth = null,
+
+    const CONNECT_TIMEOUT = 30;
+
+    public function __construct($host, $protocol = null, $port = null, $basicauth = null,
 	        $peerCertificatePath = null){
-		$this->logger = new POFileLogger("/tmp/logstuff");
 		
 		if( empty($host) ){
 			$err = "RestClient requires a hostname!";
-			$this->logger->log($err, POLI::ERROR);
+            LoggerInterface::log($err, LoggerInterface::ERROR);
 			throw new Exception($err);
 		}
 		$this->host = $host;
@@ -56,14 +56,14 @@ class RestClient {
 			}
 		} else {
 			$err = "Protocol must be \"http\" or \"https\"!";
-			$this->logger->log($err, POLI::ERROR);
+            LoggerInterface::log($err, LoggerInterface::ERROR);
 			throw new Exception($err);
 		}
 		$this->protocol = strtolower($protocol);
 		
 		if( $port <= 0 || $port > 65535 ){
 			$err = "Port \"$port\" is out of range!";
-			$this->logger->log($err, POLI::ERROR);
+            LoggerInterface::log($err, LoggerInterface::ERROR);
 			throw new Exception($err);
 		}
 		$this->port = $port;
@@ -132,6 +132,7 @@ class RestClient {
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
       curl_setopt($ch, CURLOPT_HEADER, TRUE);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+      curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::CONNECT_TIMEOUT);
 
       // Execute the call
       $return = curl_exec($ch);
@@ -142,7 +143,7 @@ class RestClient {
       // Check if endpoint is unavailable
       if($return == FALSE){
       	$err = "No Server Responding" ;
-      	$this->logger->log($err, POLI::ERROR);
+          LoggerInterface::log($err, LoggerInterface::ERROR);
         throw new CURLException($err);
       }
       
@@ -170,10 +171,10 @@ class RestClient {
         }else{
           $errorXML = simplexml_load_string($response->getPayload());
           if($errorXML->status == "SUCCESS") {
-              POLI::log("Response successful with improper return code ({$response->getHTTPCode()}): " . print_r($response->getPayload(), true), POLI::WARN);
+              LoggerInterface::log("Response successful with improper return code ({$response->getHTTPCode()}): " . print_r($response->getPayload(), true), LoggerInterface::WARN);
               return $response;
           }
-          POLI::log("Errored response: ({$response->getHTTPCode()}) " . print_r($response->getPayload(), true), POLI::DEBUG);
+          LoggerInterface::log("Errored response: ({$response->getHTTPCode()}) " . print_r($response->getPayload(), true), LoggerInterface::DEBUG);
           $errorMessage = $errorXML->error->errorText;
           //$errorMessage = htmlspecialchars($response->getPayload());
         }
@@ -183,7 +184,7 @@ class RestClient {
       // Return the formatted response object 
       return $response;
     }catch(Exception $e){
-      $this->logger->log('Rest Curl Call', $e->getMessage(), array(), POLI::ERROR);
+        LoggerInterface::log('Rest Curl Call', $e->getMessage(), array(), LoggerInterface::ERROR);
       //drupal_set_message('An error as occured during the operation, please retry or contact an administrator.', 'error');
       throw new Exception($e->getMessage());
     }
@@ -202,8 +203,10 @@ class RestClient {
 	
   protected function getHTTPCode($message){
     $extracts = array();
-    preg_match('/HTTP\\/1.[01] ([0-9]{3}) /i', $message, $extracts);
-    return $extracts[1];
+    preg_match_all('/HTTP\\/1.[01] ([0-9]{3}) /i', $message, $extracts);
+    // If the server returns a 100 we can have multiple status, so look for the last one
+    $num = count($extracts[1]);
+    return $extracts[1][$num-1];
   }
   
   protected function getSpecificApplicationCode($message){

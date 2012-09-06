@@ -120,6 +120,10 @@ $(document).ready(function() {
         }
     });
 
+    $('.auth-enabled').click(function(event){
+       $('#status').val($(this).val());
+    });
+
     $(document).ready(function(event){
         handleAuthTypeClick($("#type"), "fast");
     });
@@ -154,9 +158,8 @@ $(document).ready(function() {
 
     $(document).ready(function(event){
         handleProvAuthTypeClick($("#provauth-authKey"), "fast");
-    });
-    $(document).ready(function(event){
         handleProvAuthTypeClick($("#https"), "fast");
+        handleProvAuthTypeClick($("#tdrsenabled"), "fast");
     });
 
     function handleProvAuthTypeClick(ele, speed){
@@ -179,6 +182,13 @@ $(document).ready(function() {
                     $('#https-mode-span').hide(speed);
                 }
                 break;
+            case 'tdrsenabled':
+                if(enabled == 1){
+                    $('#tdr-rule-span').show(speed);
+                } else {
+                    $('#tdr-rule-span').hide(speed);
+                }
+                break;
         }
         //ele.addClass("active");
     }
@@ -194,7 +204,7 @@ $(document).ready(function() {
         var items = document.getElementsByClassName(type);
         var itemCount = items.length;
         var lastItem = items[(itemCount - 1)];
-        if(type == 'targetHost'){
+        if(type == 'targethost'){
             var itemBody = targetBody(itemCount);
         }else if(type == 'property'){
             var itemBody = propertyBody(itemCount);
@@ -209,11 +219,11 @@ $(document).ready(function() {
     }
 
     function targetBody(count){
-        return "<div class=\"control-group targetHost\" id=\"targetHostGroup"+count+"\">"
-            +"<label class=\"control-label\" for=\"targetHost"+count+"\">&nbsp;</label>"
+        return "<div class=\"control-group targethost\" id=\"targethostGroup"+count+"\">"
+            +"<label class=\"control-label\" for=\"targethost"+count+"\">&nbsp;</label>"
             +"<div class=\"controls\">"
-            +"<input type=\"text\" class=\"input-xlarge\" name=\"targetHost"+count+"\" id=\"targetHost"+count+"\"> "
-            +"<a class=\"btn removeItem\" type=\"targetHost\" number=\""+count+"\" title=\"Remove target host\"><i class=\"icon-minus\"></i></a>"
+            +"<input type=\"text\" class=\"input-xlarge\" name=\"targethost"+count+"\" id=\"targethost"+count+"\"> "
+            +"<a class=\"btn removeItem\" type=\"targethost\" number=\""+count+"\" title=\"Remove target host\"><i class=\"icon-minus\"></i></a>"
             +"</div>"
             +"</div>";
     }

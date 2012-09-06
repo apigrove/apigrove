@@ -330,7 +330,7 @@ class Api {
     }
 
     public static function fromXML(SimpleXMLElement $xml){
-//        POLI::log("api xml: " . print_r($xml->saveXML(), true), POLI::DEBUG);
+//        LoggerInterface::log("api xml: " . print_r($xml->saveXML(), true), LoggerInterface::DEBUG);
         $api = new Api();
         $api->setId( (string) $xml->id);
         $api->setDisplayName( (string) $xml->displayName);

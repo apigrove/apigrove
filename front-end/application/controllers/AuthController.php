@@ -30,6 +30,7 @@ class AuthController extends FlowController
     public function indexAction(){
         $authManager = new AuthManager();
         $auths = $authManager->getAllAuths();
+        $this->view->messages = $this->getZendFlashMessenger()->getMessages();
         $this->view->auths = $auths;
     }
 
@@ -68,6 +69,8 @@ class AuthController extends FlowController
             $auth = new Auth();
             $auth->id = $id;
             $auth->type = AuthType::$AUTHKEY;
+            $auth->apiContext = "actx";
+            $auth->policyContext = "pctx";
             $flowScope['isNew'] = true;
         }
         /**
@@ -177,7 +180,7 @@ class AuthController extends FlowController
          * Submit to AG
          */
         $authManager = new AuthManager();
-        $result = $authManager->setAuth($auth, $this->_getParam("id")==="create");
+        $result = $authManager->setAuth($auth, $flowScope['isNew']);
         if($result->getHTTPCode() !== "200"){
             $xml = simplexml_load_string($result->getPayload());
             $validationErrors['default'] = (string) $xml->error->errorText;

@@ -13,7 +13,7 @@
 
 
 require_once "RestClient/RestClient.class.php";
-require_once "Logging/POLI.php";
+require_once "Logging/LoggerInterface.php";
 
 /**
  *
@@ -108,7 +108,7 @@ class ApiManager {
          * Send the XML payload the the Provisioning Backend
          */
         $api->toXML();
-        POLI::log(($insertMode ? "Creating" : "Updating") . " API: {$api->toXML()}\nEndpoint: ($method) $path", POLI::INFO);
+        LoggerInterface::log(($insertMode ? "Creating" : "Updating") . " API: {$api->toXML()}\nEndpoint: ($method) $path", LoggerInterface::INFO);
         $reply = $this->restClient->makeCall($path, $method, $api->toXML());
         $xml = simplexml_load_string($reply->getPayload());
 

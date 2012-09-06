@@ -12,7 +12,6 @@
  */
 
 /**
- * Created by JetBrains PhpStorm.
  *
  * @author Trevor Pesout <>
  * @version $Id$
@@ -23,7 +22,7 @@
 $that = empty($this)?new SSLKey():$this;
     ?>
 <key <? if($this->id) echo "id=\"{$this->id}\""?> >
-    <? if($that->activeCert) { ?>
+    <? if($that->activeCert !== null) { ?>
     <activeCertId><?= $that->activeCert?></activeCertId>
     <? } ?>
     <? if($this->content) {?>

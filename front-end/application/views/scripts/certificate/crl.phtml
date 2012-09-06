@@ -1,0 +1,39 @@
+<?
+require_once APPLICATION_PATH . '/models/SSLCRL.class.php';
+
+$flow = $this->flow;
+$validationErrors = $this->validationErrors; //@$flow->flowScope['validationErrors'];
+$crl = empty($this->crl) ? new SSLCRL() : $this->crl;
+$id = $crl->getId();
+if (!isset($this->isNew)) { $this->isNew = empty($id); }
+$formAction = $this->isNew ? "/certificate/crl/create" : "/certificate/crl/".$id;
+?>
+<div class="container">
+    <h1><?php echo $this->isNew ? "Add" : "Edit"; ?> Certificate Revocation List</h1>
+<? if(!empty($validationErrors['default'])):?>
+    <div class="control-group error">
+        <span class="help-inline">Server Error: <?=$validationErrors['default']?></span>
+    </div>
+<? endif; ?>
+    <form class="well form-horizontal" method="POST" enctype="multipart/form-data">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label" for="crl_name">Name</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="crl_name" name="crl_name" value="<?php echo $crl->getDisplayName(); ?>"/>
+                    <input type="hidden" class="input-xlarge" id="crl_id" name="crl_id" value="<?php echo $id ?>" />
+                    <span class="help-inline"><?=@$validationErrors['crl_name']?></span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="crl_file">Certificate Revocation List</label>
+                <div class="controls">
+                    <input type="file" id="crl_file" name="crl_file" value="Choose file" <?php if (!$this->isNew) { echo 'disabled="disabled"'; } ?>/>
+                    <span class="help-inline"><?=@$validationErrors['crl_file']?></span>
+                </div>
+            </div>
+            <input type="hidden" name="_faction" value="submit" />
+            <input type="submit" class="btn confirm-toggle btn-primary" value="<?php echo $this->isNew ? 'Create' : 'Save'; ?> Revocation List" />
+        </fieldset>
+    </form>
+</div> <!-- /container -->

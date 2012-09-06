@@ -104,7 +104,7 @@ class PolicyManager {
         /**
          * Send the XML payload the the Provisioning Backend
          */
-        POLI::log(($insertMode ? "Creating" : "Updating") . " Policy: {$policy->toXML()}\nEndpoint: ($method) $url", POLI::INFO);
+        LoggerInterface::log(($insertMode ? "Creating" : "Updating") . " Policy: {$policy->toXML()}\nEndpoint: ($method) $url", LoggerInterface::INFO);
         $reply = $this->restClient->makeCall($url, $method, $policy->toXML());
         $xml = simplexml_load_string($reply->getPayload());
         if($reply->getHTTPCode() === "200"){
@@ -174,10 +174,10 @@ class PolicyManager {
         if ($err == null) return PolicyManager::$error;
         if ($err instanceof Exception) {
             PolicyManager::$error = $err->getMessage();
-            POLI::logException($err, POLI::ERROR);
+            LoggerInterface::logException($err, LoggerInterface::ERROR);
         } else {
             PolicyManager::$error = $err;
-            POLI::log($err, POLI::ERROR);
+            LoggerInterface::log($err, LoggerInterface::ERROR);
         }
     }
 

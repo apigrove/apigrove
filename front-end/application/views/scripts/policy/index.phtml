@@ -20,12 +20,22 @@ $apis = $this->apis;
         <h1>Policies</h1>
         <p>Choose a Policy from the list below to edit</p>
     </div>
+    <? if(!empty($this->messages)): ?>
+    <div class="control-group success">
+            <span class="help-block">
+                <? foreach ($this->messages as $message): ?>
+                <?=$message?>
+                <? endforeach ?>
+            </span>
+    </div>
+    <? endif ?>
     <div class="well">
         <div id="list">
             <div class="listItem">
                 <div class="item-div pull-left"><label class="item1"><strong>Policy ID</strong></label></div>
                 <div class="item-div pull-left"><span class="item2"><strong>APIs</strong></span></div>
                 <div class="item-div pull-left"><span class="item3"><strong>Auths</strong></span></div>
+                <div class="item-div pull-left"><span class="item4"><a href="/policy/create" class="btn btn-success">+</a></div>
                 <span class="clearfix"></span>
             </div>
             <?

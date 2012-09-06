@@ -1,0 +1,75 @@
+<?
+$keys = $this->keys;
+$cas = $this->cas;
+$crls = $this->crls;
+?>
+<div class="container">
+    <div class="hero-unit">
+        <h1>Certificates</h1>
+        <p>Manage your keys, CAs, and revocation lists</p>
+    </div>
+    <div class="well">
+        <div id="key_list">
+            <h2>Private Keys</h2>
+            <div class="listItem">
+                <div class="item-div pull-left"><span class="item1"><strong>Name</strong></span></div>
+                <div class="item-div pull-left"><span class="item2"><a href="/certificate/key/create" class="btn btn-success">+</a></div>
+            </div>
+            <? foreach($keys as $key){?>
+            <div class="listItem">
+                <div class="item-div pull-left"><label class="item1"><a href="/certificate/key/<?php echo $key->getId();?>"><strong><?php echo $key->getDisplayName();?></strong></a></label></div>
+                <div class="item-div pull-left">
+                      <span class="item4">
+                      <a href="/certificate/key/<?php echo $key->getId()?>/delete" class="btn btn-danger">Delete</a>
+                      </span>
+                </div>
+            </div>
+            <?}?>
+        </div>
+    </div>
+
+    <div class="well">
+        <div id="ca_list">
+            <h2>Certificate Authorities</h2>
+            <div class="listItem">
+                <div class="item-div pull-left"><span class="item1"><strong>Name</strong></span></div>
+                <div class="item-div pull-left"><span class="item2"><strong>Expiration</strong></span></div>
+                <div class="item-div pull-left"><span class="item2"><a href="/certificate/ca/create" class="btn btn-success">+</a></div>
+            </div>
+            <? foreach($cas as $ca){?>
+            <div class="listItem">
+                <div class="item-div pull-left"><label class="item1"><a href="/certificate/ca/<?php echo $ca->getId();?>"><strong><?php echo $ca->getDisplayName();?></strong></a></label></div>
+                <div class="item-div pull-left"><label class="item2"><?php echo $ca->getExpirationDate();?></label></div>
+                <div class="item-div pull-left">
+                      <span class="item4">
+                      <a href="/certificate/ca/<?php echo $ca->getId()?>/delete" class="btn btn-danger">Delete</a>
+                      </span>
+                </div>
+            </div>
+            <?}?>
+        </div>
+    </div>
+
+    <div class="well">
+        <div id="crl_list">
+            <h2>Certificate Revocation Lists</h2>
+            <div class="listItem">
+                <div class="item-div pull-left"><span class="item1"><strong>Name</strong></span></div>
+                <div class="item-div pull-left"><span class="item2"><strong>Next Update</strong></span></div>
+                <div class="item-div pull-left"><span class="item2"><a href="/certificate/crl/create" class="btn btn-success">+</a></div>
+            </div>
+            <? foreach($crls as $crl){?>
+            <div class="listItem">
+                <div class="item-div pull-left"><label class="item1"><a href="/certificate/crl/<?php echo $crl->getId();?>"><strong><?php echo $crl->getDisplayName();?></strong></a></label></div>
+                <div class="item-div pull-left"><label class="item2"><?php echo $crl->getNextUpdateDate();?></label></div>
+                <div class="item-div pull-left">
+                      <span class="item4">
+                      <a href="/certificate/crl/<?php echo $crl->getId()?>/delete" class="btn btn-danger">Delete</a>
+                      </span>
+                </div>
+            </div>
+            <?}?>
+        </div>
+    </div>
+
+</div> <!-- /container -->

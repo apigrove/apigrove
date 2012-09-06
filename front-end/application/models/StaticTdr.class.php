@@ -12,7 +12,7 @@
  */
 
 /**
- * File Description Goes Here
+ * Class definition for StaticTdr
  *
  * Date: 3/28/12
  *
@@ -40,6 +40,14 @@ class StaticTdr
     public $property;
 
     /**
+     * This variable is transient and does not
+     * coorespond to a variable on ApiGrove.  It is used
+     * to differentiate between 'static' and 'property' kinds
+     * @var string
+     */
+    public $kind;
+
+    /**
      * @return string
      */
     public function toXML(){
@@ -58,6 +66,13 @@ class StaticTdr
         $tdr->tdrPropName = (string) $xml['tdrPropName'];
         $tdr->value = (string) $xml['value'];
         $tdr->property = (string) $xml['property'];
+        if(!empty($tdr->value)){
+            $tdr->kind = TdrRuleType::STATIC_VAL;
+        }
+        else if(!empty($tdr->property)){
+            $tdr->kind = TdrRuleType::PROPERTY;
+        }
+
 
         foreach($xml->types->type as $type){
             $tdr->types[] = (string) $type;

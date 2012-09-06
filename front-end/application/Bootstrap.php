@@ -56,15 +56,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     'action'=>'delete'
                 )));
 
-        $router->addRoute('callApi', //Name
-            new Zend_Controller_Router_Route(
-                'api/:id/call', //Defines the url
-                array(
-                    'controller' => 'api',
-                    'action' => 'call'
-                )
-            )
-        );
+//        $router->addRoute('callApi', //Name
+//            new Zend_Controller_Router_Route(
+//                'api/:id/call', //Defines the url
+//                array(
+//                    'controller' => 'api',
+//                    'action' => 'call'
+//                )
+//            )
+//        );
 
         /**
          * Routes for Auth provisioning
@@ -106,13 +106,60 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         $router->addRoute('policyDelete', // Name
             new Zend_Controller_Router_Route(
-                'policy/:id/delete', // Defines the url.  Could be something like api/:id
+                'policy/:id/delete', // Defines the url.  Could be something like policy/:id
                 array( // defaults
-                    'controller' => 'policy', // Directs to use the ApiController class
-                    'action'=>'delete'       // Directs to use the ApiController::indexAction method
+                    'controller' => 'policy', // Directs to use the PolicyController class
+                    'action'=>'delete'       // Directs to use the PolicyController::deleteAction method
                 )));
 
 
+        $router->addRoute('certificateKey', // Name
+            new Zend_Controller_Router_Route(
+                'certificate/key/:id', // Defines the url.  Could be something like policy/:id or policy/create
+                array( // defaults
+                    'controller' => 'certificate', // Directs to use the PolicyController class
+                    'action'=>'key'       // Directs to use the PolicyController::formAction method
+                )));
+
+        $router->addRoute('certificateCA', // Name
+            new Zend_Controller_Router_Route(
+                'certificate/ca/:id', // Defines the url.  Could be something like policy/:id or policy/create
+                array( // defaults
+                    'controller' => 'certificate', // Directs to use the PolicyController class
+                    'action'=>'ca'       // Directs to use the PolicyController::formAction method
+                )));
+
+        $router->addRoute('certificateCRL', // Name
+            new Zend_Controller_Router_Route(
+                'certificate/crl/:id', // Defines the url.  Could be something like policy/:id or policy/create
+                array( // defaults
+                    'controller' => 'certificate', // Directs to use the PolicyController class
+                    'action'=>'crl'       // Directs to use the PolicyController::formAction method
+                )));
+
+        $router->addRoute('certificateKeyDelete', // Name
+            new Zend_Controller_Router_Route(
+                'certificate/key/:id/delete', // Defines the url.  Could be something like policy/:id or policy/create
+                array( // defaults
+                    'controller' => 'certificate', // Directs to use the PolicyController class
+                    'action'=>'keyDelete'       // Directs to use the PolicyController::formAction method
+                )));
+
+        $router->addRoute('certificateCADelete', // Name
+            new Zend_Controller_Router_Route(
+                'certificate/ca/:id/delete', // Defines the url.  Could be something like policy/:id or policy/create
+                array( // defaults
+                    'controller' => 'certificate', // Directs to use the PolicyController class
+                    'action'=>'caDelete'       // Directs to use the PolicyController::formAction method
+                )));
+
+        $router->addRoute('certificateCRLDelete', // Name
+            new Zend_Controller_Router_Route(
+                'certificate/crl/:id/delete', // Defines the url.  Could be something like policy/:id or policy/create
+                array( // defaults
+                    'controller' => 'certificate', // Directs to use the PolicyController class
+                    'action'=>'crlDelete'       // Directs to use the PolicyController::formAction method
+                )));
 
         /**
          * Routes for login and logout
@@ -138,25 +185,25 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 'user', // Defines the url.  Could be something like api/:id
                 array( // defaults
                     'controller' => 'authentication', // Directs to use the ApiController class
-                    'action'=>'index'       // Directs to use the ApiController::indexAction method
-                )));
-
-
-        $router->addRoute('userDelete', // Name
-            new Zend_Controller_Router_Route(
-                'user/:id/delete', // Defines the url.  Could be something like api/:id
-                array( // defaults
-                    'controller' => 'authentication', // Directs to use the ApiController class
-                    'action'=>'delete'       // Directs to use the ApiController::indexAction method
-                )));
-
-        $router->addRoute('userEdit', // Name
-            new Zend_Controller_Router_Route(
-                'user/:id', // Defines the url.  Could be something like api/:id
-                array( // defaults
-                    'controller' => 'authentication', // Directs to use the ApiController class
                     'action'=>'edit'       // Directs to use the ApiController::indexAction method
                 )));
+
+
+//        $router->addRoute('userDelete', // Name
+//            new Zend_Controller_Router_Route(
+//                'user/:id/delete', // Defines the url.  Could be something like api/:id
+//                array( // defaults
+//                    'controller' => 'authentication', // Directs to use the ApiController class
+//                    'action'=>'delete'       // Directs to use the ApiController::indexAction method
+//                )));
+//
+//        $router->addRoute('userEdit', // Name
+//            new Zend_Controller_Router_Route(
+//                'user/:id', // Defines the url.  Could be something like api/:id
+//                array( // defaults
+//                    'controller' => 'authentication', // Directs to use the ApiController class
+//                    'action'=>'edit'       // Directs to use the ApiController::indexAction method
+//                )));
 
 
     }

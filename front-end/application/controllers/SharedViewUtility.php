@@ -43,6 +43,7 @@ class SharedViewUtility
             $ht->action = $header['action'];
             $ht->name = $header['name'];
             $ht->type = $header['timing'];
+            $ht->kind = $header['type'];
             if($header['type'] === HeaderTransformationType::PROPERTY)
                 $ht->property = $header['value'];
             else if($header['type'] === HeaderTransformationType::STATIC_VAL)
@@ -154,6 +155,7 @@ class SharedViewUtility
             if($rule['type'] === TdrRuleType::STATIC_VAL || $rule['type'] === TdrRuleType::PROPERTY){
                 $tdrRule = new StaticTdr();
                 $tdrRule->tdrPropName = $rule['name'];
+                $tdrRule->kind = $rule['type'];
                 if($rule['type'] === TdrRuleType::STATIC_VAL){
                     $tdrRule->value = $rule['value'];
                 }

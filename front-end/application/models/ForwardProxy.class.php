@@ -12,7 +12,6 @@
  */
 
 /**
- * Created by JetBrains PhpStorm.
  *
  * @version $Id$
  * @copyright 7/19/12 4:46 PM

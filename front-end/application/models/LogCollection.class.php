@@ -26,8 +26,10 @@ class LogCollection
 
     public static function fromXML($xml) {
         $logCollection = new LogCollection();
-        foreach ($xml->log as $log) {
-            $logCollection->logs[] = Log::fromXML($log);
+        if (!empty($xml)) {
+            foreach ($xml->log as $log) {
+                $logCollection->logs[] = Log::fromXML($log);
+            }
         }
         return $logCollection;
     }

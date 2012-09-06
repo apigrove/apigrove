@@ -1,0 +1,83 @@
+<?
+require_once APPLICATION_PATH . '/models/Cert.class.php';
+require_once APPLICATION_PATH . '/models/SSLKey.class.php';
+
+$flow = $this->flow;
+$validationErrors = $this->validationErrors; //@$flow->flowScope['validationErrors'];
+$key = !isset($this->key) ? new SSLKey() : $this->key;
+$id = $key->getId();
+$cert = !isset($this->cert) ? new Cert() : $this->cert;
+$cert_id = $cert->getId();
+if (!isset($this->isNew)) { $this->isNew = empty($id); }
+$formAction = $this->isNew ? "/certificate/key/create" : "/certificate/key/".$id;
+?>
+<div class="container">
+    <h1><?php echo $this->isNew ? "Add Key" : "Edit Key"; ?></h1>
+<? if(!empty($validationErrors['default'])):?>
+    <div class="control-group error">
+        <span class="help-inline">Server Error: <?=$validationErrors['default']?></span>
+    </div>
+<? endif; ?>
+    <form class="well form-horizontal" method="POST" enctype="multipart/form-data">
+        <fieldset>
+            <div class="well">
+            <h2>Private Key</h2>
+            <div class="control-group">
+                <label class="control-label" for="key_name">Name</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="key_name" name="key_name" value="<?php echo $key->getDisplayName(); ?>"/>
+                    <input type="hidden" class="input-xlarge" id="key_id" name="key_id" value="<?php echo $id ?>" />
+                    <span class="help-inline"><?=@$validationErrors['key_name']?></span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="key_file">Private Key</label>
+                <div class="controls">
+                    <input type="file" id="key_file" name="key_file" value="Choose file" <?php if (!$this->isNew) { echo 'disabled="disabled"'; } ?>/>
+                    <span class="help-inline"><?=@$validationErrors['key_file']?></span>
+                </div>
+            </div>
+            </div>
+            <div class="well">
+                <h2>Certificate</h2>
+                <div class="control-group">
+                    <label class="control-label" for="cert_name">Name</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" id="cert_name" name="cert_name" value="<?php echo $cert->getDisplayName(); ?>"/>
+                        <input type="hidden" class="input-xlarge" id="cert_id" name="cert_id" value="<?php echo $cert_id ?>" />
+                        <span class="help-inline"><?=@$validationErrors['cert_name']?></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="cert_expiration">Expiration Date</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" id="cert_expiration" name="cert_expiration" readonly="readonly" value="<?php echo $cert->getExpirationDate(); ?>" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="cert_file">Certificate</label>
+                    <div class="controls">
+                        <input type="file" id="cert_file" name="cert_file" value="Choose file" <?php if (!empty($cert_id)) { echo 'disabled="disabled"'; } ?>/>
+                        <span class="help-inline"><?=@$validationErrors['cert_file']?></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <a class="btn btn-danger" onclick="resetCert()">Reset</a>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="_faction" value="submit" />
+            <input type="submit" class="btn confirm-toggle btn-primary" value="<?php echo $this->isNew ? 'Create Key' : 'Save Key'; ?>" />
+        </fieldset>
+    </form>
+</div> <!-- /container -->
+<script type="text/javascript">
+    function resetCert() {
+        $('#cert_name').val('');
+        $('#cert_id').val('');
+        $('#cert_expiration').val('');
+        // Work-around to reset file input, suggested by <http://stackoverflow.com/questions/1043957/clearing-input-type-file-using-jquery>:
+        $("#cert_file").replaceWith("<input type='file' id='cert_file' name='cert_file' value='Choose file' />");
+    }
+</script>

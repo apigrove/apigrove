@@ -74,7 +74,11 @@ if(!empty($contexts)){
 ?>
 
 <div class="container">
-    <h1>Create API</h1>
+<?  if(empty($apiid)): ?>
+        <h1>Create API</h1>
+<?  else: ?>
+        <h1>Edit API</h1>
+<?  endif; ?>
 <?  if(isset($validationErrors["default"]) && !empty($validationErrors["default"])): ?>
         <div class="warning">
             <p><?=$validationErrors["default"]?></p>

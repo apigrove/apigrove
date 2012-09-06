@@ -12,7 +12,6 @@
  */
 
 /**
- * Created by JetBrains PhpStorm.
  *
  * @version $Id$
  * @copyright 6/25/12 4:41 PM
@@ -30,6 +29,14 @@ class HeaderTransformation
     public $type;
     public $action;
 
+    /**
+     * This is a transient variable without a similar field on
+     * ApiGrove.  It is used to differentiate between static and property types of
+     * header transformations in UI.
+     * @var string
+     */
+    public $kind;
+
 
     public function toXML() {
         ob_start();
@@ -45,6 +52,14 @@ class HeaderTransformation
         $transform->value = (string) $xml['value'];
         $transform->type = (string) $xml['type'];
         $transform->action = (string) $xml['action'];
+
+        if(!empty($transform->value)){
+            $transform->kind = HeaderTransformationType::STATIC_VAL;
+        }
+        else if(!empty($transform->property)){
+            $transform->kind = HeaderTransformationType::PROPERTY;
+        }
+
         return $transform;
     }
 

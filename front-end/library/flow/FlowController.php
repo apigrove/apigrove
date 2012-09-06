@@ -88,6 +88,9 @@ abstract class FlowController extends Zend_Controller_Action
         $this->_helper->redirector->gotoUrl($url);
     }
 
+    /**
+     * @return Zend_Controller_Action_Helper_Abstract
+     */
     public function getZendFlashMessenger(){
         return $this->_helper->getHelper('FlashMessenger');
     }

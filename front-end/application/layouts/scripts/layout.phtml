@@ -59,6 +59,15 @@
                             <li><a href="/policy/create">Create New</a></li>
                         </ul>
                     </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Certificates <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="<?php echo $this->url(array('controller'=>'certificate'),'default', true) ?>">List Certificates</a></li>
+                            <li><a href="/certificate/crl/create">Add CRL</a></li>
+                            <li><a href="/certificate/key/create">Add Key</a></li>
+                            <li><a href="/certificate/ca/create">Add Trusted CA</a></li>
+                        </ul>
+                    </li>
                     <li class="divider-vertical"></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Logs<b class="caret"></b></a>
@@ -70,7 +79,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sys Config<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/user">Users</a></li>
+                            <li><a href="/user">User Settings</a></li>
                             <li><a href="/config">Preferences</a></li>
                         </ul>
                     </li>

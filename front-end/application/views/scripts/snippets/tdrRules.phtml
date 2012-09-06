@@ -36,8 +36,8 @@ for($i = 0; $i <= $totalCount; $i++):
         <input type="text" class="input-small" placeholder="Name" name="tdr[<?=$i?>][name]" id="tdrRules" value="<?=@$rule->tdrPropName?>">
         <?
         $selected = 0;
-        if($rule instanceof StaticTdr && !empty($rule->property)) $selected = 1;
-        else if($rule instanceof StaticTdr) $selected = 2;
+        if($rule instanceof StaticTdr && $rule->kind === TdrRuleType::PROPERTY) $selected = 1;
+        else if($rule instanceof StaticTdr && $rule->kind === TdrRuleType::STATIC_VAL) $selected = 2;
         else if($rule instanceof DynamicTdr) $selected = 3;
 
         ?>
@@ -51,8 +51,8 @@ for($i = 0; $i <= $totalCount; $i++):
         <select class="input-small" name="tdr[<?=$i?>][extractFrom]" style="<?=$showExtractFrom?"":"display: none;"?> width: 120px;" id="tdrRuleExtractFrom<?=$i?>">
             <option>Extract From</option>
             <? /** @var StaticTdr $rule */?>
-            <option <?= $rule->extractFrom===TdrRuleExtractFrom::REQUEST?"selected":""?>>Request</option>
-            <option <?= $rule->extractFrom===TdrRuleExtractFrom::RESPONSE?"selected":""?>>Response</option>
+            <option <?= @$rule->extractFrom===TdrRuleExtractFrom::REQUEST?"selected":""?>>Request</option>
+            <option <?= @$rule->extractFrom===TdrRuleExtractFrom::RESPONSE?"selected":""?>>Response</option>
         </select>
         <? $value = "";
         if($rule instanceof StaticTdr){

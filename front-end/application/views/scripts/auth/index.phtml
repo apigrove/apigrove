@@ -21,6 +21,15 @@ $auths = $this->auths;
         <h1>Auths</h1>
         <p>Choose an Auth from the list below to edit</p>
     </div>
+    <? if(!empty($this->messages)): ?>
+    <div class="control-group success">
+            <span class="help-block">
+                <? foreach ($this->messages as $message): ?>
+                <?=$message?>
+                <? endforeach ?>
+            </span>
+    </div>
+    <? endif ?>
     <div class="well">
         <div id="list">
             <div class="listItem">

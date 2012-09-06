@@ -107,8 +107,8 @@ else if($auth->type === AuthType::$WSSE){
                     <label class="control-label" for="enabled">Enabled</label>
                     <div class="controls">
                         <div class="btn-group" data-toggle="buttons-radio" id="enabled">
-                            <button class="btn auth enabled <?=$auth->status==="active"?"active":""?>" name="enabled-true" value="active">Enabled</button>
-                            <button class="btn auth enabled <?=$auth->status!=="active"?"active":""?>" name="enabled-false" value="inactive">Disabled</button>
+                            <button class="btn auth-enabled <?=$auth->status==="active"?"active":""?>" name="enabled-true" value="active">Enabled</button>
+                            <button class="btn auth-enabled <?=$auth->status!=="active"?"active":""?>" name="enabled-false" value="inactive">Disabled</button>
                         </div>
                         <input type="hidden" class="enabled-true" name="status" value="<?=$auth->status?>" id="status"/>
                     </div>

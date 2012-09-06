@@ -22,15 +22,10 @@ require_once APPLICATION_PATH . "/models/Context.class.php";
 require_once APPLICATION_PATH . "/models/Status.class.php";
 
 require_once "flow/FlowController.php";
-require_once "Logging/POFileLogger.php";
+require_once "Logging/LoggerInterface.php";
 require_once "SharedViewUtility.php";
 
 class ApiController extends FlowController {
-
-    /**
-     * @var POLogger
-     */
-    protected $logger = null;
 
     /**
      * @var ApiManager
@@ -46,16 +41,6 @@ class ApiController extends FlowController {
             $this->manager = new ApiManager();
         }
         return $this->manager;
-    }
-
-    /**
-     * @return POLogger
-     */
-    public function getLogger(){
-        if($this->logger === null) {
-            $this->logger = new POFileLogger("/tmp/ApiController.log");
-        }
-        return $this->logger;
     }
 	
     /**
@@ -121,7 +106,19 @@ class ApiController extends FlowController {
             if($apiid === "create"){
                 $flowScope["apiid"] = null;
                 $api = new Api();
+                $api->setStatus(Status::$ACTIVE);
+                $provAuth = new ProvisionAuthentication();
+                $provAuth->setAuths(array(AuthType::$NOAUTH));
+                $api->setAuthentication($provAuth);
+                $context = new ApiContext();
+                $context->setId("actx");
+                $context->setMaxRateLimitTPMThreshold(-1);
+                $context->setMaxRateLimitTPMWarning(-1);
+                $context->setMaxRateLimitTPSWarning(-1);
+                $context->setMaxRateLimitTPSThreshold(-1);
+                $api->setContexts(array($context));
                 $flowScope["api"] = $api;
+
             } else {
                 $flowScope["apiid"] = $apiid;
                 try{
@@ -160,7 +157,7 @@ class ApiController extends FlowController {
 
         $targetHosts = array();
         foreach ($_POST as $k => $v){
-            if(preg_match('/^targetHost[0-9]+$/', $k) && !empty($v)){
+            if(preg_match('/^targethost[0-9]+$/', $k) && !empty($v)){
                 $th = new TargetHost();
                 $th->url = $v;
                 $targetHosts[] = $th;
@@ -187,27 +184,6 @@ class ApiController extends FlowController {
             }
             $api->setContexts($contexts);
         }
-
-        // If I don't have access to the view, set error messages in the flow scope
-        $flowScope["validationErrors"]= $validationErrors;
-        return count($validationErrors) === 0 ? "valid" : "invalid";
-    }
-
-    function target_host_is_bad($th){
-        if(empty($th)){
-            return "This targetHost cannot be empty";
-        }
-        return false;
-    }
-
-    function api_validate_form2($action, &$flowScope){
-        /**
-         * @var Api $api
-         */
-        $api = $flowScope["api"];
-        $validationErrors = array();
-
-        $this->getLogger()->log(print_r($_POST, true));
 
         if($_POST["apienabled"]){
             $api->setStatus(Status::$ACTIVE);
@@ -260,7 +236,7 @@ class ApiController extends FlowController {
         }
 
         foreach(array("tps-warn","tps-threshold","tpm-warn","tpm-threshold") as $tpx){
-            if(isset($_POST[$tpx]) && !empty($_POST[$tpx]) ){
+            if(isset($_POST[$tpx]) ){
                 if(is_numeric($_POST[$tpx])){
                     $contexts = $api->getContexts();
                     /**
@@ -322,11 +298,14 @@ class ApiController extends FlowController {
         $headerTransformations = SharedViewUtility::deserializeHeaderTransformations($this->getRequest());
         $api->setHeaderTransformations($headerTransformations);
         $api->setHeaderTransformationEnabled(count($headerTransformations) > 0 );
-        SharedViewUtility::validateHeaderTransformations($api->getHeaderTransformations, $validationErrors);
+        SharedViewUtility::validateHeaderTransformations($api->getHeaderTransformations(), $validationErrors);
 
         $properties = SharedViewUtility::deserializeProperties($this->getRequest());
         $api->setProperties($properties);
         SharedViewUtility::validateProperties($properties, $validationErrors);
+
+        $tdrsenabled = (boolean)$_POST["tdrsenabled"];
+        $api->setTdrEnabled($tdrsenabled);
 
         $tdrRules = SharedViewUtility::deserializeTdrRules($this->getRequest());
         $api->setTdrData($tdrRules);
@@ -335,6 +314,13 @@ class ApiController extends FlowController {
         // If I don't have access to the view, set error messages in the flow scope
         $flowScope["validationErrors"]= $validationErrors;
         return count($validationErrors) === 0 ? "valid" : "invalid";
+    }
+
+    function target_host_is_bad($th){
+        if(empty($th)){
+            return "This targethost cannot be empty";
+        }
+        return false;
     }
 
     function auth_key_key_is_bad($authkeykey){
@@ -352,11 +338,13 @@ class ApiController extends FlowController {
          */
         $api = $flowScope["api"];
         $apiid = $api->getId();
-        $xmlresponse = array();
+        $xmlresponse = new stdClass();
         try{
             $xmlresponse = $manager->setApi($api, empty($apiid));
         } catch(Exception $e){
-            $xmlresponse->error = array("errorText"=>$e->getMessage());
+            $xmlresponse->status = "FAILED";
+            $xmlresponse->error = new stdClass();
+            $xmlresponse->error->errorText = $e->getMessage();
         }
 
         if( (string)$xmlresponse->status === "SUCCESS" && isset($xmlresponse->id) ) {
@@ -370,11 +358,6 @@ class ApiController extends FlowController {
             return "failed";
         }
 
-    }
-
-    function api_success($action, &$flowScope){
-        $this->_helper->FlashMessenger("Success");
-        $this->_helper->redirector("index", "api");
     }
 
     public function callAction() {

@@ -11,11 +11,9 @@
  * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
  */
 /**
- * Created by JetBrains PhpStorm.
  * User: David
  * Date: 8/22/12
  * Time: 6:49 PM
- * To change this template use File | Settings | File Templates.
  */
 require_once APPLICATION_PATH . '/managers/LoggingManager.class.php';
 

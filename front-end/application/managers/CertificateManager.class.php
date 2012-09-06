@@ -19,252 +19,693 @@
  * Date: 4/17/12
  *
  */
-define('E3_PROV_URL_KEY', E3_PROV_URL . "/cxf/e3/prov/v1/keys");
-define('E3_PROV_URL_TRUSTSTORE', E3_PROV_URL . "/cxf/e3/prov/v1/truststore");
+
+require_once 'RestClient/RestClient.class.php';
+require_once APPLICATION_PATH . '/models/Cert.class.php';
+require_once APPLICATION_PATH . '/models/SSLCRL.class.php';
+require_once APPLICATION_PATH . '/models/SSLKey.class.php';
+
+define('E3_PROV_URL_KEY', "/cxf/e3/prov/v1/keys");
+define('E3_PROV_URL_TRUSTSTORE', "/cxf/e3/prov/v1/truststore");
+define('UNDEFINED_ERROR_TEXT', "Undefined server error");
 
 class CertificateManager{
 
-    public function getKey($id){
-        $url = E3_PROV_URL_KEY."/".rawurlencode($id);
-        $restClient = new RestClient();
-        $reply = $restClient->makeCall($url, "GET");
-        $xml = simplexml_load_string($reply->getPayload());
-        $auth = SSLKey::fromXML($xml->key);
-        return $auth;
+    protected $restClient = null;
+    private static $error;
+
+    public function __construct(){
+        $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/manager.ini');
+
+        $this->restClient = new RestClient($config->manager_host,
+            $config->manager_protocol, $config->manager_port, $config->manager_basicauth);
     }
 
-    public function getAllKeys(){
-        $alKeys = array();
-        $url = E3_PROV_URL_KEY;
-        $restClient = new RestClient();
-        $reply = $restClient->makeCall($url, "GET");
-        $xml = simplexml_load_string($reply->getPayload());
-        foreach($xml->ids->id as $id){
-            $alKeys[] = $this->getKey((string) $id);
+    /**
+     * If no param, returns last error
+     * If param is exception, logs exception and sets error
+     * If param is String, sets error
+     *
+     * @static
+     * @param null $err
+     * @return mixed
+     */
+    public static function error($err = null)
+    {
+        if ($err == null) return CertificateManager::$error;
+        if ($err instanceof Exception) {
+            CertificateManager::$error = $err->getMessage();
+            POLI::logException($err, POLI::ERROR);
+        } else {
+            CertificateManager::$error = $err;
+            POLI::log($err, POLI::ERROR);
+        }
+    }
+
+    /*
+     * Start functions transferred from E3Interface
+     */
+    /**
+     * gets all keys or returns false on error
+     * @return array|bool
+     */
+    public function getAllKeys()
+    {
+        try {
+            return $this->_getAllKeys();
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+
+    /**
+     * gets a specific key by id
+     * @param $p
+     * @return bool|SSLKey
+     */
+    public function getKey($p)
+    {
+        if ($p instanceof SSLKey) {
+            $p = $p->getId();
+        }
+        try {
+            return $this->_getKey($p);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+    /**
+     * creates a key.  should include key content
+     * @param SSLKey $p
+     * @return bool
+     */
+    public function createKey(SSLKey $p)
+    {
+        try {
+            return $this->_setKey($p, true);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+    /**
+     * updates a key object.  note, this shouldn't include
+     * the content of a key.. only on post
+     * @param SSLKey $p
+     * @return bool
+     */
+    public function updateKey(SSLKey $p)
+    {
+        try {
+            return $this->_setKey($p);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+
+    }
+
+
+    /**
+     * deletes a key
+     * @param $p
+     * @return bool
+     */
+    public function deleteKey($p)
+    {
+        if ($p instanceof SSLKey) {
+            $p = $p->getId();
         }
 
-        return $alKeys;
+        try {
+            return $this->_deleteKey($p);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
     }
 
-    public function setKey(SSLKey &$key, $insertMode = FALSE){
 
+    /**
+     * get all of key_id's certs
+     * @param $key_id
+     * @return array|bool
+     */
+    public function getAllCerts($key_id)
+    {
+        try {
+            return $this->_getAllCerts($key_id);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+
+    /**
+     * gets $key_id's cert $cert_id
+     * @param $key_id
+     * @param $cert_id
+     * @return bool|Cert
+     */
+    public function getCert($key_id, $cert_id)
+    {
+        if ($cert_id instanceof Cert) {
+            $cert_id = $cert_id->getId();
+        }
+        try {
+            return $this->_getCert($key_id, $cert_id);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+    /**
+     * creates $key_id's cert
+     * @param $key_id
+     * @param Cert $p
+     * @return bool
+     */
+    public function createCert($key_id, Cert $p)
+    {
+        try {
+            return $this->_setCert($key_id, $p, true);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+    /**
+     * updates $key_id's cert $cert_id
+     * @param $key_id
+     * @param Cert $cert
+     * @return bool
+     */
+    public function updateCert($key_id, Cert $cert)
+    {
+        try {
+            return $this->_setCert($key_id, $cert);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+
+    }
+
+
+    /**
+     * deletes $key_id's cert $cert_id
+     * @param $key_id
+     * @param $cert_id
+     * @return bool
+     */
+    public function deleteCert($key_id, $cert_id)
+    {
+        if ($cert_id instanceof Cert) {
+            $cert_id = $cert_id->getId();
+        }
+
+        try {
+            return $this->_deleteCert($key_id,$cert_id);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+    /**
+     * gets ca $ca_id
+     * @param $ca_id
+     * @return bool|Cert
+     */
+    public function getCA($ca_id)
+    {
+        try {
+            return $this->_getCA($ca_id);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+    /**
+     * gets crl $crl_id
+     * @param $crl_id
+     * @return bool|Cert
+     */
+    public function getCRL($crl_id)
+    {
+        try {
+            return $this->_getCRL($crl_id);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+    /**
+     * gets all certificate authorities or returns false on error
+     * @return array|bool
+     */
+    public function getAllCAs()
+    {
+        try {
+            return $this->_getAllCAs();
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+    /**
+     * add new certificate authority
+     * @param Cert $p
+     * @return bool
+     */
+    public function createCA(Cert $p)
+    {
+        try {
+            return $this->_setCA($p, true);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+    /**
+     * add new revocation list
+     * @param SSLCRL $p
+     * @return bool
+     */
+    public function createCRL(SSLCRL $p)
+    {
+        try {
+            return $this->_setCRL($p, true);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+    /**
+     * gets all revocation lists or returns false on error
+     * @return array|bool
+     */
+    public function getAllCRLs()
+    {
+        try {
+            return $this->_getAllCRLs();
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+    /**
+     * updates ca $ca
+     * @param Cert $cert
+     * @return bool
+     */
+    public function updateCA(Cert $ca)
+    {
+        try {
+            return $this->_setCA($ca);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+
+    }
+
+    /**
+     * updates $key_id's cert $cert_id
+     * @param $key_id
+     * @param Cert $cert
+     * @return bool
+     */
+    public function updateCRL(SSLCRL $crl)
+    {
+        try {
+            return $this->_setCRL($crl);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+
+    }
+
+    /**
+     * deletes $ca_id certificate authority
+     * @param $ca_id
+     * @return bool
+     */
+    public function deleteCA($p)
+    {
+        if ($p instanceof Cert) {
+            $p = $p->getId();
+        }
+
+        try {
+            return $this->_deleteCA($p);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+    /**
+     * deletes $crl_id's crl
+     * @param $crl_id
+     * @return bool
+     */
+    public function deleteCRL($p)
+    {
+        if ($p instanceof SSLCRL) {
+            $p = $p->getId();
+        }
+
+        try {
+            return $this->_deleteCRL($p);
+        } catch (Exception $e) {
+            CertificateManager::error($e);
+        }
+        return false;
+    }
+
+    /*
+    * End functions transferred from E3Interface
+    */
+
+    private function _getKey($id)
+    {
+        $url = E3_PROV_URL_KEY."/".rawurlencode($id);
+        $reply = $this->restClient->makeCall($url, "GET");
+        $xml = simplexml_load_string($reply->getPayload());
+        if ($reply->getHTTPCode() === "200") {
+            $auth = SSLKey::fromXML($xml->key);
+            return $auth;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
+        }
+    }
+
+    private function _getAllKeys()
+    {
+        $alKeys = array();
+        $url = E3_PROV_URL_KEY;
+        $reply = $this->restClient->makeCall($url, "GET");
+        $xml = simplexml_load_string($reply->getPayload());
+        if ($reply->getHTTPCode() === "200") {
+            foreach($xml->ids->id as $id) {
+                $alKeys[] = $this->getKey((string) $id);
+            }
+            return $alKeys;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
+        }
+    }
+
+    private function _setKey(SSLKey &$key, $insertMode = FALSE)
+    {
         $method = "PUT";
         $url = E3_PROV_URL_KEY . "/" . rawurlencode($key->getId());
-        if($insertMode){
+        if ($insertMode) {
             $method = "POST";
             $url = E3_PROV_URL_KEY;
         }
         /**
          * Send the XML payload the the Provisioning Backend
          */
-        $restClient = new RestClient();
-        POLI::log(($insertMode ? "Creating" : "Updating") . " SSLKey: {$key->toXML()}\nEndpoint: ($method) $url", POLI::INFO);
-        $reply = $restClient->makeCall($url, $method, $key->toXML());
-        if($insertMode){
-            if ($key->getId() == NULL){
-                $xml = simplexml_load_string($reply->getPayload());
-                $key->setId((string) $xml->id);
+        $xmlKey = $key->toXML();
+        LoggerInterface::log(($insertMode ? "Creating" : "Updating") . " SSLKey: {$xml}\nEndpoint: ($method) $url", LoggerInterface::INFO);
+        $reply = $this->restClient->makeCall($url, $method, $xmlKey);
+        $xml = simplexml_load_string($reply->getPayload());
+        // TODO: figure out why successful adds sometime return code 100
+        if (($reply->getHTTPCode() === "200") || ($reply->getHTTPCode() === "100")){
+            if ($insertMode) {
+                if ($key->getId() == NULL) {
+                    $key->setId((string) $xml->id);
+                }
             }
+            return $key;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
         }
-        return $key;
-
     }
 
-    public function deleteKey($key_id){
+    private function _deleteKey($key_id)
+    {
         $method = "DELETE";
         $url = E3_PROV_URL_KEY."/".rawurlencode($key_id);
-        $restClient = new RestClient();
-        POLI::log("Deleting SSLKey '$key_id' with DELETE: $url", POLI::INFO);
-        $reply = $restClient->makeCall($url, $method);
-        return true;
-    }
-
-
-    public function getCert($key_id, $cert_id){
-        $url = E3_PROV_URL_KEY."/".rawurlencode($key_id)."/certs/".rawurlencode($cert_id);
-        $restClient = new RestClient();
-        $reply = $restClient->makeCall($url, "GET");
+        LoggerInterface::log("Deleting SSLKey '$key_id' with DELETE: $url", LoggerInterface::INFO);
+        $reply = $this->restClient->makeCall($url, $method);
         $xml = simplexml_load_string($reply->getPayload());
-        $cert = Cert::fromXML($xml->cert);
-        
-        // get certificate expiration date
-        $content = (string) $xml->cert->content;
-        $ts = $this->parseCertificateExpirationDate($content);
-        if($ts)
-        	$cert->setExpirationDate($ts);
-        
-        return $cert;
+        if ($reply->getHTTPCode() === "200") {
+            return true;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
+        }
     }
 
-    public function getAllCerts($key_id){
+
+    private function _getCert($key_id, $cert_id)
+    {
+        $url = E3_PROV_URL_KEY."/".rawurlencode($key_id)."/certs/".rawurlencode($cert_id);
+        $reply = $this->restClient->makeCall($url, "GET");
+        $xml = simplexml_load_string($reply->getPayload());
+        if ($reply->getHTTPCode() === "200") {
+            $cert = Cert::fromXML($xml->cert);
+            // get certificate expiration date
+            $content = (string) $xml->cert->content;
+            $ts = $this->parseCertificateExpirationDate($content);
+            if ($ts) {
+        	    $cert->setExpirationDate($ts);
+            }
+            return $cert;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
+        }
+    }
+
+    private function _getAllCerts($key_id)
+    {
         $alCerts = array();
         $url = E3_PROV_URL_KEY."/".rawurlencode($key_id)."/certs";
-        $restClient = new RestClient();
-        $reply = $restClient->makeCall($url, "GET");
+        $reply = $this->restClient->makeCall($url, "GET");
         $xml = simplexml_load_string($reply->getPayload());
-        foreach($xml->ids->id as $id){
-            $alCerts[] = $this->getCert($key_id, (string) $id);
+        if ($reply->getHTTPCode() === "200") {
+            foreach($xml->ids->id as $id) {
+                $alCerts[] = $this->_getCert($key_id, (string) $id);
+            }
+            return $alCerts;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
         }
-
-        return $alCerts;
     }
 
-    public function setCert($key_id, Cert &$cert, $insertMode = FALSE){
+
+    private function _setCert($key_id, Cert &$cert, $insertMode = FALSE){
 
         $method = "PUT";
         $url = E3_PROV_URL_KEY . "/".rawurlencode($key_id)."/certs/" . rawurlencode($cert->getId());
-        if($insertMode){
+        if ($insertMode) {
             $method = "POST";
             $url = E3_PROV_URL_KEY . "/".rawurlencode($key_id)."/certs";
         }
         /**
          * Send the XML payload the the Provisioning Backend
          */
-        $restClient = new RestClient();
-        POLI::log(($insertMode ? "Creating" : "Updating") . " Cert: {$cert->toXML()}\nEndpoint: ($method) $url", POLI::INFO);
-        $reply = $restClient->makeCall($url, $method, $cert->toXML());
-        if($insertMode){
-            if ($cert->getId() == NULL){
-                $xml = simplexml_load_string($reply->getPayload());
-                $cert->setId((string) $xml->id);
+        $xmlCert = $cert->toXML();
+        LoggerInterface::log(($insertMode ? "Creating" : "Updating") . " Cert: {$cert->toXML()}\nEndpoint: ($method) $url", LoggerInterface::INFO);
+        $reply = $this->restClient->makeCall($url, $method, $xmlCert);
+        $xml = simplexml_load_string($reply->getPayload());
+        // TODO: figure out why successful adds sometime return code 100
+        if (($reply->getHTTPCode() === "200") || ($reply->getHTTPCode() === "100")) {
+            if ($insertMode) {
+                if ($cert->getId() == NULL){
+                    $cert->setId((string) $xml->id);
+                }
             }
+            return $cert;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
         }
-        return $cert;
-
     }
 
-    public function deleteCert($key_id, $cert_id){
+    private function _deleteCert($key_id, $cert_id)
+    {
         $method = "DELETE";
         $url = E3_PROV_URL_KEY."/".rawurlencode($key_id)."/certs/" . $cert_id;
-        $restClient = new RestClient();
-        $reply = $restClient->makeCall($url, $method);
-        return true;
+        $reply = $this->restClient->makeCall($url, $method);
+        $xml = simplexml_load_string($reply->getPayload());
+        if ($reply->getHTTPCode() === "200") {
+            return true;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
+        }
     }
     
     
     /* Trust Store */
-    public function getCA($id){
+    private function _getCA($id)
+    {
     	$url = E3_PROV_URL_TRUSTSTORE.'/certs/'.rawurlencode($id);
-    	$restClient = new RestClient();
-    	$reply = $restClient->makeCall($url, "GET");
+    	$reply = $this->restClient->makeCall($url, "GET");
     	$xml = simplexml_load_string($reply->getPayload());
-    	$cert = Cert::fromXML($xml->cert);
+        if ($reply->getHTTPCode() === "200") {
+            $cert = Cert::fromXML($xml->cert);
     	
-    	// get certificate expiration date
-    	$content = (string) $xml->cert->content;
-    	$ts = $this->parseCertificateExpirationDate($content);
-    	if($ts)
-    		$cert->setExpirationDate($ts);
-    	
-    	return $cert;
+    	    // get certificate expiration date
+    	    $content = (string) $xml->cert->content;
+    	    $ts = $this->parseCertificateExpirationDate($content);
+    	    if ($ts) {
+    		    $cert->setExpirationDate($ts);
+            }
+    	    return $cert;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
+        }
     }
     
-    public function getCRL($id){
+    private function _getCRL($id)
+    {
     	$url = E3_PROV_URL_TRUSTSTORE.'/crls/'.rawurlencode($id);
-    	$restClient = new RestClient();
-    	$reply = $restClient->makeCall($url, "GET");
+    	$reply = $this->restClient->makeCall($url, "GET");
     	$xml = simplexml_load_string($reply->getPayload());
-    	$crl = SSLCRL::fromXML($xml->crl);
+        if ($reply->getHTTPCode() === "200") {
+            $crl = SSLCRL::fromXML($xml->crl);
     	
-    	// get crl expiration date
-    	// crl is base64_encoded
-    	$content = (string) $xml->crl->content;
-    	$ts = $this->parseCRLDates($content);
-    	if($ts) {
-    		$crl->setNextUpdateDate($ts);
-    	}
-    	
-    	return $crl;
+    	    // get crl expiration date
+    	    // crl is base64_encoded
+    	    $content = (string) $xml->crl->content;
+    	    $ts = $this->parseCRLDates($content);
+    	    if ($ts) {
+    		    $crl->setNextUpdateDate($ts);
+    	    }
+            return $crl;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
+        }
     }
     
-    public function getAllCAs(){
+    private function _getAllCAs()
+    {
     	$allCAs = array();
     	$url = E3_PROV_URL_TRUSTSTORE.'/certs';
-    	$restClient = new RestClient();
-    	$reply = $restClient->makeCall($url, "GET");
+    	$reply = $this->restClient->makeCall($url, "GET");
     	$xml = simplexml_load_string($reply->getPayload());
-    	foreach($xml->ids->id as $id){
-    		$allCAs[] = $this->getCA((string) $id);
-    	}
-    
-    	return $allCAs;
+        if ($reply->getHTTPCode() === "200") {
+            foreach ($xml->ids->id as $id) {
+        		$allCAs[] = $this->_getCA((string) $id);
+        	}
+    	    return $allCAs;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
+        }
     }
     
-    public function getAllCRLs(){
+    private function _getAllCRLs()
+    {
     	$alCRLs = array();
     	$url = E3_PROV_URL_TRUSTSTORE.'/crls';
-    	$restClient = new RestClient();
-    	$reply = $restClient->makeCall($url, "GET");
+    	$reply = $this->restClient->makeCall($url, "GET");
     	$xml = simplexml_load_string($reply->getPayload());
-    	foreach($xml->ids->id as $id){
-    		$alCRLs[] = $this->getCRL((string) $id);
-    	}
-    
-    	return $alCRLs;
+        if ($reply->getHTTPCode() === "200") {
+            foreach($xml->ids->id as $id) {
+    		    $alCRLs[] = $this->_getCRL((string) $id);
+    	    }
+    	    return $alCRLs;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
+        }
     }
     
-    public function setCA(Cert &$cert, $insertMode = FALSE){
-    
+    private function _setCA(Cert &$cert, $insertMode = FALSE)
+    {
     	$method = "PUT";
     	$url = E3_PROV_URL_TRUSTSTORE . "/certs/" . rawurlencode($cert->getId());
-    	if($insertMode){
+    	if ($insertMode) {
     		$method = "POST";
     		$url = E3_PROV_URL_TRUSTSTORE . "/certs";
     	}
     	/**
     	 * Send the XML payload the the Provisioning Backend
     	 */
-    	$restClient = new RestClient();
-    	POLI::log(($insertMode ? "Creating" : "Updating") . " Cert: {$cert->toXML()}\nEndpoint: ($method) $url", POLI::INFO);
-    	$reply = $restClient->makeCall($url, $method, $cert->toXML());
-    	if($insertMode){
-    		if ($cert->getId() == NULL){
-    			$xml = simplexml_load_string($reply->getPayload());
-    			$cert->setId((string) $xml->id);
-    		}
-    	}
-    	return $cert;
+    	LoggerInterface::log(($insertMode ? "Creating" : "Updating") . " Cert: {$cert->toXML()}\nEndpoint: ($method) $url", LoggerInterface::INFO);
+    	$reply = $this->restClient->makeCall($url, $method, $cert->toXML());
+        $xml = simplexml_load_string($reply->getPayload());
+        if ($reply->getHTTPCode() === "200") {
+            if ($insertMode) {
+    		    if ($cert->getId() == NULL) {
+    			    $cert->setId((string) $xml->id);
+    		    }
+    	    }
+    	    return $cert;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
+        }
     }
     
-    public function setCRL(SSLCRL &$crl, $insertMode = FALSE){
-    
+    private function _setCRL(SSLCRL &$crl, $insertMode = FALSE)
+    {
     	$method = "PUT";
     	$url = E3_PROV_URL_TRUSTSTORE . "/crls/".rawurlencode($crl->getId());
-    	if($insertMode){
+    	if ($insertMode) {
     		$method = "POST";
     		$url = E3_PROV_URL_TRUSTSTORE . "/crls";
     	}
     	/**
     	 * Send the XML payload the the Provisioning Backend
     	 */
-    	$restClient = new RestClient();
-    	POLI::log(($insertMode ? "Creating" : "Updating") . " CRL: {$crl->toXML()}\nEndpoint: ($method) $url", POLI::INFO);
-    	$reply = $restClient->makeCall($url, $method, $crl->toXML());
-    	if($insertMode){
-    		if ($crl->getId() == NULL){
-    			$xml = simplexml_load_string($reply->getPayload());
-    			$crl->setId((string) $xml->id);
-    		}
-    	}
-    	return $cert;
+    	LoggerInterface::log(($insertMode ? "Creating" : "Updating") . " CRL: {$crl->toXML()}\nEndpoint: ($method) $url", LoggerInterface::INFO);
+    	$reply = $this->restClient->makeCall($url, $method, $crl->toXML());
+        $xml = simplexml_load_string($reply->getPayload());
+
+        if ($reply->getHTTPCode() === "200") {
+            if ($insertMode) {
+    		    if ($crl->getId() == NULL) {
+    			    $crl->setId((string) $xml->id);
+    		    }
+    	    }
+    	    return $crl;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
+        }
     }
     
-    public function deleteCA($ca_id){
+    private function _deleteCA($ca_id)
+    {
     	$method = "DELETE";
     	$url = E3_PROV_URL_TRUSTSTORE."/certs/".rawurlencode($ca_id);
-    	$restClient = new RestClient();
-    	POLI::log("Deleting Certificate Authority '$ca_id' with DELETE: $url", POLI::INFO);
-    	$reply = $restClient->makeCall($url, $method);
-    	return true;
+    	LoggerInterface::log("Deleting Certificate Authority '$ca_id' with DELETE: $url", LoggerInterface::INFO);
+    	$reply = $this->restClient->makeCall($url, $method);
+        $xml = simplexml_load_string($reply->getPayload());
+        if ($reply->getHTTPCode() === "200") {
+            return true;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
+        }
     }
     
-    public function deleteCRL($crl_id){
+    private function _deleteCRL($crl_id)
+    {
     	$method = "DELETE";
     	$url = E3_PROV_URL_TRUSTSTORE."/crls/".rawurlencode($crl_id);
-    	$restClient = new RestClient();
-    	POLI::log("Deleting CRL '$crl_id' with DELETE: $url", POLI::INFO);
-    	$reply = $restClient->makeCall($url, $method);
-    	return true;
+    	LoggerInterface::log("Deleting CRL '$crl_id' with DELETE: $url", LoggerInterface::INFO);
+    	$reply = $this->restClient->makeCall($url, $method);
+        $xml = simplexml_load_string($reply->getPayload());
+        if ($reply->getHTTPCode() === "200") {
+            return true;
+        } else {
+            throw new Exception(!empty($xml->error) ? $xml->error->errorText : UNDEFINED_ERROR_TEXT);
+        }
     }
     
     
@@ -276,7 +717,8 @@ class CertificateManager{
 //     		return false;
 //     }
     
-    private function parseCertificateExpirationDate($content) {
+    private function parseCertificateExpirationDate($content)
+    {
         $tmpfile = tempnam(sys_get_temp_dir(), 'crt');
 		file_put_contents($tmpfile, $content);
 		$cmd = 'openssl x509 -noout -in '.$tmpfile.' -enddate';
@@ -293,7 +735,8 @@ class CertificateManager{
 		}
     }
     
-    private function parseCRLDates($content) {
+    private function parseCRLDates($content)
+    {
     	$tmpfile = tempnam(sys_get_temp_dir(), 'crl');
 		file_put_contents($tmpfile, $content);
 		$cmd = 'openssl crl -noout -in '.$tmpfile.' -nextupdate';

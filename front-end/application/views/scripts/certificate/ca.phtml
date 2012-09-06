@@ -1,0 +1,39 @@
+<?
+require_once APPLICATION_PATH . '/models/Cert.class.php';
+
+$flow = $this->flow;
+$validationErrors = $this->validationErrors; //@$flow->flowScope['validationErrors'];
+$ca = empty($this->ca) ? new Cert() : $this->ca;
+$id = $ca->getId();
+if (!isset($this->isNew)) { $this->isNew = empty($id); }
+$formAction = $this->isNew ? "/certificate/ca/create" : "/certificate/ca/".$id;
+?>
+<div class="container">
+    <h1><?php echo $this->isNew ? "Add" : "Edit"; ?> Trusted Certificate Authority</h1>
+<? if(!empty($validationErrors['default'])):?>
+    <div class="control-group error">
+        <span class="help-inline">Server Error: <?=$validationErrors['default']?></span>
+    </div>
+<? endif; ?>
+    <form class="well form-horizontal" method="POST" enctype="multipart/form-data">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label" for="ca_name">Name</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="ca_name" name="ca_name" value="<?php echo $ca->getDisplayName(); ?>"/>
+                    <input type="hidden" class="input-xlarge" id="ca_id" name="ca_id" value="<?php echo $id ?>" />
+                    <span class="help-inline"><?=@$validationErrors['ca_name']?></span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="ca_file">Certificate</label>
+                <div class="controls">
+                    <input type="file" id="ca_file" name="ca_file" value="Choose file" <?php if (!$this->isNew) { echo 'disabled="disabled"'; } ?>/>
+                    <span class="help-inline"><?=@$validationErrors['ca_file']?></span>
+                </div>
+            </div>
+            <input type="hidden" name="_faction" value="submit" />
+            <input type="submit" class="btn confirm-toggle btn-primary" value="<?php echo $this->isNew ? 'Create' : 'Save'; ?> Certificate Authority" />
+        </fieldset>
+    </form>
+</div> <!-- /container -->

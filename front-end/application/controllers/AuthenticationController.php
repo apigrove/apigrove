@@ -28,31 +28,46 @@ class AuthenticationController extends Zend_Controller_Action{
             $username = $this->_getParam('username');
             $password = $this->_getParam('password');
 
-            $dbAdapter = Zend_Db_Table::getDefaultAdapter();
-            $auth = Zend_Auth::getInstance();
-
-            // Set up the authentication adapter
-            $authAdapter = new Zend_Auth_Adapter_DbTable($dbAdapter, 'users', 'username', 'password');
-            $authAdapter->setIdentity($username);
-            $authAdapter->setCredential($password);
-
-            // Attempt authentication, saving the result
-            $result = $auth->authenticate($authAdapter);
-
-            if (!$result->isValid()) {
-                // Authentication failed; print the reasons why
-                foreach ($result->getMessages() as $message) {
-                    echo "$message\n";
-                }
-            } else {
-                // Succeeded, now redirect to the homepage
-                $this->_helper->redirector->gotoUrl('/');
-
-                // Authentication succeeded; the identity ($username) is stored
-                // in the session
-                // $result->getIdentity() === $authentication->getIdentity()
-                // $result->getIdentity() === $username
+            // Do validation
+            $validationErrors = array();
+            if(empty($username)){
+                $validationErrors['login']['username'] = "Username required";
             }
+            if(empty($password)){
+                $validationErrors['login']['password'] = "Password required";
+            }
+
+            if(empty($validationErrors)){
+                $dbAdapter = Zend_Db_Table::getDefaultAdapter();
+                $auth = Zend_Auth::getInstance();
+
+                // Set up the authentication adapter
+                $authAdapter = new Zend_Auth_Adapter_DbTable($dbAdapter, 'users', 'username', 'password');
+                $authAdapter->setIdentity($username);
+                $authAdapter->setCredential($password);
+
+                // Attempt authentication, saving the result
+                $result = $auth->authenticate($authAdapter);
+
+                if (!$result->isValid()) {
+                    // Authentication failed; print the reasons why
+
+                    $this->view->messages = array("Invalid credentials, check your username and password and try again");
+
+                } else {
+                    // Succeeded, now redirect to the homepage
+                    $this->_helper->redirector->gotoUrl('/');
+
+                    // Authentication succeeded; the identity ($username) is stored
+                    // in the session
+                    // $result->getIdentity() === $authentication->getIdentity()
+                    // $result->getIdentity() === $username
+                }
+            }
+
+            $this->view->username = $username;
+
+            $this->view->validationErrors = $validationErrors;
         }
         // else show the login form
     }
@@ -147,7 +162,7 @@ class AuthenticationController extends Zend_Controller_Action{
      * Create/Modify a user
      */
     public function editAction(){
-        $id = $this->_getParam("id");
+        $id = 1;//$this->_getParam("id");
         $dbAdapter = Zend_Db_Table::getDefaultAdapter();
         $user = array();
 

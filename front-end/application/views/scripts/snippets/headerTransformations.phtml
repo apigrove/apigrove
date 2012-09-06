@@ -40,8 +40,8 @@ for($count = 0; $count <= count($headerTransformations); $count++):
         <span id="headerAdv<?=$count?>" <?= $ht->action !== HeaderTransformationAction::ADD?"style=\"display:none\"":""?>>
              <select class="input-small" name="header[<?=$count?>][type]">
                  <option>Type</option>
-                 <option <?=!empty($ht->property)? "selected":""?>>Property</option>
-                 <option <?=!empty($ht->type)? "selected":""?>>Static</option>
+                 <option <?=$ht->kind===HeaderTransformationType::PROPERTY? "selected":""?>>Property</option>
+                 <option <?=$ht->kind===HeaderTransformationType::STATIC_VAL?"selected":""?>>Static</option>
              </select>
              <input type="text" class="input-small" name="header[<?=$count?>][value]" placeholder="Value" value="<?=empty($ht->value)?$ht->property:$ht->value?>"/>
         </span>

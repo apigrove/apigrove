@@ -12,7 +12,6 @@
  */
 
 /**
- * Created by JetBrains PhpStorm.
  *
  * @version $Id$
  * @copyright 5/2/12 9:34 AM
@@ -150,10 +149,10 @@ class LoggingManager
         if ($err == null) return LoggingManager::$error;
         if ($err instanceof Exception) {
             LoggingManager::$error = $err->getMessage();
-            POLI::logException($err, POLI::ERROR);
+            LoggerInterface::logException($err, LoggerInterface::ERROR);
         } else {
             LoggingManager::$error = $err;
-            POLI::log($err, POLI::ERROR);
+            LoggerInterface::log($err, LoggerInterface::ERROR);
         }
     }
 

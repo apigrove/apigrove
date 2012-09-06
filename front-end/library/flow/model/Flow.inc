@@ -129,6 +129,7 @@ class Flow{
 
             // give the message to drupal
             if(!empty($transition->flashMessage)){
+                $this->controller->getZendFlashMessenger()->addMessage($transition->flashMessage);
                 $this->flashMessage = $transition->flashMessage;
             }
 

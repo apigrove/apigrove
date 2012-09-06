@@ -17,7 +17,7 @@
     </state>
     <state id="submit">
         <on-enter callback="validateFormAndSubmit" />
-        <transition on="valid" to="finished" flashMessage="Auth Created"/>
+        <transition on="valid" to="finished" flashMessage="Successfully Created/Updated Auth"/>
         <transition on="invalid" to="form"  />
     </state>
     <state id="finished" view="redirect:/auth" type="end"/>

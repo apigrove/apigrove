@@ -49,6 +49,15 @@ $formAction = $this->isNew ? "/policy/create" : "/policy/".$id;
         <span class="help-inline">Server Error: <?=$validationErrors['default']?></span>
     </div>
     <? endif; ?>
+    <? if(!empty($this->messages)): ?>
+    <div class="control-group success">
+                <span class="help-block">
+                    <? foreach ($this->messages as $message): ?>
+                    <?=$message?>
+                    <? endforeach ?>
+                </span>
+    </div>
+    <? endif ?>
     <form class="well form-horizontal" action="<?php echo $formAction ?>" method="POST">
         <fieldset>
             <div class="control-group">
@@ -62,7 +71,7 @@ $formAction = $this->isNew ? "/policy/create" : "/policy/".$id;
                 <label class="control-label" for="selectAPI">APIs</label>
                 <div class="controls">
                     <select id="selectAPI" name="selected_api[]" multiple="multiple" style="width: 400px; height: 200px;">
-                    <?php foreach ($this->apis as $api): ?>
+                        <?php foreach ($this->apis as $api): ?>
                         <?php $apiId = $api->getId(); $policyApiIds = $policy->getApiIds(); $selectedAttr = '';
                         if (!empty($policyApiIds)) {
                             foreach ($policyApiIds as $policyApiId) {
@@ -79,18 +88,18 @@ $formAction = $this->isNew ? "/policy/create" : "/policy/".$id;
                 <label class="control-label" for="selectAuth">Auths</label>
                 <div class="controls">
                     <select id="selectAuth" name="selected_auth[]" multiple="multiple" style="width: 400px; height: 200px;">
-                    <?php foreach ($this->auths as $auth): ?>
+                        <?php foreach ($this->auths as $auth): ?>
                         <?php $authId = $auth->getId(); $policyAuthIds = (!empty($policy->authIds[0]) ? $policy->authIds[0]->authIds : null); $selectedAttr = '';
-                        if (!empty($policyApiIds)) {
+                        if (!empty($policyAuthIds)) {
                             foreach ($policyAuthIds as $policyAuthId) {
                                 if ($policyAuthId === $authId) { $selectedAttr = 'selected="selected"'; break; }
                             }
                         } ?>
                         <option value="<?= $this->escape($authId); ?>" <?php echo $selectedAttr ?>><?= $this->escape($authId.": ".$auth->getType()); ?></option>
-                    <?php endforeach ?>
+                        <?php endforeach ?>
                     </select>
                     <span class="help-inline">Choose which Auths this Policy will apply to.</span>
-                    <input type="hidden" class="input-xlarge" id="auth_bucket_id" name="auth_bucket_id" value="<?php echo $authBucketId ?>" />
+                    <input type="hidden" class="input-xlarge" id="auth_bucket_id" name="auth_bucket_id" value="<?= $authBucketId ?>" />
                 </div>
             </div>
 
@@ -111,13 +120,13 @@ $formAction = $this->isNew ? "/policy/create" : "/policy/".$id;
             $per_month_warning = !empty($per_month_counter) ? $per_month_counter->getWarning() : null;
             $per_month_threshold = !empty($per_month_counter) ? $per_month_counter->getThreshold() : null;
             $advancedOpen = (!empty($per_second_warning) || !empty($per_second_threshold)
-            || !empty($per_minute_warning) || !empty($per_minute_threshold)
-            || !empty($per_day_warning) || !empty($per_day_threshold)
-            || !empty($per_week_warning) || !empty($per_week_threshold)
-            || !empty($per_month_warning) || !empty($per_month_threshold)
-            || !empty($policy->headerTransformations) || !empty($policy->properties)
-            || !empty($policy->tdr->dynamicTdrs)
-            || !empty($policy->tdrData->staticTdrs));?>
+                || !empty($per_minute_warning) || !empty($per_minute_threshold)
+                || !empty($per_day_warning) || !empty($per_day_threshold)
+                || !empty($per_week_warning) || !empty($per_week_threshold)
+                || !empty($per_month_warning) || !empty($per_month_threshold)
+                || !empty($policy->headerTransformations) || !empty($policy->properties)
+                || !empty($policy->tdr->dynamicTdrs)
+                || !empty($policy->tdrData->staticTdrs));?>
             <div class="control-group property">
                 <label class="control-label"><button class="btn" id="showAdvanced"><strong>Advanced</strong>
                     <i class="icon-chevron-down advbtn" <?=!$advancedOpen?"":"style=\"display:none\""?>></i><i class="icon-chevron-up advbtn" <?=$advancedOpen?"":"style=\"display:none\""?>></i>

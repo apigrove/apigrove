@@ -22,7 +22,7 @@
 define('E3_PROV_URL_AUTH', "/cxf/e3/prov/v1/auths");
 
 require_once "RestClient/RestClient.class.php";
-require_once "Logging/POLI.php";
+require_once "Logging/LoggerInterface.php";
 
 class AuthManager{
 
@@ -89,7 +89,7 @@ class AuthManager{
         /**
          * Send the XML payload the the Provisioning Backend
          */
-        POLI::log(($insertMode ? "Creating" : "Updating") . " Auth: {$auth->toXML()}\nEndpoint: ($method) $url", POLI::INFO);
+        LoggerInterface::log(($insertMode ? "Creating" : "Updating") . " Auth: {$auth->toXML()}\nEndpoint: ($method) $url", LoggerInterface::INFO);
         $reply = $this->restClient->makeCall($url, $method, $auth->toXML());
         if($insertMode){
             $auth = new Auth();

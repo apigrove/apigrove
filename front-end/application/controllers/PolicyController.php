@@ -11,11 +11,9 @@
  * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
  */
 /**
- * Created by JetBrains PhpStorm.
  * User: David
  * Date: 8/22/12
  * Time: 6:49 PM
- * To change this template use File | Settings | File Templates.
  */
 
 require_once APPLICATION_PATH . '/managers/PolicyManager.class.php';
@@ -48,7 +46,9 @@ class PolicyController extends Zend_Controller_Action{
      */
     public function indexAction()
     {
-//        //print_r("indexAction");
+        //        //print_r("indexAction");
+        $messenger = $this->_helper->getHelper('FlashMessenger');
+        $this->view->messages = $messenger->getMessages();
         $this->apiList = $this->policyManager->getAllApis();
         $this->view->apis = $this->apiList;
         $this->authList = $this->policyManager->getAllAuths();
@@ -82,7 +82,7 @@ class PolicyController extends Zend_Controller_Action{
         } else {
             $this->editAction($id);
         }
-     }
+    }
 
     /**
      * Handle the create-new request on the Policy detail form
@@ -130,6 +130,8 @@ class PolicyController extends Zend_Controller_Action{
             }
         }
         if ($success) {
+            $messenger = $this->_helper->getHelper('FlashMessenger');
+            $messenger->addMessage("Successfully Created Policy");
             $this->_redirect("/policy");
         } else {
             $this->view->isNew = true;
@@ -158,6 +160,8 @@ class PolicyController extends Zend_Controller_Action{
             }
         }
         if ($success) {
+            $messenger = $this->_helper->getHelper('FlashMessenger');
+            $messenger->addMessage("Successfully Updated Policy");
             $this->_redirect("/policy");
         } else {
             $this->view->isNew = false;
@@ -219,6 +223,7 @@ class PolicyController extends Zend_Controller_Action{
         // (Properties, Header Transformations and TDR Rules not yet handled)
         $context = $this->validateRatesAndGetContext($validationErrors);
         if ($context != null) {
+            $context->setId("pctx");
             $contexts[] = $context;
             $policy->setContexts($contexts);
         }
@@ -238,6 +243,7 @@ class PolicyController extends Zend_Controller_Action{
     private function validateStandardFieldsAndGetPolicy($policyId, &$validationErrors)
     {
         $policy = new Policy();
+
         $validate_alnum = new Zend_Validate_Alnum();
         if (empty($policyId)) {
             $policyId = $_POST['policy_id'];
@@ -252,9 +258,9 @@ class PolicyController extends Zend_Controller_Action{
         if (isset($_POST['selected_api'])) {
             $policy->setApiIds($this->getSelectedApis());
         }
-        if (isset($_POST['selected_auth'])) {
-            $policy->setAuthIds($this->getSelectedAuths($_POST['auth_bucket_id']));
-        }
+
+        $policy->setAuthIds($this->getSelectedAuths($_POST['auth_bucket_id']));
+
         return $policy;
     }
 
@@ -313,7 +319,7 @@ class PolicyController extends Zend_Controller_Action{
         // Validation based on (Drupal-based UI) code from e3_ui_policy_add_context_submit_validate
         if (!empty($_POST[$quotaName]['warning']) || !empty($_POST[$quotaName]['threshold'])) {
             $counter->setAction($_POST[$quotaName]['action']);
-//            $counter->setStatus($_POST[$quotaName]['status']);
+            //            $counter->setStatus($_POST[$quotaName]['status']);
             $threshold = !empty($_POST[$quotaName]['threshold']) ? trim($_POST[$quotaName]['threshold']) : "0";
             $warning = !empty($_POST[$quotaName]['warning']) ? trim($_POST[$quotaName]['warning']) : "0";
             $counter->setThreshold($threshold);
@@ -392,7 +398,7 @@ class PolicyController extends Zend_Controller_Action{
     {
         $selectedAuths = array();
         $authIdstype = new AuthIdsType();
-        $authIdstype->authIds = $_POST['selected_auth'];
+        $authIdstype->authIds = @$_POST['selected_auth'];
         $authBucketId = isset($_POST['auth_bucket_id']) ? $_POST['auth_bucket_id'] : null;
         if (!empty($authBucketId)) {
             $authIdstype->setId($authBucketId);
