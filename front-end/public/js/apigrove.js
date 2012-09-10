@@ -126,6 +126,10 @@ $(document).ready(function() {
 
     $(document).ready(function(event){
         handleAuthTypeClick($("#type"), "fast");
+        handleProvAuthTypeClick($("#provauth-authKey"), "fast");
+        handleProvAuthTypeClick($("#https"), "fast");
+        handleProvAuthTypeClick($("#tdrsenabled"), "fast");
+        setupDeleteButtons();
     });
 
     function handleAuthTypeClick(ele, speed){
@@ -156,11 +160,6 @@ $(document).ready(function() {
         //ele.addClass("active");
     }
 
-    $(document).ready(function(event){
-        handleProvAuthTypeClick($("#provauth-authKey"), "fast");
-        handleProvAuthTypeClick($("#https"), "fast");
-        handleProvAuthTypeClick($("#tdrsenabled"), "fast");
-    });
 
     function handleProvAuthTypeClick(ele, speed){
         var id = $(ele).attr("id");
@@ -386,4 +385,29 @@ $(document).ready(function() {
         document.getElementById('showUrl').innerHTML = url;
         $('#hiddenField').val(url);
     }
+
+
+    function setupDeleteButtons(){
+
+        $("a.delete").each(function(index, element){
+            var me = $(element);
+            var confirm = me.clone();
+            me.parent().append(confirm);
+            confirm.text("Confirm " + me.text());
+            confirm.hide();
+            me.click(function(event){
+                event.preventDefault();
+                me.hide();
+                confirm.show();
+                confirm.popover({trigger:"manual", title:"Are you sure?", content:"click again to be confirm"});
+                confirm.popover("show");
+            });
+            confirm.mouseout(function(event){
+                me.show();
+                confirm.hide();
+                confirm.popover("hide");
+            });
+        });
+    }
+
 });

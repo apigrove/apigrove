@@ -20,7 +20,7 @@ $crls = $this->crls;
                 <div class="item-div pull-left"><label class="item1"><a href="/certificate/key/<?php echo $key->getId();?>"><strong><?php echo $key->getDisplayName();?></strong></a></label></div>
                 <div class="item-div pull-left">
                       <span class="item4">
-                      <a href="/certificate/key/<?php echo $key->getId()?>/delete" class="btn btn-danger">Delete</a>
+                      <a href="/certificate/key/<?php echo $key->getId()?>/delete" class="btn btn-danger delete">Delete</a>
                       </span>
                 </div>
             </div>
@@ -42,7 +42,7 @@ $crls = $this->crls;
                 <div class="item-div pull-left"><label class="item2"><?php echo $ca->getExpirationDate();?></label></div>
                 <div class="item-div pull-left">
                       <span class="item4">
-                      <a href="/certificate/ca/<?php echo $ca->getId()?>/delete" class="btn btn-danger">Delete</a>
+                      <a href="/certificate/ca/<?php echo $ca->getId()?>/delete" class="btn btn-danger delete">Delete</a>
                       </span>
                 </div>
             </div>
@@ -64,7 +64,7 @@ $crls = $this->crls;
                 <div class="item-div pull-left"><label class="item2"><?php echo $crl->getNextUpdateDate();?></label></div>
                 <div class="item-div pull-left">
                       <span class="item4">
-                      <a href="/certificate/crl/<?php echo $crl->getId()?>/delete" class="btn btn-danger">Delete</a>
+                      <a href="/certificate/crl/<?php echo $crl->getId()?>/delete" class="btn btn-danger delete">Delete</a>
                       </span>
                 </div>
             </div>

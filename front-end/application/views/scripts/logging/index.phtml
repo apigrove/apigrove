@@ -53,7 +53,7 @@ $logDepthSelections = array(
     <?php
     if ($this->logCollection) {
         $i = 0;
-        foreach ($this->logCollection as $ip => $logSource) {
+        foreach ($this->logCollection as $ip => $sourceArray) {
             $ipSanitized = preg_replace("|\\.|", "_", $ip);?>
             <div class="accordion-group">
                 <div class="accordion-heading">
@@ -66,17 +66,17 @@ $logDepthSelections = array(
                     echo "auto";
                 }?>">
                     <div class="accordion-inner">
-                        <div class="accordion" id="accordion<? echo $ip;?>">
+                        <div class="accordion" id="accordion<? echo $ipSanitized;?>">
                             <?
-                            foreach ($logSource as $source => $lines) { $ipSource = $ipSanitized . "-" . $source;?>
+                            foreach ($sourceArray as $source => $lines) { $ipSource = $ipSanitized . "-" . $source;?>
                                 <div class="accordion-group">
                                     <div class="accordion-heading">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion<? echo $ip;?>" href="#collapse<? echo $ip . $source;?>">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion<? echo $ipSanitized;?>" href="#collapse<? echo $ipSanitized . $source;?>">
                                             <?php $sourceName = !empty(LogConfig::$logSources[$source]) ? LogConfig::$logSources[$source] : $source; ?>
                                             <strong><? echo $sourceName; ?></strong>
                                         </a>
                                     </div>
-                                    <div id="collapse<? echo $ip . $source;?>" class="accordion-body collapse" style="height: 0px; ">
+                                    <div id="collapse<? echo $ipSanitized . $source;?>" class="accordion-body collapse" style="height: 0px; ">
                                         <div class="accordion-inner limit-height">
                                             <? foreach ($lines as $line) {
                                                 echo htmlspecialchars($line), "<br/>\n";
