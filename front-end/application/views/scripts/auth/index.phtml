@@ -23,7 +23,7 @@ $auths = $this->auths;
     </div>
     <? if(!empty($this->messages)): ?>
     <div class="control-group success">
-            <span class="help-block">
+            <span class="help-block" id="messages">
                 <? foreach ($this->messages as $message): ?>
                 <?=$message?>
                 <? endforeach ?>
@@ -40,7 +40,9 @@ $auths = $this->auths;
             </div>
             <? foreach($auths as $auth){?>
             <div class="listItem">
-                <div class="item-div pull-left"><label class="item1"><a href="/auth/<?=$auth->id;?>"><strong><?if(strlen($auth->id) > 15){ echo substr($auth->id, 0, 15) . "...";}else{ echo $auth->id;} ;?></strong></a></label></div>
+                <div class="item-div pull-left"><label class="item1">
+                    <a id="<?=$auth->id?>" href="/auth/<?=$auth->id;?>"><strong><?if(strlen($auth->id) > 15){ echo substr($auth->id, 0, 15) . "...";}else{ echo $auth->id;} ;?></strong></a>
+                </label></div>
                 <div class="item-div pull-left"><span class="item2"><?=$auth->type;?></span></div>
                 <div class="item-div pull-left"><span class="item3"><?
                     switch($auth->type){
@@ -59,7 +61,7 @@ $auths = $this->auths;
                     }?></span></div>
                 <div class="item-div pull-left" align="center">
                       <span class="item4">
-                      <a class="btn btn-danger delete" href="/auth/<?=$auth->id?>/delete" >Delete</a>
+                      <a class="btn btn-danger delete" href="/auth/<?=$auth->id?>/delete" id="delete-<?=$auth->id?>">Delete</a>
                       </span>
                 </div>
             </div>

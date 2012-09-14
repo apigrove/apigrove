@@ -55,10 +55,10 @@ class CertificateManager{
         if ($err == null) return CertificateManager::$error;
         if ($err instanceof Exception) {
             CertificateManager::$error = $err->getMessage();
-            POLI::logException($err, POLI::ERROR);
+            LoggerInterface::logException($err, LoggerInterface::ERROR);
         } else {
             CertificateManager::$error = $err;
-            POLI::log($err, POLI::ERROR);
+            LoggerInterface::log($err, LoggerInterface::ERROR);
         }
     }
 

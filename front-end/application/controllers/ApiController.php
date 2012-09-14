@@ -65,6 +65,7 @@ class ApiController extends FlowController {
                 if($response){
                     if((string)$response->status === "SUCCESS"){
                         //success!
+                        $this->_helper->FlashMessenger("Api Successfully Deleted");
                     } else {
                         $this->_helper->FlashMessenger("Error deleting api $apiid : ".$response->error->errorText);
                     }
@@ -117,6 +118,8 @@ class ApiController extends FlowController {
                 $context->setMaxRateLimitTPSWarning(-1);
                 $context->setMaxRateLimitTPSThreshold(-1);
                 $api->setContexts(array($context));
+                $methods = array("GET","POST","PUT","DELETE");
+                $api->setAllowedHttpMethods($methods);
                 $flowScope["api"] = $api;
 
             } else {

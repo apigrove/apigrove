@@ -20,6 +20,8 @@ class CertificateController extends Zend_Controller_Action{
 
     public function indexAction()
     {
+        $messenger = $this->_helper->getHelper('FlashMessenger');
+        $this->view->messages = $messenger->getMessages();
         $this->keyList = $this->certificateManager->getAllKeys();
         $this->view->keys = $this->keyList;
         $this->caList = $this->certificateManager->getAllCAs();
@@ -121,9 +123,11 @@ class CertificateController extends Zend_Controller_Action{
         }
 
         if ($success) {
+            $messenger = $this->_helper->getHelper('FlashMessenger');
+            $messenger->addMessage($newKey ? "Successfully Created Key" : "Successfully Updated Key");
             $this->_redirect("/certificate");
         } else {
-            $this->view->isNew = empty($id);
+            $this->view->isNew = $newKey;
             $this->view->validationErrors = $validationErrors;
             $this->view->key = $key;
             $this->view->cert = $cert;
@@ -136,7 +140,10 @@ class CertificateController extends Zend_Controller_Action{
     public function keydeleteAction()
     {
         // Do we need to delete certs associated with this key, or does server do so?
-        $this->certificateManager->deleteKey($this->_getParam("id"));
+        if ($this->certificateManager->deleteKey($this->_getParam("id"))) {
+            $messenger = $this->_helper->getHelper('FlashMessenger');
+            $messenger->addMessage("Successfully Deleted Key");
+        }
         $this->_redirect("/certificate");
     }
 
@@ -262,17 +269,20 @@ class CertificateController extends Zend_Controller_Action{
         $success = false;
         $validationErrors = array();
         $ca = $this->validateFormAndGetCA($validationErrors);
+        $newCA = empty($id);
         if (count($validationErrors) == 0) {
-            $success = empty($id) ? $this->certificateManager->createCA($ca) : $this->certificateManager->updateCA($ca);
+            $success = $newCA ? $this->certificateManager->createCA($ca) : $this->certificateManager->updateCA($ca);
             if (!$success)  {
-                $operation = empty($id) ? "creating" : "updating";
+                $operation = $newCA ? "creating" : "updating";
                 $validationErrors['default'] = "Error ".$operation." CA: ".CertificateManager::error();
             }
         }
         if ($success) {
+            $messenger = $this->_helper->getHelper('FlashMessenger');
+            $messenger->addMessage($newCA ? "Successfully Created Certificate Authority" : "Successfully Updated Certificate Authority");
             $this->_redirect("/certificate");
         } else {
-            $this->view->isNew = empty($id);
+            $this->view->isNew = $newCA;
             $this->view->validationErrors = $validationErrors;
             $this->view->ca = $ca;
         }
@@ -283,7 +293,10 @@ class CertificateController extends Zend_Controller_Action{
      */
     public function cadeleteAction()
     {
-        $this->certificateManager->deleteCA($this->_getParam("id"));
+        if ($this->certificateManager->deleteCA($this->_getParam("id"))) {
+            $messenger = $this->_helper->getHelper('FlashMessenger');
+            $messenger->addMessage("Successfully Deleted Certificate Authority");
+        }
         $this->_redirect("/certificate");
     }
 
@@ -363,19 +376,22 @@ class CertificateController extends Zend_Controller_Action{
         //print_r($_POST);
         $success = false;
         $validationErrors = array();
+        $newCRL = empty($id);
 
         $crl = $this->validateFormAndGetCRL($validationErrors);
         if (count($validationErrors) == 0) {
-            $success = empty($id) ? $this->certificateManager->createCRL($crl) : $this->certificateManager->updateCRL($crl);
+            $success = $newCRL ? $this->certificateManager->createCRL($crl) : $this->certificateManager->updateCRL($crl);
             if (!$success)  {
-                $operation = empty($id) ? "creating" : "updating";
+                $operation = $newCRL ? "creating" : "updating";
                 $validationErrors['default'] = "Error ".$operation." CRL: ".CertificateManager::error();
             }
         }
         if ($success) {
+            $messenger = $this->_helper->getHelper('FlashMessenger');
+            $messenger->addMessage($newCRL ? "Successfully Created Certificate Revocation List" : "Successfully Updated Certificate Revocation List");
             $this->_redirect("/certificate");
         } else {
-            $this->view->isNew = empty($id);
+            $this->view->isNew = $newCRL;
             $this->view->validationErrors = $validationErrors;
             $this->view->crl = $crl;
         }
@@ -386,7 +402,10 @@ class CertificateController extends Zend_Controller_Action{
      */
     public function crldeleteAction()
     {
-        $this->certificateManager->deleteCRL($this->_getParam("id"));
+        if ($this->certificateManager->deleteCRL($this->_getParam("id"))) {
+            $messenger = $this->_helper->getHelper('FlashMessenger');
+            $messenger->addMessage("Successfully Deleted Certificate Revocation List");
+        }
         $this->_redirect("/certificate");
     }
 

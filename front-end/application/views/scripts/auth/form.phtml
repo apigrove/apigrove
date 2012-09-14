@@ -54,16 +54,16 @@ else if($auth->type === AuthType::$WSSE){
                 <label class="control-label" for="authCheck" reado>Type</label>
                 <div class="controls">
                     <div class="btn-group" data-toggle="buttons-radio" id="authCheck">
-                        <a class="btn auth hiddenValue <?=$auth->type==="basic"?"active":""?>" inputId="type" value="basic">Basic</a>
-                        <a class="btn auth hiddenValue <?=$auth->type==="authKey"?"active":""?>" inputId="type" value="authKey">Auth Key</a>
-                        <a class="btn auth hiddenValue <?=$auth->type==="wsse"?"active":""?>" inputId="type" value="wsse">WSSE</a>
-                        <a class="btn auth hiddenValue <?=$auth->type==="ipWhiteList"?"active":""?>" inputId="type" value="ipWhiteList">IP Whitelist</a>
+                        <a class="btn auth hiddenValue <?=$auth->type==="basic"?"active":""?>" inputId="type" value="basic" id="authtype-basic">Basic</a>
+                        <a class="btn auth hiddenValue <?=$auth->type==="authKey"?"active":""?>" inputId="type" value="authKey" id="authtype-authkey">Auth Key</a>
+                        <a class="btn auth hiddenValue <?=$auth->type==="wsse"?"active":""?>" inputId="type" value="wsse" id="authtype-wsse">WSSE</a>
+                        <a class="btn auth hiddenValue <?=$auth->type==="ipWhiteList"?"active":""?>" inputId="type" value="ipWhiteList" id="authtype-ipwhitelist">IP Whitelist</a>
                     </div>
                     <input type="hidden" name="type" value="<?=$auth->type?>" id="type"/>
                 </div>
             </div>
             <span id="un-pw" style="display:none">
-                <div id="userName"class="control-group <?=(!empty($validationErrors['username']))?"error":""?>">
+                <div id="userName" class="control-group <?=(!empty($validationErrors['username']))?"error":""?>">
                     <label class="control-label" for="userName0">Username</label>
                     <div class="controls">
                         <input type="text" class="input-xlarge" id="userName0" name="username" value="<?=$username?>"/>
@@ -85,7 +85,7 @@ else if($auth->type === AuthType::$WSSE){
                     <span class="help-inline"><?=@$validationErrors['authKey']?></span>
                 </div>
             </div>
-            <div id="IPs" class="control-group <?=!empty($validationErrors['ipWhiteList'])?"error":""?>" style="display:none">
+            <div id="IPs"  class="control-group <?=!empty($validationErrors['ipWhiteList'])?"error":""?>" style="display:none">
                 <label class="control-label" for="selectIPs">IPs</label>
                 <div class="controls">
                     <textarea type="text" class="input-xlarge" id="selectIPs" name="ipWhiteList" ><?=implode(",",$auth->ipWhiteListAuth->ips) ?></textarea>
@@ -96,7 +96,7 @@ else if($auth->type === AuthType::$WSSE){
                             || !empty($auth->tdrData->dynamicTdrs)
                             || !empty($auth->tdrData->staticTdrs)
                             || $auth->status !== 'active');?>
-            <div class="control-group property">
+            <div class="control-group">
                 <label class="control-label"><button class="btn" id="showAdvanced"><strong>Advanced</strong>
                     <i class="icon-chevron-down advbtn" <?=!$advancedOpen?"":"style=\"display:none\""?>></i><i class="icon-chevron-up advbtn" <?=$advancedOpen?"":"style=\"display:none\""?>></i>
                 </button></label>

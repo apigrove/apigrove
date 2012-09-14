@@ -15,11 +15,11 @@
 <div class="container">
     <div class="hero-unit">
         <h1>APIs</h1>
-        <p>Choose and API from the list below to edit</p>
+        <p>Choose an API from the list below to edit</p>
     </div>
     <? if(!empty($this->messages)): ?>
     <div class="control-group success">
-            <span class="help-block">
+            <span id="messages" class="help-block">
                 <? foreach ($this->messages as $message): ?>
                 <?=$message?>
                 <? endforeach ?>
@@ -35,14 +35,15 @@
                 <div class="item-div pull-left"><span class="item4"><a href="/api/create" class="btn btn-success">+</a></div>
                 <span class="clear"></span>
             </div>
-            <?          foreach($this->apis as $api):
+<?          foreach($this->apis as $api):
             /**
              * @var Api $api
              */
             $name = $api->getDisplayName();
-            $endpoint = $api->getEndpoint();?>
+            $endpoint = $api->getEndpoint();
+            $id = $api->getId(); ?>
             <div class="listItem">
-                <div class="item-div pull-left"><label class="item1"><a href="api/<?= $api->getId()?>"><strong><?if(strlen($name) > 15){ echo substr($name, 0, 15) . "...";}else{ echo $name;} ;?></strong></a></label></div>
+                <div class="item-div pull-left"><label class="item1"><a id="edit-<?=$name?>" href="api/<?=$id?>"><strong><?if(strlen($name) > 15){ echo substr($name, 0, 15) . "...";}else{ echo $name;} ;?></strong></a></label></div>
                 <div class="item-div pull-left"><span class="item2"><?if(strlen($endpoint) > 15){ echo substr($endpoint, 0, 15) . "...";}else{ echo $endpoint;} ;?></span></div>
                 <? /*
                     <div class="item-div pull-left">
@@ -54,11 +55,11 @@
                 ?>
                 <div class="item-div pull-left">
                         <span class="item5">
-                            <a href="/api/<?=$api->getId()?>/delete" class="btn btn-danger delete">Delete</a>
+                            <a href="/api/<?=$api->getId()?>/delete" class="btn btn-danger delete" id="delete-<?=$api->getId()?>">Delete</a>
                         </span>
                 </div>
             </div>
-            <?          endforeach; ?>
+<?          endforeach; ?>
         </div>
     </div>
 </div> <!-- /container -->

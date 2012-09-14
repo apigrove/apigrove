@@ -17,6 +17,8 @@
  * Date: 4/12/12
  *
  */
+require_once "WSSEPasswordType.php";
+
 class WSSEAuth
 {
     /**

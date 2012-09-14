@@ -17,36 +17,40 @@ $validationErrors = $this->validationErrors;
 
 <div class="container">
     <h1><?=empty($user['id'])?"Create New User":"User Settings"?></h1>
-    <? if(!empty($this->flashMessage)): ?>
-    <div class="control-group success"><span class="help-block"><?=$this->flashMessage?></span></div>
+    <? if(!empty($this->messages)): ?>
+    <div class="control-group success">
+        <span class="help-block" id="messages">
+            <?=implode(". ",$this->messages)?>
+        </span>
+    </div>
     <? endif ?>
     <? if(!empty($validationErrors['default'])): ?>
     <div class="control-group error"><span class="help-block"><?=$validationErrors['default']?></span></div>
     <? endif ?>
     <form method="POST" class="well form-horizontal">
         <fieldset>
-            <div class="control-group <?=empty($validationErrors['username'])?"":"error"?>">
+            <div class="control-group <?=empty($validationErrors['username'])?"":"error"?>" id="controlGroup-username">
                 <label class="control-label" for="username">Username</label>
                 <div class="controls">
                     <input type="text" name="user[username]" id="username" value="<?=@$user['username']?>"/>
                     <span class="help-inline"><?=@$validationErrors['username']?></span>
                 </div>
             </div>
-            <div class="control-group <?=empty($validationErrors['password'])?"":"error"?>">
+            <div class="control-group <?=empty($validationErrors['password'])?"":"error"?>" id="controlGroup-password">
                 <label class="control-label" for="password">Password</label>
                 <div class="controls">
                     <input type="password" name="user[password]" id="password" value="<?=@$user['password']?>"/>
                     <span class="help-inline"><?=@$validationErrors['password']?></span>
                 </div>
             </div>
-            <div class="control-group <?=empty($validationErrors['passwordConfirm'])?"":"error"?>">
+            <div class="control-group <?=empty($validationErrors['passwordConfirm'])?"":"error"?>" id="controlGroup-passwordConfirm">
                 <label class="control-label" for="passwordConfirm">Confirm Password</label>
                 <div class="controls">
                     <input type="password" name="user[passwordConfirm]" id="passwordConfirm" value="<?=@$user['passwordConfirm']?>"/>
                     <span class="help-inline"><?=@$validationErrors['passwordConfirm']?></span>
                 </div>
             </div>
-            <div class="control-group <?=empty($validationErrors['real_name'])?"":"error"?>">
+            <div class="control-group <?=empty($validationErrors['real_name'])?"":"error"?>" id="controlGroup-real_name">
                 <label class="control-label" for="real_name">Real Name</label>
                 <div class="controls">
                     <input type="text" name="user[real_name]" id="real_name" value="<?=@$user['real_name']?>"/>

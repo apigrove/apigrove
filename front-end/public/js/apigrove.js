@@ -393,13 +393,15 @@ $(document).ready(function() {
             var me = $(element);
             var confirm = me.clone();
             me.parent().append(confirm);
+            confirm.attr("id", me.attr("id")+"-confirm");
             confirm.text("Confirm " + me.text());
+
             confirm.hide();
             me.click(function(event){
                 event.preventDefault();
                 me.hide();
                 confirm.show();
-                confirm.popover({trigger:"manual", title:"Are you sure?", content:"click again to be confirm"});
+                confirm.popover({trigger:"manual", title:"Are you sure?", content:"Click again to confirm"});
                 confirm.popover("show");
             });
             confirm.mouseout(function(event){

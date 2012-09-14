@@ -11,9 +11,9 @@
  * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
  */
 /**
- * User: David
+ * Controller to handle all Policy-related operations
+ *
  * Date: 8/22/12
- * Time: 6:49 PM
  */
 
 require_once APPLICATION_PATH . '/managers/PolicyManager.class.php';
@@ -220,7 +220,6 @@ class PolicyController extends Zend_Controller_Action{
         $policy = $this->validateStandardFieldsAndGetPolicy($policyId, $validationErrors);
 
         // Set the policy context by getting and validating rate fields
-        // (Properties, Header Transformations and TDR Rules not yet handled)
         $context = $this->validateRatesAndGetContext($validationErrors);
         if ($context != null) {
             $context->setId("pctx");
@@ -245,6 +244,8 @@ class PolicyController extends Zend_Controller_Action{
         $policy = new Policy();
 
         $validate_alnum = new Zend_Validate_Alnum();
+        //$validate_id_regex = new Zend_Validate_Regex(array('pattern' => '/^[a-z0-9A-Z-_ ]{1,256}$/'));
+        //$validate_id_len = new Zend_Validate_StringLength(array('min' => 1, 'max' => 256));
         if (empty($policyId)) {
             $policyId = $_POST['policy_id'];
         }
@@ -276,23 +277,23 @@ class PolicyController extends Zend_Controller_Action{
     {
         $context = $this->getDefaultContext();
         $counter = $this->validateRateAndGetCounterForPeriod('per_second', $validationErrors);
-        if ($counter->getThreshold() > 0) {
+        if ($counter->getThreshold() > 0 || $counter->getWarning() > 0) {
             $context->setRateLimitPerSecond($counter);
         }
         $counter = $this->validateRateAndGetCounterForPeriod('per_minute', $validationErrors);
-        if ($counter->getThreshold() > 0) {
+        if ($counter->getThreshold() > 0 || $counter->getWarning() > 0) {
             $context->setRateLimitPerMinute($counter);
         }
         $counter = $this->validateRateAndGetCounterForPeriod('per_day', $validationErrors);
-        if ($counter->getThreshold() > 0) {
+        if ($counter->getThreshold() > 0 || $counter->getWarning() > 0) {
             $context->setQuotaPerDay($counter);
         }
         $counter = $this->validateRateAndGetCounterForPeriod('per_week', $validationErrors);
-        if ($counter->getThreshold() > 0) {
+        if ($counter->getThreshold() > 0 || $counter->getWarning() > 0) {
             $context->setQuotaPerWeek($counter);
         }
         $counter = $this->validateRateAndGetCounterForPeriod('per_month', $validationErrors);
-        if ($counter->getThreshold() > 0) {
+        if ($counter->getThreshold() > 0 || $counter->getWarning() > 0) {
             $context->setQuotaPerMonth($counter);
         }
         return $context;

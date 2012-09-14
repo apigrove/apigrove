@@ -144,26 +144,27 @@ class SharedViewUtility
     public static function deserializeTdrRules($request){
         $result = new TdrData();
         foreach($request->getParam('tdr') as $rule){
-            if($rule['type'] === TdrRuleType::DYNAMIC){
-                $tdrRule = new DynamicTdr();
-                $tdrRule->httpHeaderName = $rule['value'];
-                $tdrRule->tdrPropName = $rule['name'];
-                $tdrRule->extractFrom = $rule['extractFrom'];
-                $result->dynamicTdrs[] = $tdrRule;
-            }
-
-            if($rule['type'] === TdrRuleType::STATIC_VAL || $rule['type'] === TdrRuleType::PROPERTY){
-                $tdrRule = new StaticTdr();
-                $tdrRule->tdrPropName = $rule['name'];
-                $tdrRule->kind = $rule['type'];
-                if($rule['type'] === TdrRuleType::STATIC_VAL){
-                    $tdrRule->value = $rule['value'];
+            if(!empty($rule['name'])){
+                if($rule['type'] === TdrRuleType::DYNAMIC){
+                    $tdrRule = new DynamicTdr();
+                    $tdrRule->httpHeaderName = $rule['value'];
+                    $tdrRule->tdrPropName = $rule['name'];
+                    $tdrRule->extractFrom = $rule['extractFrom'];
+                    $result->dynamicTdrs[] = $tdrRule;
                 }
                 else{
-                    $tdrRule->property = $rule['value'];
-                }
+                    $tdrRule = new StaticTdr();
+                    $tdrRule->tdrPropName = $rule['name'];
+                    $tdrRule->kind = $rule['type'];
+                    if($rule['type'] === TdrRuleType::STATIC_VAL){
+                        $tdrRule->value = $rule['value'];
+                    }
+                    else{
+                        $tdrRule->property = $rule['value'];
+                    }
 
-                $result->staticTdrs[] = $tdrRule;
+                    $result->staticTdrs[] = $tdrRule;
+                }
             }
         }
 

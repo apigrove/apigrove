@@ -24,7 +24,7 @@ $values = @array_values($properties);
 for($i = 0; $i <= count($properties); $i++):
 ?>
 
-<div class="control-group property <?= !empty($validationErrors['property'][$i])?"error":""?>">
+<div class="control-group property <?= !empty($validationErrors['property'][$i])?"error":""?>" id="propertyGroup<?=$i?>">
     <? if($i === 0): ?>
     <label class="control-label" for="properties<?=$i?>">Properties</label>
     <? endif ?>
@@ -34,7 +34,7 @@ for($i = 0; $i <= count($properties); $i++):
         <input type="text" class="input-small" placeholder="Value"
                name="property[<?=$i?>][value]" value="<?=@$values[$i]?>">
         <? if($i === 0): ?>
-        <button class="btn newItem" type="property" title="Add additional property"><i class="icon-plus"></i></button>
+        <button class="btn newItem" type="property" title="Add additional property" id="propertyPlus"><i class="icon-plus"></i></button>
         <? else: ?>
         <button class="btn removeItem" type="property" number="<?=$i?>" title="Remove property"><i class="icon-minus"></i></button>
         <? endif ?>

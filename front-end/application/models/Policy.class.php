@@ -105,6 +105,9 @@ class Policy
                 $policy->properties[(string)$prop['name']] = (string) $prop;
             }
         }
+        if(!empty($policy->properties)){
+            ksort($policy->properties);
+        }
         if ($xml->headerTransformations && $xml->headerTransformations->headerTransformation) {
             foreach ($xml->headerTransformations->headerTransformation as $transform) {
                 $policy->headerTransformations[] = HeaderTransformation::fromXML($transform);

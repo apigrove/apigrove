@@ -37,6 +37,7 @@ class AuthController extends FlowController
     public function deleteAction(){
         $authManager = new AuthManager();
         $authManager->deleteAuth($this->_getParam("id"));
+        $this->_helper->FlashMessenger("Auth Deleted");
         $this->redirectToUrl("/auth");
     }
 
@@ -119,6 +120,7 @@ class AuthController extends FlowController
             case AuthType::$WSSE:
                 $auth->wsseAuth->username = $this->_getParam("username");
                 $auth->wsseAuth->password = $this->_getParam("password");
+                $auth->wsseAuth->passwordType = WSSEPasswordType::PLAINTEXT;
                 break;
             case AuthType::$IPWHITELIST:
                 $ipList = $this->_getParam("ipWhiteList");
@@ -157,10 +159,12 @@ class AuthController extends FlowController
             $validationErrors['authKey'] = "For authKey auth, you must specify a key";
         }
 
-        if($auth->type === AuthType::$BASIC && empty($auth->basicAuth->username)){
+        if(($auth->type === AuthType::$BASIC || $auth->type === AuthType::$WSSE)
+            && empty($auth->basicAuth->username)){
             $validationErrors['username'] = "Username is required";
         }
-        if($auth->type === AuthType::$BASIC && empty($auth->basicAuth->password)){
+        if(($auth->type === AuthType::$BASIC || $auth->type === AuthType::$WSSE)
+            && empty($auth->basicAuth->password)){
             $validationErrors['password'] = "Password is required";
         }
         if($auth->type === AuthType::$IPWHITELIST && empty($auth->ipWhiteListAuth->ips)){

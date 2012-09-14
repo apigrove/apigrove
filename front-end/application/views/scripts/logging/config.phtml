@@ -24,7 +24,7 @@ require_once APPLICATION_PATH . '/models/LogConfig.class.php';
     <h1>Logging Configuration</h1>
     <? if($this->warning){print $this->warning;}?>
     <div class="well">
-    <form class="form-horizontal" action="/logging/config" method="POST">
+    <form class="form-horizontal" id="java_form" action="/logging/config" method="POST">
         <fieldset>
             <label class="control-label"><strong>Java Log Level</strong></label>
             <div class="btn-toolbar">
@@ -42,7 +42,7 @@ require_once APPLICATION_PATH . '/models/LogConfig.class.php';
         </fieldset>
     </form>
 
-    <form class="form-horizontal" action="/logging/config" method="POST">
+    <form class="form-horizontal" id="smx_form" action="/logging/config" method="POST">
         <fieldset>
             <label class="control-label"><strong>ServiceMix Log Level</strong></label>
             <div class="btn-toolbar">
@@ -60,7 +60,7 @@ require_once APPLICATION_PATH . '/models/LogConfig.class.php';
         </fieldset>
     </form>
 
-    <form class="form-horizontal" action="/logging/config" method="POST">
+    <form class="form-horizontal" id="syslog_form" action="/logging/config" method="POST">
         <fieldset>
             <label class="control-label"><strong>Syslog Log Level</strong></label>
             <div class="btn-toolbar">
@@ -77,7 +77,7 @@ require_once APPLICATION_PATH . '/models/LogConfig.class.php';
         </fieldset>
     </form>
 
-    <form class="form-horizontal" action="/logging/config" method="POST">
+    <form class="form-horizontal" id="categories_form" action="/logging/config" method="POST">
         <fieldset>
             <label class="control-label"><strong>Logging Categories</strong></label>
             <div class="btn-toolbar">
@@ -87,7 +87,7 @@ require_once APPLICATION_PATH . '/models/LogConfig.class.php';
                     <?php $escName = $this->escape($category->getName()); ?>
                     <?php $classVal = "btn hiddenValue".($enabled ? " active" : ""); ?>
                     <?php $elementName = "enabled_logging_category[".$escName."]"; ?>
-                    <a class="<?php echo $classVal; ?>"  inputId="<?php echo $escName ?>"<?php if ($enabled) { echo ' checked="checked"'; } ?>>
+                    <a class="<?php echo $classVal; ?>" inputId="<?php echo $escName ?>"<?php if ($enabled) { echo ' checked="checked"'; } ?>>
                     <?php echo $escName; ?></a>
                     <input type="hidden" id="<?php echo $escName ?>" name="<?php echo $elementName; ?>" value="<?php echo $enabled ? "1" : "0"; ?>" />
                 <?php endforeach ?>

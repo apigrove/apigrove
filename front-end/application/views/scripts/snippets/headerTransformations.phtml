@@ -46,7 +46,7 @@ for($count = 0; $count <= count($headerTransformations); $count++):
              <input type="text" class="input-small" name="header[<?=$count?>][value]" placeholder="Value" value="<?=empty($ht->value)?$ht->property:$ht->value?>"/>
         </span>
         <? if($count === 0): ?>
-        <button class="btn newItem" type="headerTrans" title="Add additional header transformation"><i class="icon-plus"></i></button>
+        <button class="btn newItem" type="headerTrans" title="Add additional header transformation" id="headerPlus"><i class="icon-plus"></i></button>
         <? else: ?>
         <button class="btn removeItem" type="headerTrans" number="<?=$count?>" title="Remove header transformation"><i class="icon-minus"></i></button>
         <?endif?>

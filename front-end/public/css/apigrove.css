@@ -21,28 +21,16 @@
 .listItem {
     margin-bottom: 10px;
     height:100%;
-    min-height: 30px;
+    min-height: 45px;
 }
 .item-div{
     overflow:auto;
     width: 180px;
 }
-.item1 {
+.item1, .item2, .item3, .item4 {
     min-height:100%;
     max-width: 150px;
-}
-.item2 {
-    min-height:100%;
-    max-width: 150px;
-}
-.item3 {
-    min-height:100%;
-    max-width: 150px;
-}
-.item4 {
-    min-height:100%;
-    max-width: 150px;
-
+    vertical-align: middle;
 }
 .limit-height{
     max-height: 300px;

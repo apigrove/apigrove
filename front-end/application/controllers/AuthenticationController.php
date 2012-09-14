@@ -198,7 +198,8 @@ class AuthenticationController extends Zend_Controller_Action{
                     $this->_redirect("/user/{$newId}");
                 }
                 else{
-                    $this->view->flashMessage = "User updated";
+                    $this->_helper->getHelper("FlashMessenger")->addMessage("User updated");
+                    $this->_redirect("/user");
                 }
 
             }
@@ -214,6 +215,7 @@ class AuthenticationController extends Zend_Controller_Action{
         }
 
         $this->view->user = $user;
+        $this->view->messages = $this->_helper->getHelper("FlashMessenger")->getMessages();
 
     }
 

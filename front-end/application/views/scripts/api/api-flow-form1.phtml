@@ -73,10 +73,6 @@ $get = in_array("GET", $methods);
 $post = in_array("POST", $methods);
 $put = in_array("PUT", $methods);
 $delete = in_array("DELETE", $methods);
-// If the methods array is empty then it means "ALL"
-if(empty($methods)){
-    $get = true; $post = true; $put = true; $delete = true;
-}
 
 $tdrsenabled = $api->getTdrEnabled();
 
@@ -172,7 +168,7 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
             endforeach;
         endif; ?>
 
-            <div class="control-group property">
+            <div class="control-group">
                 <label class="control-label"><button class="btn" id="showAdvanced"><strong>Advanced</strong>
                     <i class="icon-chevron-down advbtn" <?=!$advancedOpen?"":"style=\"display:none\""?>></i><i class="icon-chevron-up advbtn" <?=$advancedOpen?"":"style=\"display:none\""?>></i>
                 </button></label>

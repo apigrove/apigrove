@@ -152,6 +152,8 @@ class Auth{
                 $auth->properties[(string)$prop['name']] = (string) $prop;
             }
         }
+        if(!empty($auth->properties))
+            ksort($auth->properties);
         if ($xml->headerTransformations && $xml->headerTransformations->headerTransformation) {
             foreach ($xml->headerTransformations->headerTransformation as $transform) {
                 $auth->headerTransformations[] = HeaderTransformation::fromXML($transform);
