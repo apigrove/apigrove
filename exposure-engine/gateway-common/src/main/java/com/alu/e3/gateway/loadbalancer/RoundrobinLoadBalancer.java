@@ -232,7 +232,7 @@ public class RoundrobinLoadBalancer {
 
 			TDRDataService.setTxTDRProperty(TDRConstant.EVENT_TYPE, TDRConstant.EVENT_TYPE_TARGETTIMEOUT, exchange);
 			if (LOGGER.isDebugEnabled()) {
-				LoadBalancerDisplay.logDebug(LOGGER, name, "GRAVE: Issue during the call");
+				LoadBalancerDisplay.logDebug(LOGGER, name, "Issue during the call");
 			}
 			
 		}
