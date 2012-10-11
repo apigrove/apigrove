@@ -24,14 +24,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import com.alu.e3.data.model.WSSEAuthPassType;
-
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "wsseAuth", propOrder = {
 		"username",
-		"password",
-		"passwordType"
+		"password"
 })
 public class WSSEAuth {
 	@XmlElement(required = true)
@@ -39,9 +36,6 @@ public class WSSEAuth {
 
 	@XmlElement(required = true)
 	protected byte[] password;
-
-	@XmlElement(required = true)
-	protected WSSEAuthPassType passwordType;
 
 	public String getUsername() {
 		return username;
@@ -58,14 +52,4 @@ public class WSSEAuth {
 	public void setPassword(byte[] password) {
 		this.password = password;
 	}
-
-	public WSSEAuthPassType getPasswordType() {
-		return passwordType;
-	}
-
-	public void setPasswordType(WSSEAuthPassType passType) {
-		this.passwordType = passType;
-	}
-
-
 }

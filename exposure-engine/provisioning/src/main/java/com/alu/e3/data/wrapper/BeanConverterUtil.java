@@ -311,7 +311,6 @@ public final class BeanConverterUtil {
 			break;
 		case WSSE:
 			authDetail.setUsername(authData.getWsseAuth().getUsername());
-			auth.setPasswordType(authData.getWsseAuth().getPasswordType());
 			auth.setWssePassword(authData.getWsseAuth().getPassword());
 			break;
 		default:
@@ -775,7 +774,6 @@ public final class BeanConverterUtil {
 	private static WSSEAuth fromDataModelToWsseAuth(Auth auth){
 		if (auth==null) throw new IllegalArgumentException("authDetail must not be null");
 		WSSEAuth wsseAuth = new WSSEAuth();
-		wsseAuth.setPasswordType(auth.getPasswordType());
 		wsseAuth.setPassword(auth.getWssePassword());
 		wsseAuth.setUsername(auth.getAuthDetail().getUsername());
 

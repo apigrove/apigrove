@@ -46,13 +46,6 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:simpleType name="WsseAuthPassTypeEnum">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="PlainText" />
-			<xs:enumeration value="PasswordDigest" />
-		</xs:restriction>
-	</xs:simpleType>
-
 	<xs:simpleType name="ExtractFromEnum">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Request" />
@@ -623,7 +616,6 @@
 		<xs:all>
 			<xs:element name="username" type="xs:string" />
 			<xs:element name="password" type="xs:base64Binary" />
-			<xs:element name="passwordType" type="WsseAuthPassTypeEnum" minOccurs="0"/>
 		</xs:all>
 	</xs:complexType>
 

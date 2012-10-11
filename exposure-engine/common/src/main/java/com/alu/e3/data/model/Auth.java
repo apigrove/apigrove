@@ -54,8 +54,6 @@ public class Auth implements Serializable {
 	// Must define the wssePassword on the Auth object
 	// because it must be available to be examined from the Gateway.
 	private byte[] wssePassword;
-	private WSSEAuthPassType passwordType;
-
 
 	public String getId() {
 		return id;
@@ -130,11 +128,4 @@ public class Auth implements Serializable {
 	public void setWssePassword(byte[] wssePassword) {
 		this.wssePassword = wssePassword;
 	}
-	public WSSEAuthPassType getPasswordType() {
-		return passwordType;
-	}
-	public void setPasswordType(WSSEAuthPassType passwordType) {
-		this.passwordType = passwordType;
-	}
-
 }

@@ -42,7 +42,6 @@ import com.alu.e3.common.logging.Category;
 import com.alu.e3.common.logging.CategoryLogger;
 import com.alu.e3.common.logging.CategoryLoggerFactory;
 import com.alu.e3.common.osgi.api.IDataManager;
-import com.alu.e3.data.model.WSSEAuthPassType;
 import com.alu.e3.data.wrapper.BeanConverterUtil;
 import com.alu.e3.prov.restapi.model.Auth;
 import com.alu.e3.prov.restapi.model.AuthKeyAuth;
@@ -411,10 +410,6 @@ public class AuthManager extends BasicManager{
 					if(basicAuth.getPassword() == null || basicAuth.getPassword().length <= 0){
 						inError = true;
 						error.setErrorText(error.getErrorText()+" Passowrd must not be empty for WSSE authentication type.");
-					}
-					if(basicAuth.getPasswordType() == null){
-						// we want to get rid of the password type, in the meantime we make it optional and set a default value if needed
-						basicAuth.setPasswordType(WSSEAuthPassType.PASSWORD_DIGEST);
 					}
 				}
 			}
