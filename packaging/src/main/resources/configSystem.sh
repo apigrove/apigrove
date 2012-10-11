@@ -201,6 +201,14 @@ then
     exit 1
 fi
 
+# refreshing fuse feature urls
+eval '$E3_HOME/$SMX_LINK_DIRNAME/bin/client -p $SMX_PWD -u $SMX_USER "features:refreshurl"' 2>&1
+if [[ ${?} != 0 ]]
+then
+        echo "Unable to fresh feature urls"
+        exit 1
+fi
+
 sleep 2
 eval '$E3_HOME/$SMX_LINK_DIRNAME/bin/client -p $SMX_PWD -u $SMX_USER "features:uninstall E3"' 2>&1
 if [[ ${?} != 0 ]]
@@ -214,14 +222,6 @@ if [[ ${?} != 0 ]]
 then
     echo "Unable to install the feature: E3"
     exit 1
-fi
-
-# refreshing fuse feature urls
-eval '$E3_HOME/$SMX_LINK_DIRNAME/bin/client -p $SMX_PWD -u $SMX_USER "features:refreshurl"' 2>&1
-if [[ ${?} != 0 ]]
-then
-        echo "Unable to fresh feature urls"
-        exit 1
 fi
 
 # Affect hostname manually if respond on 127.0.0.1 for RMI connections
