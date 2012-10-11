@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alu.e3.common.camel.AuthIdentity;
 import com.alu.e3.common.camel.ExchangeConstantKeys;
+import com.alu.e3.data.model.enumeration.ActionType;
 import com.alu.e3.data.model.sub.TdrGenerationRule;
 import com.alu.e3.gateway.common.camel.exception.GatewayException;
 import com.alu.e3.gateway.common.camel.exception.GatewayExceptionCode;
@@ -92,16 +93,19 @@ public class RateLimitProcessor implements Processor {
 
 		// Route allowed if null - no action error defined
 		if (limitCheckResult != null && limitCheckResult.getActionType() != null) {
-			if(isTDREnabled)
+			if(isTDREnabled) {
 				exchange.setProperty(ExchangeConstantKeys.E3_RATELIMIT_ACTION.toString(), limitCheckResult.getActionType().toString());
 				TDRDataService.addTxTDRProperty(exchange, TDRConstant.OVER_QUOTA_ACTION, limitCheckResult.getActionType().toString());
+			}
 
 			// Log - Will be based on the Logging Framework developed internally
 			//log.debug("Route rate limit for API " + (authIdentity.getApi()==null ? "(no API)" : authIdentity.getApi().getId()) + " exeeded" + ((authIdentity.getAuth()==null) ? "": "by " + authIdentity.getAuth().getId()));
 			// TDR Notification - not yet implemented 
 			// HTTP Status Code 429 - to be return by the error processor of the route
 
-			throw new GatewayException(GatewayExceptionCode.RATEORQUOTA, "Rate limit exceeded. " + limitCheckResult.getActionTypeMessage(), limitCheckResult.getActionType().toString());
+			if(limitCheckResult.getActionType().equals(ActionType.REJECT)) {
+				throw new GatewayException(GatewayExceptionCode.RATEORQUOTA, "Rate limit exceeded. " + limitCheckResult.getActionTypeMessage(), limitCheckResult.getActionType().toString());
+			}
 		}
 
 	}
