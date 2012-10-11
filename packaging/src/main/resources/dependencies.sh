@@ -162,7 +162,13 @@ function universal_esb {
         rm -f $E3_HOME/topology.xml
 		rm -f $E3_HOME/system_topology.xml
 		rm -f $E3_HOME/installer-config.xml
+		
+		echo "Backup of TDR config files to $DIR/../BackupTDR_Config"
+		
+		cp -r $E3_HOME/TDR_ProcessScript/config/ $DIR/../BackupTDR_Config		
+		
 		rm -rf $E3_HOME/TDR_ProcessScript
+		
 		rm -f /etc/init.d/karaf-service
 		rm -f /root/.ssh/known_hosts
     fi
