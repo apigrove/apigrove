@@ -53,7 +53,8 @@ $(document).ready(function() {
             $(this).slideUp("fast", function() {
                 $(this).appendTo('#select'+upperType).slideDown('fast');
                 if($('#selected'+upperType).children().length == 0){
-                    $('#selected'+upperType).append('<p id="selected'+upperType+'Placeholder" style="font-size:14px; color:#5e5e5e">Selected '+upperType+'s</p>');
+//                    $('#selected'+upperType).append
+                    $('<p id="selected'+upperType+'Placeholder" class="depth">Selected '+upperType+'s</p>').hide().appendTo('#selected'+upperType).fadeIn('fast');
                 }
             });
         }
