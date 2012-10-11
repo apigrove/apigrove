@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: apiGrove v1.0.0\n"
-"POT-Creation-Date: 2012-09-17 12:25-0800\n"
-"PO-Revision-Date: 2012-09-17 12:53-0800\n"
+"POT-Creation-Date: 2012-09-17 16:30-0800\n"
+"PO-Revision-Date: 2012-09-17 16:34-0800\n"
 "Last-Translator: David Will <david.will@productops.com>\n"
 "Language-Team: \n"
 "Language: French\n"
@@ -15,290 +15,352 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: C:\\Users\\David\\Desktop\\project_sites\\apiGrove\n"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:69
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:71
 msgid "Api Successfully Deleted"
 msgstr "API supprimé avec succès"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:71
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:73
 msgid "Error deleting api "
 msgstr "Suppression d'erreur de l'API"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:74
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:76
 msgid "The delete action errored but didn't say why!"
 msgstr "L'action de suppression erronés, mais n'a pas dit pourquoi!"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:77
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:79
 msgid "Exception when deleting api "
 msgstr "Exception lors de la suppression API"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:80
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:82
 msgid "Api id is empty!"
 msgstr "API ID est vide"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:132
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:136
 msgid "Error fetching api "
 msgstr "Api Erreur de récupération "
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:153
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:159
 msgid "Apis must have a name."
 msgstr "APIs doit avoir un nom."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:159
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:165
 msgid "Apis must have an endpoint."
 msgstr "APIs doit avoir un point d'extrémité."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:172
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:178
 msgid "Apis must have at least one targethost."
 msgstr "APIs doit avoir au moins un hôte cible."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:223
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:229
 msgid "Apis must have at least one auth type."
 msgstr "APIs doit avoir au moins un type d'authentification."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:231
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:237
 msgid "With https on, TLS Mode must be 1way or 2way"
 msgstr "Avec https sur, le mode TLS doit être à 1 voie ou 2 voies"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:267
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:273
 msgid "Transactions-per-second warning trigger must be a number"
 msgstr "Déclenchement d'alerte transactions par seconde doit être un nombre"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:270
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:276
 msgid "Transactions-per-second cutoff threshold must be a number"
 msgstr "Seuil de coupure transactions par seconde doit être un nombre"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:273
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:279
 msgid "Transactions-per-minute warning trigger must be a number"
 msgstr "Déclenchement d'alerte transactions par minute doit être un nombre"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:276
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:282
 msgid "Transactions-per-minute cutoff threshold must be a number"
 msgstr "Seuil de coupure transactions par minute doit être un nombre"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:325
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:333
 msgid "This targethost cannot be empty"
 msgstr "Cet hôte cible ne peut pas être vide"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:332
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:342
 msgid "Auth Key Key cannot be empty"
 msgstr "Auth Touche ne peut pas être vide"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:358
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:370
 msgid "Error: "
 msgstr "Erreur: "
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:360
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:372
 msgid "Unknown error when posting this Api"
 msgstr "Erreur inconnue lors de la publication de cette API"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:64
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/AuthController.php:42
+msgid "Auth Deleted"
+msgstr "Supprimé auth"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/AuthController.php:63
+msgid "Resource Not Found"
+msgstr "Ressource non trouvée"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/AuthController.php:165
+msgid "For authKey auth, you must specify a key"
+msgstr "Pour auth clé auth, vous devez spécifier une clé"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/AuthController.php:170
+msgid "Username is required"
+msgstr "Nom d'utilisateur est nécessaire"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/AuthController.php:174
+msgid "Password is required"
+msgstr "Mot de passe est requis"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/AuthController.php:177
+msgid "IP list is required"
+msgstr "Liste IP est nécessaire"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:66
 msgid "Unable to retrieve key "
 msgstr "Impossible de récupérer la clé "
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:101
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:107
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:277
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:386
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:105
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:111
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:289
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:406
 msgid "Error "
 msgstr "Erreur "
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:119
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:123
 msgid "Couldn't update key with new active certificate: "
 msgstr "Impossible de mettre à jour la clé de certificat actif nouveau: "
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:127
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:131
 msgid "Successfully Created Key"
 msgstr "Clé créé avec succès"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:127
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:131
 msgid "Successfully Updated Key"
 msgstr "Mise à jour de la clé réussi"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:145
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:151
 msgid "Successfully Deleted Key"
 msgstr "Clé supprimée avec succès"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:158
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:166
 msgid "The key name must be only alpha-numeric characters"
 msgstr "Le nom de la clé doit être seulement des caractères alphanumériques"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:173
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:181
 msgid "There was an error getting contents of Key file."
 msgstr "l y avait une erreur se contenu du fichier de clé."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:176
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:217
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:328
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:437
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:184
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:227
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:344
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:461
 msgid "There was an error uploading file: "
 msgstr "Il ya eu un transfert du fichier d'erreur: "
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:180
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:188
 msgid "Please upload a key file."
 msgstr "S'il vous plaît télécharger un fichier de clé."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:203
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:213
 msgid "The certificate name must be only alpha-numeric characters"
 msgstr ""
 "Le nom du certificat doit être seulement des caractères alphanumériques"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:214
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:224
 msgid "There was an error getting contents of Certificate file."
 msgstr "Il y avait une erreur se le contenu du fichier de certificat."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:221
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:231
 msgid "Please upload a certificate file."
 msgstr "S'il vous plaît télécharger un fichier de certificat."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:282
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:294
 msgid "Successfully Created Certificate Authority"
 msgstr "Autorité de certification créé avec succès"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:282
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:294
 msgid "Successfully Updated Certificate Authority"
 msgstr "Autorité de certification avec succès Mise à jour"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:298
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:312
 msgid "Successfully Deleted Certificate Authority"
 msgstr "Autorité de certification supprimée avec succès"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:315
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:331
 msgid "The CA name must be only alpha-numeric characters"
 msgstr "Le nom de CA doit être seulement des caractères alphanumériques"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:325
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:341
 msgid "There was an error getting contents of CA file."
 msgstr "Il y avait une erreur se le contenu du fichier CA."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:331
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:347
 msgid "Please upload a CA file."
 msgstr "S'il vous plaît télécharger un fichier CA."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:365
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:383
 msgid "Unable to retrieve CRL "
 msgstr "Impossible de récupérer CRL "
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:391
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:411
 msgid "Successfully Created Certificate Revocation List"
 msgstr "Créé avec succès la liste de révocation de certificats"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:391
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:411
 msgid "Successfully Updated Certificate Revocation List"
 msgstr "Mise à jour avec succès la liste de révocation de certificats"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:407
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:429
 msgid "Successfully Deleted Certificate Revocation List"
 msgstr "Supprimé avec succès la liste de révocation de certificats"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:424
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:448
 msgid "The CRL name must be only alpha-numeric characters"
 msgstr "Le nom CRL doit être seulement des caractères alphanumériques"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:434
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:458
 msgid "There was an error getting contents of CRL file."
 msgstr "Il y avait une erreur se le contenu du fichier CRL."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:440
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:464
 msgid "Please upload a CRL file."
 msgstr "S'il vous plaît télécharger un fichier CRL."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:27
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:29
 msgid "Backend Host is required"
 msgstr "Hôte backend est nécessaire"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:37
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:39
 msgid "Preferences Updated"
 msgstr "Préférences Mise à jour"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:21
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:23
 msgid "You have reached the error page"
 msgstr "Vous avez atteint la page d'erreur"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:32
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:34
 msgid "Page not found"
 msgstr "Page non trouvée"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:38
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:40
 msgid "Application error"
 msgstr "Erreur d'application"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:45
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:47
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/error/error.phtml:34
 msgid "Request Parameters"
 msgstr "Paramètres de Requête"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/LoggingController.php:49
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/LoggingController.php:51
 msgid "There was an error getting logs: "
 msgstr "Il y avait une erreur se logs: "
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:108
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:110
 msgid "Unable to retrieve policy "
 msgstr "Impossible de récupérer la politique "
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:129
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:133
 msgid "Error creating policy: "
 msgstr "Erreur de création de la politique: "
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:134
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:138
 msgid "Successfully Created Policy"
 msgstr "Politique créé avec succès"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:156
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:162
 msgid "Policy updated!"
 msgstr "Politique de mise à jour!"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:159
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:165
 msgid "Error updating policy: "
 msgstr "Erreur mise à jour des politiques: "
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:164
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:170
 msgid "Successfully Updated Policy"
 msgstr "Politique de succès Mise à jour"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:255
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:263
 msgid "The policy ID must be only alpha-numeric characters"
 msgstr ""
 "L'ID de la politique doit être seulement des caractères alphanumériques"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:335
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:345
 msgid ""
 " Threshold must be a positive integer if you want to include this Quota. "
 msgstr "Seuil doit être un entier positif si vous souhaitez inclure ce quota. "
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:338
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:348
 msgid " Warning must be a non-negative integer. "
 msgstr "Avertissement doit être un entier non négatif."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:341
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:351
 msgid " Warning may not be greater than the Threshold. "
 msgstr "Attention ne peut être supérieur au seuil."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:422
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:434
 msgid "Per-Second"
 msgstr "Per-Second"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:424
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:436
 msgid "Per-Minute"
 msgstr "Per-Minute"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:426
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:438
 msgid "Hourly"
 msgstr "Hourly"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:428
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:440
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:164
 msgid "Daily"
 msgstr "Quotidien"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:430
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:442
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:177
 msgid "Weekly"
 msgstr "Hebdomadairement"
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:432
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:444
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:190
 msgid "Monthly"
 msgstr "Mensuellement"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:73
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:203
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:214
+msgid "Name is required"
+msgstr "Le nom est obligatoire"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:77
+msgid "Timing is required"
+msgstr "La synchronisation est nécessaire"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:82
+msgid "Action is required"
+msgstr "Il faut agir"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:86
+msgid "Type and Value are required"
+msgstr "Type et Valeur sont nécessaires"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:128
+msgid "Key is required"
+msgstr "Touche est nécessaire"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:130
+msgid "Value is required"
+msgstr "Valeur est requise"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:197
+msgid "Extract from is required"
+msgstr "Extraire est nécessaire de"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:200
+msgid "Http Header Name is required"
+msgstr "Nom de tête HTTP est nécessaire"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:211
+msgid "Value or Property Name required"
+msgstr "Nom de la valeur ou de la propriété requise"
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:94
 msgid "Create API"

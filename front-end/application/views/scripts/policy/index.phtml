@@ -49,18 +49,19 @@ $editLinkTip = $this->translate("Select to edit Policy");
              */
             foreach($policies as $policy){?>
                 <div class="listItem">
-                    <div class="item-div pull-left"><label class="item1" rel="tooltip" title="<?=$editLinkTip?>">
-                        <a href="/policy/<?=$policy->id?>"><strong><?if(strlen($policy->id) > 15){ echo substr($policy->id, 0, 15) . "...";}else{ echo $policy->id;} ;?></strong></a></label></div>
-                    <div class="item-div pull-left"><span class="item2">
+                    <div class="item-div pull-left"><label class="item1" rel="tooltip" title="<?=$editLinkTip?>"><p>
+                        <a href="/policy/<?=$policy->id?>"><strong><?if(strlen($policy->id) > 15){ echo substr($policy->id, 0, 15) . "...";}else{ echo $policy->id;} ;?></strong></a></p></label></div>
+                    <div class="item-div pull-left"><span class="item2"><p>
                        <?= empty($policy->apiIds)?$this->translate("None"):""?>
                        <? foreach($policy->apiIds as $apiId):
                         /** @var Api $api */
                         $api = $apis[$apiId]; ?>
                         <?= $api->displayName; ?> ( <?=$api->endpoint ?> )<br/>
                         <? endforeach;?>
+                    </p>
                     </span></div>
                     <div class="item-div pull-left">
-                        <span class="item3">
+                        <span class="item3"><p>
                         <? if(empty($policy->authIds)): echo $this->translate("None");
                             else:
                                 foreach($policy->authIds[0]->authIds as $authId):
@@ -69,12 +70,12 @@ $editLinkTip = $this->translate("Select to edit Policy");
                                 <?= $auth->type ?>
                                 <?endforeach?>
                          <? endif ?>
-                        </span>
+                        </p></span>
                     </div>
                     <div class="item-div pull-left">
-                        <span class="item4">
+                        <span class="item4"><p>
                         <a href="/policy/<?=$policy->id?>/delete" id="policy-<?=$policy->id?>-delete" class="btn btn-danger delete"><? echo $this->translate("Delete")?></a>
-                        </span>
+                        </p></span>
                     </div>
                     <span class="clearfix"></span>
                 </div>

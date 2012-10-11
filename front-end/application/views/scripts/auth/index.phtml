@@ -46,11 +46,11 @@ $editLinkTip = $this->translate("Select to edit this Auth");
             </div>
             <? foreach($auths as $auth){?>
             <div class="listItem">
-                <div class="item-div pull-left"><label class="item1" rel="tooltip" title="<?=$editLinkTip?>">
+                <div class="item-div pull-left"><label class="item1" rel="tooltip" title="<?=$editLinkTip?>"><p>
                     <a id="<?=$auth->id?>" href="/auth/<?=$auth->id;?>"><strong><?if(strlen($auth->id) > 15){ echo substr($auth->id, 0, 15) . "...";}else{ echo $auth->id;} ;?></strong></a>
-                </label></div>
-                <div class="item-div pull-left"><span class="item2"><?=$auth->type;?></span></div>
-                <div class="item-div pull-left"><span class="item3"><?
+                </p></label></div>
+                <div class="item-div pull-left"><span class="item2"><p><?=$auth->type;?></p></span></div>
+                <div class="item-div pull-left"><span class="item3"><p><?
                     switch($auth->type){
                         case AuthType::$BASIC:
                             echo $auth->basicAuth->username;
@@ -64,7 +64,7 @@ $editLinkTip = $this->translate("Select to edit this Auth");
                         case AuthType::$IPWHITELIST:
                             echo $auth->ipWhiteListAuth->ips[0]."...";
                             break;
-                    }?></span></div>
+                    }?></p></span></div>
                 <div class="item-div pull-left" align="center">
                       <span class="item4">
                       <a class="btn btn-danger delete" href="/auth/<?=$auth->id?>/delete" id="delete-<?=$auth->id?>"><? echo $this->translate("Delete")?></a>

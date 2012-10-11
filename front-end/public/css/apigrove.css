@@ -23,6 +23,9 @@
     height:100%;
     min-height: 45px;
 }
+.listItem p {
+    padding-top: 5px;
+}
 .item-div{
     overflow:auto;
     width: 180px;
@@ -30,6 +33,7 @@
 .item1, .item2, .item3, .item4 {
     min-height:100%;
     max-width: 150px;
+    min-height: 30px;
     vertical-align: middle;
 }
 .limit-height{

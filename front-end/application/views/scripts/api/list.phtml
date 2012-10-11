@@ -47,11 +47,11 @@ $editLinkTip = $this->translate("Select to edit API");
             $id = $api->getId(); ?>
             <div class="listItem">
                 <div class="item-div pull-left">
-                    <label class="item1" rel="tooltip" title="<?=$editLinkTip?>">
+                    <label class="item1" rel="tooltip" title="<?=$editLinkTip?>"><p>
                     <a id="edit-<?=$name?>" href="api/<?=$id?>"><strong><?if(strlen($name) > 15){ echo substr($name, 0, 15) . "...";}else{ echo $name;} ;?></strong></a>
-                    </label>
+                    </p></label>
                 </div>
-                <div class="item-div pull-left"><span class="item2"><?if(strlen($endpoint) > 15){ echo substr($endpoint, 0, 15) . "...";}else{ echo $endpoint;} ;?></span></div>
+                <div class="item-div pull-left"><span class="item2"><p><?if(strlen($endpoint) > 15){ echo substr($endpoint, 0, 15) . "...";}else{ echo $endpoint;} ;?></p></span></div>
                 <? /*
                     <div class="item-div pull-left">
                         <span class="item4">
