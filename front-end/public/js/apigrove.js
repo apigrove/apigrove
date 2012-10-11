@@ -760,40 +760,114 @@ $(document).ready(function() {
         $('#hiddenField').val(escape(url));
     }
 
+    // Do we want the user to confirm & cancel Delete clicks with "OK" & "Cancel" buttons in a popup,
+    // or a new "Confirm Delete" button overlaid on top of original Delete button?
+    var CONFIRM_DELETE_IN_POPUP = true;
+    var activeDeleteButton = null;
 
-    function setupDeleteButtons(){
+    /**
+     * If a Delete button is showing a confirm Popover, reset that state by
+     * hiding the Popover and, if we're using the "Confirm Delete" overlay button,
+     * hiding the Confirm button and showing the original Delete button.
+     */
+    function resetDeletePopovers() {
+        if (activeDeleteButton !== null) {
+            if (CONFIRM_DELETE_IN_POPUP) {
+                activeDeleteButton.popover("hide");
+            } else {
+                activeDeleteButton.confirmButton.popover("hide");
+                activeDeleteButton.confirmButton.hide();
+                activeDeleteButton.show();
+            }
+            activeDeleteButton = null;
+        }
+    }
+
+    /**
+     * Constructs the HTML body for a Delete-confirm popover (with "OK" and "Cancel" buttons).
+     *
+     * @param deleteButton  The original Delete button
+     * @return {String} The HTML string to use as the Popover content
+     */
+    function deletePopoverBody(deleteButton) {
+        var deleteRef = deleteButton.attr("href");
+        var deleteId = deleteButton.attr("id")+"-confirm";
+        var okText = deleteButton.attr("confirm-ok") !== undefined ? deleteButton.attr("confirm-ok") : "OK";
+        var cancelText = deleteButton.attr("confirm-cancel") !== undefined ? deleteButton.attr("confirm-cancel") : "Cancel";
+
+        // Currently uses &nbsp; to space buttons apart - could use a better method!
+        var body = "<div class=\"btn-toolbar\">"
+            +"<div class=\"btn-group\">"
+            +"<a class=\"btn btn-danger\" id=\""+deleteId+"\" style=\"min-width:50px;\" href=\""+deleteRef+"\">"+okText+"</a>"
+            +"</div>"
+            +"&nbsp;&nbsp;&nbsp;&nbsp;"
+            +"<div class=\"btn-group\">"
+            +"<a class=\"btn\" style=\"min-width:50px;\">"+cancelText+"</a>"
+            +"</div>"
+            +"</div>";
+        return body;
+    }
+
+    function setupDeleteButtons() {
+
+        var deleteButtonCount = 0;
 
         $("a.delete").each(function(index, element){
+            deleteButtonCount++;
             var me = $(element);
-            var confirm = me.clone();
-            me.parent().append(confirm);
-            confirm.attr("id", me.attr("id")+"-confirm");
-            confirm.text("Confirm " + me.text());
+            var confirm = null;
+            var confirmTitle = me.attr("confirm-title") !== undefined ? me.attr("confirm-title") : "Are you sure?";
+            var confirmContent = me.attr("confirm-content") !== undefined ? me.attr("confirm-content") : "Click again to confirm";
 
-            confirm.hide();
+
+            if (CONFIRM_DELETE_IN_POPUP) {
+                me.popover({trigger:"manual", title:confirmTitle, html:true, content:deletePopoverBody(me)});
+            } else {
+                confirm = me.clone();
+                me.parent().append(confirm);
+                confirm.attr("id", me.attr("id")+"-confirm");
+                confirm.text("Confirm " + me.text());
+                confirm.hide();
+                me.confirmButton = confirm;
+            }
+
             me.click(function(event){
                 event.preventDefault();
-                me.hide();
-                confirm.show();
-                confirm.popover({trigger:"manual", title:"Are you sure?", content:"Click again to confirm"});
-                confirm.popover("show");
-            });
-            confirm.mouseout(function(event){
-                me.show();
-                confirm.hide();
-                confirm.popover("hide");
+                event.stopPropagation();
+                if (activeDeleteButton != me) {
+                    resetDeletePopovers();
+                    if (CONFIRM_DELETE_IN_POPUP) {
+                        me.popover("show");
+                    } else {
+                        me.hide();
+                        confirm.show();
+                        // Create popover here after confirm.show(), otherwise placement is janky
+                        confirm.popover({trigger:"manual", title:confirmTitle, content:confirmContent});
+                        confirm.popover("show");
+                    }
+                    activeDeleteButton = me;
+                }
             });
         });
-    }
-    function setupTooltipsAndPopovers(){
 
-        // If this constant is true, text input fields show tips on focus
+        // Only add global click handler(s) if this page actually has delete buttons
+        if (deleteButtonCount > 0) {
+            // TODO: doesn't trigger on mobile menu (nav) select
+            $(":not('a.delete')").click(function() {
+                resetDeletePopovers();
+            });
+        }
+    }
+
+    function setupTooltipsAndPopovers() {
+
+        // If this constant is true, text input fields show tooltips on focus
         // If false, tips are shown on hover (default behavior)
         var TEXT_INPUT_TIP_ON_FOCUS = false;
         var TOOLTIP_DELAY_SHOW = 2000;
         var TOOLTIP_DELAY_HIDE = 0;
 
-        $('[rel=tooltip]').each(function(index, element) {
+        $("[rel=tooltip]").each(function(index, element) {
             var me = $(element);
             if (TEXT_INPUT_TIP_ON_FOCUS && (me.prop('tagName') === "INPUT") && (me.prop('type') === 'text')) {
                 me.tooltip({trigger:"focus", delay:{show: TOOLTIP_DELAY_SHOW, hide: TOOLTIP_DELAY_HIDE}});
@@ -802,6 +876,8 @@ $(document).ready(function() {
             }
         });
 
+        // Attach the popover to the defining element, unless it defines a "for" attribute,
+        // in which case attach the popover to the "for" target
         $("[rel=popover]").each(function(index, element){
             var me = $(element);
             var forControl = ((me.attr('for') !== undefined) ? $('#'+me.attr('for')) : null);
@@ -818,7 +894,6 @@ $(document).ready(function() {
                 }
             });
         });
-
     }
 
     $.fn.ellipsis = function()

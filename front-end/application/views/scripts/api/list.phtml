@@ -12,6 +12,11 @@
  */
 $addButtonTip = $this->translate("Click to add a new API");
 $editLinkTip = $this->translate("Select to edit API");
+$deleteConfirmTitle = $this->translate("Are you sure?");
+$deleteConfirmMessage = $this->translate("Click again to confirm");
+$deleteConfirmOk = $this->translate("OK");
+$deleteConfirmCancel = $this->translate("Cancel");
+
 ?>
 <div class="container">
     <div class="hero-unit">
@@ -60,7 +65,9 @@ $editLinkTip = $this->translate("Select to edit API");
                 </div>
                 <div class="item-div pull-left">
                         <span class="item5">
-                            <a href="/api/<?=$api->getId()?>/delete" class="btn btn-danger delete" id="delete-<?=$endpoint?>"><? echo $this->translate("Delete")?></a>
+                            <a href="/api/<?=$api->getId()?>/delete" class="btn btn-danger delete" id="delete-<?=$endpoint?>"
+                               confirm-title="<?=$deleteConfirmTitle?>" confirm-content="<?=$deleteConfirmMessage?>"
+                               confirm-ok="<?=$deleteConfirmOk?>" confirm-cancel="<?=$deleteConfirmCancel?>"><? echo $this->translate("Delete")?></a>
                         </span>
                 </div>
             </div>

@@ -9,12 +9,17 @@ $addCAButtonTip = $this->translate("Click to add a new CA");
 $editCALinkTip = $this->translate("Select to edit CA");
 $addCRLButtonTip = $this->translate("Click to add a new CRL");
 $editCRLLinkTip = $this->translate("Select to edit CRL");
+$deleteButtonTitle = $this->translate("Delete");
+$deleteConfirmTitle = $this->translate("Are you sure?");
+$deleteConfirmMessage = $this->translate("Click again to confirm");
+$deleteConfirmOk = $this->translate("OK");
+$deleteConfirmCancel = $this->translate("Cancel");
 
 ?>
 <div class="container">
     <div class="hero-unit">
-        <h1>Certificates</h1>
-        <p>Manage your keys, CAs, and revocation lists</p>
+        <h1><?=$this->translate("Certificates")?></h1>
+        <p><?=$this->translate("Manage your keys, CAs, and revocation lists")?></p>
     </div>
 
     <? if(!empty($this->messages)): ?>
@@ -29,9 +34,9 @@ $editCRLLinkTip = $this->translate("Select to edit CRL");
 
     <div class="well">
         <div id="key_list">
-            <h2>Private Keys</h2>
+            <h2><?=$this->translate("Private Keys")?></h2>
             <div class="listItem">
-                <div class="item-div pull-left"><span class="item1"><strong>Name</strong></span></div>
+                <div class="item-div pull-left"><span class="item1"><strong><?=$this->translate("Name")?></strong></span></div>
                 <div class="item-div pull-left"><span class="item2">
                     <a href="/certificate/key/create" class="btn btn-success" rel="tooltip" title="<?=$addKeyButtonTip?>" data-placement="right">+</a>
                 </div>
@@ -45,7 +50,9 @@ $editCRLLinkTip = $this->translate("Select to edit CRL");
                 </div>
                 <div class="item-div pull-left">
                       <span class="item4">
-                      <a href="/certificate/key/<?php echo $key->getId()?>/delete" id="key-<?=$key->id?>-delete" class="btn btn-danger delete">Delete</a>
+                      <a href="/certificate/key/<?php echo $key->getId()?>/delete" id="key-<?=$key->id?>-delete" class="btn btn-danger delete"
+                         confirm-title="<?=$deleteConfirmTitle?>" confirm-content="<?=$deleteConfirmMessage?>"
+                         confirm-ok="<?=$deleteConfirmOk?>" confirm-cancel="<?=$deleteConfirmCancel?>"><?=$deleteButtonTitle?></a>
                       </span>
                 </div>
             </div>
@@ -55,10 +62,10 @@ $editCRLLinkTip = $this->translate("Select to edit CRL");
 
     <div class="well">
         <div id="ca_list">
-            <h2>Certificate Authorities</h2>
+            <h2><?=$this->translate("Certificate Authorities")?></h2>
             <div class="listItem">
-                <div class="item-div pull-left"><span class="item1"><strong>Name</strong></span></div>
-                <div class="item-div pull-left"><span class="item2"><strong>Expiration</strong></span></div>
+                <div class="item-div pull-left"><span class="item1"><strong><?=$this->translate("Name")?></strong></span></div>
+                <div class="item-div pull-left"><span class="item2"><strong><?=$this->translate("Expiration")?></strong></span></div>
                 <div class="item-div pull-left"><span class="item2">
                     <a href="/certificate/ca/create" class="btn btn-success" rel="tooltip" title="<?=$addCAButtonTip?>" data-placement="right">+</a>
                 </div>
@@ -73,7 +80,9 @@ $editCRLLinkTip = $this->translate("Select to edit CRL");
                 <div class="item-div pull-left"><label class="item2"><?php echo $ca->getExpirationDate();?></label></div>
                 <div class="item-div pull-left">
                       <span class="item4">
-                      <a href="/certificate/ca/<?php echo $ca->getId()?>/delete" id="ca-<?=$ca->id?>-delete" class="btn btn-danger delete">Delete</a>
+                      <a href="/certificate/ca/<?php echo $ca->getId()?>/delete" id="ca-<?=$ca->id?>-delete" class="btn btn-danger delete"
+                         confirm-title="<?=$deleteConfirmTitle?>" confirm-content="<?=$deleteConfirmMessage?>"
+                         confirm-ok="<?=$deleteConfirmOk?>" confirm-cancel="<?=$deleteConfirmCancel?>"><?=$deleteButtonTitle?></a>
                       </span>
                 </div>
             </div>
@@ -83,10 +92,10 @@ $editCRLLinkTip = $this->translate("Select to edit CRL");
 
     <div class="well">
         <div id="crl_list">
-            <h2>Certificate Revocation Lists</h2>
+            <h2><?=$this->translate("Certificate Revocation Lists")?></h2>
             <div class="listItem">
-                <div class="item-div pull-left"><span class="item1"><strong>Name</strong></span></div>
-                <div class="item-div pull-left"><span class="item2"><strong>Next Update</strong></span></div>
+                <div class="item-div pull-left"><span class="item1"><strong><?=$this->translate("Name")?></strong></span></div>
+                <div class="item-div pull-left"><span class="item2"><strong><?=$this->translate("Next Update")?></strong></span></div>
                 <div class="item-div pull-left"><span class="item2">
                     <a href="/certificate/crl/create" class="btn btn-success" rel="tooltip" title="<?=$addCRLButtonTip?>" data-placement="right">+</a>
                 </div>
@@ -101,7 +110,9 @@ $editCRLLinkTip = $this->translate("Select to edit CRL");
                 <div class="item-div pull-left"><label class="item2"><?php echo $crl->getNextUpdateDate();?></label></div>
                 <div class="item-div pull-left">
                       <span class="item4">
-                      <a href="/certificate/crl/<?php echo $crl->getId()?>/delete" id="crl-<?=$crl->id?>-delete" class="btn btn-danger delete">Delete</a>
+                      <a href="/certificate/crl/<?php echo $crl->getId()?>/delete" id="crl-<?=$crl->id?>-delete" class="btn btn-danger delete"
+                         confirm-title="<?=$deleteConfirmTitle?>" confirm-content="<?=$deleteConfirmMessage?>"
+                         confirm-ok="<?=$deleteConfirmOk?>" confirm-cancel="<?=$deleteConfirmCancel?>"><?=$deleteButtonTitle?></a>
                       </span>
                 </div>
             </div>
