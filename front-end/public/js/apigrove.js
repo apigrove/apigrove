@@ -33,6 +33,32 @@ $(document).ready(function() {
         event.preventDefault();
     });
 
+    $('.moveSelected').click(function(event){
+        event.preventDefault();
+        var pid = $(this).closest("div").attr("id");
+        var name = $(this).attr("name");
+        var type = $(this).attr("type");
+        var id = $(this).attr("id");
+        var upperType = toTitleCase(type);
+        if (pid == "select"+upperType) {
+            var hidden = "<input type='hidden' class='"+id+"' id='"+name+"' name='selected_"+type+"[]' value='"+(type == "api" ? name : id)+"'>";
+            $(this).slideUp("fast", function() {
+                $(this).appendTo('#selected'+upperType).slideDown('fast');
+                $('#selected'+upperType+'Placeholder').remove();
+            });
+            $('#clear'+upperType).append(hidden);
+        }else{
+            var hidden = document.getElementById(name);
+            $(hidden).remove();
+            $(this).slideUp("fast", function() {
+                $(this).appendTo('#select'+upperType).slideDown('fast');
+                if($('#selected'+upperType).children().length == 0){
+                    $('#selected'+upperType).append('<p id="selected'+upperType+'Placeholder" style="font-size:14px; color:#5e5e5e">Selected '+upperType+'s</p>');
+                }
+            });
+        }
+    });
+
     $('a.btn[inputId]').click(function(event){
         event.preventDefault();
         // Checkbox button value attr must be undefined (uses "0" or "1")
@@ -392,6 +418,41 @@ $(document).ready(function() {
         $('#urlForm').show('fast');
     });
 
+    function filterResults(type){
+        var text = document.getElementById('filter'+type).value.toLowerCase();
+        var elements = document.getElementsByClassName('filter'+type);
+        if($('button.filter'+type+':contains'))
+        for (var i = 0; i < elements.length; ++i) {
+            var item = elements[i];
+            var filterBy = $(item).attr('filter').toLowerCase();
+            if(text.indexOf(" ") != -1){
+                var filterArray = text.split(" ");
+                var a = 0;
+                for(var b=0;b<filterArray.length; b++){
+                    if(filterArray[b] == "") break;
+                    if(a>0) break;
+                    if(filterBy.indexOf(filterArray[b]) == -1) a++;
+                }
+                if(a == 0){
+                    $(item).show();
+                }else{
+                    $(item).hide();
+                }
+            }else{
+                if(filterBy.indexOf(text) == -1){
+                    $(item).hide();
+                }else{
+                    $(item).show();
+                }
+            }
+        }
+    }
+
+    $('.filterMe').keyup( function(){
+        var type = $(this).attr("filterType");
+        filterResults(type);
+    });
+
     $('.updateParams').click( function(){
         updateParams();
     });
@@ -526,6 +587,48 @@ $(document).ready(function() {
             });
         });
 
+    }
+
+    $.fn.ellipsis = function()
+    {
+        return this.each(function()
+        {
+            var el = $(this);
+
+            if(el.css("overflow") == "hidden")
+            {
+                var text = el.html();
+                var multiline = el.hasClass('multiline');
+                var t = $(this.cloneNode(true))
+                    .hide()
+                    .css('position', 'absolute')
+                    .css('overflow', 'visible')
+                    .width(multiline ? el.width() : 'auto')
+                    .height(multiline ? 'auto' : el.height())
+                    ;
+
+                el.after(t);
+
+                function height() { return t.height() > el.height(); };
+                function width() { return t.width() > el.width(); };
+
+                var func = multiline ? height : width;
+
+                while (text.length > 0 && func())
+                {
+                    text = text.substr(0, text.length - 1);
+                    t.html(text + "...");
+                }
+
+                el.html(t.html());
+                t.remove();
+            }
+        });
+    };
+    $(".ellipsis").ellipsis();
+    function toTitleCase(str)
+    {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
 
 });

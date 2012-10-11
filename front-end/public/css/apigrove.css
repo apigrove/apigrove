@@ -98,3 +98,67 @@ body{
     margin-right: 2px;
 }
 
+.controls select{
+    overflow: auto;
+}
+body{
+    /*background-image: url("../img/texture.png");*/
+    /*background-color: rgb(120,120,120);*/
+}
+.btn-group-vertical a.btn{
+    width:90%;
+}
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.ellipsis.multiline {
+    white-space: normal;
+}
+#api-group, #auth-group{
+    width:580px;
+    margin-right: -20px;
+}
+.filter-field{
+    width: 566px;
+}
+#api-group .btn-group-vertical, #auth-group .btn-group-vertical{
+    max-height: 200px;
+    overflow: auto;
+    width:49%;
+    overflow-x:hidden;
+}
+@media (max-width: 767px) {
+    #api-group, #auth-group{
+        width:290px;
+    }
+    #api-group .btn-group-vertical, #auth-group .btn-group-vertical{
+        max-height: 200px;
+        overflow: auto;
+        width:100%;
+        overflow-x:hidden;
+        margin-bottom:20px;
+    }
+    .filter-field{
+        width: 276px;
+    }
+}
+
+.second-level {
+    background-color: #e3e3e3;
+    border: 1px solid #d3d3d3;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.third-level {
+    background-color: #d7d7d7;
+    border: 1px solid #cecece;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+

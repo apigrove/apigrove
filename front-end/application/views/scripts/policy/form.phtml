@@ -80,43 +80,106 @@ $submitButtonTip = $this->translate("Post and return to Policy list");
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="selectAPI"><? echo $this->translate("APIs")?></label>
-                <div class="controls">
-                    <select id="selectAPI" name="selected_api[]" multiple="multiple" rel="tooltip" title="<?=$selectApiTip?>"
-                            style="width: 400px; height: 200px;">
-                        <?php foreach ($this->apis as $api): ?>
-                        <?php $apiId = $api->getId(); $policyApiIds = $policy->getApiIds(); $selectedAttr = '';
-                        if (!empty($policyApiIds)) {
-                            foreach ($policyApiIds as $policyApiId) {
-                                if ($policyApiId === $apiId) { $selectedAttr = 'selected="selected"'; break; }
-                            }
-                        } ?>
-                        <option value="<?= $this->escape($apiId); ?>" <?php echo $selectedAttr ?>><?= $this->escape($api->getEndpoint()); ?></option>
-                        <?php endforeach ?>
-                    </select>
-                    <span class="help-inline"><? echo $this->translate("Choose which APIs this Policy will apply to.")?></span>
+                <label class="control-label"><? echo $this->translate("APIs")?></label>
+                <div class="controls btn-group-vertical" style="margin-left: 20px">
+                    <div class="well second-level well-small" style="width:100%">
+                        <input type="text" filterType="Api" class="filter-field filterMe" id="filterApi" style="margin-bottom: 10px" rel="tooltip" title="<?//=$idTip?>" value="" placeholder="<?=$this->translate("Filter APIs by...")?>" />
+                        <div id="api-group">
+                            <div class="btn-group btn-group-vertical pull-left" id="selectApi" rel="tooltip" title="<?=$selectApiTip?>">
+                                <?php foreach ($this->apis as $api): ?>
+                                <?php $policyApiIds = $policy->getApiIds();
+                                if (!empty($policyApiIds)) {
+                                    foreach ($policyApiIds as $policyApiId) {
+                                        $a = 0;
+                                        if ($policyApiId === $api->id) { $selectedAPI[] = $api; $a = 1; break; }
+                                    }
+                                    if ($a == 1)continue; //if the api is already selected, we don't want it to appear in the selectable list
+                                } ?>
+                                <a class="btn moveSelected ellipsis filterApi" type="api" style="text-align:left" name="<?=$api->id;?>"
+                                   id="<?=$api->displayName?>" filter="<?=$api->id." ".$api->endpoint." ".$api->displayName?>"><?=$api->displayName."/".$api->endpoint?></a>
+                                <?php endforeach ?>
+                            </div>
+                            <div class="btn-group btn-group-vertical pull-right">
+                                <div class="well well-small third-level" style="min-height: 180px; margin-bottom:0" id="selectedApi">
+                                    <? if(!empty($selectedAPI)){ foreach($selectedAPI as $api):?>
+                                    <a class="btn moveSelected ellipsis filterApi" type="api" style="text-align:left" name="<?=$api->id;?>"
+                                       id="<?=$api->displayName?>" filter="<?=$api->id." ".$api->endpoint." ".$api->displayName?>"><?=$api->displayName."/".$api->endpoint?></a>
+                                    <? endforeach ?>
+                                    <?}else{?>
+                                    <p id='selectedApiPlaceholder' style='font-size:14px; color:#5e5e5e'><?=$this->translate("Selected Apis")?></p>
+                                    <?}?>
+                                </div>
+                            </div>
+                            <div class="clearfix" id="clearApi">
+                                <? if(!empty($selectedAPI)){ foreach($selectedAPI as $api):?>
+                                <input type="hidden" class="<?=$api->displayName?>" id="<?=$api->id?>" name="selected_api[]" value="<?=$api->id?>">
+                                <? endforeach ?><?}?>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="selectAuth"><? echo $this->translate("Auths")?></label>
-                <div class="controls">
-                    <select id="selectAuth" name="selected_auth[]" multiple="multiple" rel="tooltip" title="<?=$selectAuthTip?>"
-                            style="width: 400px; height: 200px;">
-                        <?php foreach ($this->auths as $auth): ?>
-                        <?php $authId = $auth->getId(); $policyAuthIds = (!empty($policy->authIds[0]) ? $policy->authIds[0]->authIds : null); $selectedAttr = '';
-                        if (!empty($policyAuthIds)) {
-                            foreach ($policyAuthIds as $policyAuthId) {
-                                if ($policyAuthId === $authId) { $selectedAttr = 'selected="selected"'; break; }
-                            }
-                        } ?>
-                        <option value="<?= $this->escape($authId); ?>" <?php echo $selectedAttr ?>><?= $this->escape($authId.": ".$auth->getType()); ?></option>
-                        <?php endforeach ?>
-                    </select>
-                    <span class="help-inline"><? echo $this->translate("Choose which Auths this Policy will apply to")?>.</span>
-                    <input type="hidden" class="input-xlarge" id="auth_bucket_id" name="auth_bucket_id" value="<?= $authBucketId ?>" />
+                <label class="control-label"><? echo $this->translate("Auths")?></label>
+                <div class="controls btn-group-vertical" style="margin-left: 20px">
+                    <div class="well second-level well-small pull-left" style="width:100%">
+                        <input type="text" filterType="Auth" class="filter-field filterMe" id="filterAuth" style="margin-bottom: 10px" rel="tooltip" title="<?//=$idTip?>" value="" placeholder="<?=$this->translate("Filter Auths by...")?>" />
+                        <div id="auth-group">
+                            <div class="btn-group btn-group-vertical pull-left" id="selectAuth" rel="tooltip" title="<?=$selectAuthTip?>">
+                                <? foreach($this->auths as $auth){
+                                    $policyAuthIds = $policy->getAuthIds();
+                                    switch ($auth->type){
+                                        case "basic":
+                                            $string = $auth->basicAuth->username . "/" . $auth->basicAuth->password;
+                                            break;
+                                        case "wsse":
+                                            $string = $auth->wsseAuth->username . "/" . $auth->wsseAuth->password;
+                                            break;
+                                        case "authKey":
+                                            $string = $auth->authKeyAuth->keyValue;
+                                            break;
+                                        case "ipWhiteList":
+                                            $i=0;
+                                            $string = "";
+                                            foreach($auth->ipWhiteListAuth->ips as $ip){
+                                                $string += ($i > 0) ? ", " . $ip : $ip;
+                                                $i++;
+                                            }
+                                            break;
+                                    }
+                                    if (!empty($policyAuthIds)) {
+                                        $a = 0;
+                                        foreach ($policyAuthIds[0]->authIds as $policyAuthId) {
+                                            if ($policyAuthId === $auth->id) { $selectedAuth[] = array("auth" => $auth, "string" => $string); $a = 1; break; }
+                                        }
+                                        if ($a == 1)continue; //if the auth is already selected, we don't want it to appear in the selectable list
+                                    }?>
+                                <a class="btn moveSelected ellipsis filterAuth" type="auth" style="text-align:left" id="<?=$auth->id?>"
+                                   name="<?=$string?>" filter="<?=$auth->id . " " . $string . " " . $auth->type?>"><?=$auth->type . ": " . $string?></a>
+                                <? } ?>
+                            </div>
+                            <div class="btn-group btn-group-vertical pull-right">
+                                <div class="well well-small third-level" style="min-height: 180px; margin-bottom:0" id="selectedAuth">
+                                    <? if(!empty($selectedAuth)){foreach($selectedAuth as $item): ?>
+                                    <? $string = $item['string']; $auth = $item['auth'];?>
+                                    <a class="btn moveSelected ellipsis filterAuth" type="auth" style="text-align:left" id="<?=$auth->id?>"
+                                          name="<?=$auth->id?>" filter="<?=$auth->id . " " . $string . " " . $auth->type?>"><?=$auth->type . ": " . $string?></a>
+                                    <? endforeach ?>
+                                    <?}else{?>
+                                    <p id='selectedAuthPlaceholder' style='font-size:14px; color:#5e5e5e'><?=$this->translate("Selected Auths")?></p>
+                                    <?}?>
+                                </div>
+                            </div>
+                            <div class="clearfix" id="clearAuth">
+                                <? if(!empty($selectedAuth)){foreach($selectedAuth as $item): ?>
+                                <? $string = $item['string']; $auth = $item['auth'];?>
+                                <input type="hidden" class="<?=$auth->id?>" id="<?=$string?>" name="selected_auth[]" value="<?=$auth->id?>">
+                                <? endforeach ?><?}?>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
             <?
             $per_second_counter = $context->getRateLimitPerSecond();
             $per_second_warning = !empty($per_second_counter) ? $per_second_counter->getWarning() : null;
@@ -146,7 +209,7 @@ $submitButtonTip = $this->translate("Post and return to Policy list");
                     <i class="icon-chevron-down advbtn" <?=!$advancedOpen?"":"style=\"display:none\""?>></i><i class="icon-chevron-up advbtn" <?=$advancedOpen?"":"style=\"display:none\""?>></i>
                 </button></label>
             </div>
-            <div id="advancedSection" class="well well-small" style="background-color: #DCDCDC; <?= $advancedOpen?"":"display:none"?>">
+            <div id="advancedSection" class="well second-level well-small" style="<?= $advancedOpen?"":"display:none"?>">
                 <div id="quotaGroup">
                     <div class="control-group <?=(!empty($validationErrors['per_second']))?"error":""?>" id="secondQuotaGroup">
                         <label class="control-label" for="TPS"><? echo $this->translate("TPS")?></label>
