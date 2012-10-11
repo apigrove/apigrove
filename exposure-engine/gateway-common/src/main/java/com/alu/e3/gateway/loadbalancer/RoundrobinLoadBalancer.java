@@ -122,8 +122,8 @@ public class RoundrobinLoadBalancer {
 					}
 					break;
 				} else {
-					if (LOGGER.isWarnEnabled()) {
-						LoadBalancerDisplay.logWarn(LOGGER, name, "Unable to call the target host while it is supposed to be available, notify that the target host ["+targetReference.getTargetHost().getUrl()+"] is invalid");
+					if (LOGGER.isDebugEnabled()) {
+						LoadBalancerDisplay.logDebug(LOGGER, name, "Unable to call the target host while it is supposed to be available, notify that the target host ["+targetReference.getTargetHost().getUrl()+"] is invalid");
 					}
 					targetHostManager.notifyFailed(targetReference.getReference());
 				}
@@ -231,7 +231,9 @@ public class RoundrobinLoadBalancer {
 		} catch(Exception e) {
 
 			TDRDataService.setTxTDRProperty(TDRConstant.EVENT_TYPE, TDRConstant.EVENT_TYPE_TARGETTIMEOUT, exchange);
-			LoadBalancerDisplay.logError(LOGGER, name, "GRAVE: Issue during the call", e);
+			if (LOGGER.isDebugEnabled()) {
+				LoadBalancerDisplay.logDebug(LOGGER, name, "GRAVE: Issue during the call");
+			}
 			
 		}
 		
@@ -255,8 +257,8 @@ public class RoundrobinLoadBalancer {
 			}
 			isOk = true;
 		} else {
-			if (LOGGER.isWarnEnabled()) {
-				LoadBalancerDisplay.logWarn(LOGGER, name, "Failover http error code : " + this.failedOverErrorCode + " detected, Failover process launched.");
+			if (LOGGER.isDebugEnabled()) {
+				LoadBalancerDisplay.logDebug(LOGGER, name, "Failover http error code : " + this.failedOverErrorCode + " detected, Failover process launched.");
 			}
 		}
 		
