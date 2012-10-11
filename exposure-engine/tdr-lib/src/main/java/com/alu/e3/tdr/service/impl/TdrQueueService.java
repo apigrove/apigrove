@@ -22,7 +22,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import com.alu.e3.common.performance.PerfWatch;
 import com.alu.e3.tdr.service.ITdrQueueService;
 
 public class TdrQueueService implements ITdrQueueService {
@@ -31,6 +33,14 @@ public class TdrQueueService implements ITdrQueueService {
 
 	private int queueWaitingSize = 2000; // Only default
 
+	private static PerfWatch perfWatch;
+	public PerfWatch getPerfWatch() {
+		if (perfWatch == null )
+			perfWatch = new PerfWatch();
+		
+		return perfWatch;
+	}
+	
 	public void setQueueWaitingSize(int size) {
 		this.queueWaitingSize = size;
 		init();
@@ -69,16 +79,24 @@ public class TdrQueueService implements ITdrQueueService {
 		}
 	}
 
+
 	@Override
-	public void putOrWait(Map<String, List<Map<String, Object>>> elem)
-			throws InterruptedException {
+	public void putOrWait(Map<String, List<Map<String, Object>>> elem) throws InterruptedException {
+	
+		Long startTime = System.nanoTime();
+			
 		queue.put(elem);
+		
+		getPerfWatch().getElapsedTime().addAndGet(System.nanoTime()-startTime);
+		getPerfWatch().getIterationCount().getAndIncrement();
+		getPerfWatch().log("TdrQueueService.putOrWait()");
 	}
 
 	@Override
 	public Map<String, List<Map<String, Object>>> getOrWait()
 			throws InterruptedException {
 		return queue.take();
+		
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.log4j.Logger;
 
+import com.alu.e3.common.performance.PerfWatch;
 import com.alu.e3.gateway.TdrProcessorHelper;
 
 /**
@@ -33,8 +34,19 @@ import com.alu.e3.gateway.TdrProcessorHelper;
 public class TDRStaticProcessor implements Processor {
 	private static Logger logger = Logger.getLogger(TDRResponseProcessor.class);
 
+	private static PerfWatch perfWatch;
+	public PerfWatch getPerfWatch() {
+		if (perfWatch == null )
+			perfWatch = new PerfWatch();
+		
+		return perfWatch;
+	}
+	
 	@Override
 	public void process(Exchange exchange) throws Exception {
+		
+		Long startTime = System.nanoTime();	
+		
 		try{
 			// Processes all of the static rules
 			TdrProcessorHelper.processTdrRules(exchange, null, true);
@@ -43,6 +55,9 @@ public class TDRStaticProcessor implements Processor {
 				logger.error(e.getMessage(), e);
 			}
 		}
-
+		
+		getPerfWatch().getElapsedTime().addAndGet(System.nanoTime()-startTime);
+		getPerfWatch().getIterationCount().getAndIncrement();
+		getPerfWatch().log("TDRStaticProcessor.process()");
 	}
 }

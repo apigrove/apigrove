@@ -52,26 +52,29 @@ public class LoadBalancerDisplay {
 	}
 	
 	public static void displayExchange(Logger logger, String name, Exchange exchange, String label) {
-		logDebug(logger, name, ">>>>>>>>>>>>> "+ label);
-		logDebug(logger, name, "Exchange ID = " + exchange.getExchangeId());
-		logDebug(logger, name, "-------------");
-		logDebug(logger, name, "Properties  = " + getMapAsString(exchange.getProperties()));
-		logDebug(logger, name, "IN  Header  = " + getMapAsString(exchange.getIn().getHeaders()));
-		logDebug(logger, name, "IN  Body    = " + getObjectAsString(exchange.getIn().getBody()));
-		logDebug(logger, name, "OUT Header  = " + getMapAsString(exchange.getOut().getHeaders()));
-		logDebug(logger, name, "OUT Body    = " + getObjectAsString(exchange.getOut().getBody()));		
-		logDebug(logger, name, "=============");
+		if(logger.isDebugEnabled()) {
+			logDebug(logger, name, ">>>>>>>>>>>>> "+ label);
+			logDebug(logger, name, "Exchange ID = " + exchange.getExchangeId());
+			logDebug(logger, name, "-------------");
+			logDebug(logger, name, "Properties  = " + getMapAsString(exchange.getProperties()));
+			logDebug(logger, name, "IN  Header  = " + getMapAsString(exchange.getIn().getHeaders()));
+			logDebug(logger, name, "IN  Body    = " + getObjectAsString(exchange.getIn().getBody()));
+			logDebug(logger, name, "OUT Header  = " + getMapAsString(exchange.getOut().getHeaders()));
+			logDebug(logger, name, "OUT Body    = " + getObjectAsString(exchange.getOut().getBody()));		
+			logDebug(logger, name, "=============");
+		}
 }
 
 
 	public static void displayConfig(Logger logger, String name, int maxAttemptsExceeded, boolean failedOver, int failedOverErrorCode, int numberOfReferences) {
-	
-		logDebug(logger, name, "============= CONFIG =============");
-		logDebug(logger, name, "Max Attempts  = " + maxAttemptsExceeded);
-		logDebug(logger, name, "Failover  = " + failedOver);
-		logDebug(logger, name, "Failover Error Code  = " + failedOverErrorCode);
-		logDebug(logger, name, "Number of Target Host  = " + numberOfReferences);
-		logDebug(logger, name, "===================================");
+		if(logger.isDebugEnabled()) {
+			logDebug(logger, name, "============= CONFIG =============");
+			logDebug(logger, name, "Max Attempts  = " + maxAttemptsExceeded);
+			logDebug(logger, name, "Failover  = " + failedOver);
+			logDebug(logger, name, "Failover Error Code  = " + failedOverErrorCode);
+			logDebug(logger, name, "Number of Target Host  = " + numberOfReferences);
+			logDebug(logger, name, "===================================");
+		}
 	}
 
 	private static String getObjectAsString(Object object) {

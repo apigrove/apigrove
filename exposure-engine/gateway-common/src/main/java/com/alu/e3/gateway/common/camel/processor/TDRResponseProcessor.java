@@ -23,6 +23,7 @@ import org.apache.camel.Processor;
 import org.apache.log4j.Logger;
 
 import com.alu.e3.common.camel.ExchangeConstantKeys;
+import com.alu.e3.common.performance.PerfWatch;
 import com.alu.e3.data.model.ExtractFromType;
 import com.alu.e3.gateway.TdrProcessorHelper;
 
@@ -38,9 +39,21 @@ public class TDRResponseProcessor implements Processor {
 	// The key to our Exchange property that indicates whether this has already been run.
 	// We only want to run it once and it could run twice if there is an error on the route.
 	private static String TDR_RES_PROC_RUN_KEY = "TDR_RES_PROC_RUN";
+	
+	private static PerfWatch perfWatch;
+	public PerfWatch getPerfWatch() {
+		if (perfWatch == null )
+			perfWatch = new PerfWatch();
+		
+		return perfWatch;
+	}
+
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
+		
+		Long startTime = System.nanoTime();
+		
 		try{
 			Boolean alreadyRan = exchange.getProperty(TDR_RES_PROC_RUN_KEY, Boolean.FALSE, Boolean.class); 
 			Boolean isResponse = exchange.getProperty(ExchangeConstantKeys.E3_GOT_SB_RESPONSE.toString(), Boolean.FALSE, Boolean.class);
@@ -55,5 +68,8 @@ public class TDRResponseProcessor implements Processor {
 			}
 		}
 
+		getPerfWatch().getElapsedTime().addAndGet(System.nanoTime()-startTime);
+		getPerfWatch().getIterationCount().getAndIncrement();
+		getPerfWatch().log("TDRResponseProcessor.process()");
 	}
 }

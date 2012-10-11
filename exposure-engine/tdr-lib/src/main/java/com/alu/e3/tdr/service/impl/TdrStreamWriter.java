@@ -25,11 +25,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.alu.e3.common.performance.PerfWatch;
 import com.alu.e3.tdr.rotator.RotatableFileWriterProvider;
 import com.alu.e3.tdr.rotator.RotatableWriterProvider;
 import com.alu.e3.tdr.rotator.WriterProvider;
@@ -48,7 +50,15 @@ public class TdrStreamWriter extends XmlStreamWriter {
 	private static final int TDR_FILE_SIZE = 10 * 1024 * 1024;   // TDR file size rotation trigger
 	private static final int TDR_FILE_AGE = 30 * 1000;   // TDR file age rotation trigger
 
-	public TdrStreamWriter(File dir) {
+	private static PerfWatch perfWatch;
+	public PerfWatch getPerfWatch() {
+		if (perfWatch == null )
+			perfWatch = new PerfWatch();
+		
+		return perfWatch;
+	}
+	
+	public TdrStreamWriter(File dir) throws TransformerConfigurationException {
 		this(new RotatableFileWriterProvider(dir, TDR_FILE_SIZE, TDR_FILE_AGE) {
 			@Override
 			protected String getFileName() {
@@ -67,7 +77,7 @@ public class TdrStreamWriter extends XmlStreamWriter {
 		});
 	}
 
-	public TdrStreamWriter(WriterProvider outputWriterProvider) {
+	public TdrStreamWriter(WriterProvider outputWriterProvider) throws TransformerConfigurationException {
 		super(outputWriterProvider);
 	}
 
@@ -78,8 +88,10 @@ public class TdrStreamWriter extends XmlStreamWriter {
 		}
 	}
 
-	private Element writerBulkTdrXml(Document doc, Map<String, Object> tdrProps)
-			throws TransformerException, IOException {
+	private Element writerBulkTdrXml(Document doc, Map<String, Object> tdrProps) throws TransformerException, IOException {
+	
+	Long startTime = System.nanoTime();
+			
 		// create a root element and fill it up
 		Element tdrElem = doc.createElement("TDR");
 
@@ -94,6 +106,10 @@ public class TdrStreamWriter extends XmlStreamWriter {
 			}
 		}
 
+		getPerfWatch().getElapsedTime().addAndGet(System.nanoTime()-startTime);
+		getPerfWatch().getIterationCount().getAndIncrement();
+		getPerfWatch().log("TdrStreamWriter.writerBulkTdrXml()");
+		
 		return tdrElem;
 	}
 }

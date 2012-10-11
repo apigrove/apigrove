@@ -20,6 +20,7 @@ package com.alu.e3.tdr.rotator;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -36,6 +37,8 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Element;
 
+import com.alu.e3.common.performance.PerfWatch;
+
 /**
  * Writes arbitrary XML to a {@link Writer} (a character stream), which is obtained
  * from a {@link WriterProvider}.
@@ -44,12 +47,28 @@ import org.w3c.dom.Element;
 public class XmlStreamWriter {
 
 	private final DocumentBuilder docBuilder;
+	
+	private Transformer transformer = null;
 
 	// source of the current Writer
 	private final WriterProvider outputWriterProvider;
 	
-	public XmlStreamWriter(WriterProvider outputWriterProvider) {
+	private static PerfWatch perfWatch;
+	public PerfWatch getPerfWatch() {
+		if (perfWatch == null )
+			perfWatch = new PerfWatch();
+		
+		return perfWatch;
+	}
+	
+	public XmlStreamWriter(WriterProvider outputWriterProvider)throws TransformerConfigurationException {
 		this.outputWriterProvider = outputWriterProvider;
+		
+		TransformerFactory factory = TransformerFactory.newInstance();
+		this.transformer = factory.newTransformer();
+		this.transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		this.transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		
 		try {
 			docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
@@ -68,14 +87,23 @@ public class XmlStreamWriter {
 	 * @throws TransformerException
 	 * @throws IOException
 	 */
+	
+	
 	public void writeXml(Element root) throws TransformerException, IOException {
-		Transformer transformer = getTransformer();
-		Source source = new DOMSource(root);
+	
+		Long startTime = System.nanoTime();
+
+		Source source = new DOMSource(root.cloneNode(true));
 		synchronized (outputWriterProvider.getSynchroLock()) {   // ensure atomicity of the entire DOM write
 			Writer outputWriter = outputWriterProvider.getWriter();   // get current output stream
 			Result result = new StreamResult(outputWriter);
 			transformer.transform(source, result);   // write out the XML
+			
 		}
+		
+		getPerfWatch().getElapsedTime().addAndGet(System.nanoTime()-startTime);
+		getPerfWatch().getIterationCount().getAndIncrement();
+		getPerfWatch().log("XmlStreamWriter.writeXml()");
 	}
 	
 	public void stop() {
@@ -84,17 +112,5 @@ public class XmlStreamWriter {
 		}
 	}
 
-	/**
-	 * Returns the {@link Transformer}. May be overridden if necessary.
-	 * 
-	 * @return the Transformer
-	 * @throws TransformerConfigurationException
-	 */
-	protected Transformer getTransformer() throws TransformerConfigurationException {
-		TransformerFactory factory = TransformerFactory.newInstance();
-		Transformer transformer = factory.newTransformer();
-		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		return transformer;
-	}
+	
 }

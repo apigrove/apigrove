@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TimerTask;
 
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.slf4j.Logger;
@@ -34,6 +35,7 @@ import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 
 import com.alu.e3.common.E3Constant;
+import com.alu.e3.common.performance.PerfWatch;
 import com.alu.e3.tdr.service.ITdrQueueService;
 
 public class TdrXMLWriter extends TimerTask {
@@ -55,6 +57,14 @@ public class TdrXMLWriter extends TimerTask {
 	private TdrStreamWriter tdrStreamWriter;
 
 	private int instanceIndex;
+	
+	private static PerfWatch perfWatch;
+	public PerfWatch getPerfWatch() {
+		if (perfWatch == null )
+			perfWatch = new PerfWatch();
+		
+		return perfWatch;
+	}
 
 	public TdrXMLWriter() {}
 
@@ -101,12 +111,18 @@ public class TdrXMLWriter extends TimerTask {
 
 	private void processTdrQueue() {
 		while (alive) {
+			Long startTime = System.nanoTime();
 			try {
 				Map<String, List<Map<String, Object>>> tdrData = tdrQueueService.getOrWait();
-				writeTdrData(tdrData);
+				{
+					writeTdrData(tdrData);
+				}
 			} catch (InterruptedException e) {
 				// ignore this
 			}
+			getPerfWatch().getElapsedTime().addAndGet(System.nanoTime()-startTime);
+			getPerfWatch().getIterationCount().getAndIncrement();
+			getPerfWatch().log("TdrXMLWriter.processTdrQueue()");
 		}
 		tdrStreamWriter.stop();
 	}
@@ -130,7 +146,7 @@ public class TdrXMLWriter extends TimerTask {
 		}
 	}
 
-	private TdrStreamWriter getTdrStreamWriter(String tdrTypeName) {
+	private TdrStreamWriter getTdrStreamWriter(String tdrTypeName) throws TransformerConfigurationException {
 		synchronized (tdrTypeNameToTdrStreamWriter) {
 			TdrStreamWriter tdrStreamWriter = tdrTypeNameToTdrStreamWriter.get(tdrTypeName);
 			if (tdrStreamWriter == null) {
@@ -141,10 +157,13 @@ public class TdrXMLWriter extends TimerTask {
 		}
 	}
 
-	private static TdrStreamWriter newTdrStreamWriter(String subdirectoryName) {
+	private static TdrStreamWriter newTdrStreamWriter(String subdirectoryName) throws TransformerConfigurationException {
 		File dir = new File(E3Constant.TDR_BASE_PATH, subdirectoryName);
 		dir.mkdirs();
-		logger.debug("Creating new TDR writer: " + dir.getPath());
+		if (logger.isDebugEnabled())
+		{
+			logger.debug("Creating new TDR writer: " + dir.getPath());
+		}
 		return new TdrStreamWriter(dir);
 	}
 
