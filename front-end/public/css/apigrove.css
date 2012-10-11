@@ -98,6 +98,9 @@ body{
     margin-right: 2px;
 }
 
+
+
+
 .controls select{
     overflow: auto;
 }
@@ -161,6 +164,23 @@ body{
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
+.span4 .control-label{
+    width: 100px;
+}
+
+.span4 .controls{
+    margin-left: 120px;
+}
+
+.response-placeholder{
+    border: 3px solid dashed;
+    min-height: 200px;
+    line-height: 200px;
+    font-size: 36px;
+    color: #cccccc;
+    text-align: center;
+}
+
 .depth{
     font: 20px Arial, sans-serif;
     color: #9E9E9E;
@@ -178,5 +198,4 @@ body{
 .hero-unit {
     margin-top: 30px;
 }
-
 

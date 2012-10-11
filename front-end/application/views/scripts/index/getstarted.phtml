@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="hero-unit">
+        <h1>Get Started</h1>
+        <p>
+            In order to use apiGrove to expose your APIs you'll need to configure your out of the box installation.
+            Configuring apiGrove involves creating three primary objects that the product uses to manager your API.
+            These objects are API, Auth, and Policy.
+        </p>
+
+    </div>
+    <h2>API</h2>
+    <p>An API represents the API that you are trying to manage with apiGrove. On this object you can setup
+        which Authentication types you would like to allow, setup load-balancing to the southbound endpoints and a
+        variety of other tasks specific to the API.</p>
+    <h2>Auth</h2>
+    <p>An Auth represents authentication credentials. When you create an Auth you will choose from 1 of several
+        authentication methods including http basic. Here you will choose a username and password to be used when
+        making calls to your API through apiGrove.</p>
+    <h2>Policy</h2>
+    <p>A Policy in apiGrove links an API to its Auths. So, if you would like your API to be accessed only by systems
+        that have a specific username and password then you would create an API that accepts HTTP BASIC authentication,
+        then create an HTTP Basic Auth and then link the Auth to the Api by creating a policy that references both.
+        APIs whose auth type is "noAuth" will not need a Policy or Auth, they can be accessed without any credentials.</p>
+    <p>Policies can also be used to apply rate limiting and quotas.</p>
+
+    <h2>Relationship Diagram</h2>
+    <img src="/img/apigroveObjects.png" alt=""/>
+
+    <div class="hero-unit">
+    <h2>Now that you know the basics, it's time to jump in and <a href="/api/create">create your first API</a>.</h2>
+    </div>
+    <br/><br/><br/>
+</div>
+    

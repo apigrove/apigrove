@@ -1,31 +1,76 @@
-<div class="container">
+<div class="container-fluid">
+    <h1>Call API</h1>
     <? if(is_null($this->url)){?>
     <div class="well well-small warning"><strong>There was an error generating the url</strong></div>
     <?}else{
     $url = $this->url;?>
-    <div id="urlForm" class="well">
-        <form class="form-horizontal" action="/api/call" method="post" data-behavior="confirm">
-            <fieldset>
-                <div class="control-group parameter">
-                    <label class="control-label">Query Parameters</label>
-                    <div class="controls">
-                        <input type="text" class="input-small" placeholder="Key" name="parameterKey0" id="parameterKey0">
-                        <input type="text" class="input-small" placeholder="Value" name="parameterValue0" id="parameterValue0">
-                        <a class="btn addParams newItem updateParams" type="parameter" title="Add query parameters"><i class="icon-plus"></i></a>
+    <div class="row-fluid">
+        <div id="urlForm" class="well span4">
+            <form class="form-horizontal" action="/api/call" method="post" data-behavior="confirm">
+                <fieldset >
+                    <div class="control-group ">
+                        <label class="control-label" for="method-group"><? echo $this->translate("Method")?></label>
+                        <div class="controls">
+                            <div class="btn-group" data-toggle="buttons-radio" id="method-group">
+                                <a class="btn callapi-method active"
+                                   rel="tooltip" title="Sends a GET request"
+                                   value="GET" id="method-get">GET</a>
+                                <a class="btn callapi-method"
+                                   rel="tooltip" title="Sends a POST requests"
+                                   value="POST" id="method-post">POST</a>
+                                <a class="btn callapi-method"
+                                   rel="tooltip" title="Sends a PUT Request"
+                                   value="PUT" id="method-put">PUT</a>
+                                <a class="btn callapi-method"
+                                   rel="tooltip" title="Sends a DELETE Request"
+                                   value="DELETE" id="method-delete">DELETE</a>
+                            </div>
+                            <input type="hidden" name="method" value="GET" id="method"/>
+                        </div>
                     </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">URL</label>
-                    <div class="controls">
-                        <label style='padding-top:5px;'><strong id="showUrl"><?=$url?></strong></label>
-                        <span id="hiddenInput"><input type='hidden' id="hiddenField" url="<?=$url?>" value='<?=$url?>' name='url'/></span>
+                    <div id="parameterGroup">
+                        <div class="control-group parameter">
+                            <label class="control-label">Parameters</label>
+                            <div class="controls">
+                                <input type="text" class="input-small parameter-key" placeholder="Key" name="parameterKey0" id="parameterKey0">
+                                <input type="text" class="input-small parameter-value" placeholder="Value" name="parameterValue0" id="parameterValue0">
+                                <a class="btn addParams newItem updateParams" type="parameter" title="Add query parameters" id="addParam"><i class="icon-plus"></i></a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <a class="btn btn-inverse makeCall" style="align:right;">Call API</a>
-            </fieldset>
-        </form>
-    </div>
-    <div class="well well-small" style="display:none" id="callWindow">
+                    <div id="headerGroup">
+                        <div class="control-group header">
+                            <label class="control-label">Headers</label>
+                            <div class="controls">
+                                <input type="text" class="input-small header-key" placeholder="Key" name="headerKey0" id="headerKey0">
+                                <input type="text" class="input-small header-value" placeholder="Value" name="headerValue0" id="headerValue0">
+                                <a class="btn addHeaders newItem" type="header" title="Add header" id="addHeader"><i class="icon-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">URL</label>
+                        <div class="controls">
+                            <label style='padding-top:5px;'><strong id="showUrl"><?=$url?></strong></label>
+                            <span id="hiddenInput"><input type='hidden' id="hiddenField" url="<?=$url?>" value='<?=$url?>' name='url'/></span>
+                        </div>
+                    </div>
+                    <div class="control-group" id="request-body" style="display: none;">
+                        <label class="control-label">Body</label>
+                        <div class="controls">
+                            <textarea id="request-body-field" class="input-xlarge" name='request-body' style="height: 300px;"></textarea>
+                        </div>
+                    </div>
+                    <a class="btn btn-inverse makeCall" style="align:right;" id="callApiButton">Call API</a>
+                </fieldset>
+            </form>
+        </div>
+        <div class="span8 well response-placeholder" id="response-placeholder" >
+            No Calls Yet
+        </div>
+        <div class="span8"  >
+            <div class="accordion" id="responses"></div>
+        </div>
     </div>
     <?}?>
 </div> <!-- /container -->

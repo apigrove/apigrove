@@ -56,15 +56,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     'action'=>'delete'
                 )));
 
-//        $router->addRoute('callApi', //Name
-//            new Zend_Controller_Router_Route(
-//                'api/:id/call', //Defines the url
-//                array(
-//                    'controller' => 'api',
-//                    'action' => 'call'
-//                )
-//            )
-//        );
+        $router->addRoute('callApi', //Name
+            new Zend_Controller_Router_Route(
+                'api/:id/call', //Defines the url
+                array(
+                    'controller' => 'api',
+                    'action' => 'call'
+                )
+            )
+        );
 
         /**
          * Routes for Auth provisioning
@@ -186,6 +186,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 array( // defaults
                     'controller' => 'authentication', // Directs to use the ApiController class
                     'action'=>'edit'       // Directs to use the ApiController::indexAction method
+                )));
+
+        $router->addRoute('getstarted', // Name
+            new Zend_Controller_Router_Route(
+                'getstarted', // Defines the url.  Could be something like api/:id
+                array( // defaults
+                    'controller' => 'index', // Directs to use the ApiController class
+                    'action'=>'getstarted'       // Directs to use the ApiController::indexAction method
                 )));
 
 

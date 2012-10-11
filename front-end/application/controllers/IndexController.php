@@ -11,6 +11,9 @@
  * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
  */
 
+/**
+ * The indexController will be used for any static content that we need
+ */
 class IndexController extends Zend_Controller_Action
 {
 
@@ -23,6 +26,12 @@ class IndexController extends Zend_Controller_Action
     {
         // action body
     }
+
+    public function getstartedAction(){
+
+    }
+
+
 
 
 }

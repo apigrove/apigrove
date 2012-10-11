@@ -12,7 +12,7 @@
 
 $(document).ready(function() {
 
-    var types = new Array("property", "tdrRule", "headerTrans", "targethost", "parameter");
+    var types = new Array("property", "tdrRule", "headerTrans", "targethost", "parameter","header");
     for(var i = 0; i<types.length; i++){
         var items = document.getElementsByClassName(types[i]);
         var itemCount = items.length;
@@ -21,6 +21,7 @@ $(document).ready(function() {
         else if(types[i] == "headerTrans") var headerTransCount = itemCount;
         else if(types[i] == "targethost") var targetHostCount = itemCount;
         else  if(types[i] == "parameter") var parameterCount = itemCount;
+        else  if(types[i] == "header") var headerCount = itemCount;
     }
 
     $('.newItem').click(function(event){
@@ -53,8 +54,7 @@ $(document).ready(function() {
             $(this).slideUp("fast", function() {
                 $(this).appendTo('#select'+upperType).slideDown('fast');
                 if($('#selected'+upperType).children().length == 0){
-//                    $('#selected'+upperType).append
-                    $('<p id="selected'+upperType+'Placeholder" class="depth">Selected '+upperType+'s</p>').hide().appendTo('#selected'+upperType).fadeIn('fast');
+                    $('#selected'+upperType).append('<p id="selected'+upperType+'Placeholder" style="font-size:14px; color:#5e5e5e">Selected '+upperType+'s</p>');
                 }
             });
         }
@@ -246,6 +246,19 @@ $(document).ready(function() {
         }
     }
 
+    /**
+     * To control the "method" buttons on the "callapi" page
+     */
+    $(".callapi-method").click(function(event){
+        $('#method').val($(this).attr('value'));
+        if($(this).attr('value') !== "GET"){
+            $('#request-body').show('fast');
+        }
+        else{
+            $('#request-body').hide('fast');
+        }
+    });
+
 
     function handleProvAuthTypeClick(ele, speed){
         var id = $(ele).attr("id");
@@ -293,7 +306,6 @@ $(document).ready(function() {
         }
     }
 
-
     var type = $('#type').attr('value');
     var button = $('[name="'+type+'"]');
     handleAuthTypeClick(button, null);
@@ -306,10 +318,14 @@ $(document).ready(function() {
             var itemBody = propertyBody();
         }else if(type == 'parameter'){
             var itemBody = parameterBody();
+            $('#parameterKey0').focus();
         }else if(type == 'tdrRule'){
             var itemBody = tdrBody();
         }else if(type == 'headerTrans'){
             var itemBody = headerTransBody();
+        }else if(type === 'header'){
+            var itemBody = headerBody();
+            $('#headerKey0').focus();
         }
         var parentID = "#" + type + "Group";
         $(parentID).append(itemBody);
@@ -350,11 +366,27 @@ $(document).ready(function() {
             +"<div class=\"controls\">"
             +"<input type=\"text\" class=\"input-small parameter-key\" name=\"parameterKey"+parameterCount+"\" value=\""+key+"\" placeholder=\"Key\" id=\"parameterKey"+parameterCount+"\"> "
             +"<input type=\"text\" class=\"input-small parameter-value\" name=\"propertyValue"+parameterCount+"\" value=\""+value+"\" placeholder=\"Value\" id=\"parameterValue"+parameterCount+"\"> "
-            +"<a class=\"btn updateParams\" type=\"parameter\" number=\""+parameterCount+"\" title=\"Update Parameter\">Update</a> "
-            +"<a class=\"btn removeItem updateParams\" type=\"parameter\" number=\""+parameterCount+"\" title=\"Remove parameter\"><i class=\"icon-minus\"></i></a>"
+            +"<a class=\"btn removeItem updateParams\" type=\"parameter\" number=\""+parameterCount+"\" title=\"Remove parameter\" id=\"paramRemove"+parameterCount+"\"><i class=\"icon-minus\"></i></a>"
             +"</div>"
             +"</div";
         parameterCount++;
+        return body;
+    }
+
+    function headerBody(){
+        var key = $('#headerKey0').val();
+        var value = $('#headerValue0').val();
+        $('#headerKey0').val("");
+        $('#headerValue0').val("");
+        var body = "<div class=\"control-group header\" count=\""+headerCount+"\" id=\"headerGroup"+headerCount+"\">"
+            +"<label class=\"control-label\">&nbsp;</label>"
+            +"<div class=\"controls\">"
+            +"<input type=\"text\" class=\"input-small header-key\" name=\"headerKey"+headerCount+"\" value=\""+key+"\" placeholder=\"Key\" id=\"headerKey"+headerCount+"\"> "
+            +"<input type=\"text\" class=\"input-small header-value\" name=\"headerValue"+headerCount+"\" value=\""+value+"\" placeholder=\"Value\" id=\"headerValue"+headerCount+"\"> "
+            +"<a class=\"btn removeItem updateHeaders\" type=\"header\" number=\""+headerCount+"\" title=\"Remove Header\" id=\"headerRemove"+headerCount+"\"><i class=\"icon-minus\"></i></a>"
+            +"</div>"
+            +"</div";
+        headerCount++;
         return body;
     }
 
@@ -462,48 +494,104 @@ $(document).ready(function() {
         updateParams();
     });
 
+    $('.parameter-key, .parameter-value').live("keyup", updateParams);
+
     $('.makeCall').click(function(){
-        var url = document.getElementById('showUrl').innerHTML;
-//        document.getElementById('callWindow').innerHTML = "<iframe src=\""+url+"\" height=\"200px\" width=\"100%\"></iframe>";
+        var url = $('#hiddenField').attr('url');
         makeRequest(url);
     });
 
     function makeRequest(url) {
-        var xmlHttp = getXMLHttp();
-        xmlHttp.onreadystatechange = function() {
-            if(xmlHttp.readyState == 4) {
-                HandleResponse(xmlHttp.responseText);
-            }
+
+        var params = {};
+        var keys = document.getElementsByClassName('parameter-key');
+        var keysCount = (keys.length);
+        var values = document.getElementsByClassName('parameter-value');
+        var valuesCount = (values.length);
+        var i;
+        for(i=0; i<keysCount; i++){
+
+            var id = keys[i].id;
+            var key = $('#'+id).val();
+            var id = values[i].id;
+            var value = $('#'+id).val();
+            params["params["+key+"]"] = value;
         }
-        xmlHttp.open("GET", "/makeCall?url="+url, true);
-        xmlHttp.send(null);
+
+        var headers = "";
+        keys = document.getElementsByClassName('header-key');
+        keysCount = (keys.length);
+        values = document.getElementsByClassName('header-value');
+        valuesCount = (values.length);
+
+        for(i=0; i<keysCount; i++){
+
+            var id = keys[i].id;
+            var key = $('#'+id).val();
+            var id = values[i].id;
+            var value = $('#'+id).val();
+            params["headers[]"] = key+": "+value;
+        }
+
+        params['method'] = $("#method").val();
+        params['url'] = url;
+        params['body'] = $("#request-body-field").val();
+
+        var urlString = "/makeCall";
+        $.post(urlString, params, HandleResponse, 'json');
+
     }
 
-    function getXMLHttp() {
-        var xmlHttp
-        try {
-            xmlHttp = new XMLHttpRequest();
-        }
-        catch(e) {
-            try {
-                xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            }
-            catch(e) {
-                try {
-                    xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                catch(e) {
-                    alert("Your browser does not support AJAX!");
-                    return false;
-                }
-            }
-        }
-        return xmlHttp;
-    }
-
+    var apiCallCount = 1;
     function HandleResponse(response) {
-        document.getElementById('callWindow').innerHTML = response;
-        $('#callWindow').show('fast');
+        var container = $('#responses');
+
+        var group = $(document.createElement("div"));
+        group.addClass("accordion-group");
+        group.attr('id', "response"+apiCallCount);
+        container.prepend(group);
+
+        var heading = $(document.createElement("div"));
+        heading.addClass("accordion-heading");
+        group.append(heading);
+
+        var headingLink = $(document.createElement("a"));
+        headingLink.addClass("accordion-toggle");
+        headingLink.attr('data-toggle','collapse');
+        headingLink.attr('data-parent',"#responses");
+        headingLink.attr('href',"#responseBody"+apiCallCount);
+        headingLink.html("<strong>Response "+apiCallCount+"</strong>");
+        heading.append(headingLink);
+
+        var body = $(document.createElement("div"));
+        body.addClass("accordion-body collapse in");
+        body.attr('id',"responseBody"+apiCallCount)
+        group.append(body);
+
+        var bodyInner = $(document.createElement("div"));
+        bodyInner.addClass("accordion-inner");
+        body.append(bodyInner);
+
+        var headerH3 = $(document.createElement("h4"));
+        headerH3.text("Header")
+        bodyInner.append(headerH3);
+
+        var headerPre = $(document.createElement("pre"));
+        headerPre.text(response.header)
+        bodyInner.append(headerPre);
+
+        var bodyH3 = $(document.createElement("h4"));
+        bodyH3.text("Body")
+        bodyInner.append(bodyH3);
+
+        var bodyPre = $(document.createElement("pre"));
+        bodyPre.attr('id','body'+apiCallCount);
+        bodyPre.text(response.body)
+        bodyInner.append(bodyPre);
+
+        container.show();
+        $('#response-placeholder').hide();
+        apiCallCount++;
     }
 
     function updateParams(){
@@ -526,7 +614,7 @@ $(document).ready(function() {
             url += key + "=" + value;
         }
         document.getElementById('showUrl').innerHTML = url;
-        $('#hiddenField').val(url);
+        $('#hiddenField').val(escape(url));
     }
 
 
@@ -582,9 +670,9 @@ $(document).ready(function() {
             }
 
             me.click(function(event) {
-               if (forControl !== null) {
-                   forControl.popover('toggle');
-               }
+                if (forControl !== null) {
+                    forControl.popover('toggle');
+                }
             });
         });
 

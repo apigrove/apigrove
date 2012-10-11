@@ -408,7 +408,6 @@ class ApiController extends FlowController {
         else{
             $this->_helper->FlashMessenger($translate->translate("Error creating Policy"));
         }
-
     }
 
     /**
@@ -435,19 +434,58 @@ class ApiController extends FlowController {
         $apiid = $this->_getParam("id");
         $api = $this->getManager()->getApi($apiid);
         $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/manager.ini');
-        $this->view->url = "http://" . $config->manager_host . "/" . $api->endpoint;
+        $this->view->url = "http://" . $config->gateway_host . "/" . $api->endpoint;
     }
 
     public function makecallAction(){
         $ch = curl_init();
         $url = $this->_getParam('url');
+        $params = $this->_getParam('params');
+        $method = $this->_getParam('method');
+        $headers = $this->_getParam('headers');
+        $body = $this->_getParam('body');
+        if(empty($headers)) $headers = array();
+        if(empty($params)) $params = array();
+
+        $url .= "?";
+        $queryString = "";
+        foreach($params as $key => $value){
+            $queryString .= urlencode($key)."=".urlencode($value)."&";
+        }
+
+        if($method !== "GET"){
+
+            if($method === "POST"){
+                curl_setopt($ch, CURLOPT_POST, 1);
+            }
+            else if($method === "PUT"){
+                curl_setopt($ch, CURLOPT_PUT, 1);
+            }
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+
+        }
+
+        $url .= $queryString;
+
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($ch);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+
+
+        $response = curl_exec($ch);
+        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $header = substr($response, 0, $header_size);
+        $body = substr($response, $header_size);
+
         curl_close($ch);
         $this->_helper->layout()->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
-        echo $output;
+
+        echo json_encode(array('header'=>$header,'body'=>$body));;
     }
 }
 

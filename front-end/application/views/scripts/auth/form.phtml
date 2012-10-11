@@ -15,7 +15,7 @@
  * View File for the Auth form
  */
 /**
- * @var Flow
+ * @var Flow $flow
  */
 $flow = $this->flow;
 
@@ -169,6 +169,7 @@ $saveButtonTip = $this->translate("Post and return to Auth list");
 
             </div>
             <input type="hidden" name="_faction" value="submit" />
+            <input type="hidden" name="_fid" value="<?=$flow->id?>" />
             <input type="submit" class="btn confirm-toggle btn-primary" value="<? echo $this->translate("Save")?>"
                    rel="tooltip" title="<?=$saveButtonTip?>" data-placement="right"/>
         </fieldset>
