@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "sslcsr", propOrder = {
+    "id",
     "csrContent"
 })
 public class SSLCSR {

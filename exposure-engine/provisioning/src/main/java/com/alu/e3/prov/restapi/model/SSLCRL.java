@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlRootElement(name="crl")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "crl", propOrder = {
+    "id",
     "content",
     "displayName"
 })

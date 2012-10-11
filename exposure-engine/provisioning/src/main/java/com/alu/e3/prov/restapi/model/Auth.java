@@ -64,7 +64,6 @@ public class Auth {
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
     @XmlSchemaType(name = "ID")
-    @XmlElement(required = false)
     protected String id;
     /**
      * The auth status: active, inactive, pending
@@ -380,7 +379,9 @@ public class Auth {
 	}
 	
 	@XmlAccessorType(XmlAccessType.FIELD)
-	@XmlType(name = "idAttribute")
+	@XmlType(name = "idAttribute", propOrder = {
+		    "id"
+		})
 	public static class IdAttribute
 	{
 		@XmlAttribute(name="id", required = true)

@@ -24,7 +24,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "typeAttribute")
+@XmlType(name = "typeAttribute", propOrder = {
+	    "type"
+	})
 public class TypeAttribute {
 	@XmlAttribute(name="type", required = true)
     protected String type;
