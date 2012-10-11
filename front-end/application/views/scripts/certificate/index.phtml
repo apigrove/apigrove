@@ -2,6 +2,14 @@
 $keys = $this->keys;
 $cas = $this->cas;
 $crls = $this->crls;
+
+$addKeyButtonTip = $this->translate("Click to add a new Key");
+$editKeyLinkTip = $this->translate("Select to edit Key");
+$addCAButtonTip = $this->translate("Click to add a new CA");
+$editCALinkTip = $this->translate("Select to edit CA");
+$addCRLButtonTip = $this->translate("Click to add a new CRL");
+$editCRLLinkTip = $this->translate("Select to edit CRL");
+
 ?>
 <div class="container">
     <div class="hero-unit">
@@ -24,11 +32,17 @@ $crls = $this->crls;
             <h2>Private Keys</h2>
             <div class="listItem">
                 <div class="item-div pull-left"><span class="item1"><strong>Name</strong></span></div>
-                <div class="item-div pull-left"><span class="item2"><a href="/certificate/key/create" class="btn btn-success">+</a></div>
+                <div class="item-div pull-left"><span class="item2">
+                    <a href="/certificate/key/create" class="btn btn-success" rel="tooltip" title="<?=$addKeyButtonTip?>" data-placement="right">+</a>
+                </div>
             </div>
             <? foreach($keys as $key){?>
             <div class="listItem">
-                <div class="item-div pull-left"><label class="item1"><a href="/certificate/key/<?php echo $key->getId();?>"><strong><?php echo $key->getDisplayName();?></strong></a></label></div>
+                <div class="item-div pull-left">
+                    <label class="item1" rel="tooltip" title="<?=$editKeyLinkTip?>" >
+                        <a href="/certificate/key/<?php echo $key->getId();?>"><strong><?php echo $key->getDisplayName();?></strong></a>
+                    </label>
+                </div>
                 <div class="item-div pull-left">
                       <span class="item4">
                       <a href="/certificate/key/<?php echo $key->getId()?>/delete" id="key-<?=$key->id?>-delete" class="btn btn-danger delete">Delete</a>
@@ -45,11 +59,17 @@ $crls = $this->crls;
             <div class="listItem">
                 <div class="item-div pull-left"><span class="item1"><strong>Name</strong></span></div>
                 <div class="item-div pull-left"><span class="item2"><strong>Expiration</strong></span></div>
-                <div class="item-div pull-left"><span class="item2"><a href="/certificate/ca/create" class="btn btn-success">+</a></div>
+                <div class="item-div pull-left"><span class="item2">
+                    <a href="/certificate/ca/create" class="btn btn-success" rel="tooltip" title="<?=$addCAButtonTip?>" data-placement="right">+</a>
+                </div>
             </div>
             <? foreach($cas as $ca){?>
             <div class="listItem">
-                <div class="item-div pull-left"><label class="item1"><a href="/certificate/ca/<?php echo $ca->getId();?>"><strong><?php echo $ca->getDisplayName();?></strong></a></label></div>
+                <div class="item-div pull-left">
+                    <label class="item1" rel="tooltip" title="<?=$editCALinkTip?>">
+                        <a href="/certificate/ca/<?php echo $ca->getId();?>"><strong><?php echo $ca->getDisplayName();?></strong></a>
+                    </label>
+                </div>
                 <div class="item-div pull-left"><label class="item2"><?php echo $ca->getExpirationDate();?></label></div>
                 <div class="item-div pull-left">
                       <span class="item4">
@@ -67,11 +87,17 @@ $crls = $this->crls;
             <div class="listItem">
                 <div class="item-div pull-left"><span class="item1"><strong>Name</strong></span></div>
                 <div class="item-div pull-left"><span class="item2"><strong>Next Update</strong></span></div>
-                <div class="item-div pull-left"><span class="item2"><a href="/certificate/crl/create" class="btn btn-success">+</a></div>
+                <div class="item-div pull-left"><span class="item2">
+                    <a href="/certificate/crl/create" class="btn btn-success" rel="tooltip" title="<?=$addCRLButtonTip?>" data-placement="right">+</a>
+                </div>
             </div>
             <? foreach($crls as $crl){?>
             <div class="listItem">
-                <div class="item-div pull-left"><label class="item1"><a href="/certificate/crl/<?php echo $crl->getId();?>"><strong><?php echo $crl->getDisplayName();?></strong></a></label></div>
+                <div class="item-div pull-left">
+                    <label class="item1"rel="tooltip" title="<?=$editCRLLinkTip?>">
+                        <a href="/certificate/crl/<?php echo $crl->getId();?>"><strong><?php echo $crl->getDisplayName();?></strong></a>
+                    </label>
+                </div>
                 <div class="item-div pull-left"><label class="item2"><?php echo $crl->getNextUpdateDate();?></label></div>
                 <div class="item-div pull-left">
                       <span class="item4">

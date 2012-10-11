@@ -21,6 +21,12 @@
 $count = 0;
 $keys = @array_keys($properties);
 $values = @array_values($properties);
+
+$propKeyTip = $translate->translate("Enter a unique key for this property");
+$propValueTip = $translate->translate("Enter the value for this property");
+$propAddTip = $translate->translate("Add additional property");
+$propRemoveTip = $translate->translate("Remove property");
+
 for($i = 0; $i <= count($properties); $i++):
 ?>
 
@@ -30,13 +36,17 @@ for($i = 0; $i <= count($properties); $i++):
     <? endif ?>
     <div class="controls">
         <input type="text" class="input-small" placeholder="<? echo $translate->translate("Key")?>"
-               id="properties<?=$i?>" name="property[<?=$i?>][name]" value="<?=@$keys[$i]?>">
+               id="properties<?=$i?>" name="property[<?=$i?>][name]" value="<?=@$keys[$i]?>"
+               rel="tooltip" title="<?=$propKeyTip?>">
         <input type="text" class="input-small" placeholder="<? echo $translate->translate("Value")?>"
-               name="property[<?=$i?>][value]" value="<?=@$values[$i]?>">
+               name="property[<?=$i?>][value]" value="<?=@$values[$i]?>"
+               rel="tooltip" title="<?=$propValueTip?>">
         <? if($i === 0): ?>
-        <button class="btn newItem" type="property" title="<? echo $translate->translate("Add additional property")?>" id="propertyPlus"><i class="icon-plus"></i></button>
+        <button class="btn newItem" type="property" title="<?=$propAddTip?>" id="propertyPlus"
+                rel="tooltip" data-placement="right"><i class="icon-plus"></i></button>
         <? else: ?>
-        <button class="btn removeItem" type="property" number="<?=$i?>" title="<? echo $translate->translate("Remove property")?>"><i class="icon-minus"></i></button>
+        <button class="btn removeItem" type="property" number="<?=$i?>" title="<?=$propRemoveTip?>"
+                rel="tooltip" data-placement="right"><i class="icon-minus"></i></button>
         <? endif ?>
         <span class="help-inline">
         <?if(!empty($validationErrors['property'][$i])):

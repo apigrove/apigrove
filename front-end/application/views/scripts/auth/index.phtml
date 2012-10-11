@@ -15,6 +15,9 @@
  * @var Auth $auth
  */
 $auths = $this->auths;
+
+$addButtonTip = $this->translate("Add a new Auth");
+$editLinkTip = $this->translate("Select to edit this Auth");
 ?>
 <div class="container">
     <div class="hero-unit">
@@ -36,11 +39,14 @@ $auths = $this->auths;
                 <div class="item-div pull-left"><span class="item1"><strong><? echo $this->translate("Auth ID")?></strong></span></div>
                 <div class="item-div pull-left"><span class="item2"><strong><? echo $this->translate("Type")?></strong></span></div>
                 <div class="item-div pull-left"><span class="item3"><strong><? echo $this->translate("Details")?></strong></span></div>
-                <div class="item-div pull-left" align="center"><span class="item4"><a href="/auth/create" class="btn btn-success">+</a></div>
+                <div class="item-div pull-left" align="center"><span class="item4">
+                    <a href="/auth/create" class="btn btn-success"
+                       rel="tooltip" title="<?=$addButtonTip?>" data-placement="right">+</a>
+                </div>
             </div>
             <? foreach($auths as $auth){?>
             <div class="listItem">
-                <div class="item-div pull-left"><label class="item1">
+                <div class="item-div pull-left"><label class="item1" rel="tooltip" title="<?=$editLinkTip?>">
                     <a id="<?=$auth->id?>" href="/auth/<?=$auth->id;?>"><strong><?if(strlen($auth->id) > 15){ echo substr($auth->id, 0, 15) . "...";}else{ echo $auth->id;} ;?></strong></a>
                 </label></div>
                 <div class="item-div pull-left"><span class="item2"><?=$auth->type;?></span></div>

@@ -26,14 +26,17 @@ $logDepthSelections = array(
     '100' => '100',
     '250' => '250'
 );
+
+$depthTip = $this->translate("Choose the number of lines to retrieve from the server");
+
 ?>
 <div class="container">
-    <h2><? echo $this->translate("Logs")?></h2>
+    <h1><? echo $this->translate("Logs")?></h1>
     <form class="well well-small form-horizontal" action="/logging/index" method="POST">
         <fieldset>
             <label class="control-label" for="log_depth"><strong><? echo $this->translate("Depth")?>: </strong></label>
             <div class="controls">
-                <select id="log_depth" name="log_depth" onchange="submitDepth()">
+                <select id="log_depth" name="log_depth" onchange="submitDepth()" rel="tooltip" title="<?=$depthTip?>" data-placement="right">
                     <?php
                     foreach ($logDepthSelections as $depth) {
                         echo '<option';

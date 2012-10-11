@@ -19,6 +19,14 @@
  */
 /** @var HeaderTransformation $ht */
 
+$hdrTransNameTip = $translate->translate("Enter a unique name for this transformation");
+$hdrTransTimingTip = $translate->translate("Choose the time for this transformation");
+$hdrTransActionTip = $translate->translate("Choose the operation for this transformation");
+$hdrTransAddActionTip = $translate->translate("Choose what to add to the header");
+$hdrTransAddValueTip = $translate->translate("Choose the value to add to the header");
+$hdrTransAddTip = $translate->translate("Add additional header transformation");
+$hdrTransRemoveTip = $translate->translate("Remove header transformation");
+
 for($count = 0; $count <= count($headerTransformations); $count++):
     $ht = @$headerTransformations[$count]; if(empty($ht)) $ht = new HeaderTransformation();?>
 <div class="control-group headerTrans <?=!empty($validationErrors['header'][$count])?"error":""?>" count="<?=$i?>" id="headerTransGroup<?=$count?>">
@@ -26,29 +34,35 @@ for($count = 0; $count <= count($headerTransformations); $count++):
     <label class="control-label" for="headerTrans"><? echo $translate->translate("Header Transformations")?></label>
     <? endif ?>
     <div class="controls">
-        <input type="text" class="input-small" placeholder="<? echo $translate->translate("Name")?>" name="header[<?=$count?>][name]" id="headerTrans" value="<?=$ht->name?>">
-        <select class="input-small" name="header[<?=$count?>][timing]">
+        <input type="text" class="input-small" placeholder="<? echo $translate->translate("Name")?>"
+               name="header[<?=$count?>][name]" id="headerTrans" value="<?=$ht->name?>" rel="tooltip" title="<?=$hdrTransNameTip?>">
+        <select class="input-small" name="header[<?=$count?>][timing]" rel="tooltip" title="<?=$hdrTransTimingTip?>">
             <option><? echo $translate->translate("Timing")?></option>
             <option <?=$ht->type=== HeaderTransformationTiming::REQUEST? "selected":""?>><? echo $translate->translate("Request")?></option>
             <option <?=$ht->type=== HeaderTransformationTiming::RESPONSE? "selected":""?>><? echo $translate->translate("Response")?></option>
         </select>
-        <select class="input-small headerAction" item="#headerAdv<?=$count?>" name="header[<?=$count?>][action]">
+        <select class="input-small headerAction" item="#headerAdv<?=$count?>" name="header[<?=$count?>][action]" rel="tooltip" title="<?=$hdrTransActionTip?>">
             <option><? echo $translate->translate("Action")?></option>
             <option <?=$ht->action=== HeaderTransformationAction::ADD? "selected":""?>><? echo $translate->translate("Add")?></option>
             <option <?=$ht->action=== HeaderTransformationAction::REMOVE? "selected":""?>><? echo $translate->translate("Remove")?></option>
         </select>
         <span id="headerAdv<?=$count?>" <?= $ht->action !== HeaderTransformationAction::ADD?"style=\"display:none\"":""?>>
-             <select class="input-small" name="header[<?=$count?>][type]">
+             <select class="input-small" name="header[<?=$count?>][type]" rel="tooltip" title="<?=$hdrTransAddActionTip?>">
                  <option><? echo $translate->translate("Type")?></option>
                  <option <?=$ht->kind===HeaderTransformationType::PROPERTY? "selected":""?>><? echo $translate->translate("Property")?></option>
                  <option <?=$ht->kind===HeaderTransformationType::STATIC_VAL?"selected":""?>><? echo $translate->translate("Static")?></option>
              </select>
-             <input type="text" class="input-small" name="header[<?=$count?>][value]" placeholder="<? echo $translate->translate("Value")?>" value="<?=empty($ht->value)?$ht->property:$ht->value?>"/>
+             <input type="text" class="input-small" name="header[<?=$count?>][value]"
+                    rel="tooltip" title="<?=$hdrTransAddValueTip?>"
+                    placeholder="<? echo $translate->translate("Value")?>"
+                    value="<?=empty($ht->value)?$ht->property:$ht->value?>"/>
         </span>
         <? if($count === 0): ?>
-        <button class="btn newItem" type="headerTrans" title="<? echo $translate->translate("Add additional header transformation")?>" id="headerPlus"><i class="icon-plus"></i></button>
+        <button class="btn newItem" type="headerTrans" title="<?=$hdrTransAddTip?>"
+                id="headerPlus" rel="tooltip" data-placement="right"><i class="icon-plus"></i></button>
         <? else: ?>
-        <button class="btn removeItem" type="headerTrans" number="<?=$count?>" title="<? echo $translate->translate("Remove header transformation")?>"><i class="icon-minus"></i></button>
+        <button class="btn removeItem" type="headerTrans" number="<?=$count?>" title="<?=$hdrTransRemoveTip?>"
+            rel="tooltip" data-placement="right"><i class="icon-minus"></i></button>
         <?endif?>
         <span class="help-inline">
                            <?

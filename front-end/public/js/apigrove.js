@@ -141,6 +141,7 @@ $(document).ready(function() {
         handleProvAuthTypeClick($("#https"), "fast");
         handleProvAuthTypeClick($("#tdrsenabled"), "fast");
         setupDeleteButtons();
+        setupTooltipsAndPopovers();
     });
 
     function handleAuthTypeClick(ele, speed){
@@ -431,5 +432,42 @@ $(document).ready(function() {
             });
         });
     }
+    function setupTooltipsAndPopovers(){
+
+        // If this constant is true, text input fields show tips on focus
+        // If false, tips are shown on hover (default behavior)
+        var TEXT_INPUT_TIP_ON_FOCUS = false;
+        var TOOLTIP_DELAY_SHOW = 1000;
+        var TOOLTIP_DELAY_HIDE = 0;
+
+        $('[rel=tooltip]').each(function(index, element) {
+            var me = $(element);
+            if (TEXT_INPUT_TIP_ON_FOCUS && (me.prop('tagName') === "INPUT") && (me.prop('type') === 'text')) {
+                me.tooltip({trigger:"focus", delay:{show: TOOLTIP_DELAY_SHOW, hide: TOOLTIP_DELAY_HIDE}});
+            } else {
+                me.tooltip({trigger:"hover", delay:{show: TOOLTIP_DELAY_SHOW, hide: TOOLTIP_DELAY_HIDE}});
+            }
+        });
+
+        $("[rel=popover]").each(function(index, element){
+            var me = $(element);
+            var forControl = ((me.attr('for') !== undefined) ? $('#'+me.attr('for')) : null);
+
+            if (forControl !== null) {
+                forControl.popover({trigger:'manual', title:me.attr('data-title'), content:me.attr('data-content'), placement:me.attr('data-placement')});
+            } else {
+                me.popover();
+            }
+
+            me.click(function(event) {
+               if (forControl !== null) {
+                   forControl.popover('toggle');
+               }
+            });
+        });
+
+    }
 
 });
+
+

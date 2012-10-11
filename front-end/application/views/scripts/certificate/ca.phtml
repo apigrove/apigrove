@@ -7,6 +7,12 @@ $ca = empty($this->ca) ? new Cert() : $this->ca;
 $id = $ca->getId();
 if (!isset($this->isNew)) { $this->isNew = empty($id); }
 $formAction = $this->isNew ? "/certificate/ca/create" : "/certificate/ca/".$id;
+
+$certNameTip = $this->translate("Enter a unique name for this CA");
+$certFileTip = $this->isNew ? $this->translate("Choose the file containing certificate data") :
+    $this->translate("The certificate data for an existing CA cannot be changed");
+$submitButtonTip = $this->translate("Click to post this CA and return to Certificates list");
+
 ?>
 <div class="container">
     <h1><?php echo $this->isNew ? $this->translate("Add") : $this->translate("Edit"); ?> <? echo $this->translate("Trusted Certificate Authority")?></h1>
@@ -20,7 +26,8 @@ $formAction = $this->isNew ? "/certificate/ca/create" : "/certificate/ca/".$id;
             <div class="control-group">
                 <label class="control-label" for="ca_name"><? echo $this->translate("Name")?></label>
                 <div class="controls">
-                    <input type="text" class="input-xlarge" id="ca_name" name="ca_name" value="<?php echo $ca->getDisplayName(); ?>"/>
+                    <input type="text" class="input-xlarge" id="ca_name" name="ca_name"
+                           value="<?php echo $ca->getDisplayName(); ?>" rel="tooltip" title="<?=$certNameTip?>"/>
                     <input type="hidden" class="input-xlarge" id="ca_id" name="ca_id" value="<?php echo $id ?>" />
                     <span class="help-inline"><?=@$validationErrors['ca_name']?></span>
                 </div>
@@ -28,12 +35,16 @@ $formAction = $this->isNew ? "/certificate/ca/create" : "/certificate/ca/".$id;
             <div class="control-group">
                 <label class="control-label" for="ca_file"><? echo $this->translate("Certificate")?></label>
                 <div class="controls">
-                    <input type="file" id="ca_file" name="ca_file" value="<? echo $this->translate("Choose file")?>" <?php if (!$this->isNew) { echo 'disabled="disabled"'; } ?>/>
+                    <input type="file" id="ca_file" name="ca_file"
+                           value="<? echo $this->translate("Choose file")?>" <?php if (!$this->isNew) { echo 'disabled="disabled"'; } ?>
+                           rel="tooltip" title="<?=$certNameTip?>"/>
                     <span class="help-inline"><?=@$validationErrors['ca_file']?></span>
                 </div>
             </div>
             <input type="hidden" name="_faction" value="submit" />
-            <input type="submit" class="btn confirm-toggle btn-primary" value="<?php echo $this->isNew ? $this->translate('Create') : $this->translate('Save'); ?> <? echo $this->translate("Certificate Authority")?>" />
+            <input type="submit" class="btn confirm-toggle btn-primary"
+                   value="<?php echo $this->isNew ? $this->translate('Create') : $this->translate('Save'); ?> <? echo $this->translate("Certificate Authority")?>"
+                   rel="tooltip" title="<?=$submitButtonTip?>" data-placement="right" />
         </fieldset>
     </form>
 </div> <!-- /container -->

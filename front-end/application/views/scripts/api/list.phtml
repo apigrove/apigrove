@@ -10,7 +10,8 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
  */
-
+$addButtonTip = $this->translate("Click to add a new API");
+$editLinkTip = $this->translate("Select to edit API");
 ?>
 <div class="container">
     <div class="hero-unit">
@@ -32,7 +33,9 @@
             <div class="listItem">
                 <div class="item-div pull-left"><label class="item1"><strong><? echo $this->translate("API Name")?></strong></label></div>
                 <div class="item-div pull-left"><span class="item2"><strong><? echo $this->translate("Endpoint")?></strong></div>
-                <div class="item-div pull-left"><span class="item4"><a href="/api/create" class="btn btn-success">+</a></div>
+                <div class="item-div pull-left"><span class="item4"><a href="/api/create" class="btn btn-success"
+                    rel="tooltip" title="<?=$addButtonTip?>" data-placement="right">+</a></div>
+
                 <span class="clear"></span>
             </div>
 <?          foreach($this->apis as $api):
@@ -43,7 +46,11 @@
             $endpoint = $api->getEndpoint();
             $id = $api->getId(); ?>
             <div class="listItem">
-                <div class="item-div pull-left"><label class="item1"><a id="edit-<?=$name?>" href="api/<?=$id?>"><strong><?if(strlen($name) > 15){ echo substr($name, 0, 15) . "...";}else{ echo $name;} ;?></strong></a></label></div>
+                <div class="item-div pull-left">
+                    <label class="item1" rel="tooltip" title="<?=$editLinkTip?>">
+                    <a id="edit-<?=$name?>" href="api/<?=$id?>"><strong><?if(strlen($name) > 15){ echo substr($name, 0, 15) . "...";}else{ echo $name;} ;?></strong></a>
+                    </label>
+                </div>
                 <div class="item-div pull-left"><span class="item2"><?if(strlen($endpoint) > 15){ echo substr($endpoint, 0, 15) . "...";}else{ echo $endpoint;} ;?></span></div>
                 <? /*
                     <div class="item-div pull-left">

@@ -14,6 +14,10 @@
 $policies = $this->policies;
 $auths = $this->auths;
 $apis = $this->apis;
+
+$addButtonTip = $this->translate("Click to add a new Policy");
+$editLinkTip = $this->translate("Select to edit Policy");
+
 ?>
 <div class="container">
     <div class="hero-unit">
@@ -35,7 +39,8 @@ $apis = $this->apis;
                 <div class="item-div pull-left"><label class="item1"><strong><? echo $this->translate("Policy ID")?></strong></label></div>
                 <div class="item-div pull-left"><span class="item2"><strong><? echo $this->translate("APIs")?></strong></span></div>
                 <div class="item-div pull-left"><span class="item3"><strong><? echo $this->translate("Auths")?></strong></span></div>
-                <div class="item-div pull-left"><span class="item4"><a href="/policy/create" class="btn btn-success">+</a></div>
+                <div class="item-div pull-left"><span class="item4">
+                    <a href="/policy/create" class="btn btn-success" rel="tooltip" title="<?=$addButtonTip?>" data-placement="right">+</a></div>
                 <span class="clearfix"></span>
             </div>
             <?
@@ -44,7 +49,8 @@ $apis = $this->apis;
              */
             foreach($policies as $policy){?>
                 <div class="listItem">
-                    <div class="item-div pull-left"><label class="item1"><a href="/policy/<?=$policy->id?>"><strong><?if(strlen($policy->id) > 15){ echo substr($policy->id, 0, 15) . "...";}else{ echo $policy->id;} ;?></strong></a></label></div>
+                    <div class="item-div pull-left"><label class="item1" rel="tooltip" title="<?=$editLinkTip?>">
+                        <a href="/policy/<?=$policy->id?>"><strong><?if(strlen($policy->id) > 15){ echo substr($policy->id, 0, 15) . "...";}else{ echo $policy->id;} ;?></strong></a></label></div>
                     <div class="item-div pull-left"><span class="item2">
                        <?= empty($policy->apiIds)?$this->translate("None"):""?>
                        <? foreach($policy->apiIds as $apiId):

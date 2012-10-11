@@ -10,6 +10,17 @@ $cert = !isset($this->cert) ? new Cert() : $this->cert;
 $cert_id = $cert->getId();
 if (!isset($this->isNew)) { $this->isNew = empty($id); }
 $formAction = $this->isNew ? "/certificate/key/create" : "/certificate/key/".$id;
+
+$keyNameTip = $this->translate("Enter a unique name for this Key");
+$keyFileTip = $this->isNew ? $this->translate("Choose the file containing private key data") :
+    $this->translate("The data for an existing Key cannot be changed");
+$certNameTip = $this->translate("Enter a unique name for this Key");
+$certExpirationTip = $this->translate("The expiration date specified by this Key");
+$certFileTip = $this->isNew ? $this->translate("Choose the file containing certificate data") :
+    $this->translate("The data for an existing Certificate cannot be changed");
+$resetButtonTip = $this->translate("Click to clear the certificate assignment for this key");
+$submitButtonTip = $this->translate("Click to post this Key and return to Certificates list");
+
 ?>
 <div class="container">
     <h1><?php echo $this->isNew ? "Add Key" : "Edit Key"; ?></h1>
@@ -25,15 +36,18 @@ $formAction = $this->isNew ? "/certificate/key/create" : "/certificate/key/".$id
             <div class="control-group">
                 <label class="control-label" for="key_name">Name</label>
                 <div class="controls">
-                    <input type="text" class="input-xlarge" id="key_name" name="key_name" value="<?php echo $key->getDisplayName(); ?>"/>
+                    <input type="text" class="input-xlarge" id="key_name" name="key_name"
+                           value="<?php echo $key->getDisplayName(); ?>" rel="tooltip" title="<?=$keyNameTip?>"/>
                     <input type="hidden" class="input-xlarge" id="key_id" name="key_id" value="<?php echo $id ?>" />
+<!--                    <a href="#" class="btn btn-small btn-info" rel="popover" for="key_name" data-title="Popover title" data-content="Popover content" data-placement="top">?</a>-->
                     <span class="help-inline"><?=@$validationErrors['key_name']?></span>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="key_file">Private Key</label>
                 <div class="controls">
-                    <input type="file" id="key_file" name="key_file" value="Choose file" <?php if (!$this->isNew) { echo 'disabled="disabled"'; } ?>/>
+                    <input type="file" id="key_file" name="key_file" value="Choose file"
+                        <?php if (!$this->isNew) { echo 'disabled="disabled"'; } ?> rel="tooltip" title="<?=$keyFileTip?>"/>
                     <span class="help-inline"><?=@$validationErrors['key_file']?></span>
                 </div>
             </div>
@@ -43,7 +57,8 @@ $formAction = $this->isNew ? "/certificate/key/create" : "/certificate/key/".$id
                 <div class="control-group">
                     <label class="control-label" for="cert_name">Name</label>
                     <div class="controls">
-                        <input type="text" class="input-xlarge" id="cert_name" name="cert_name" value="<?php echo $cert->getDisplayName(); ?>"/>
+                        <input type="text" class="input-xlarge" id="cert_name" name="cert_name"
+                               rel="tooltip" title="<?=$certNameTip?>" value="<?php echo $cert->getDisplayName(); ?>"/>
                         <input type="hidden" class="input-xlarge" id="cert_id" name="cert_id" value="<?php echo $cert_id ?>" />
                         <span class="help-inline"><?=@$validationErrors['cert_name']?></span>
                     </div>
@@ -51,24 +66,29 @@ $formAction = $this->isNew ? "/certificate/key/create" : "/certificate/key/".$id
                 <div class="control-group">
                     <label class="control-label" for="cert_expiration">Expiration Date</label>
                     <div class="controls">
-                        <input type="text" class="input-xlarge" id="cert_expiration" name="cert_expiration" readonly="readonly" value="<?php echo $cert->getExpirationDate(); ?>" />
+                        <input type="text" class="input-xlarge" id="cert_expiration" name="cert_expiration"
+                               readonly="readonly" value="<?php echo $cert->getExpirationDate(); ?>" rel="tooltip" title="<?=$certExpirationTip?>" />
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="cert_file">Certificate</label>
                     <div class="controls">
-                        <input type="file" id="cert_file" name="cert_file" value="Choose file" <?php if (!empty($cert_id)) { echo 'disabled="disabled"'; } ?>/>
+                        <input type="file" id="cert_file" name="cert_file" value="Choose file"
+                            <?php if (!empty($cert_id)) { echo 'disabled="disabled"'; } ?> rel="tooltip" title="<?=$certFileTip?>"/>
                         <span class="help-inline"><?=@$validationErrors['cert_file']?></span>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="controls">
-                        <a class="btn btn-danger" onclick="resetCert()">Reset</a>
+                        <a class="btn btn-danger" onclick="resetCert()" rel="tooltip"
+                           title="<?=$resetButtonTip?>" data-placement="right">Reset</a>
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="_faction" value="submit" />
-            <input type="submit" class="btn confirm-toggle btn-primary" value="<?php echo $this->isNew ? 'Create Key' : 'Save Key'; ?>" />
+            <input type="hidden" name="_faction" value="submit"/>
+            <input type="submit" class="btn confirm-toggle btn-primary" rel="tooltip"
+                   title="<?=$submitButtonTip?>" data-placement="right"
+                   value="<?php echo $this->isNew ? 'Create Key' : 'Save Key'; ?>" />
         </fieldset>
     </form>
 </div> <!-- /container -->

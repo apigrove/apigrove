@@ -7,6 +7,12 @@ $crl = empty($this->crl) ? new SSLCRL() : $this->crl;
 $id = $crl->getId();
 if (!isset($this->isNew)) { $this->isNew = empty($id); }
 $formAction = $this->isNew ? "/certificate/crl/create" : "/certificate/crl/".$id;
+
+$crlNameTip = $this->translate("Enter a unique name for this CRL");
+$crlFileTip = $this->isNew ? $this->translate("Choose the file containing revocation list") :
+    $this->translate("The revocation data for an existing CRL cannot be changed");
+$submitButtonTip = $this->translate("Click to post this CRL and return to Certificates list");
+
 ?>
 <div class="container">
     <h1><?php echo $this->isNew ? "Add" : "Edit"; ?> Certificate Revocation List</h1>
@@ -20,7 +26,8 @@ $formAction = $this->isNew ? "/certificate/crl/create" : "/certificate/crl/".$id
             <div class="control-group">
                 <label class="control-label" for="crl_name">Name</label>
                 <div class="controls">
-                    <input type="text" class="input-xlarge" id="crl_name" name="crl_name" value="<?php echo $crl->getDisplayName(); ?>"/>
+                    <input type="text" class="input-xlarge" id="crl_name" name="crl_name"
+                           value="<?php echo $crl->getDisplayName(); ?>" rel="tooltip" data-title="<?=$crlNameTip?>"/>
                     <input type="hidden" class="input-xlarge" id="crl_id" name="crl_id" value="<?php echo $id ?>" />
                     <span class="help-inline"><?=@$validationErrors['crl_name']?></span>
                 </div>
@@ -28,12 +35,16 @@ $formAction = $this->isNew ? "/certificate/crl/create" : "/certificate/crl/".$id
             <div class="control-group">
                 <label class="control-label" for="crl_file">Certificate Revocation List</label>
                 <div class="controls">
-                    <input type="file" id="crl_file" name="crl_file" value="Choose file" <?php if (!$this->isNew) { echo 'disabled="disabled"'; } ?>/>
+                    <input type="file" id="crl_file" name="crl_file"
+                           value="Choose file" <?php if (!$this->isNew) { echo 'disabled="disabled"'; } ?>
+                           rel="tooltip" title="<?=$crlFileTip?>"/>
                     <span class="help-inline"><?=@$validationErrors['crl_file']?></span>
                 </div>
             </div>
             <input type="hidden" name="_faction" value="submit" />
-            <input type="submit" class="btn confirm-toggle btn-primary" value="<?php echo $this->isNew ? 'Create' : 'Save'; ?> Revocation List" />
+            <input type="submit" class="btn confirm-toggle btn-primary"
+                   value="<?php echo $this->isNew ? 'Create' : 'Save'; ?> Revocation List"
+                   rel="tooltip" title="<?=$submitButtonTip?>" data-placement="right"/>
         </fieldset>
     </form>
 </div> <!-- /container -->

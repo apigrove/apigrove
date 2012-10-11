@@ -21,6 +21,14 @@
  */
 
 $totalCount = @count($tdrData->dynamicTdrs)+@count($tdrData->staticTdrs);
+
+$tdrRuleNameTip = $translate->translate("Enter a unique name for this rule");
+$tdrRuleTypeTip = $translate->translate("Enter the type of rule");
+$tdrRuleExtractTip = $translate->translate("Enter when to apply the rule");
+$tdrRuleValueTip = $translate->translate("Enter a value for this rule");
+$tdrRuleAddTip = $translate->translate("Add additional rule");
+$tdrRuleRemoveTip = $translate->translate("Remove rule");
+
 for($i = 0; $i <= $totalCount; $i++):
     $dynSize = @count($tdrData->dynamicTdrs);
     $rule = $i >= $dynSize? @$tdrData->staticTdrs[$i-$dynSize]:$tdrData->dynamicTdrs[$i];
@@ -33,7 +41,8 @@ for($i = 0; $i <= $totalCount; $i++):
     <label class="control-label" for="tdrRules"><? echo $translate->translate("TDR Rules")?></label>
     <? endif ?>
     <div class="controls">
-        <input type="text" class="input-small" placeholder="Name" name="tdr[<?=$i?>][name]" id="tdrRules" value="<?=@$rule->tdrPropName?>">
+        <input type="text" class="input-small" placeholder="Name" name="tdr[<?=$i?>][name]" id="tdrRules"
+               rel="tooltip" title="<?=$tdrRuleNameTip?>" value="<?=@$rule->tdrPropName?>">
         <?
         $selected = 0;
         if($rule instanceof StaticTdr && $rule->kind === TdrRuleType::PROPERTY) $selected = 1;
@@ -41,14 +50,15 @@ for($i = 0; $i <= $totalCount; $i++):
         else if($rule instanceof DynamicTdr) $selected = 3;
 
         ?>
-        <select class="input-small tdrType" name="tdr[<?=$i?>][type]" item="<?=$i?>">
+        <select class="input-small tdrType" name="tdr[<?=$i?>][type]" item="<?=$i?>" rel="tooltip" title="<?=$tdrRuleTypeTip?>">
             <option>Type</option>
             <option <?= $selected == 1?"selected":""?>><? echo $translate->translate("Property")?></option>
             <option <?= $selected == 2?"selected":""?>><? echo $translate->translate("Static")?></option>
             <option <?= $selected == 3?"selected":""?>><? echo $translate->translate("Dynamic")?></option>
         </select>
         <? $showExtractFrom = ($rule instanceof DynamicTdr); ?>
-        <select class="input-small" name="tdr[<?=$i?>][extractFrom]" style="<?=$showExtractFrom?"":"display: none;"?> width: 120px;" id="tdrRuleExtractFrom<?=$i?>">
+        <select class="input-small" name="tdr[<?=$i?>][extractFrom]" style="<?=$showExtractFrom?"":"display: none;"?>
+            width: 120px;" id="tdrRuleExtractFrom<?=$i?>" rel="tooltip" title="<?=$tdrRuleExtractTip?>">
             <option>Extract From</option>
             <? /** @var StaticTdr $rule */?>
             <option <?= @$rule->extractFrom===TdrRuleExtractFrom::REQUEST?"selected":""?>><? echo $translate->translate("Request")?></option>
@@ -64,11 +74,14 @@ for($i = 0; $i <= $totalCount; $i++):
         }
         ?>
         <input type="text" class="input-small" placeholder="<? echo $translate->translate("Value")?>"
-               name="tdr[<?=$i?>][value]" value="<?=$value?>" id="tdrRuleValue<?=$i?>" style="width: 120px">
+               name="tdr[<?=$i?>][value]" value="<?=$value?>" id="tdrRuleValue<?=$i?>" style="width: 120px"
+               rel="tooltip" title="<?=$tdrRuleValueTip?>">
         <? if($i === 0): ?>
-        <button class="btn newItem" type="tdrRule" title="<? echo $translate->translate("Add additional property")?>" id="tdrPlus"><i class="icon-plus"></i></button>
+        <button class="btn newItem" type="tdrRule" title="<?=$tdrRuleAddTip?>"
+                id="tdrPlus" rel="tooltip" data-placement="right"><i class="icon-plus"></i></button>
         <? else: ?>
-        <button class="btn removeItem" type="tdrRule" number="<?=$i?>" title="<? echo $translate->translate("Remove property")?>"><i class="icon-minus"></i></button>
+        <button class="btn removeItem" type="tdrRule" number="<?=$i?>" title="<?=$tdrRuleRemoveTip?>"
+                rel="tooltip" data-placement="right"><i class="icon-minus"></i></button>
         <? endif ?>
         <span class="help-inline">
                 <?if(!empty($validationErrors['tdr'][$i])):
