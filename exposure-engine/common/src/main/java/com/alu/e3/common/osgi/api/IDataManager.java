@@ -37,7 +37,6 @@ import com.alu.e3.data.model.ApiJar;
 import com.alu.e3.data.model.Auth;
 import com.alu.e3.data.model.CallDescriptor;
 import com.alu.e3.data.model.Certificate;
-import com.alu.e3.data.model.CertificateRequest;
 import com.alu.e3.data.model.Key;
 import com.alu.e3.data.model.Limit;
 import com.alu.e3.data.model.LogLevel;
@@ -151,10 +150,6 @@ public interface IDataManager {
 	Certificate getCertById(String id, boolean getFullDetails);
 	void updateCert(Certificate certificate);
 	void removeCert(String id);
-
-	Key generateKey(String id);
-	CertificateRequest getCSR(String keyId);
-	Certificate selfSignKey(String keyId, CertificateRequest csr);
 
 	void removeKeyListener(IEntryListener<String, Key> listener);
 	void addKeyListener(IEntryListener<String, Key> listener);
