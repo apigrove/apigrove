@@ -212,91 +212,90 @@ $(document).ready(function() {
 
 
     function newItem(type){
-        var itemCount = Math.floor((Math.random()*100000)+1);
         if(type == 'targethost'){
-            var itemBody = targetBody(itemCount);
+            var itemBody = targetBody();
         }else if(type == 'property'){
-            var itemBody = propertyBody(itemCount);
+            var itemBody = propertyBody();
         }else if(type == 'parameter'){
-            var itemBody = parameterBody(itemCount);
+            var itemBody = parameterBody();
         }else if(type == 'tdrRule'){
-            var itemBody = tdrBody(itemCount);
+            var itemBody = tdrBody();
         }else if(type == 'headerTrans'){
-            var itemBody = headerTransBody(itemCount);
+            var itemBody = headerTransBody();
         }
         var parentID = "#" + type + "Group";
         $(parentID).append(itemBody);
     }
 
-    function targetBody(count){
-        var body = "<div class=\"control-group targethost\" count=\""+targetHostCount+"\" id=\"targethostGroup"+count+"\">"
-            +"<label class=\"control-label\" for=\"targethost"+count+"\">&nbsp;</label>"
+    function targetBody(){
+        var body = "<div class=\"control-group targethost\" count=\""+targetHostCount+"\" id=\"targethostGroup"+targetHostCount+"\">"
+            +"<label class=\"control-label\" for=\"targethost"+targetHostCount+"\">&nbsp;</label>"
             +"<div class=\"controls\">"
-            +"<input type=\"text\" class=\"input-xlarge\" name=\"targethost"+count+"\" id=\"targethost"+count+"\"> "
-            +"<a class=\"btn removeItem\" type=\"targethost\" number=\""+count+"\" title=\"Remove target host\"><i class=\"icon-minus\"></i></a>"
+            +"<input type=\"text\" class=\"input-xlarge\" name=\"targethost"+targetHostCount+"\" id=\"targethost"+targetHostCount+"\"> "
+            +"<a class=\"btn removeItem\" type=\"targethost\" number=\""+targetHostCount+"\" title=\"Remove target host\"><i class=\"icon-minus\"></i></a>"
             +"</div>"
             +"</div>";
         targetHostCount++;
         return body;
     }
 
-    function propertyBody(count){
-        var body = "<div class=\"control-group property\" count=\""+propertyCount+"\" id=\"propertyGroup"+count+"\">"
-            +"<label class=\"control-label\" for=\"properties"+count+"\">&nbsp;</label>"
+    function propertyBody(){
+        var body = "<div class=\"control-group property\" count=\""+propertyCount+"\" id=\"propertyGroup"+propertyCount+"\">"
+            +"<label class=\"control-label\" for=\"properties"+propertyCount+"\">&nbsp;</label>"
             +"<div class=\"controls\">"
-            +"<input type=\"text\" class=\"input-small\" name=\"property["+propertyCount+"][name]\" placeholder=\"Key\" id=\"properties"+count+"\"> "
+            +"<input type=\"text\" class=\"input-small\" name=\"property["+propertyCount+"][name]\" placeholder=\"Key\" id=\"properties"+propertyCount+"\"> "
             +"<input type=\"text\" class=\"input-small\" name=\"property["+propertyCount+"][value]\" placeholder=\"Value\"> "
-            +"<a class=\"btn removeItem\" type=\"property\" number=\""+count+"\" title=\"Remove property\"><i class=\"icon-minus\"></i></a>"
+            +"<a class=\"btn removeItem\" type=\"property\" number=\""+propertyCount+"\" title=\"Remove property\"><i class=\"icon-minus\"></i></a>"
             +"</div>"
             +"</div";
         propertyCount++;
         return body;
     }
 
-    function parameterBody(count){
+    function parameterBody(){
         var key = $('#parameterKey0').val();
         var value = $('#parameterValue0').val();
         $('#parameterKey0').val("");
         $('#parameterValue0').val("");
-        var body = "<div class=\"control-group parameter\" count=\""+parameterCount+"\" id=\"parameterGroup"+count+"\">"
+        var body = "<div class=\"control-group parameter\" count=\""+parameterCount+"\" id=\"parameterGroup"+parameterCount+"\">"
             +"<label class=\"control-label\">&nbsp;</label>"
             +"<div class=\"controls\">"
-            +"<input type=\"text\" class=\"input-small parameter-key\" name=\"parameterKey"+parameterCount+"\" value=\""+key+"\" placeholder=\"Key\" id=\"parameterKey"+count+"\"> "
-            +"<input type=\"text\" class=\"input-small parameter-value\" name=\"propertyValue"+parameterCount+"\" value=\""+value+"\" placeholder=\"Value\" id=\"parameterValue"+count+"\"> "
-            +"<a class=\"btn updateParams\" type=\"parameter\" number=\""+count+"\" title=\"Update Parameter\">Update</a> "
-            +"<a class=\"btn removeItem updateParams\" type=\"parameter\" number=\""+count+"\" title=\"Remove parameter\"><i class=\"icon-minus\"></i></a>"
+            +"<input type=\"text\" class=\"input-small parameter-key\" name=\"parameterKey"+parameterCount+"\" value=\""+key+"\" placeholder=\"Key\" id=\"parameterKey"+parameterCount+"\"> "
+            +"<input type=\"text\" class=\"input-small parameter-value\" name=\"propertyValue"+parameterCount+"\" value=\""+value+"\" placeholder=\"Value\" id=\"parameterValue"+parameterCount+"\"> "
+            +"<a class=\"btn updateParams\" type=\"parameter\" number=\""+parameterCount+"\" title=\"Update Parameter\">Update</a> "
+            +"<a class=\"btn removeItem updateParams\" type=\"parameter\" number=\""+parameterCount+"\" title=\"Remove parameter\"><i class=\"icon-minus\"></i></a>"
             +"</div>"
             +"</div";
         parameterCount++;
         return body;
     }
 
-    function tdrBody(count){
-        var body = "<div class=\"control-group tdrRule\" count=\""+tdrCount+"\" id=\"tdrRuleGroup"+count+"\">"
-            +"<label class=\"control-label\" for=\"tdrRules"+count+"\">&nbsp;</label>"
+    function tdrBody(){
+        var body = "<div class=\"control-group tdrRule\" count=\""+tdrCount+"\" id=\"tdrRuleGroup"+tdrCount+"\">"
+            +"<label class=\"control-label\" for=\"tdrRules"+tdrCount+"\">&nbsp;</label>"
             +"<div class=\"controls\">"
-            +"<input type=\"text\" class=\"input-small\" name=\"tdr["+tdrCount+"][name]\" placeholder=\"Name\" id=\"tdrRules"+count+"\"> "
-            +"<select name=\"tdr["+tdrCount+"][type]\" class=\"input-small tdrType\" item=\""+count+"\">"
+            +"<input type=\"text\" class=\"input-small\" name=\"tdr["+tdrCount+"][name]\" placeholder=\"Name\" id=\"tdrRules"+tdrCount+"\"> "
+            +"<select name=\"tdr["+tdrCount+"][type]\" class=\"input-small tdrType\" item=\""+tdrCount+"\">"
                 +"<option>Type</option>"
                 +"<option>Static</option>"
                 +"<option>Dynamic</option>"
                 +"<option>Property</option>"
             +"</select> "
-            +"<select class=\"input-small\" name=\"tdr["+tdrCount+"][extractFrom]\" style=\"display: none; width: 120px;\" id=\"tdrRuleExtractFrom"+count+"\">"
+            +"<select class=\"input-small\" name=\"tdr["+tdrCount+"][extractFrom]\" style=\"display: none; width: 120px;\" id=\"tdrRuleExtractFrom"+tdrCount+"\">"
                  +"<option>Extract From</option>"
                  +"<option>Request</option>"
                  +"<option>Response</option>"
             +"</select> "
-            +"<input type=\"text\" class=\"input-small\" name=\"tdr["+tdrCount+"][value]\" placeholder=\"Value\"  id=\"tdrRuleValue"+count+"\" style=\"width: 120px;\"/> "
-            +"<a class=\"btn removeItem\" type=\"tdrRule\" number=\""+count+"\" title=\"Remove TDR rule\"><i class=\"icon-minus\"></i></a>"
+            +"<input type=\"text\" class=\"input-small\" name=\"tdr["+tdrCount+"][value]\" placeholder=\"Value\"  id=\"tdrRuleValue"+tdrCount+"\" style=\"width: 120px;\"/> "
+            +"<a class=\"btn removeItem\" type=\"tdrRule\" number=\""+tdrCount+"\" title=\"Remove TDR rule\"><i class=\"icon-minus\"></i></a>"
             +"</div>"
             +"</div>";
         tdrCount++;
         return body;
     }
 
-    function headerTransBody(count){
-        var body = "<div class=\"control-group headerTrans\" count=\""+headerTransCount+"\" id=\"headerTransGroup"+count+"\">"
+    function headerTransBody(){
+        var body = "<div class=\"control-group headerTrans\" count=\""+headerTransCount+"\" id=\"headerTransGroup"+headerTransCount+"\">"
             +"<label class=\"control-label\" for=\"headerTrans\">&nbsp;</label>"
             +"<div class=\"controls\">"
             +"<input type=\"text\" class=\"input-small\" name=\"header["+headerTransCount+"][name]\" placeholder=\"Name\" id=\"headerTrans\"> "
@@ -305,19 +304,19 @@ $(document).ready(function() {
             +"<option>Request</option>"
             +"<option>Response</option>"
             +"</select> "
-            +"<select name=\"header["+headerTransCount+"][action]\" item=\"#headerAdv"+count+"\" class=\"input-small headerAction\">"
+            +"<select name=\"header["+headerTransCount+"][action]\" item=\"#headerAdv"+headerTransCount+"\" class=\"input-small headerAction\">"
             +"<option>Action</option>"
             +"<option>Add</option>"
             +"<option>Remove</option>"
             +"</select> "
-            +"<span id=\"headerAdv"+count+"\" style=\"display:none\">"
+            +"<span id=\"headerAdv"+headerTransCount+"\" style=\"display:none\">"
             +"<select name=\"header["+headerTransCount+"][type]\" class=\"input-small\">"
             +"<option>Type</option>"
             +"<option>Property</option>"
             +"<option>Static</option>"
             +"</select> "
             +"<input type=\"text\" class=\"input-small\" name=\"header["+headerTransCount+"][value]\" placeholder=\"Value\"></span> "
-            +"<a class=\"btn removeItem\" type=\"headerTrans\" number=\""+count+"\" title=\"Remove header transformation\"><i class=\"icon-minus\"></i></a>"
+            +"<a class=\"btn removeItem\" type=\"headerTrans\" number=\""+headerTransCount+"\" title=\"Remove header transformation\"><i class=\"icon-minus\"></i></a>"
             +"</div>"
             +"</div>";
         headerTransCount++
