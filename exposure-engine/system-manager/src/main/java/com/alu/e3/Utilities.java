@@ -31,6 +31,7 @@ import java.util.List;
 
 import com.alu.e3.common.E3Constant;
 import com.alu.e3.common.logging.CategoryLogger;
+import com.alu.e3.common.tools.CommonTools;
 import com.alu.e3.data.model.Instance;
 import com.alu.e3.installer.NonExistingManagerException;
 
@@ -102,7 +103,8 @@ public class Utilities {
 			}
 			//instance internal ip has to match manager ip or manager hostname (allows to work with both) 
 			//for AIB install, the internalIP for the manager is "localhost", so for AIB allow match on "localhost"
-			if (currentIP.equals(managerIP) || currentIP.equals(managerHostName) || currentIP.equals(E3Constant.localhost)) {
+			if (currentIP.equals(managerIP) || currentIP.equals(managerHostName) || //currentIP.equals(E3Constant.localhost)) {
+					(CommonTools.isLocal(managerIP) && CommonTools.isLocal(currentIP))) {
 				found = true;
 				if(logger.isDebugEnabled()) {
 					logger.debug("Found manager with ip '" + managerIP + "' found");
