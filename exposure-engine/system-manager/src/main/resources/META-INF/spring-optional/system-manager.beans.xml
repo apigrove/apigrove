@@ -72,7 +72,7 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
             
     <!-- add a spring task scheduler to collect logs --> 
     <task:scheduled-tasks scheduler="logCollectionScheduler">
-        <task:scheduled ref="loggingManager" method="startLogCollection" cron="0 10 * * * ?" /> <!-- logs rotate on the hour, collect 10min after -->
+        <task:scheduled ref="loggingManager" method="startLogCollection" fixed-rate="3660000" /> <!-- 61 minutes (logs rotate on the hour) -->
     </task:scheduled-tasks>
     <task:scheduler id="logCollectionScheduler" pool-size="1"/>
     
