@@ -294,6 +294,14 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 			if(logger.isDebugEnabled()) {
 				logger.error("An error occured while starting the bundle", e);
 			}
+			//try uninstall if error or bundle in failed state.
+			try {
+				bundle.uninstall();
+			} catch (BundleException be){
+				if(logger.isDebugEnabled()) {
+					logger.error("An error occured while uninstalling the bundle (After failure to start)", be);
+				}
+			}
 			throw new RuntimeException("An error occured while starting the bundle");
 		} finally {
 			waitingActions.remove(location);
@@ -304,7 +312,7 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 	 * Browse the list of bundles to find the one matching the location parameter.
 	 * Not optimized at all...
 	 * @param location The location to look bundle for.
-	 * @return Matching bundle, or null if no bundle is foudn for this location
+	 * @return Matching bundle, or null if no bundle is found for this location
 	 */
 	private synchronized Bundle getBundle(String location) {
 		// TODO optimize this

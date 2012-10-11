@@ -73,7 +73,7 @@
   &lt;con:entry key="WAIT" value="0"/>
   &lt;con:entry key="SIZE" value="100"/>
 &lt;/xml-fragment></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}/endpoint1</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method>
-		<con:method name="GET With No Param" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>401 403 429 500</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/xml</con:mediaType><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request - With No Param" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+		<con:method name="GET With No Param" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>401 403 429 500</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404 503</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/xml</con:mediaType><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request - With No Param" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
   &lt;con:entry key="WAIT" value="0"/>
   &lt;con:entry key="SIZE" value="100"/>
 &lt;/xml-fragment></con:setting></con:settings><con:endpoint>http://${#Project#E3Gateway}/endpoint1</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="GET With Authorization Header" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/plain</con:mediaType><con:status>401 500 429 403</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/xml</con:mediaType><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request - Valid Basic" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
@@ -1957,8 +1957,626 @@
 					</con:restRequest>
 				</con:config>
 			</con:testStep><con:testStep type="restrequest" name="Delete auth1"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/auths/{AUTH_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete auth1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="AUTH_ID" value="api-provision-ext-checkContext-auth1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Delete auth2"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/auths/{AUTH_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete auth2" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="AUTH_ID" value="api-provision-ext-checkContext-auth2" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Delete policy"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/policies/{POLICY_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete policy" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="POLICY_ID" value="api-provision-ext-checkContext-policy" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/>
-		</con:testCase><con:properties/>
-	</con:testSuite><con:testSuite name="provision-api-ext-loadbalancing"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Activate debug" searchProperties="true"><con:settings/><con:testStep type="httprequest" name="activate"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" name="activate" postQueryString="false" mediaType="application/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181/cxf/e3/system-manager/logging/instances/0/logLevel</con:endpoint><con:request>DEBUG</con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 3 LB no FailOver" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Delete APi (if exist)">
+		</con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="endpoint name validation" searchProperties="true" id="77d23f25-4da8-471e-ad29-62706b5ecb81"><con:settings/><con:testStep type="restrequest" name="Delete API 1 (if exist)">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis/{API_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Delete API 1 (if exist)" mediaType="application/xml" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:encoding/>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request/>
+						<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters><entry key="API_ID" value="api-provision-ext-api1" xmlns="http://eviware.com/soapui/config"/></con:parameters>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Delete API 2 (if exist)">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis/{API_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Delete API 2 (if exist)" mediaType="application/xml" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:encoding/>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request/>
+						<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters><entry key="API_ID" value="api-provision-ext-api2" xmlns="http://eviware.com/soapui/config"/></con:parameters>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Create API 1">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Create API 1" mediaType="application/xml" postQueryString="false" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request><![CDATA[<api>
+   <id>api-provision-ext-api1</id>
+   <displayName>test_name_1</displayName>
+   <type>PassThrough</type>
+   <status>active</status>
+   <endpoint>end-_/point.1</endpoint>
+   <https>false</https>
+   <authentication>
+      <supportedTypes>
+         <type>noAuth</type>
+      </supportedTypes>
+      <authKey>
+         <keyName>key</keyName>
+      </authKey>
+   </authentication>
+   <tdrEnabled>
+      <enabled>false</enabled>
+   </tdrEnabled>
+   <contexts>
+      <context id="api-provision-ext-context1" default="true">
+         <status>active</status>
+         <targetHosts>
+            <targetHost>
+               <url>http://${#Project#Target1}:8080/two/three/five.html</url>
+               <authentication>
+                  <type>NoAuth</type>
+                  <data>
+                     <key name="aKey00">key000Val</key>
+                  </data>
+               </authentication>
+            </targetHost>
+         </targetHosts>
+         <maxRateLimitTPSThreshold>10000</maxRateLimitTPSThreshold>
+         <maxRateLimitTPSWarning>0.0</maxRateLimitTPSWarning>
+         <maxRateLimitTPMThreshold>600000</maxRateLimitTPMThreshold>
+         <maxRateLimitTPMWarning>0.0</maxRateLimitTPMWarning>
+      </context>
+   </contexts>
+   <tdr>
+      <static tdrPropName="company" value="ALU"/>
+      <static tdrPropName="bundle" value="B1">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </static>
+      <dynamic tdrPropName="cust1" httpHeaderName="X-CUST1"/>
+      <dynamic tdrPropName="cust2" httpHeaderName="X-CUST2">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </dynamic>
+   </tdr>
+</api>]]></con:request>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration>
+								<codes>200</codes>
+							</con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath Match">
+							<con:configuration>
+								<path>/response/status</path>
+								<content>SUCCESS</content>
+								<allowWildcards>false</allowWildcards>
+								<ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+								<ignoreComments>false</ignoreComments>
+							</con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath apiID">
+							<con:configuration><path>/response/id</path><content>api-provision-ext-api1</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion>
+						<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Create API 2">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Create API 2" mediaType="application/xml" postQueryString="false" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request><![CDATA[<api>
+   <id>api-provision-ext-api2</id>
+   <displayName>test_name_2</displayName>
+   <type>PassThrough</type>
+   <status>active</status>
+   <endpoint>end/point/2.tld</endpoint>
+   <https>false</https>
+   <authentication>
+      <supportedTypes>
+         <type>noAuth</type>
+      </supportedTypes>
+      <authKey>
+         <keyName>key</keyName>
+      </authKey>
+   </authentication>
+   <tdrEnabled>
+      <enabled>false</enabled>
+   </tdrEnabled>
+   <contexts>
+      <context id="api-provision-ext-context2" default="true">
+         <status>active</status>
+         <targetHosts>
+            <targetHost>
+               <url>http://${#Project#Target1}:8080/two/five.html</url>
+               <authentication>
+                  <type>NoAuth</type>
+                  <data>
+                     <key name="aKey00">key000Val</key>
+                  </data>
+               </authentication>
+            </targetHost>
+         </targetHosts>
+         <maxRateLimitTPSThreshold>10000</maxRateLimitTPSThreshold>
+         <maxRateLimitTPSWarning>0.0</maxRateLimitTPSWarning>
+         <maxRateLimitTPMThreshold>600000</maxRateLimitTPMThreshold>
+         <maxRateLimitTPMWarning>0.0</maxRateLimitTPMWarning>
+      </context>
+   </contexts>
+   <tdr>
+      <static tdrPropName="company" value="ALU"/>
+      <static tdrPropName="bundle" value="B1">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </static>
+      <dynamic tdrPropName="cust1" httpHeaderName="X-CUST1"/>
+      <dynamic tdrPropName="cust2" httpHeaderName="X-CUST2">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </dynamic>
+   </tdr>
+</api>]]></con:request>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration>
+								<codes>200</codes>
+							</con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath Match">
+							<con:configuration>
+								<path>/response/status</path>
+								<content>SUCCESS</content>
+								<allowWildcards>false</allowWildcards>
+								<ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+								<ignoreComments>false</ignoreComments>
+							</con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath apiID">
+							<con:configuration><path>/response/id</path><content>api-provision-ext-api2</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion>
+						<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Request Test API 1">
+				<con:settings/>
+				<con:config service="EndPoint-test" resourcePath="" methodName="GET With No Param" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Request Test API 1" mediaType="application/xml" accept="">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="SIZE" value="10" xmlns="http://eviware.com/soapui/config"/></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Gateway}/end-_/point.1?key=api-provision-ext-key1</con:endpoint>
+						<con:request/>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration><codes>200</codes></con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/html/body</path><content>This is two/three/five</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Request Test API 2">
+				<con:settings/>
+				<con:config service="EndPoint-test" resourcePath="" methodName="GET With No Param" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Request Test API 2" mediaType="application/xml" accept="">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="SIZE" value="10" xmlns="http://eviware.com/soapui/config"/></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Gateway}/end/point/2.tld</con:endpoint>
+						<con:request/>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration><codes>200</codes></con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/html/body</path><content>This is two/five</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Create API 3 with bad name (1)">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Create API 3 with bad name (1)" mediaType="application/xml" postQueryString="false" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request><![CDATA[<api>
+   <id>api-provision-ext-api3</id>
+   <displayName>test_name_3</displayName>
+   <type>PassThrough</type>
+   <status>active</status>
+   <endpoint>end?point=2</endpoint>
+   <https>false</https>
+   <authentication>
+      <supportedTypes>
+         <type>noAuth</type>
+      </supportedTypes>
+      <authKey>
+         <keyName>key</keyName>
+      </authKey>
+   </authentication>
+   <tdrEnabled>
+      <enabled>false</enabled>
+   </tdrEnabled>
+   <contexts>
+      <context id="api-provision-ext-context3" default="true">
+         <status>active</status>
+         <targetHosts>
+            <targetHost>
+               <url>http://${#Project#Target1}:8080/two/five.html</url>
+               <authentication>
+                  <type>NoAuth</type>
+                  <data>
+                     <key name="aKey00">key000Val</key>
+                  </data>
+               </authentication>
+            </targetHost>
+         </targetHosts>
+         <maxRateLimitTPSThreshold>10000</maxRateLimitTPSThreshold>
+         <maxRateLimitTPSWarning>0.0</maxRateLimitTPSWarning>
+         <maxRateLimitTPMThreshold>600000</maxRateLimitTPMThreshold>
+         <maxRateLimitTPMWarning>0.0</maxRateLimitTPMWarning>
+      </context>
+   </contexts>
+   <tdr>
+      <static tdrPropName="company" value="ALU"/>
+      <static tdrPropName="bundle" value="B1">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </static>
+      <dynamic tdrPropName="cust1" httpHeaderName="X-CUST1"/>
+      <dynamic tdrPropName="cust2" httpHeaderName="X-CUST2">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </dynamic>
+   </tdr>
+</api>]]></con:request>
+						
+						<con:assertion type="XPath Match" name="XPath Status">
+							<con:configuration><path>/response/status</path><content>FAILURE</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath error code">
+							<con:configuration><path>/response/error/errorCode</path><content>500</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath errorText">
+							<con:configuration><path>contains(/response/error/errorText,"-_./")</path><content>true</content><allowWildcards>true</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Create API 3 with bad name (2)">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Create API 3 with bad name (2)" mediaType="application/xml" postQueryString="false" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request><![CDATA[<api>
+   <id>api-provision-ext-api3</id>
+   <displayName>test_name_3</displayName>
+   <type>PassThrough</type>
+   <status>active</status>
+   <endpoint>end"point</endpoint>
+   <https>false</https>
+   <authentication>
+      <supportedTypes>
+         <type>noAuth</type>
+      </supportedTypes>
+      <authKey>
+         <keyName>key</keyName>
+      </authKey>
+   </authentication>
+   <tdrEnabled>
+      <enabled>false</enabled>
+   </tdrEnabled>
+   <contexts>
+      <context id="api-provision-ext-context3" default="true">
+         <status>active</status>
+         <targetHosts>
+            <targetHost>
+               <url>http://${#Project#Target1}:8080/two/five.html</url>
+               <authentication>
+                  <type>NoAuth</type>
+                  <data>
+                     <key name="aKey00">key000Val</key>
+                  </data>
+               </authentication>
+            </targetHost>
+         </targetHosts>
+         <maxRateLimitTPSThreshold>10000</maxRateLimitTPSThreshold>
+         <maxRateLimitTPSWarning>0.0</maxRateLimitTPSWarning>
+         <maxRateLimitTPMThreshold>600000</maxRateLimitTPMThreshold>
+         <maxRateLimitTPMWarning>0.0</maxRateLimitTPMWarning>
+      </context>
+   </contexts>
+   <tdr>
+      <static tdrPropName="company" value="ALU"/>
+      <static tdrPropName="bundle" value="B1">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </static>
+      <dynamic tdrPropName="cust1" httpHeaderName="X-CUST1"/>
+      <dynamic tdrPropName="cust2" httpHeaderName="X-CUST2">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </dynamic>
+   </tdr>
+</api>]]></con:request>
+						
+						<con:assertion type="XPath Match" name="XPath Status">
+							<con:configuration><path>/response/status</path><content>FAILURE</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath error code">
+							<con:configuration><path>/response/error/errorCode</path><content>500</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath errorText">
+							<con:configuration><path>contains(/response/error/errorText,"-_./")</path><content>true</content><allowWildcards>true</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Create API 3 with bad name (3)">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Create API 3 with bad name (3)" mediaType="application/xml" postQueryString="false" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request><![CDATA[<api>
+   <id>api-provision-ext-api3</id>
+   <displayName>test_name_3</displayName>
+   <type>PassThrough</type>
+   <status>active</status>
+   <endpoint>end"/><to toto="tata"/></endpoint>
+   <https>false</https>
+   <authentication>
+      <supportedTypes>
+         <type>noAuth</type>
+      </supportedTypes>
+      <authKey>
+         <keyName>key</keyName>
+      </authKey>
+   </authentication>
+   <tdrEnabled>
+      <enabled>false</enabled>
+   </tdrEnabled>
+   <contexts>
+      <context id="api-provision-ext-context3" default="true">
+         <status>active</status>
+         <targetHosts>
+            <targetHost>
+               <url>http://${#Project#Target1}:8080/two/five.html</url>
+               <authentication>
+                  <type>NoAuth</type>
+                  <data>
+                     <key name="aKey00">key000Val</key>
+                  </data>
+               </authentication>
+            </targetHost>
+         </targetHosts>
+         <maxRateLimitTPSThreshold>10000</maxRateLimitTPSThreshold>
+         <maxRateLimitTPSWarning>0.0</maxRateLimitTPSWarning>
+         <maxRateLimitTPMThreshold>600000</maxRateLimitTPMThreshold>
+         <maxRateLimitTPMWarning>0.0</maxRateLimitTPMWarning>
+      </context>
+   </contexts>
+   <tdr>
+      <static tdrPropName="company" value="ALU"/>
+      <static tdrPropName="bundle" value="B1">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </static>
+      <dynamic tdrPropName="cust1" httpHeaderName="X-CUST1"/>
+      <dynamic tdrPropName="cust2" httpHeaderName="X-CUST2">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </dynamic>
+   </tdr>
+</api>]]></con:request>
+						
+						<con:assertion type="XPath Match" name="XPath Status">
+							<con:configuration><path>/response/status</path><content>FAILURE</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath error code">
+							<con:configuration><path>/response/error/errorCode</path><content>102</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion>
+						<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Create API 3 with bad name (4)">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Create API 3 with bad name (4)" mediaType="application/xml" postQueryString="false" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request><![CDATA[<api>
+   <id>api-provision-ext-api3</id>
+   <displayName>test_name_3</displayName>
+   <type>PassThrough</type>
+   <status>active</status>
+   <endpoint><![CDATA[end"/><to toto="tata"/>]]]]>><![CDATA[</endpoint>
+   <https>false</https>
+   <authentication>
+      <supportedTypes>
+         <type>noAuth</type>
+      </supportedTypes>
+      <authKey>
+         <keyName>key</keyName>
+      </authKey>
+   </authentication>
+   <tdrEnabled>
+      <enabled>false</enabled>
+   </tdrEnabled>
+   <contexts>
+      <context id="api-provision-ext-context3" default="true">
+         <status>active</status>
+         <targetHosts>
+            <targetHost>
+               <url>http://${#Project#Target1}:8080/two/five.html</url>
+               <authentication>
+                  <type>NoAuth</type>
+                  <data>
+                     <key name="aKey00">key000Val</key>
+                  </data>
+               </authentication>
+            </targetHost>
+         </targetHosts>
+         <maxRateLimitTPSThreshold>10000</maxRateLimitTPSThreshold>
+         <maxRateLimitTPSWarning>0.0</maxRateLimitTPSWarning>
+         <maxRateLimitTPMThreshold>600000</maxRateLimitTPMThreshold>
+         <maxRateLimitTPMWarning>0.0</maxRateLimitTPMWarning>
+      </context>
+   </contexts>
+   <tdr>
+      <static tdrPropName="company" value="ALU"/>
+      <static tdrPropName="bundle" value="B1">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </static>
+      <dynamic tdrPropName="cust1" httpHeaderName="X-CUST1"/>
+      <dynamic tdrPropName="cust2" httpHeaderName="X-CUST2">
+         <types>
+            <type>CompanyQuota</type>
+            <type>Billing</type>
+         </types>
+      </dynamic>
+   </tdr>
+</api>]]></con:request>
+						
+						<con:assertion type="XPath Match" name="XPath Status">
+							<con:configuration><path>/response/status</path><content>FAILURE</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath error code">
+							<con:configuration><path>/response/error/errorCode</path><content>500</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion>
+						<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Delete API 1_2 (if exist)">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis/{API_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Delete API 1_2 (if exist)" mediaType="application/xml" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:encoding/>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request/>
+						<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters><entry key="API_ID" value="api-provision-ext-api1" xmlns="http://eviware.com/soapui/config"/></con:parameters>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Copy of Delete API 2_2 (if exist)">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis/{API_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Copy of Delete API 2_2 (if exist)" mediaType="application/xml" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:encoding/>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request/>
+						<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters><entry key="API_ID" value="api-provision-ext-api2" xmlns="http://eviware.com/soapui/config"/></con:parameters>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:properties/></con:testCase><con:properties/>
+	</con:testSuite><con:testSuite name="provision-api-ext-loadbalancing"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Activate debug" searchProperties="true" id="3be8d20d-9543-435c-9c25-9b60befbdb04"><con:settings/><con:testStep type="httprequest" name="activate"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" name="activate" postQueryString="false" mediaType="application/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181/cxf/e3/system-manager/logging/instances/0/logLevel</con:endpoint><con:request>DEBUG</con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 3 LB no FailOver" searchProperties="true" id="afc9d266-dd6d-496a-bd83-7f2d2315b25a"><con:settings/><con:testStep type="restrequest" name="Delete APi (if exist)">
 				<con:settings/>
 				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis/{API_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 					<con:restRequest name="Delete APi (if exist)" mediaType="application/xml" accept="application/xml">
@@ -2239,7 +2857,7 @@
 						<con:parameters><entry key="API_ID" value="provision-api-loadbalancing-api1" xmlns="http://eviware.com/soapui/config"/></con:parameters>
 					</con:restRequest>
 				</con:config>
-			</con:testStep><con:testStep type="httprequest" name="add log 1"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" name="add log 1" postQueryString="true" mediaType="application/x-www-form-urlencoded" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#Target1}:8080/mockSCFTarget</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:parameter><con:name>action</con:name><con:value>log</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>client_credentials</con:default><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>text</con:name><con:value>Ending testcase3 LB no failOver</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>497df8c47ea64d8db8fa412964a070ff</con:default><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>uniqueId</con:name><con:value>${#TestCase#uniqueId}</con:value><con:style>QUERY</con:style></con:parameter></con:parameters></con:config></con:testStep><con:properties><con:property><con:name>uniqueId</con:name><con:value>${#Project#E3Gateway}</con:value></con:property></con:properties></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 2 LB/FO no HB" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Delete APi (if exist)">
+			</con:testStep><con:testStep type="httprequest" name="add log 1"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" name="add log 1" postQueryString="true" mediaType="application/x-www-form-urlencoded" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#Target1}:8080/mockSCFTarget</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:parameter><con:name>action</con:name><con:value>log</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>client_credentials</con:default><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>text</con:name><con:value>Ending testcase3 LB no failOver</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>497df8c47ea64d8db8fa412964a070ff</con:default><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>uniqueId</con:name><con:value>${#TestCase#uniqueId}</con:value><con:style>QUERY</con:style></con:parameter></con:parameters></con:config></con:testStep><con:properties><con:property><con:name>uniqueId</con:name><con:value>${#Project#E3Gateway}</con:value></con:property></con:properties></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 2 LB/FO no HB" searchProperties="true" id="b1ff6475-d2f6-4190-9c04-7ba4de683874"><con:settings/><con:testStep type="restrequest" name="Delete APi (if exist)">
 				<con:settings/>
 				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis/{API_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 					<con:restRequest name="Delete APi (if exist)" mediaType="application/xml" accept="application/xml">
@@ -2557,7 +3175,7 @@
 						<con:parameters><entry key="API_ID" value="provision-api-loadbalancing-api2" xmlns="http://eviware.com/soapui/config"/></con:parameters>
 					</con:restRequest>
 				</con:config>
-			</con:testStep><con:testStep type="httprequest" name="add log 1"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" name="add log 1" postQueryString="true" mediaType="application/x-www-form-urlencoded" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#Target1}:8080/mockSCFTarget</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:parameter><con:name>action</con:name><con:value>log</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>client_credentials</con:default><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>text</con:name><con:value>Ending testcase2 LB/FO no HA</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>497df8c47ea64d8db8fa412964a070ff</con:default><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>uniqueId</con:name><con:value>${#TestCase#uniqueId}</con:value><con:style>QUERY</con:style></con:parameter></con:parameters></con:config></con:testStep><con:properties><con:property><con:name>uniqueId</con:name><con:value>${#Project#E3Gateway}</con:value></con:property></con:properties></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 4 LB/FO no HB all down" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Delete APi (if exist)">
+			</con:testStep><con:testStep type="httprequest" name="add log 1"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" name="add log 1" postQueryString="true" mediaType="application/x-www-form-urlencoded" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#Target1}:8080/mockSCFTarget</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:parameter><con:name>action</con:name><con:value>log</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>client_credentials</con:default><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>text</con:name><con:value>Ending testcase2 LB/FO no HA</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>497df8c47ea64d8db8fa412964a070ff</con:default><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>uniqueId</con:name><con:value>${#TestCase#uniqueId}</con:value><con:style>QUERY</con:style></con:parameter></con:parameters></con:config></con:testStep><con:properties><con:property><con:name>uniqueId</con:name><con:value>${#Project#E3Gateway}</con:value></con:property></con:properties></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 4 LB/FO no HB all down" searchProperties="true" id="4e33a665-c38a-444d-9fcb-fd8dfeadf763"><con:settings/><con:testStep type="restrequest" name="Delete APi (if exist)">
 				<con:settings/>
 				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis/{API_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 					<con:restRequest name="Delete APi (if exist)" mediaType="application/xml" accept="application/xml">
@@ -2858,4 +3476,4 @@
 						<con:parameters><entry key="API_ID" value="provision-api-loadbalancing-api3" xmlns="http://eviware.com/soapui/config"/></con:parameters>
 					</con:restRequest>
 				</con:config>
-			</con:testStep><con:testStep type="httprequest" name="add log 1"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" name="add log 1" postQueryString="true" mediaType="application/x-www-form-urlencoded" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#Target1}:8080/mockSCFTarget</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:parameter><con:name>action</con:name><con:value>log</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>client_credentials</con:default><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>text</con:name><con:value>Ending testcase4 LB/FO no HB all down</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>497df8c47ea64d8db8fa412964a070ff</con:default><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>uniqueId</con:name><con:value>${#TestCase#uniqueId}</con:value><con:style>QUERY</con:style></con:parameter></con:parameters></con:config></con:testStep><con:properties><con:property><con:name>uniqueId</con:name><con:value>${#Project#E3Gateway}</con:value></con:property></con:properties></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Deactivate debug" searchProperties="true"><con:settings/><con:testStep type="httprequest" name="deactivate"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" name="deactivate" postQueryString="false" mediaType="application/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181/cxf/e3/system-manager/logging/instances/0/logLevel</con:endpoint><con:request>INFO</con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:config></con:testStep><con:properties/></con:testCase><con:properties><con:property><con:name>uniqueId</con:name><con:value>${#Project#E3Gateway}</con:value></con:property></con:properties></con:testSuite><con:properties><con:property><con:name>E3Manager</con:name><con:value>192.168.84.105</con:value></con:property><con:property><con:name>E3Gateway</con:name><con:value>192.168.84.105</con:value></con:property><con:property><con:name>Target1</con:name><con:value>192.168.84.90</con:value></con:property><con:property><con:name>Target2</con:name><con:value>192.168.84.103</con:value></con:property><con:property><con:name>Target3</con:name><con:value>192.168.84.184</con:value></con:property><con:property><con:name>uniq</con:name><con:value>delete</con:value></con:property><con:property><con:name>LOG4J_LEVEL_VALUES</con:name><con:value>(ALL|TRACE|DEBUG|INFO|WARN|ERROR|FATAL|OFF)</con:value></con:property><con:property><con:name>STATUS_SUCCESS</con:name><con:value>SUCCESS</con:value></con:property><con:property><con:name>SYSLOG_LEVEL_VALUES</con:name><con:value>(DEBUG|INFO|NOTICE|WARNING|ERR|CRIT|ALERT|EMERG)</con:value></con:property><con:property><con:name>ResponseCodeDown</con:name><con:value>500</con:value></con:property></con:properties><con:wssContainer/><con:sensitiveInformation/></con:soapui-project>
+			</con:testStep><con:testStep type="httprequest" name="add log 1"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" name="add log 1" postQueryString="true" mediaType="application/x-www-form-urlencoded" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#Target1}:8080/mockSCFTarget</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:parameter><con:name>action</con:name><con:value>log</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>client_credentials</con:default><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>text</con:name><con:value>Ending testcase4 LB/FO no HB all down</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>497df8c47ea64d8db8fa412964a070ff</con:default><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>uniqueId</con:name><con:value>${#TestCase#uniqueId}</con:value><con:style>QUERY</con:style></con:parameter></con:parameters></con:config></con:testStep><con:properties><con:property><con:name>uniqueId</con:name><con:value>${#Project#E3Gateway}</con:value></con:property></con:properties></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Deactivate debug" searchProperties="true" id="dffa92f4-c918-49bf-b5e1-4fd52c21f3fe"><con:settings/><con:testStep type="httprequest" name="deactivate"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" name="deactivate" postQueryString="false" mediaType="application/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181/cxf/e3/system-manager/logging/instances/0/logLevel</con:endpoint><con:request>INFO</con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:config></con:testStep><con:properties/></con:testCase><con:properties><con:property><con:name>uniqueId</con:name><con:value>${#Project#E3Gateway}</con:value></con:property></con:properties></con:testSuite><con:properties><con:property><con:name>E3Manager</con:name><con:value>192.168.84.101</con:value></con:property><con:property><con:name>E3Gateway</con:name><con:value>192.168.84.101</con:value></con:property><con:property><con:name>Target1</con:name><con:value>192.168.84.90</con:value></con:property><con:property><con:name>Target2</con:name><con:value>192.168.84.103</con:value></con:property><con:property><con:name>Target3</con:name><con:value>192.168.84.184</con:value></con:property><con:property><con:name>uniq</con:name><con:value>delete</con:value></con:property><con:property><con:name>LOG4J_LEVEL_VALUES</con:name><con:value>(ALL|TRACE|DEBUG|INFO|WARN|ERROR|FATAL|OFF)</con:value></con:property><con:property><con:name>STATUS_SUCCESS</con:name><con:value>SUCCESS</con:value></con:property><con:property><con:name>SYSLOG_LEVEL_VALUES</con:name><con:value>(DEBUG|INFO|NOTICE|WARNING|ERR|CRIT|ALERT|EMERG)</con:value></con:property><con:property><con:name>ResponseCodeDown</con:name><con:value>500</con:value></con:property></con:properties><con:wssContainer/><con:sensitiveInformation/></con:soapui-project>

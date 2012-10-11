@@ -210,15 +210,44 @@ public class ApiService implements IApiService {
 	}
 
 	private boolean checkCreate(Api api) throws ProvisionException {
-
-		boolean canCreateJarFile;
-
-		featureChecker.assertIsAvailableFeature(api);
-
-		// check api ID already exist
+		// check api ID does not already exist
 		if (api.getId() != null && dataManager.isApiExist(api.getId())) {
 			throw new ProvisionException(ApplicationCodeConstants.API_ID_ALREADY_EXIST, "An API with that ID already exist");
 		}
+		
+		//call checkCreateUpdate to perform the common checks
+		boolean canCreateJarFile = checkCreateUpdate(api);
+		
+		//and perform additional check
+		if(dataManager.endpointExists(api.getEndpoint())){
+			throw new IllegalArgumentException("An API with that endpoint already exists");
+		}
+		
+		return canCreateJarFile;
+	}
+
+	private boolean checkUpdate(Api api) {
+		// check api ID already exist
+		if (api.getId() == null || !dataManager.isApiExist(api.getId())) {
+			throw new InvalidIDException("An API with that ID does not exist");
+		}
+		
+		//call checkCreateUpdate to perform the common checks
+		boolean canCreateJarFile = checkCreateUpdate(api);
+
+		//and perform additional check
+		com.alu.e3.data.model.Api oldApi = dataManager.getApiById(api.getId(), true);
+		if(dataManager.endpointExists(api.getEndpoint()) && !oldApi.getApiDetail().getEndpoint().equals(api.getEndpoint())){
+			throw new IllegalArgumentException("API endpoint name should be the same as the one in the API to update");
+		}
+
+		return canCreateJarFile;
+	}
+	
+	private boolean checkCreateUpdate(Api api){
+		//perform common checks between checkCreate and checkUpdate
+		featureChecker.assertIsAvailableFeature(api);
+		
 		// Checking if the API has one default context, throw an exception
 		// otherwise.
 		apiChecker.assertHasDefaultContext(api);
@@ -226,64 +255,19 @@ public class ApiService implements IApiService {
 		//checking that given XML grammar stream is ok
 		apiChecker.assertValidatioSchemaConsystency(api);
 
-		// Checking PassThrough/Composite/Notification/Subscription
-		// consistency
-		canCreateJarFile = apiChecker.assertCompositionApiConsistency(api);
-
-		if(api.getEndpoint() == null || api.getEndpoint().isEmpty()){
-			throw new IllegalArgumentException("The endpoint is required");
-		}
-		else if(dataManager.endpointExists(api.getEndpoint())){
-			throw new IllegalArgumentException("An API with that endpoint already exists");
-		}
-
-		for(Key key : api.getProperties()){
-			if(key.getName() == null || key.getName().isEmpty())
-				throw new IllegalArgumentException("All properties must have a name");
-		}
-
-		if(api.getAuthentication().getUseAuthKey() && 
-				(api.getAuthentication().getAuthKey() == null || 
-				api.getAuthentication().getAuthKey().getKeyName() == null ||
-				api.getAuthentication().getAuthKey().getKeyName().isEmpty())){
-			throw new IllegalArgumentException("APIs with AuthKey authentication require a keyName");
-		}
-
-		return canCreateJarFile;
-	}
-
-	private boolean checkUpdate(Api api) {
-
-		boolean canCreateJarFile;
-
-		featureChecker.assertIsAvailableFeature(api);
-
-		// check api ID already exist
-		if (api.getId() == null || !dataManager.isApiExist(api.getId())) {
-			throw new InvalidIDException("An API with that ID does not exist");
-		}
-
-		// Checking if the API has one default context, throw an exception
-		// otherwise.
-		apiChecker.assertHasDefaultContext(api);
-
-		//checking that given XML grammar stream is ok
-		apiChecker.assertValidatioSchemaConsystency(api);
-
 		// Checking PassThrough/Composite/Notification/Subscription consistency
-		canCreateJarFile =  apiChecker.assertCompositionApiConsistency(api);
+		boolean canCreateJarFile = apiChecker.assertCompositionApiConsistency(api);
 
-		com.alu.e3.data.model.Api oldApi = dataManager.getApiById(api.getId(), true);
-		// If the endpoint already exists AND it belongs to another api
 		if(api.getEndpoint() == null || api.getEndpoint().isEmpty()){
 			throw new IllegalArgumentException("The endpoint is required");
+		} else if (!api.getEndpoint().matches("[a-zA-Z0-9-_./]+")){
+			throw new IllegalArgumentException("The endpoint is not well-formed : authorized characters are alphanumerics and -_./");
 		}
-		else if(dataManager.endpointExists(api.getEndpoint()) && !oldApi.getApiDetail().getEndpoint().equals(api.getEndpoint())){
-			throw new IllegalArgumentException("An API with that endpoint already exists");
-		}
+
 		for(Key key : api.getProperties()){
-			if(key.getName() == null || key.getName().isEmpty())
+			if(key.getName() == null || key.getName().isEmpty()) {
 				throw new IllegalArgumentException("All properties must have a name");
+			}
 		}
 
 		if(api.getAuthentication().getUseAuthKey() && 
