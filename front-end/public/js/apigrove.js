@@ -403,6 +403,7 @@ $(document).ready(function() {
             +"</select> "
             +"<select class=\"input-small\" name=\"tdr["+tdrCount+"][extractFrom]\" style=\"display: none; width: 120px;\" id=\"tdrRuleExtractFrom"+tdrCount+"\">"
             +"<option>Extract From</option>"
+            +"<option>Either</option>"
             +"<option>Request</option>"
             +"<option>Response</option>"
             +"</select> "

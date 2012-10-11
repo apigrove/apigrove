@@ -61,6 +61,7 @@ for($i = 0; $i <= $totalCount; $i++):
             width: 120px;" id="tdrRuleExtractFrom<?=$i?>" rel="tooltip" title="<?=$tdrRuleExtractTip?>">
             <option>Extract From</option>
             <? /** @var StaticTdr $rule */?>
+            <option <?= @$rule->extractFrom===TdrRuleExtractFrom::EITHER?"selected":""?>><? echo $translate->translate("Either")?></option>
             <option <?= @$rule->extractFrom===TdrRuleExtractFrom::REQUEST?"selected":""?>><? echo $translate->translate("Request")?></option>
             <option <?= @$rule->extractFrom===TdrRuleExtractFrom::RESPONSE?"selected":""?>><? echo $translate->translate("Response")?></option>
         </select>

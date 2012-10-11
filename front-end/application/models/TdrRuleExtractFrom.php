@@ -19,6 +19,7 @@
  */
 class TdrRuleExtractFrom
 {
+    const EITHER = "Either";
     const REQUEST = "Request";
     const RESPONSE = "Response";
 }
