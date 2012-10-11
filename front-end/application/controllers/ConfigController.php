@@ -19,12 +19,14 @@
 class ConfigController extends Zend_Controller_Action
 {
     public function indexAction(){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/manager.ini', null, true);
         $validationErrors = array();
         if($this->getRequest()->isPost()){
             $c = $this->_getParam('config');
             if(empty($c['manager_host'])){
-                $validationErrors['manager_host'] = $this->translate("Backend Host is required");
+                $validationErrors['manager_host'] = $translate->translate("Backend Host is required");
             }
 
             if(empty($validationErrors)){
@@ -34,7 +36,7 @@ class ConfigController extends Zend_Controller_Action
                           'filename' => APPLICATION_PATH . '/configs/manager.ini')
                 );
                 $writer->write();
-                $this->view->flashMessage = $this->translate("Preferences Updated");
+                $this->view->flashMessage = $translate->translate("Preferences Updated");
             }
         }
 

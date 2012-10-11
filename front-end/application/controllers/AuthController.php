@@ -35,9 +35,11 @@ class AuthController extends FlowController
     }
 
     public function deleteAction(){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $authManager = new AuthManager();
         $authManager->deleteAuth($this->_getParam("id"));
-        $this->_helper->FlashMessenger("Auth Deleted");
+        $this->_helper->FlashMessenger($translate->translate("Auth Deleted"));
         $this->redirectToUrl("/auth");
     }
 
@@ -49,6 +51,8 @@ class AuthController extends FlowController
      * @param $flowScope
      */
     public function loadFormBacker($action, &$flowScope){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         // Default to using the id from the $flowScope
         $id = @$flowScope['authid'];
         // If that is empty then we use the one from the request
@@ -56,7 +60,7 @@ class AuthController extends FlowController
             $id = $this->_getParam("id");
 
         if(empty($id))
-            throw new Zend_Controller_Action_Exception('Resource Not Found', 404);
+            throw new Zend_Controller_Action_Exception($translate->translate('Resource Not Found'), 404);
 
         // Set the id is the flowscope
         $flowScope['authid'] = $id;
@@ -149,6 +153,8 @@ class AuthController extends FlowController
      * @param $flowScope
      */
     public function validateFormAndSubmit($action, &$flowScope){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $validationErrors = array();
         /**
          * @var Auth $auth
@@ -156,19 +162,19 @@ class AuthController extends FlowController
         $auth = $flowScope['auth'];
 
         if($auth->type === AuthType::$AUTHKEY && empty($auth->authKeyAuth->keyValue)){
-            $validationErrors['authKey'] = "For authKey auth, you must specify a key";
+            $validationErrors['authKey'] = $translate->translate("For authKey auth, you must specify a key");
         }
 
         if(($auth->type === AuthType::$BASIC || $auth->type === AuthType::$WSSE)
             && empty($auth->basicAuth->username)){
-            $validationErrors['username'] = "Username is required";
+            $validationErrors['username'] = $translate->translate("Username is required");
         }
         if(($auth->type === AuthType::$BASIC || $auth->type === AuthType::$WSSE)
             && empty($auth->basicAuth->password)){
-            $validationErrors['password'] = "Password is required";
+            $validationErrors['password'] = $translate->translate("Password is required");
         }
         if($auth->type === AuthType::$IPWHITELIST && empty($auth->ipWhiteListAuth->ips)){
-            $validationErrors['ipWhiteList'] = "IP list is required";
+            $validationErrors['ipWhiteList'] = $translate->translate("IP list is required");
         }
 
         SharedViewUtility::validateHeaderTransformations($auth->headerTransformations, $validationErrors);

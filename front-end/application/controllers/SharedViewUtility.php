@@ -28,6 +28,8 @@ class SharedViewUtility
      * @param array $validationErrors
      */
     public static function includeHeaderTransformationsSnippet($headerTransformations, $validationErrors){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         include APPLICATION_PATH."/views/scripts/snippets/headerTransformations.phtml";
     }
 
@@ -62,24 +64,26 @@ class SharedViewUtility
      * @param $validationErrors
      */
     public static function validateHeaderTransformations($hts, &$validationErrors){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         /** @var HeaderTransformation $ht */
         for($i = 0; $i < count($hts); $i++){
             $ht = $hts[$i];
             if(empty($ht->name)){
-                $validationErrors['header'][$i]['name'] = "Name is required";
+                $validationErrors['header'][$i]['name'] = $translate->translate("Name is required");
             }
             if(empty($ht->type) ||
                 ($ht->type !== HeaderTransformationTiming::REQUEST && $ht->type !== HeaderTransformationTiming::RESPONSE )){
-                $validationErrors['header'][$i]['timing'] = "Timing is required";
+                $validationErrors['header'][$i]['timing'] = $translate->translate("Timing is required");
             }
 
             if(empty($ht->action) ||
                 ($ht->action !== HeaderTransformationAction::ADD && $ht->action !== HeaderTransformationAction::REMOVE)){
-                $validationErrors['header'][$i]['action'] = "Action is required";
+                $validationErrors['header'][$i]['action'] = $translate->translate("Action is required");
             }
             if($ht->action === HeaderTransformationAction::ADD &&
                 empty($ht->property) && empty($ht->value)){
-                $validationErrors['header'][$i]['timing'] = "Type and Value are required";
+                $validationErrors['header'][$i]['timing'] = $translate->translate("Type and Value are required");
             }
         }
     }
@@ -90,6 +94,8 @@ class SharedViewUtility
      * @param $validationErrors
      */
     public static function includePropertiesSnippet($properties, $validationErrors){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         include APPLICATION_PATH."/views/scripts/snippets/properties.phtml";
     }
 
@@ -114,12 +120,14 @@ class SharedViewUtility
      * @param $validationErrors
      */
     public static function validateProperties($props, &$validationErrors){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $count = 0;
         foreach($props as $key=>$val){
             if(empty($key))
-                $validationErrors['property'][$count]['name'] = "Key is required";
+                $validationErrors['property'][$count]['name'] = $translate->translate("Key is required");
             if(empty($val))
-                $validationErrors['property'][$count]['value'] = "Value is required";
+                $validationErrors['property'][$count]['value'] = $translate->translate("Value is required");
 
             $count++;
         }
@@ -133,6 +141,8 @@ class SharedViewUtility
      * @param $validationErrors
      */
     public static function includeTdrRulesSnippet($tdrData, $validationErrors){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         include APPLICATION_PATH."/views/scripts/snippets/tdrRules.phtml";
     }
 
@@ -177,18 +187,20 @@ class SharedViewUtility
      * @param $validationErrors
      */
     public static function validateTdrRules(TdrData $tdrData, &$validationErrors){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $count = 0;
 
         /** @var DynamicTdr $rule */
         foreach($tdrData->dynamicTdrs as $rule){
             if(empty($rule->extractFrom)){
-                $validationErrors['tdr'][$count]['extractFrom'] = "Extract from is required";
+                $validationErrors['tdr'][$count]['extractFrom'] = $translate->translate("Extract from is required");
             }
             if(empty($rule->httpHeaderName)){
-                $validationErrors['tdr'][$count]['httpHeaderName'] = "Http Header Name is required";
+                $validationErrors['tdr'][$count]['httpHeaderName'] = $translate->translate("Http Header Name is required");
             }
             if(empty($rule->tdrPropName)){
-                $validationErrors['tdr'][$count]['tdrPropName'] = "Name is required";
+                $validationErrors['tdr'][$count]['tdrPropName'] = $translate->translate("Name is required");
             }
             $count++;
         }
@@ -196,10 +208,10 @@ class SharedViewUtility
         /** @var StaticTdr $rule */
         foreach($tdrData->staticTdrs as $rule){
             if(empty($rule->property) && empty($rule->value)){
-                $validationErrors['tdr'][$count]['value'] = "Value or Property Name required";
+                $validationErrors['tdr'][$count]['value'] = $translate->translate("Value or Property Name required");
             }
             if(empty($rule->tdrPropName)){
-                $validationErrors['tdr'][$count]['tdrPropName'] = "Name is required";
+                $validationErrors['tdr'][$count]['tdrPropName'] = $translate->translate("Name is required");
             }
         }
 

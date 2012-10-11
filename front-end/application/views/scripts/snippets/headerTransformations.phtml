@@ -23,32 +23,32 @@ for($count = 0; $count <= count($headerTransformations); $count++):
     $ht = @$headerTransformations[$count]; if(empty($ht)) $ht = new HeaderTransformation();?>
 <div class="control-group headerTrans <?=!empty($validationErrors['header'][$count])?"error":""?>" count="<?=$i?>" id="headerTransGroup<?=$count?>">
     <? if ($count === 0): ?>
-    <label class="control-label" for="headerTrans"><? echo $this->translate("Header Transformations")?></label>
+    <label class="control-label" for="headerTrans"><? echo $translate->translate("Header Transformations")?></label>
     <? endif ?>
     <div class="controls">
-        <input type="text" class="input-small" placeholder="<? echo $this->translate("Name")?>" name="header[<?=$count?>][name]" id="headerTrans" value="<?=$ht->name?>">
+        <input type="text" class="input-small" placeholder="<? echo $translate->translate("Name")?>" name="header[<?=$count?>][name]" id="headerTrans" value="<?=$ht->name?>">
         <select class="input-small" name="header[<?=$count?>][timing]">
-            <option><? echo $this->translate("Timing")?></option>
-            <option <?=$ht->type=== HeaderTransformationTiming::REQUEST? "selected":""?>><? echo $this->translate("Request")?></option>
-            <option <?=$ht->type=== HeaderTransformationTiming::RESPONSE? "selected":""?>><? echo $this->translate("Response")?></option>
+            <option><? echo $translate->translate("Timing")?></option>
+            <option <?=$ht->type=== HeaderTransformationTiming::REQUEST? "selected":""?>><? echo $translate->translate("Request")?></option>
+            <option <?=$ht->type=== HeaderTransformationTiming::RESPONSE? "selected":""?>><? echo $translate->translate("Response")?></option>
         </select>
         <select class="input-small headerAction" item="#headerAdv<?=$count?>" name="header[<?=$count?>][action]">
-            <option><? echo $this->translate("Action")?></option>
-            <option <?=$ht->action=== HeaderTransformationAction::ADD? "selected":""?>><? echo $this->translate("Add")?></option>
-            <option <?=$ht->action=== HeaderTransformationAction::REMOVE? "selected":""?>><? echo $this->translate("Remove")?></option>
+            <option><? echo $translate->translate("Action")?></option>
+            <option <?=$ht->action=== HeaderTransformationAction::ADD? "selected":""?>><? echo $translate->translate("Add")?></option>
+            <option <?=$ht->action=== HeaderTransformationAction::REMOVE? "selected":""?>><? echo $translate->translate("Remove")?></option>
         </select>
         <span id="headerAdv<?=$count?>" <?= $ht->action !== HeaderTransformationAction::ADD?"style=\"display:none\"":""?>>
              <select class="input-small" name="header[<?=$count?>][type]">
-                 <option><? echo $this->translate("Type")?></option>
-                 <option <?=$ht->kind===HeaderTransformationType::PROPERTY? "selected":""?>><? echo $this->translate("Property")?></option>
-                 <option <?=$ht->kind===HeaderTransformationType::STATIC_VAL?"selected":""?>><? echo $this->translate("Static")?></option>
+                 <option><? echo $translate->translate("Type")?></option>
+                 <option <?=$ht->kind===HeaderTransformationType::PROPERTY? "selected":""?>><? echo $translate->translate("Property")?></option>
+                 <option <?=$ht->kind===HeaderTransformationType::STATIC_VAL?"selected":""?>><? echo $translate->translate("Static")?></option>
              </select>
-             <input type="text" class="input-small" name="header[<?=$count?>][value]" placeholder="<? echo $this->translate("Value")?>" value="<?=empty($ht->value)?$ht->property:$ht->value?>"/>
+             <input type="text" class="input-small" name="header[<?=$count?>][value]" placeholder="<? echo $translate->translate("Value")?>" value="<?=empty($ht->value)?$ht->property:$ht->value?>"/>
         </span>
         <? if($count === 0): ?>
-        <button class="btn newItem" type="headerTrans" title="<? echo $this->translate("Add additional header transformation")?>" id="headerPlus"><i class="icon-plus"></i></button>
+        <button class="btn newItem" type="headerTrans" title="<? echo $translate->translate("Add additional header transformation")?>" id="headerPlus"><i class="icon-plus"></i></button>
         <? else: ?>
-        <button class="btn removeItem" type="headerTrans" number="<?=$count?>" title="<? echo $this->translate("Remove header transformation")?>"><i class="icon-minus"></i></button>
+        <button class="btn removeItem" type="headerTrans" number="<?=$count?>" title="<? echo $translate->translate("Remove header transformation")?>"><i class="icon-minus"></i></button>
         <?endif?>
         <span class="help-inline">
                            <?

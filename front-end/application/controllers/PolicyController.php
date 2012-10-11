@@ -100,12 +100,14 @@ class PolicyController extends Zend_Controller_Action{
      */
     public function editAction($policyId)
     {
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $validationErrors = array();
         $policy = $this->policyManager->getPolicy($policyId);
         if ($policy == null) {
             $error = PolicyManager::error();
             if (empty($error)) {
-                $error = $this->translate("Unable to retrieve policy ").$policyId;
+                $error = $translate->translate("Unable to retrieve policy ").$policyId;
             }
             $validationErrors['default'] = $error;
         }
@@ -119,6 +121,8 @@ class PolicyController extends Zend_Controller_Action{
      */
     public function createAction()
     {
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $success = false;
         $validationErrors = array();
         $policy = $this->validateFormAndGetPolicy(null, $validationErrors);
@@ -126,12 +130,12 @@ class PolicyController extends Zend_Controller_Action{
             if ($this->policyManager->createPolicy($policy)) {
                 $success = true;
             } else {
-                $validationErrors['default'] = $this->translate("Error creating policy: ").PolicyManager::error();
+                $validationErrors['default'] = $translate->translate("Error creating policy: ").PolicyManager::error();
             }
         }
         if ($success) {
             $messenger = $this->_helper->getHelper('FlashMessenger');
-            $messenger->addMessage($this->translate("Successfully Created Policy"));
+            $messenger->addMessage($translate->translate("Successfully Created Policy"));
             $this->_redirect("/policy");
         } else {
             $this->view->isNew = true;
@@ -147,21 +151,23 @@ class PolicyController extends Zend_Controller_Action{
      */
     public function updateAction($policyId)
     {
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $success = false;
         $validationErrors = array();
         //print_r($_POST);
         $policy = $this->validateFormAndGetPolicy($policyId, $validationErrors);
         if (count($validationErrors) == 0) {
             if ($this->policyManager->updatePolicy($policy)) {
-                $this->view->flashMessage = $this->translate("Policy updated!");
+                $this->view->flashMessage = $translate->translate("Policy updated!");
                 $success = true;
             } else {
-                $validationErrors['default'] = $this->translate("Error updating policy: ").PolicyManager::error();
+                $validationErrors['default'] = $translate->translate("Error updating policy: ").PolicyManager::error();
             }
         }
         if ($success) {
             $messenger = $this->_helper->getHelper('FlashMessenger');
-            $messenger->addMessage($this->translate("Successfully Updated Policy"));
+            $messenger->addMessage($translate->translate("Successfully Updated Policy"));
             $this->_redirect("/policy");
         } else {
             $this->view->isNew = false;
@@ -241,6 +247,8 @@ class PolicyController extends Zend_Controller_Action{
      */
     private function validateStandardFieldsAndGetPolicy($policyId, &$validationErrors)
     {
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $policy = new Policy();
 
         $validate_alnum = new Zend_Validate_Alnum();
@@ -252,7 +260,7 @@ class PolicyController extends Zend_Controller_Action{
 
         $success = true;
         if (!$validate_alnum->isValid($policyId)) {
-            $validationErrors['policyId'] = $this->translate("The policy ID must be only alpha-numeric characters");
+            $validationErrors['policyId'] = $translate->translate("The policy ID must be only alpha-numeric characters");
             $success = false;
         }
         $policy->setId($policyId);
@@ -310,6 +318,8 @@ class PolicyController extends Zend_Controller_Action{
      */
     private function validateRateAndGetCounterForPeriod($quotaName, &$validationErrors)
     {
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $counter = new Counter();
         $success = true;
 
@@ -332,13 +342,13 @@ class PolicyController extends Zend_Controller_Action{
                     $counter->setWarning("0");
                 }
                 if (!$validate_int->isValid($threshold) || !$validate_gt_0->isValid($threshold)) {
-                    $validationErrors[$quotaName] = $this->displayNameForField($quotaName).$this->translate(" Threshold must be a positive integer if you want to include this Quota. ");
+                    $validationErrors[$quotaName] = $this->displayNameForField($quotaName).$translate->translate(" Threshold must be a positive integer if you want to include this Quota. ");
                     $success = false;
                 } elseif (!$validate_int->isValid($warning) || !$validate_gte_0->isValid($warning)) {
-                    $validationErrors[$quotaName] = $this->displayNameForField($quotaName).$this->translate(" Warning must be a non-negative integer. ");
+                    $validationErrors[$quotaName] = $this->displayNameForField($quotaName).$translate->translate(" Warning must be a non-negative integer. ");
                     $success = false;
                 } elseif (Zend_Validate::is($warning, 'GreaterThan', array('min' => $threshold))) {
-                    $validationErrors[$quotaName] = $this->displayNameForField($quotaName).$this->translate(" Warning may not be greater than the Threshold. ");
+                    $validationErrors[$quotaName] = $this->displayNameForField($quotaName).$translate->translate(" Warning may not be greater than the Threshold. ");
                     $success = false;
                 }
             }
@@ -417,19 +427,21 @@ class PolicyController extends Zend_Controller_Action{
      */
     private function displayNameForField($fieldName)
     {
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         switch ($fieldName) {
             case 'per_second':
-                return $this->translate('Per-Second');
+                return $translate->translate('Per-Second');
             case 'per_minute':
-                return $this->translate('Per-Minute');
+                return $translate->translate('Per-Minute');
             case 'per_hour':
-                return $this->translate('Hourly');
+                return $translate->translate('Hourly');
             case 'per_day':
-                return $this->translate('Daily');
+                return $translate->translate('Daily');
             case 'per_week':
-                return $this->translate('Weekly');
+                return $translate->translate('Weekly');
             case 'per_month':
-                return $this->translate('Monthly');
+                return $translate->translate('Monthly');
         }
         return $fieldName;
     }

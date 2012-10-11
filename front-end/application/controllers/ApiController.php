@@ -59,6 +59,8 @@ class ApiController extends FlowController {
      * Function to delete apis
      */
     public function deleteAction(){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $apiid = $this->_getParam("id");
         if(!empty($apiid)){
             try{
@@ -66,18 +68,18 @@ class ApiController extends FlowController {
                 if($response){
                     if((string)$response->status === "SUCCESS"){
                         //success!
-                        $this->_helper->FlashMessenger($this->translate("Api Successfully Deleted"));
+                        $this->_helper->FlashMessenger($translate->translate("Api Successfully Deleted"));
                     } else {
-                        $this->_helper->FlashMessenger($this->translate("Error deleting api ") . $apiid . " : ".$response->error->errorText);
+                        $this->_helper->FlashMessenger($translate->translate("Error deleting api ") . $apiid . " : ".$response->error->errorText);
                     }
                 } else {
-                    $this->_helper->FlashMessenger($this->translate("The delete action errored but didn't say why!"));
+                    $this->_helper->FlashMessenger($translate->translate("The delete action errored but didn't say why!"));
                 }
             } catch(Exception $e){
-                $this->_helper->FlashMessenger($this->translate("Exception when deleting api ") .$apiid . " : ".$e->getMessage());
+                $this->_helper->FlashMessenger($translate->translate("Exception when deleting api ") .$apiid . " : ".$e->getMessage());
             }
         } else {
-            $this->_helper->FlashMessenger($this->translate("Api id is empty!"));
+            $this->_helper->FlashMessenger($translate->translate("Api id is empty!"));
         }
         $this->_helper->redirector("index", "api");
     }
@@ -102,6 +104,8 @@ class ApiController extends FlowController {
      * @param $flowScope
      */
     function fill_form($action, &$flowScope){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $apiid = $this->_getParam("id");
 
         if(!isset($flowScope["api"])) {
@@ -129,7 +133,7 @@ class ApiController extends FlowController {
                     $api = $this->getManager()->getApi($apiid);
                     $flowScope["api"] = $api;
                 } catch (Exception $e){
-                    $this->_helper->FlashMessenger($this->translate("Error fetching api ") . $apiid . " : ".$e->getMessage());
+                    $this->_helper->FlashMessenger($translate->translate("Error fetching api ") . $apiid . " : ".$e->getMessage());
                     $this->_helper->redirector("index", "api");
                 }
             }
@@ -141,6 +145,8 @@ class ApiController extends FlowController {
     }
 
     function api_validate_form1($action, &$flowScope){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         /**
          * @var Api $api
          */
@@ -150,13 +156,13 @@ class ApiController extends FlowController {
         if(isset($_POST["apiName"]) && !empty($_POST["apiName"])){
             $api->displayName = $_POST["apiName"];
         } else {
-            $validationErrors["name"] = $this->translate("Apis must have a name.");
+            $validationErrors["name"] = $translate->translate("Apis must have a name.");
         }
 
         if(isset($_POST["apiEndpoint"]) && !empty($_POST["apiEndpoint"])){
             $api->endpoint = $_POST["apiEndpoint"];
         } else {
-            $validationErrors["endpoint"] = $this->translate("Apis must have an endpoint.");
+            $validationErrors["endpoint"] = $translate->translate("Apis must have an endpoint.");
         }
 
         $targetHosts = array();
@@ -169,7 +175,7 @@ class ApiController extends FlowController {
         }
 
         if(empty($targetHosts)) {
-            $validationErrors["targethost0"] = $this->translate("Apis must have at least one targethost.");
+            $validationErrors["targethost0"] = $translate->translate("Apis must have at least one targethost.");
         } else {
             $contexts = $api->getContexts();
             if(empty($contexts)){
@@ -220,7 +226,7 @@ class ApiController extends FlowController {
             $provAuth->setAuthKey($authkeykey);
             $api->setAuthentication($provAuth);
         } else {
-            $validationErrors["auth"] = $this->translate("Apis must have at least one auth type.");
+            $validationErrors["auth"] = $translate->translate("Apis must have at least one auth type.");
         }
 
         if($_POST["https"]){
@@ -228,7 +234,7 @@ class ApiController extends FlowController {
             $https->setEnabled("true");
             $https_mode = $_POST["https-mode"];
             if(empty($https_mode) || TLSMode::fromString($https_mode) === null){
-                $validationErrors["https-mode"] = $this->translate("With https on, TLS Mode must be 1way or 2way");
+                $validationErrors["https-mode"] = $translate->translate("With https on, TLS Mode must be 1way or 2way");
             } else {
                 $https->setTlsMode(TLSMode::fromString($https_mode));
             }
@@ -264,16 +270,16 @@ class ApiController extends FlowController {
                 } else {
                     switch($tpx){
                         case "tps-warn":
-                            $validationErrors[$tpx] = $this->translate("Transactions-per-second warning trigger must be a number");
+                            $validationErrors[$tpx] = $translate->translate("Transactions-per-second warning trigger must be a number");
                             break;
                         case "tps-threshold":
-                            $validationErrors[$tpx] = $this->translate("Transactions-per-second cutoff threshold must be a number");
+                            $validationErrors[$tpx] = $translate->translate("Transactions-per-second cutoff threshold must be a number");
                             break;
                         case "tpm-warn":
-                            $validationErrors[$tpx] = $this->translate("Transactions-per-minute warning trigger must be a number");
+                            $validationErrors[$tpx] = $translate->translate("Transactions-per-minute warning trigger must be a number");
                             break;
                         case "tpm-threshold":
-                            $validationErrors[$tpx] = $this->translate("Transactions-per-minute cutoff threshold must be a number");
+                            $validationErrors[$tpx] = $translate->translate("Transactions-per-minute cutoff threshold must be a number");
                             break;
                     }
                 }
@@ -321,20 +327,26 @@ class ApiController extends FlowController {
     }
 
     function target_host_is_bad($th){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         if(empty($th)){
-            return $this->translate("This targethost cannot be empty");
+            return $translate->translate("This targethost cannot be empty");
         }
         return false;
     }
 
     function auth_key_key_is_bad($authkeykey){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         if(empty($authkeykey)){
-            return $this->translate("Auth Key Key cannot be empty");
+            return $translate->translate("Auth Key Key cannot be empty");
         }
         return null;
     }
 
     function api_post_new($action, &$flowScope){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $manager = $this->getManager();
 
         /**
@@ -355,9 +367,9 @@ class ApiController extends FlowController {
             return "success";
         } else {
             if(isset($xmlresponse->error)) {
-                $flowScope["validationErrors"]= array("default"=>$this->translate("Error: ").(string)$xmlresponse->error->errorText);
+                $flowScope["validationErrors"]= array("default"=>$translate->translate("Error: ").(string)$xmlresponse->error->errorText);
             } else {
-                $flowScope["validationErrors"]= array("default"=>$this->translate("Unknown error when posting this Api"));
+                $flowScope["validationErrors"]= array("default"=>$translate->translate("Unknown error when posting this Api"));
             }
             return "failed";
         }

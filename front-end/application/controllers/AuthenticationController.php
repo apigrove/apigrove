@@ -24,6 +24,8 @@ class AuthenticationController extends Zend_Controller_Action{
      * tries to log the user in in the case of a POST
      */
     public function loginAction(){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         if($this->getRequest()->isPost()){
             $username = $this->_getParam('username');
             $password = $this->_getParam('password');
@@ -122,6 +124,8 @@ class AuthenticationController extends Zend_Controller_Action{
      * Delete a user from the DB
      */
     public function deleteAction(){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $dbAdapter = Zend_Db_Table::getDefaultAdapter();
 
         $sql = 'SELECT count(*) as count FROM [users]';
@@ -162,6 +166,8 @@ class AuthenticationController extends Zend_Controller_Action{
      * Create/Modify a user
      */
     public function editAction(){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $id = 1;//$this->_getParam("id");
         $dbAdapter = Zend_Db_Table::getDefaultAdapter();
         $user = array();
@@ -224,6 +230,8 @@ class AuthenticationController extends Zend_Controller_Action{
      * @param array $user
      */
     public function validateUser($user, &$validationErrors){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         if(empty($user['username']))
             $validationErrors['username'] = "Username is required";
         if(empty($user['password']))

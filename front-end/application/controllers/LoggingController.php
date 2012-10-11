@@ -34,6 +34,8 @@ class LoggingController extends Zend_Controller_Action
      */
     public function indexAction()
     {
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
         $logDepth = DEFAULT_LOG_DEPTH;
         $request = $this->getRequest();
         //$data = $request->getParams();
@@ -46,7 +48,7 @@ class LoggingController extends Zend_Controller_Action
         $logCollection = $this->loggingManager->getAllActiveLogs($logDepth);
         if (!$logCollection) {
             //drupal_set_message("There was an error getting logs: " . $interface->error(), 'error');
-            print_r($this->translate("There was an error getting logs: ") . $this->loggingManager->error(), 'error');
+            print_r($translate->translate("There was an error getting logs: ") . $this->loggingManager->error(), 'error');
             $this->view->logCollection = null;
         } else {
             $logs = array();
