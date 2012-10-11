@@ -251,16 +251,16 @@ class PolicyController extends Zend_Controller_Action{
         $translate = $registry->get("Zend_Translate");
         $policy = new Policy();
 
-        $validate_alnum = new Zend_Validate_Alnum();
+        //$validate_alnum = new Zend_Validate_Alnum();
         //$validate_id_regex = new Zend_Validate_Regex(array('pattern' => '/^[a-z0-9A-Z-_ ]{1,256}$/'));
-        //$validate_id_len = new Zend_Validate_StringLength(array('min' => 1, 'max' => 256));
+        $validate_id_len = new Zend_Validate_StringLength(array('min' => 1, 'max' => 256)); // 256 is arbitrary
         if (empty($policyId)) {
             $policyId = $_POST['policy_id'];
         }
 
         $success = true;
-        if (!$validate_alnum->isValid($policyId)) {
-            $validationErrors['policyId'] = $translate->translate("The policy ID must be only alpha-numeric characters");
+        if (!$validate_id_len->isValid($policyId)) {
+            $validationErrors['policyId'] = $translate->translate("The policy ID must be at least 1 and at most 256 characters");
             $success = false;
         }
         $policy->setId($policyId);
