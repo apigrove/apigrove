@@ -92,7 +92,6 @@ class AuthManager{
         LoggerInterface::log(($insertMode ? "Creating" : "Updating") . " Auth: {$auth->toXML()}\nEndpoint: ($method) $url", LoggerInterface::INFO);
         $reply = $this->restClient->makeCall($url, $method, $auth->toXML());
         if($insertMode){
-            $auth = new Auth();
             if ($auth->getId() == NULL){
                 $xml = simplexml_load_string($reply->getPayload());
                 $auth->setId((string) $xml->id);

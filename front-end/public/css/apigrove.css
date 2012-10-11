@@ -89,3 +89,9 @@
     width:250px;
     margin-right: 15px;
 }
+
+.inline{
+    float: left;
+    margin-right: 2px;
+}
+

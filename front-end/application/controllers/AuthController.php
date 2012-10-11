@@ -62,6 +62,9 @@ class AuthController extends FlowController
         if(empty($id))
             throw new Zend_Controller_Action_Exception($translate->translate('Resource Not Found'), 404);
 
+        $howMany = !isset($flowScope['howMany'])?1:$flowScope['howMany'];
+        $flowScope['howMany'] = $howMany;
+
         // Set the id is the flowscope
         $flowScope['authid'] = $id;
         $auth = @$flowScope['auth'];
@@ -107,6 +110,7 @@ class AuthController extends FlowController
          * @var Auth $auth
          */
         $auth = $flowScope['auth'];
+        $flowScope['howMany'] = $flowScope['isNew']?$this->_getParam('howMany'):"1";
 
         // Only accept the id if we are creating a new one
         if($flowScope['isNew'])
@@ -156,24 +160,30 @@ class AuthController extends FlowController
         $registry = Zend_Registry::getInstance();
         $translate = $registry->get("Zend_Translate");
         $validationErrors = array();
+        $isNew = $flowScope['isNew'];
         /**
          * @var Auth $auth
          */
         $auth = $flowScope['auth'];
+        $howMany = $flowScope['howMany'];
+        if($isNew && empty($howMany))
+            $validationErrors['howMany'] = "Please choose how many Auths you would like";
 
-        if($auth->type === AuthType::$AUTHKEY && empty($auth->authKeyAuth->keyValue)){
+        $shouldValidateCreds = ($isNew && $howMany==="1") || !$isNew;
+
+        if($shouldValidateCreds && $auth->type === AuthType::$AUTHKEY && empty($auth->authKeyAuth->keyValue)){
             $validationErrors['authKey'] = $translate->translate("For authKey auth, you must specify a key");
         }
 
-        if(($auth->type === AuthType::$BASIC || $auth->type === AuthType::$WSSE)
+        if($shouldValidateCreds && ($auth->type === AuthType::$BASIC || $auth->type === AuthType::$WSSE)
             && empty($auth->basicAuth->username)){
             $validationErrors['username'] = $translate->translate("Username is required");
         }
-        if(($auth->type === AuthType::$BASIC || $auth->type === AuthType::$WSSE)
+        if($shouldValidateCreds && ($auth->type === AuthType::$BASIC || $auth->type === AuthType::$WSSE)
             && empty($auth->basicAuth->password)){
             $validationErrors['password'] = $translate->translate("Password is required");
         }
-        if($auth->type === AuthType::$IPWHITELIST && empty($auth->ipWhiteListAuth->ips)){
+        if($shouldValidateCreds && $auth->type === AuthType::$IPWHITELIST && empty($auth->ipWhiteListAuth->ips)){
             $validationErrors['ipWhiteList'] = $translate->translate("IP list is required");
         }
 
@@ -190,12 +200,59 @@ class AuthController extends FlowController
          * Submit to AG
          */
         $authManager = new AuthManager();
-        $result = $authManager->setAuth($auth, $flowScope['isNew']);
-        if($result->getHTTPCode() !== "200"){
-            $xml = simplexml_load_string($result->getPayload());
-            $validationErrors['default'] = (string) $xml->error->errorText;
-            $flowScope['validationErrors'] = $validationErrors;
-            return "invalid";
+
+        $creds = array();
+        for($i = 0; $i < $howMany; $i++){
+            // If we are doing a batch create, then generate the credentials
+            if($howMany > 1){
+                switch($auth->type){
+                    case AuthType::$AUTHKEY:
+                        $auth->authKeyAuth->keyValue = uniqid();
+                        break;
+                    case AuthType::$BASIC:
+                        $auth->basicAuth->username = uniqid();
+                        $auth->basicAuth->password = uniqid();
+                        break;
+                    case AuthType::$WSSE:
+                        $auth->wsseAuth->username = uniqid();
+                        $auth->wsseAuth->password = uniqid();
+                        break;
+                }
+                $auth->id = "";
+            }
+
+            $result = $authManager->setAuth($auth, $isNew);
+            if($result->getHTTPCode() !== "200"){
+                $xml = simplexml_load_string($result->getPayload());
+                $validationErrors['default'] = (string) $xml->error->errorText;
+                $flowScope['validationErrors'] = $validationErrors;
+                return "invalid";
+            }
+
+                       // Pull the credentials out for display
+            switch($auth->type){
+                case AuthType::$AUTHKEY:
+                    $creds[$auth->id] = "key: ".$auth->authKeyAuth->keyValue;
+                    break;
+                case AuthType::$BASIC:
+                    $creds[$auth->id] = "u/p: ".$auth->basicAuth->username." / ".$auth->basicAuth->password;
+                    break;
+                case AuthType::$WSSE:
+                    $creds[$auth->id] = "u/p: ".$auth->wsseAuth->username." / ".$auth->wsseAuth->password;
+                    break;
+                case AuthType::$IPWHITELIST:
+                    $creds[$auth->id] = implode("; ",$auth->ipWhiteListAuth->ips);
+                    break;
+            }
+        }
+
+        if($isNew){
+            $this->_helper->FlashMessenger("Successfully Created Auth(s)");
+            foreach($creds as $key=>$value)
+                $this->_helper->FlashMessenger("$key ($value)");
+        }
+        else{
+            $this->_helper->FlashMessenger("Successfully Updated Auth");
         }
 
         return "valid";

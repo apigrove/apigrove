@@ -64,6 +64,39 @@ $(document).ready(function() {
 
     });
 
+    /**
+     * Onclick handler for the "howMany" button group
+     * If the "More" button is clicked we want to expose the howMany field
+     * We also want to hide the credential inputs so that they can be auto-completed
+     */
+    $('a.howMany').click(function(){
+        var currentAuthType = $("#type").val();
+        var ele = $(".auth[value='"+currentAuthType+"']");
+        if(this.id === "howMany-one"){
+            $("#howMany").val("1");
+            $("#howMany").hide('fast');
+            handleAuthTypeClick(ele, 'fast');
+            $('#authtype-ipwhitelist').show('fast');
+            $('#authId-ctlgroup').show('fast');
+
+        }
+        else if(this.id === "howMany-more"){
+            $("#howMany").show('fast');
+            $("#howMany").val('');
+            $('#un-pw').hide('fast');
+            $('#authKey').hide('fast');
+            $('#authId-ctlgroup').hide('fast');
+
+            // IpWhiteList doesn't make sense to batch, so we
+            // hide it and need to select another auth (authKey) if
+            // white list was already selected
+            $('#authtype-ipwhitelist').hide('fast');
+            if(currentAuthType === "ipWhiteList"){
+                $(".auth[value='authKey']").click();
+            }
+        }
+    });
+
     $('.removeItem').live("click", function(){
         var type = $(this).attr('type');
         var number = $(this).attr('number');
@@ -113,8 +146,8 @@ $(document).ready(function() {
         switch(me){
             case 'enabled-true':
 //                if(enabledStatus == 0){
-                    $('input.'+me).val(1);
-                    $('input.enabled-false').val(0);
+                $('input.'+me).val(1);
+                $('input.enabled-false').val(0);
 //                }else{
 //                    $('input.'+me).val(0);
 //                    $('input.enabled-false').val(1);
@@ -122,8 +155,8 @@ $(document).ready(function() {
                 break;
             case 'enabled-false':
 //                if(disabledStatus == 0){
-                    $('input.'+me).val(1);
-                    $('input.enabled-true').val(0);
+                $('input.'+me).val(1);
+                $('input.enabled-true').val(0);
 //                }else{
 //                    $('input.'+me).val(0);
 //                    $('input.enabled-true').val(1);
@@ -132,7 +165,7 @@ $(document).ready(function() {
     });
 
     $('.auth-enabled').click(function(event){
-       $('#status').val($(this).val());
+        $('#status').val($(this).val());
     });
 
     $(document).ready(function(event){
@@ -144,6 +177,18 @@ $(document).ready(function() {
         setupTooltipsAndPopovers();
     });
 
+    /**
+     * The onclick handler for the authType button group.
+     * We want to show different kinds of credential fields depending
+     * on the type of auth that is selected.
+     *
+     * It is complicated by the current setting of the "howMany" button group
+     * If the "more" button is selected then we don't want to show the credential inputs because they
+     * will be auto-generated.
+     *
+     * @param ele
+     * @param speed
+     */
     function handleAuthTypeClick(ele, speed){
         var type = ele.attr('value');
 
@@ -151,17 +196,20 @@ $(document).ready(function() {
             case 'basic':
                 $('#IPs').hide(speed);
                 $('#authKey').hide(speed);
-                $('#un-pw').show(speed);
+                if($("#howMany").val()==="1")
+                    $('#un-pw').show(speed);
                 break;
             case "authKey":
                 $('#IPs').hide(speed);
                 $('#un-pw').hide(speed);
-                $('#authKey').show(speed);
+                if($("#howMany").val()==="1")
+                    $('#authKey').show(speed);
                 break;
             case 'wsse':
                 $('#IPs').hide(speed);
                 $('#authKey').hide(speed);
-                $('#un-pw').show(speed);
+                if($("#howMany").val()==="1")
+                    $('#un-pw').show(speed);
                 break;
             case 'ipWhiteList':
                 $('#authKey').hide(speed);
@@ -169,7 +217,6 @@ $(document).ready(function() {
                 $('#IPs').show(speed);
                 break;
         }
-        //ele.addClass("active");
     }
 
 
@@ -276,15 +323,15 @@ $(document).ready(function() {
             +"<div class=\"controls\">"
             +"<input type=\"text\" class=\"input-small\" name=\"tdr["+tdrCount+"][name]\" placeholder=\"Name\" id=\"tdrRules"+tdrCount+"\"> "
             +"<select name=\"tdr["+tdrCount+"][type]\" class=\"input-small tdrType\" item=\""+tdrCount+"\">"
-                +"<option>Type</option>"
-                +"<option>Static</option>"
-                +"<option>Dynamic</option>"
-                +"<option>Property</option>"
+            +"<option>Type</option>"
+            +"<option>Static</option>"
+            +"<option>Dynamic</option>"
+            +"<option>Property</option>"
             +"</select> "
             +"<select class=\"input-small\" name=\"tdr["+tdrCount+"][extractFrom]\" style=\"display: none; width: 120px;\" id=\"tdrRuleExtractFrom"+tdrCount+"\">"
-                 +"<option>Extract From</option>"
-                 +"<option>Request</option>"
-                 +"<option>Response</option>"
+            +"<option>Extract From</option>"
+            +"<option>Request</option>"
+            +"<option>Response</option>"
             +"</select> "
             +"<input type=\"text\" class=\"input-small\" name=\"tdr["+tdrCount+"][value]\" placeholder=\"Value\"  id=\"tdrRuleValue"+tdrCount+"\" style=\"width: 120px;\"/> "
             +"<a class=\"btn removeItem\" type=\"tdrRule\" number=\""+tdrCount+"\" title=\"Remove TDR rule\"><i class=\"icon-minus\"></i></a>"
@@ -468,5 +515,3 @@ $(document).ready(function() {
     }
 
 });
-
-

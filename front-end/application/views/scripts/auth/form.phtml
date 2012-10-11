@@ -26,6 +26,8 @@ $auth = $flow->flowScope['auth'];
 $validationErrors = @$flow->flowScope['validationErrors'];
 $username = "";
 $password = "";
+$howMany = $flow->flowScope['howMany'];
+
 if($auth->type === AuthType::$BASIC){
     $username = $auth->basicAuth->username;
     $password = $auth->basicAuth->password;
@@ -54,13 +56,24 @@ $saveButtonTip = $this->translate("Post and return to Auth list");
     <div class="control-group error">
         <span class="help-inline"><? echo $this->translate("Server Error")?>: <?=$validationErrors['default']?></span>
     </div>
-<? endif; ?>
+    <? endif; ?>
     <form class="well form-horizontal" method="POST">
         <fieldset>
-            <div class="control-group">
-                <label class="control-label" for="input01"><? echo $this->translate("ID")?></label>
+            <div class="control-group <?=empty($validationErrors['howMany'])?"":"error"?>" style="<?=($flow->flowScope['isNew'])?"":"display: none;"?>">
+                <label class="control-label" for="howMany">How Many?</label>
+                <div class="controls" >
+                    <div class="btn-group inline" data-toggle="buttons-radio" id="howMany-group">
+                        <a class="btn howMany <?=$howMany === 1?"active":""?>" id="howMany-one">1</a>
+                        <a class="btn howMany <?=($howMany > 1) || empty($howMany)?"active":""?>" id="howMany-more">More</a>
+                    </div>
+                    <input type="text" name="howMany" value="<?=$howMany?>" id="howMany" style="<?=$howMany === 1?"display: none;":""?>" class="input-mini inline" placeholder="#"/>
+                    <span class="help-inline inline"><?=@$validationErrors['howMany']?></span>
+                </div>
+            </div>
+            <div class="control-group" id="authId-ctlgroup">
+                <label class="control-label" for="input01">ID</label>
                 <div class="controls">
-                    <input type="text" class="input-xlarge" id="input01" name="authid"
+					<input type="text" class="input-xlarge" id="input01" name="authid"
                            rel="tooltip" title="<?=$authIdTip?>"
                            value="<?=$auth->id===$this->translate("create")?"":$auth->id?>" <?=($flow->flowScope['isNew'])?"":$this->translate("disabled")?>/>
                 </div>
@@ -115,15 +128,14 @@ $saveButtonTip = $this->translate("Post and return to Auth list");
                 <label class="control-label" for="selectIPs"><? echo $this->translate("IPs")?></label>
                 <div class="controls">
                     <textarea type="text" class="input-xlarge" id="selectIPs" name="ipWhiteList"
-                              rel="tooltip" title="<?=$whitelistTip?>">
-                        <?=implode(",",$auth->ipWhiteListAuth->ips) ?></textarea>
+                              rel="tooltip" title="<?=$whitelistTip?>"><?=implode(",",$auth->ipWhiteListAuth->ips) ?></textarea>
                     <span class="help-inline"><? echo $this->translate("Comma separated")?><br/> <?=@$validationErrors['ipWhiteList']?></span>
                 </div>
             </div>
             <? $advancedOpen = (!empty($auth->headerTransformations) || !empty($auth->properties)
-                            || !empty($auth->tdrData->dynamicTdrs)
-                            || !empty($auth->tdrData->staticTdrs)
-                            || $auth->status !== 'active');?>
+            || !empty($auth->tdrData->dynamicTdrs)
+            || !empty($auth->tdrData->staticTdrs)
+            || $auth->status !== 'active');?>
             <div class="control-group">
                 <label class="control-label"><button class="btn" id="showAdvanced"><strong><? echo $this->translate("Advanced")?></strong>
                     <i class="icon-chevron-down advbtn" <?=!$advancedOpen?"":"style=\"display:none\""?>></i><i class="icon-chevron-up advbtn" <?=$advancedOpen?"":"style=\"display:none\""?>></i>
@@ -144,13 +156,13 @@ $saveButtonTip = $this->translate("Post and return to Auth list");
                     </div>
                 </div>
                 <div id="propertyGroup">
-                    <? SharedViewUtility::includePropertiesSnippet($policy->properties, $validationErrors); ?>
+                    <? SharedViewUtility::includePropertiesSnippet($auth->properties, $validationErrors); ?>
                 </div>
                 <div id="headerTransGroup">
-                    <? SharedViewUtility::includeHeaderTransformationsSnippet($policy->headerTransformations, $validationErrors); ?>
+                    <? SharedViewUtility::includeHeaderTransformationsSnippet($auth->headerTransformations, $validationErrors); ?>
                 </div>
                 <div id="tdrRuleGroup">
-                    <? SharedViewUtility::includeTdrRulesSnippet($policy->tdr, $validationErrors); ?>
+                    <? SharedViewUtility::includeTdrRulesSnippet($auth->tdrData, $validationErrors); ?>
                 </div>
 
             </div>
