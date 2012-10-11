@@ -149,45 +149,187 @@ $(document).ready(function() {
         }
     });
 
+    function makeAutocompleteProperties(field){
+    	if($(field).smartAutoComplete() === undefined){
+    		var container = $("<ul class='dropdown-menu smart_autocomplete_container' style='display:none'></ul>");
+    		container.appendTo("body");
+	        $(field).smartAutoComplete({
+	        	disabled: false,
+	            source: jQuery.parseJSON($("#relatedPropertiesTree").text()),
+	            resultsContainer: container,
+	            resultFormatter: function(r){ return ("<li class=\"smart_autocomplete_item\"><a href=\"#\">" + r + "</a></li>"); },
+	            alignResultsContainer: true,
+	
+	            filter: function(searchTerm, source){
+	                var context = this;
+	                var options = $(context).data('smart-autocomplete');
+	
+	                // reduce a bunch of leading / with just one leading /
+	                while(searchTerm.indexOf("//") === 0){
+	                    searchTerm = searchTerm.substring(1, searchTerm.length);
+	                }
+	
+	                var parentTerms = null;
+	                var childTerm = null;
+	
+	                if(searchTerm.search("/") === -1){
+	                    // the search contains no forward slashes, so leave the parent array empty
+	                    parentTerms = [];
+	                    childTerm = searchTerm;
+	                } else {
+	                    // separate the parent and child by the last "/"
+	                    // and the split the parent into an array
+	                    parentTerms = searchTerm.substring(0, searchTerm.lastIndexOf("/")).split("/");
+	                    childTerm = searchTerm.substring(searchTerm.lastIndexOf("/")+1, searchTerm.length);
+	                }
+	
+	                var pathArrToString = function(arr){
+	                    var ret = "";
+	                    while(arr[0] === ""){
+	                        arr = arr.splice(1, arr.length);
+	                    }
+	                    for(var key in arr){
+	                        ret = ret + "/" + arr[key];
+	                    }
+	                    return ret;
+	                }
+	
+	                var parentCheck = function(pathArr){
+	                    if(parentTerms.length > pathArr.length){
+	                        return false;
+	                    }
+	                    for(var i = 1; i <= parentTerms.length; i++){
+	                        if(parentTerms[parentTerms.length - i] !== pathArr[pathArr.length - i]){
+	                            return false;
+	                        }
+	                    }
+	                    return true;
+	                }
+	
+	                var leafMatcher = function (items, pathArr, results){
+	                    for(var keyforitem in items){
+	                        var item = items[keyforitem];
+	                        if(parentCheck(pathArr) && item.search(childTerm) !== -1){
+	                            results.push(pathArrToString(pathArr.concat(item)));
+	                        }
+	                    }
+	                }
+	
+	                var recursiveTreeMatcher = function (jsonObject, pathArr, results){
+	                    var keys = Object.keys(jsonObject);
+	                    for(var keyforkeys in keys){
+	                        var key = keys[keyforkeys];
+	
+	                        if( parentCheck(pathArr) && key.search(childTerm) !== -1){
+	                            results.push(pathArrToString(pathArr.concat(key)));
+	                        }
+	                        var child = jsonObject[key];
+	                        if($.type(child) === "object"){
+	                            results = recursiveTreeMatcher(child, pathArr.concat(key), results);
+	                        } else if ($.type(child) === "array"){
+	                            leafMatcher(child, pathArr.concat(key), results);
+	                        }
+	                    }
+	                    return results;
+	                }
+	
+	                return recursiveTreeMatcher(source, [""], []);
+	            }
+	        });
+	        $(field).bind({
+	
+	            itemSelect: function(ev, selected_item){
+	                var options = $(this).smartAutoComplete();
+	
+	                //get the text from selected item
+	                var selected_value = $(selected_item).text();
+	
+	                while(selected_value.indexOf("/") === 0){
+	                    selected_value = selected_value.substring(1, selected_value.length);
+	                }
+	                
+	                var splitValues = selected_value.split("/");
+	
+	                if(splitValues.length < 3){
+	                    $(this).val($(selected_item).text() + "/");
+	
+	                    options.setItemSelected(false);
+	                    options.currentSelection = 0;
+	
+	                    options.originalCharCount = $(this).val().length;
+	
+	                    $(this).trigger('keyIn', [$(this).val()]);
+	                } else {
+	
+	                    $(this).val(splitValues[splitValues.length-1]);
+	
+	                    //set item selected property
+	                    options.setItemSelected(true);
+	
+	                    //set number of current chars in field
+	                    options.originalCharCount = $(this).val().length;
+	
+	                    $(this).trigger('lostFocus');
+	                }
+	                ev.preventDefault();
+	            }
+	        });
+    	} else {
+	    $(field).smartAutoComplete()["disabled"]=false;
+    	}
+    }
+    
+    function removeAutocompleteProperties(field){
+	if($(field).smartAutoComplete() !== undefined){
+	    var options = $(field).smartAutoComplete();
+	    options["disabled"]=true;
+	}
+    }
+
     $('.tdrType').live("change", function(){
         var id = $(this).attr('item');
         var val = $(this).val();
         if(val == 'Dynamic'){
             $("#tdrRuleValue"+id).attr('placeholder','Http Header Name');
+            removeAutocompleteProperties($("#tdrRuleValue"+id));
             $("#tdrRuleExtractFrom"+id).show('fast');
         }
         else if(val == 'Static'){
             $("#tdrRuleValue"+id).attr('placeholder','Value');
+            removeAutocompleteProperties($("#tdrRuleValue"+id));
             $("#tdrRuleExtractFrom"+id).hide('fast');
         }
         else if(val == 'Property'){
             $("#tdrRuleValue"+id).attr('placeholder','Property Name');
+            makeAutocompleteProperties($("#tdrRuleValue"+id));
             $("#tdrRuleExtractFrom"+id).hide('fast');
         }
     });
 
+    $('.headerTransformType').live("change", function(){
+        var id=$(this).attr('item');
+        var val = $(this).val();
+        if(val == 'Static' ){
+            $("#headerValue"+id).attr('placeholder','Value');
+            removeAutocompleteProperties($("#headerValue"+id));
+        } else if(val == 'Property' ){
+            $("#headerValue"+id).attr('placeholder','Property');
+            makeAutocompleteProperties($("#headerValue"+id));
+        }
+    });
+
+
+
     $('.enabled').click(function(event){
         var me = $(this).attr('name');
-//        var enabledStatus = $("button.auth.active:contains('Enabled')").length;
-//        var disabledStatus = $("button.auth.active:contains('Disabled')").length;
         switch(me){
             case 'enabled-true':
-//                if(enabledStatus == 0){
                 $('input.'+me).val(1);
                 $('input.enabled-false').val(0);
-//                }else{
-//                    $('input.'+me).val(0);
-//                    $('input.enabled-false').val(1);
-//                }
                 break;
             case 'enabled-false':
-//                if(disabledStatus == 0){
                 $('input.'+me).val(1);
                 $('input.enabled-true').val(0);
-//                }else{
-//                    $('input.'+me).val(0);
-//                    $('input.enabled-true').val(1);
-//                }
         }
     });
 
@@ -431,12 +573,12 @@ $(document).ready(function() {
             +"<option>Remove</option>"
             +"</select> "
             +"<span id=\"headerAdv"+headerTransCount+"\" style=\"display:none\">"
-            +"<select name=\"header["+headerTransCount+"][type]\" class=\"input-small\">"
+            +"<select item=\""+headerTransCount+"\" name=\"header["+headerTransCount+"][type]\" class=\"input-small\">"
             +"<option>Type</option>"
             +"<option>Property</option>"
             +"<option>Static</option>"
             +"</select> "
-            +"<input type=\"text\" class=\"input-small\" name=\"header["+headerTransCount+"][value]\" placeholder=\"Value\"></span> "
+            +"<input id=\"headerValue"+headerTransCount+"\" type=\"text\" class=\"input-small\" name=\"header["+headerTransCount+"][value]\" placeholder=\"Value\"></span> "
             +"<a class=\"btn removeItem\" type=\"headerTrans\" number=\""+headerTransCount+"\" title=\"Remove header transformation\"><i class=\"icon-minus\"></i></a>"
             +"</div>"
             +"</div>";

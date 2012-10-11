@@ -16,6 +16,7 @@
  * Date: 8/20/12
  *
  */
+require_once APPLICATION_PATH . "/controllers/JsonPropertyPrinter.php";
 require_once APPLICATION_PATH . "/managers/ApiManager.class.php";
 require_once APPLICATION_PATH . "/managers/PolicyManager.class.php";
 require_once APPLICATION_PATH . "/models/Api.class.php";
@@ -135,6 +136,8 @@ class ApiController extends FlowController {
                 try{
                     $api = $this->getManager()->getApi($apiid);
                     $flowScope["api"] = $api;
+
+                    $flowScope["relatedProperties"] = JsonPropertyPrinter::getRelatedFromApi($api);
                 } catch (Exception $e){
                     $this->_helper->FlashMessenger($translate->translate("Error fetching api ") . $apiid . " : ".$e->getMessage());
                     $this->_helper->redirector("index", "api");

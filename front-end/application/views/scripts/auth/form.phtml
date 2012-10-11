@@ -38,6 +38,8 @@ else if($auth->type === AuthType::$WSSE){
     $password = $auth->wsseAuth->password;
 }
 
+$relatedProperties = @$flow->flowScope["relatedProperties"];
+
 $authIdTip = $this->translate("A unique ID for this Auth");
 $authTypeBasicTip = $this->translate("Use basic access (username and password)");
 $authTypeAuthKeyTip = $this->translate("Authenticate with key data");
@@ -166,7 +168,9 @@ $saveButtonTip = $this->translate("Post and return to Auth list");
                 <div id="tdrRuleGroup">
                     <? SharedViewUtility::includeTdrRulesSnippet($auth->tdrData, $validationErrors); ?>
                 </div>
-
+                <div class="hidden" id="relatedPropertiesTree"><?
+                    print htmlentities($relatedProperties);
+                    ?></div>
             </div>
             <input type="hidden" name="_faction" value="submit" />
             <input type="hidden" name="_fid" value="<?=$flow->id?>" />

@@ -47,13 +47,13 @@ for($count = 0; $count <= count($headerTransformations); $count++):
             <option <?=$ht->action=== HeaderTransformationAction::REMOVE? "selected":""?>><? echo $translate->translate("Remove")?></option>
         </select>
         <span id="headerAdv<?=$count?>" <?= $ht->action !== HeaderTransformationAction::ADD?"style=\"display:none\"":""?>>
-             <select class="input-small" name="header[<?=$count?>][type]" rel="tooltip" title="<?=$hdrTransAddActionTip?>">
+             <select class="input-small headerTransformType"  item="<?=$count?>" name="header[<?=$count?>][type]" rel="tooltip" title="<?=$hdrTransAddActionTip?>">
                  <option><? echo $translate->translate("Type")?></option>
                  <option <?=$ht->kind===HeaderTransformationType::PROPERTY? "selected":""?>><? echo $translate->translate("Property")?></option>
                  <option <?=$ht->kind===HeaderTransformationType::STATIC_VAL?"selected":""?>><? echo $translate->translate("Static")?></option>
              </select>
              <input type="text" class="input-small" name="header[<?=$count?>][value]"
-                    rel="tooltip" title="<?=$hdrTransAddValueTip?>"
+                    id="headerValue<?=$count?>" rel="tooltip" title="<?=$hdrTransAddValueTip?>"
                     placeholder="<? echo $translate->translate("Value")?>"
                     value="<?=empty($ht->value)?$ht->property:$ht->value?>"/>
         </span>

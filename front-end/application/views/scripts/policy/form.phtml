@@ -42,6 +42,8 @@ $id = $policy->getId();
 if (!isset($this->isNew)) { $this->isNew = empty($id); }
 $formAction = $this->isNew ? "/policy/create" : "/policy/".$id;
 
+$relatedProperties = $this->relatedProperties;
+
 $idTip = $this->isNew ? $this->translate("Enter a unique ID for this Policy") :
     $this->translate("The ID for an existing Policy cannot be changed");
 $selectApiTip = $this->translate("Select one or more APIs");
@@ -318,7 +320,9 @@ $submitButtonTip = $this->translate("Post and return to Policy list");
                 <div id="tdrRuleGroup">
                 <? SharedViewUtility::includeTdrRulesSnippet($policy->tdr, $validationErrors); ?>
                 </div>
-
+                <div class="hidden" id="relatedPropertiesTree"><?
+                    print htmlentities($relatedProperties);
+                ?></div>
             </div>
             <input type="submit" class="btn" rel="tooltip" title="<?=$submitButtonTip?>" data-placement="right" />
         </fieldset>

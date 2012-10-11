@@ -88,6 +88,8 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
     || !empty($api->tdrData->dynamicTdrs)
     || !empty($api->tdrData->staticTdrs));
 
+$relatedProperties = @$flow->flowScope["relatedProperties"];
+
 $apiNameTip = $this->translate("The unique name for this API");
 $endpointNameTip = $this->translate("The endpoint name for this API");
 $targetHostTip = $this->translate("The target host URI");
@@ -369,6 +371,11 @@ $saveButtonAuthTip = $this->translate("Click to save the API and create Auths fo
                     <? SharedViewUtility::includeTdrRulesSnippet($api->tdrData, $validationErrors); ?>
                 </span>
             </div>
+            <div class="hidden" id="relatedPropertiesTree"><?
+                print htmlentities($relatedProperties);
+            ?></div>
+
+
             <input class="btn" type="submit" value="<? echo $this->translate("Save")?>"
                 rel="tooltip" title="<?=$saveButtonTip?>" data-placement="bottom"/>
             <? $showSubmitAndAuth = $auth_authKey === 1 || $auth_basic === 1 || $auth_wsse === 1 || $auth_ipWhiteList === 1; ?>

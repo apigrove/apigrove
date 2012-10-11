@@ -16,6 +16,7 @@
  * Date: 8/27/12
  *
  */
+require_once APPLICATION_PATH . "/controllers/JsonPropertyPrinter.php";
 require_once APPLICATION_PATH."/models/Auth.class.php";
 require_once APPLICATION_PATH."/managers/AuthManager.class.php";
 require_once "flow/FlowController.php";
@@ -92,6 +93,8 @@ class AuthController extends FlowController
             $authManager = new AuthManager();
             $auth = $authManager->getAuth($id);
             $flowScope['isNew'] = false;
+
+            $flowScope["relatedProperties"] = JsonPropertyPrinter::getRelatedFromAuth($auth);
         }
 
         /**

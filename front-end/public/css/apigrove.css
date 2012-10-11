@@ -198,4 +198,9 @@ body{
 .hero-unit {
     margin-top: 30px;
 }
+li.smart_autocomplete_item:not(.active) > a:hover { 
+  color: #333;
+  text-decoration: none;
+  background-color: #ffffff;
+}
 
