@@ -19,6 +19,7 @@
 package com.alu.e3.gateway.common.camel.component;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,13 +30,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.component.http.DefaultHttpBinding;
+import org.apache.camel.component.http.HttpConverter;
 import org.apache.camel.component.http.HttpEndpoint;
 import org.apache.camel.component.http.HttpMessage;
+import org.apache.camel.converter.stream.CachedOutputStream;
 import org.apache.camel.spi.HeaderFilterStrategy;
+import org.apache.camel.util.IOHelper;
 import org.eclipse.jetty.http.HttpHeaderValues;
 import org.eclipse.jetty.http.HttpHeaders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.alu.e3.common.camel.ExchangeConstantKeys;
+import com.alu.e3.gateway.common.camel.converter.stream.MultipartStream;
 import com.alu.e3.gateway.common.camel.exception.GatewayException;
 
 /**
@@ -45,6 +52,8 @@ import com.alu.e3.gateway.common.camel.exception.GatewayException;
  */
 public class E3HttpBinding extends DefaultHttpBinding {
 
+	private static final Logger LOG = LoggerFactory.getLogger(E3HttpBinding.class);
+	
 	@Deprecated
 	public E3HttpBinding() {
 		super();
@@ -113,5 +122,73 @@ public class E3HttpBinding extends DefaultHttpBinding {
         	super.doWriteResponse(message, response, exchange);
         }
     }
+
+	@Override
+	public Object parseBody(HttpMessage httpMessage) throws IOException {
+//		httpMessage.getExchange().getContext().getProperties().put(CachedOutputStream.THRESHOLD, "0");
+		
+        // lets assume the body is a reader
+        HttpServletRequest request = httpMessage.getRequest();
+        // Need to handle the GET Method which has no inputStream
+        if ("GET".equals(request.getMethod())) {
+            return null;
+        }
+        if (isUseReaderForPayload()) {
+            // use reader to read the response body
+            return request.getReader();
+        } else {
+        	Exchange exchange = httpMessage.getExchange();
+            // read the response body from servlet request
+            InputStream is = HttpConverter.toInputStream(request, exchange);
+
+            if (is == null) {
+                return null;
+            }
+
+            if (LOG.isDebugEnabled()) {
+				LOG.debug("Content-Type[{}], Content-Length[{}]", httpMessage
+						.getRequest().getContentType(), httpMessage
+						.getRequest().getContentLength());
+            }
+            
+            // convert the input stream to StreamCache if the stream cache is not disabled
+            if (exchange.getProperty(Exchange.DISABLE_HTTP_STREAM_CACHE, Boolean.FALSE, Boolean.class)) {
+            	return is;
+            } else {
+            	if (LOG.isDebugEnabled()) {
+            		LOG.debug("Cache enabled");
+            	}
+            	
+        		// IMPORTANT: contentType MUST be final! For some reason Axiom has an issue when it is not final
+        		// and is unable to parse boundary in incoming message.
+            	final String contentType = httpMessage.getRequest().getContentType();
+            	if ((contentType != null)
+            			&& (contentType.toLowerCase().startsWith("multipart/related") || 
+            				contentType.toLowerCase().startsWith("multipart/form-data"))) {
+            		/*
+            		 * SOAP message with attachment(s) uses multipart/related content type.
+            		 * multipart/form-data is being used by REST request with attachment(s).
+            		 * Fortunately, Axiom's Attachments.getSOAPPartInputStream() for multipart/form-data
+            		 * returns first part of multipart data which is XML payload we need to
+            		 * validate against API's defined schema.
+            		 * This is just workaround. The final solution will be provided by OAPEEE-294.
+            		 */
+            		if (LOG.isDebugEnabled()) {
+            			LOG.debug("MultipartStream used");
+            		}
+            		return new MultipartStream(is, contentType);
+            	} else {
+            		if (LOG.isDebugEnabled()) {
+            			LOG.debug("CachedOutputStream used");
+            		}
+            		CachedOutputStream cos = new CachedOutputStream(exchange);
+            		IOHelper.copyAndCloseInput(is, cos);
+            		return cos.getStreamCache();
+            	}
+            }
+        }
+
+	}
+
 
 }
