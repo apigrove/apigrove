@@ -27,17 +27,11 @@ $logDepthSelections = array(
     '250' => '250'
 );
 ?>
-<?$t = new Zend_Translate(
-    'gettext',  //the adapter
-    APPLICATION_PATH.'/lang', //where the lang files will be stored
-    'auto',  //set to auto include .mo files
-    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
-);?>
 <div class="container">
-    <h2><? echo $t->_("Logs")?></h2>
+    <h2><? echo $this->translate("Logs")?></h2>
     <form class="well well-small form-horizontal" action="/logging/index" method="POST">
         <fieldset>
-            <label class="control-label" for="log_depth"><strong><? echo $t->_("Depth")?>: </strong></label>
+            <label class="control-label" for="log_depth"><strong><? echo $this->translate("Depth")?>: </strong></label>
             <div class="controls">
                 <select id="log_depth" name="log_depth" onchange="submitDepth()">
                     <?php
@@ -98,7 +92,7 @@ $logDepthSelections = array(
         <? $i++;
         }
     } else {?>
-        <div class="well" style="background-color: rgb(240, 180, 180); text-align: center;"><strong><? echo $t->_("No logs to display")?></strong></div>
+        <div class="well" style="background-color: rgb(240, 180, 180); text-align: center;"><strong><? echo $this->translate("No logs to display")?></strong></div>
     <?}?>
     </div>
     <script type="text/javascript">

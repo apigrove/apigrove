@@ -46,7 +46,7 @@ class LoggingController extends Zend_Controller_Action
         $logCollection = $this->loggingManager->getAllActiveLogs($logDepth);
         if (!$logCollection) {
             //drupal_set_message("There was an error getting logs: " . $interface->error(), 'error');
-            print_r("There was an error getting logs: " . $this->loggingManager->error(), 'error');
+            print_r($this->translate("There was an error getting logs: ") . $this->loggingManager->error(), 'error');
             $this->view->logCollection = null;
         } else {
             $logs = array();

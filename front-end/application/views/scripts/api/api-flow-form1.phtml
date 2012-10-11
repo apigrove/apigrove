@@ -87,22 +87,13 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
     || $tdrsenabled
     || !empty($api->tdrData->dynamicTdrs)
     || !empty($api->tdrData->staticTdrs));
-
-
-
 ?>
-<?$t = new Zend_Translate(
-    'gettext',  //the adapter
-    APPLICATION_PATH.'/lang', //where the lang files will be stored
-    'auto',  //set to auto include .mo files
-    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
-);?>
 
 <div class="container">
 <?  if(empty($apiid)): ?>
-        <h1><? echo $t->_("Create API")?></h1>
+        <h1><? echo $this->translate("Create API")?></h1>
 <?  else: ?>
-        <h1><? echo $t->_("Edit API")?></h1>
+        <h1><? echo $this->translate("Edit API")?></h1>
 <?  endif; ?>
 <?  if(isset($validationErrors["default"]) && !empty($validationErrors["default"])): ?>
     <div class="warning">
@@ -112,7 +103,7 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
     <form id="form1" class="well form-horizontal" method="post" data-behavior="confirm" action="<?=$flow->flowURI()?>&_faction=submit">
         <fieldset>
             <div class="control-group <?=isset($validationErrors["name"])?"error":""?>">
-                <label class="control-label" for="input01"><? echo $t->_("Name")?></label>
+                <label class="control-label" for="input01"><? echo $this->translate("Name")?></label>
                 <div class="controls">
                     <input type="text" class="input-xlarge" id="input01" name="apiName"
                         <?= $api !== null ? 'value="'.$api->getDisplayName().'"' : "" ?>
@@ -121,7 +112,7 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
                 <span class="help-inline"><?=@$validationErrors['name']?></span>
             </div>
             <div class="control-group <?=isset($validationErrors["endpoint"])?"error":""?>">
-                <label class="control-label" for="input03"><? echo $t->_("Endpoint")?></label>
+                <label class="control-label" for="input03"><? echo $this->translate("Endpoint")?></label>
                 <div class="controls">
                     <input type="text" class="input-xlarge" id="input03" name="apiEndpoint"
                         <?= $api !== null ? 'value="'.$api->getEndpoint().'"' : "" ?>
@@ -130,15 +121,15 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
                 <span class="help-inline"><?=@$validationErrors['endpoint']?></span>
             </div>
 <?          if(count($api->getContexts()) > 1):
-                print "<p>" . $t->_("Only the first context of this api is displayed!") . "</p>";
+                print "<p>" . $this->translate("Only the first context of this api is displayed!") . "</p>";
             endif;
             if($context === null || empty($targetHosts)): ?>
                 <div id="targethostGroup">
                     <div class="control-group targethost <?=isset($validationErrors["targethost0"])?"error":""?>" id="targethostGroup0">
-                        <label class="control-label" for="targethost0"><? echo $t->_("Target Host")?></label>
+                        <label class="control-label" for="targethost0"><? echo $this->translate("Target Host")?></label>
                         <div class="controls">
                             <input type="text" class="input-xlarge" id="targethost0" name="targethost0" >
-                            <button class="btn newItem" type="targethost" title="<? echo $t->_("Add additional target host")?>"><i class="icon-plus"></i></button>
+                            <button class="btn newItem" type="targethost" title="<? echo $this->translate("Add additional target host")?>"><i class="icon-plus"></i></button>
                         </div>
                         <span class="help-inline"><?=@$validationErrors['targethost0']?></span>
                     </div>
@@ -156,10 +147,10 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
                 $th = $targetHosts[0]; ?>
                 <div id="targethostGroup">
                     <div class="control-group targethost <?=isset($validationErrors["targethost0"])?"error":""?>" id="targethostGroup0">
-                        <label class="control-label" for="targethost0"><? echo $t->_("Target Host")?></label>
+                        <label class="control-label" for="targethost0"><? echo $this->translate("Target Host")?></label>
                         <div class="controls">
                             <input type="text" class="input-xlarge" id="targetHost0" name="targethost0" value="<?=$th->getUrl()?>" >
-                            <button class="btn newItem" type="targethost" title="<? echo $t->_("Add additional target host")?>"><i class="icon-plus"></i></button>
+                            <button class="btn newItem" type="targethost" title="<? echo $this->translate("Add additional target host")?>"><i class="icon-plus"></i></button>
                         </div>
                         <span class="help-inline"><?=@$validationErrors['targethost0']?></span>
                     </div>
@@ -170,7 +161,7 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
                     <label class="control-label" for="targethost<?=$i?>">&nbsp;</label>
                     <div class="controls">
                         <input type="text" class="input-xlarge" name="targethost<?=$i?>" id="targethost<?=$i?>" value="<?=$th->getUrl()?>">
-                        <button class="btn removeItem" type="targethost" number="<?=$i?>" title="<? echo $t->_("Remove target host")?>"><i class="icon-minus"></i></button>
+                        <button class="btn removeItem" type="targethost" number="<?=$i?>" title="<? echo $this->translate("Remove target host")?>"><i class="icon-minus"></i></button>
                     </div>
                     <span class="help-inline"><?=@$validationErrors['targethost'.$i]?></span>
                 </div>
@@ -179,30 +170,30 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
         endif; ?>
 
             <div class="control-group">
-                <label class="control-label"><button class="btn" id="showAdvanced"><strong><? echo $t->_("Advanced")?></strong>
+                <label class="control-label"><button class="btn" id="showAdvanced"><strong><? echo $this->translate("Advanced")?></strong>
                     <i class="icon-chevron-down advbtn" <?=!$advancedOpen?"":"style=\"display:none\""?>></i><i class="icon-chevron-up advbtn" <?=$advancedOpen?"":"style=\"display:none\""?>></i>
                 </button></label>
             </div>
             <div id="advancedSection" class="well well-small" style="background-color: #DCDCDC; <?= $advancedOpen?"":"display:none"?>">
                 <div class="control-group">
-                    <label class="control-label" for="enabled"><? echo $t->_("Enabled")?></label>
+                    <label class="control-label" for="enabled"><? echo $this->translate("Enabled")?></label>
                     <div class="controls">
                         <div class="btn-group" data-toggle="buttons-radio" id="enabled">
-                            <a class="btn api <?=$api->getStatus()===Status::$ACTIVE?"active":""?>" inputId="apienabled" value="1"><? echo $t->_("Enabled")?></a>
-                            <a class="btn api <?=$api->getStatus()===Status::$ACTIVE?"":"active"?>" inputId="apienabled" value="0"><? echo $t->_("Disabled")?></a>
+                            <a class="btn api <?=$api->getStatus()===Status::$ACTIVE?"active":""?>" inputId="apienabled" value="1"><? echo $this->translate("Enabled")?></a>
+                            <a class="btn api <?=$api->getStatus()===Status::$ACTIVE?"":"active"?>" inputId="apienabled" value="0"><? echo $this->translate("Disabled")?></a>
                         </div>
                         <input type="hidden" id="apienabled" name="apienabled" value="<?=$api->getStatus()===Status::$ACTIVE?"1":"0"?>" />
                     </div>
                 </div>
                 <div class="control-group <?=isset($validationErrors["auth"])?"error":""?>">
-                    <label class="control-label" for="authCheck" ><? echo $t->_("Type")?></label>
+                    <label class="control-label" for="authCheck" ><? echo $this->translate("Type")?></label>
                     <div class="controls">
                         <div class="btn-group" data-toggle="buttons-checkbox" id="authCheck">
-                            <a class="btn api hiddenValue <?=$auth_noAuth?'active" checked="checked"':'"'?> inputId="provauth-noAuth" ><? echo $t->_("No Auth")?></a>
-                            <a class="btn api hiddenValue <?=$auth_basic ? 'active" checked="checked"': '"'?> inputId="provauth-basic" ><? echo $t->_("Basic")?></a>
-                            <a class="btn api hiddenValue <?=$auth_authKey ? 'active" checked="checked"': '"'?> inputId="provauth-authKey" ><? echo $t->_("Auth Key")?></a>
-                            <a class="btn api hiddenValue <?=$auth_wsse ? 'active" checked="checked"': '"'?> inputId="provauth-wsse" ><? echo $t->_("WSSE")?></a>
-                            <a class="btn api hiddenValue <?=$auth_ipWhiteList ? 'active" checked="checked"': '"'?> inputId="provauth-ipWhiteList" ><? echo $t->_("IP Whitelist")?></a>
+                            <a class="btn api hiddenValue <?=$auth_noAuth?'active" checked="checked"':'"'?> inputId="provauth-noAuth" ><? echo $this->translate("No Auth")?></a>
+                            <a class="btn api hiddenValue <?=$auth_basic ? 'active" checked="checked"': '"'?> inputId="provauth-basic" ><? echo $this->translate("Basic")?></a>
+                            <a class="btn api hiddenValue <?=$auth_authKey ? 'active" checked="checked"': '"'?> inputId="provauth-authKey" ><? echo $this->translate("Auth Key")?></a>
+                            <a class="btn api hiddenValue <?=$auth_wsse ? 'active" checked="checked"': '"'?> inputId="provauth-wsse" ><? echo $this->translate("WSSE")?></a>
+                            <a class="btn api hiddenValue <?=$auth_ipWhiteList ? 'active" checked="checked"': '"'?> inputId="provauth-ipWhiteList" ><? echo $this->translate("IP Whitelist")?></a>
                         </div>
                         <input type="hidden" id="provauth-noAuth" name="auth-noAuth" value="<?=$auth_noAuth ? "1": "0"?>" />
                         <input type="hidden" id="provauth-basic" name="auth-basic" value="<?=$auth_basic ? "1": "0"?>" />
@@ -210,12 +201,12 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
                         <input type="hidden" id="provauth-wsse" name="auth-wsse" value="<?=$auth_wsse ? "1": "0"?>" />
                         <input type="hidden" id="provauth-ipWhiteList" name="auth-ipWhiteList" value="<?=$auth_ipWhiteList ? "1": "0"?>" />
                         <span class="help-inline"><?=@$validationErrors['auth']?></span>
-                        <p class="help-block"><? echo $t->_("Choose all that apply.")?></p>
+                        <p class="help-block"><? echo $this->translate("Choose all that apply.")?></p>
                     </div>
                 </div>
             <span id="authkey-key-span" style="display:none;">
                 <div id="key" class="control-group <?=(!empty($validationErrors['authkey-key']))?"error":""?>">
-                    <label class="control-label" for="authkey-key"><? echo $t->_("Auth Key Key")?></label>
+                    <label class="control-label" for="authkey-key"><? echo $this->translate("Auth Key Key")?></label>
                     <div class="controls">
                         <input type="text" class="input-xlarge" id="authkey-key" name="authkey-key" value="<?=$authkey_key?>"/>
                         <span class="help-inline"><?=@$validationErrors['authkey-key']?></span>
@@ -223,21 +214,21 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
                 </div>
             </span>
                 <div class="control-group">
-                    <label class="control-label" for="httpscheckbox" ><? echo $t->_("Secured")?></label>
+                    <label class="control-label" for="httpscheckbox" ><? echo $this->translate("Secured")?></label>
                     <div class="controls">
                         <div class="btn-group" data-toggle="buttons-checkbox" id="httpscheckbox">
-                            <a class="btn api hiddenValue <?=$https?'active" checked="checked"':'"'?> inputId="https"><? echo $t->_("HTTPS")?></a>
+                            <a class="btn api hiddenValue <?=$https?'active" checked="checked"':'"'?> inputId="https"><? echo $this->translate("HTTPS")?></a>
                         </div>
                         <input type="hidden" id="https" name="https" value="<?=$https?"1":"0"?>" />
                     </div>
                 </div>
             <span id="https-mode-span" style="display:none;">
                 <div id="https-mode-div" class="control-group <?=(!empty($validationErrors['https-mode']))?"error":""?>">
-                    <label class="control-label" for="https-mode"><? echo $t->_("Https Mode")?></label>
+                    <label class="control-label" for="https-mode"><? echo $this->translate("Https Mode")?></label>
                     <div class="controls">
                         <div class="btn-group" data-toggle="buttons-radio" id="https-mode-group">
-                            <a class="btn api <?=$tlsmode===TLSMode::$OneWay?"active":""?>" inputId="https-mode" value="<?=TLSMode::$OneWay?>"><? echo $t->_("1-Way TLS")?></a>
-                            <a class="btn api <?=$tlsmode===TLSMode::$TwoWay?"active":""?>" inputId="https-mode" value="<?=TLSMode::$TwoWay?>"><? echo $t->_("2-Way TLS")?></a>
+                            <a class="btn api <?=$tlsmode===TLSMode::$OneWay?"active":""?>" inputId="https-mode" value="<?=TLSMode::$OneWay?>"><? echo $this->translate("1-Way TLS")?></a>
+                            <a class="btn api <?=$tlsmode===TLSMode::$TwoWay?"active":""?>" inputId="https-mode" value="<?=TLSMode::$TwoWay?>"><? echo $this->translate("2-Way TLS")?></a>
                         </div>
                         <input type="hidden" class="input-xlarge" id="https-mode" name="https-mode" value="<?=$tlsmode?>"/>
                         <span class="help-inline"><?=@$validationErrors['https-mode']?></span>
@@ -247,12 +238,12 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
 
                 <div class="control-group">
                     <div class="controls">
-                        <span class="label input-small pull-left"><? echo $t->_("Warning")?></span>
-                        <span class="label input-small pull-left"><? echo $t->_("Threshold")?></span>
+                        <span class="label input-small pull-left"><? echo $this->translate("Warning")?></span>
+                        <span class="label input-small pull-left"><? echo $this->translate("Threshold")?></span>
                     </div>
                 </div>
                 <div class="control-group <?=(!empty($validationErrors['tps-warn'])||!empty($validationErrors['tps-threshold']))?"error":""?>">
-                    <label class="control-label" for="TPS"><? echo $t->_("TPS")?></label>
+                    <label class="control-label" for="TPS"><? echo $this->translate("TPS")?></label>
                     <div class="controls">
                         <input type="text" class="input-small" id="TPS" name="tps-warn" value="<?=$tps_warn?>">
                         <input type="text" class="input-small" name="tps-threshold" value="<?=$tps_threshold?>">
@@ -261,7 +252,7 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
                     </div>
                 </div>
                 <div class="control-group <?=(!empty($validationErrors['tpm-warn'])||!empty($validationErrors['tpm-threshold']))?"error":""?>">
-                    <label class="control-label" for="TPM"><? echo $t->_("TPM")?></label>
+                    <label class="control-label" for="TPM"><? echo $this->translate("TPM")?></label>
                     <div class="controls">
                         <input type="text" class="input-small" id="TPM" name="tpm-warn" value="<?=$tpm_warn?>">
                         <input type="text" class="input-small" name="tpm-threshold" value="<?=$tpm_threshold?>">
@@ -271,19 +262,19 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label" for="methods"><? echo $t->_("Methods")?></label>
+                    <label class="control-label" for="methods"><? echo $this->translate("Methods")?></label>
                     <div class="controls">
                         <div class="btn-group" data-toggle="buttons-checkbox" id="methods">
-                            <a class="btn api hiddenValue <?=$get?'active" checked="checked"':'"'?> inputId="method-get"><? echo $t->_("GET")?></a>
-                            <a class="btn api hiddenValue <?=$post?'active" checked="checked"':'"'?> inputId="method-post"><? echo $t->_("POST")?></a>
-                            <a class="btn api hiddenValue <?=$put?'active" checked="checked"':'"'?> inputId="method-put"><? echo $t->_("PUT")?></a>
-                            <a class="btn api hiddenValue <?=$delete?'active" checked="checked"':'"'?> inputId="method-delete"><? echo $t->_("DELETE")?></a>
+                            <a class="btn api hiddenValue <?=$get?'active" checked="checked"':'"'?> inputId="method-get"><? echo $this->translate("GET")?></a>
+                            <a class="btn api hiddenValue <?=$post?'active" checked="checked"':'"'?> inputId="method-post"><? echo $this->translate("POST")?></a>
+                            <a class="btn api hiddenValue <?=$put?'active" checked="checked"':'"'?> inputId="method-put"><? echo $this->translate("PUT")?></a>
+                            <a class="btn api hiddenValue <?=$delete?'active" checked="checked"':'"'?> inputId="method-delete"><? echo $this->translate("DELETE")?></a>
                         </div>
                         <input type="hidden" id="method-get" name="method-get" value="<?=$get?"1":"0"?>" />
                         <input type="hidden" id="method-post" name="method-post" value="<?=$post?"1":"0"?>" />
                         <input type="hidden" id="method-put" name="method-put" value="<?=$put?"1":"0"?>" />
                         <input type="hidden" id="method-delete" name="method-delete" value="<?=$delete?"1":"0"?>" />
-                        <p class="help-block"><? echo $t->_("Choose all that apply.")?></p>
+                        <p class="help-block"><? echo $this->translate("Choose all that apply.")?></p>
                     </div>
                 </div>
                 <div id="propertyGroup">
@@ -294,11 +285,11 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
                 </div>
                 <div id="tdrRuleGroup">
                     <div class="control-group" >
-                        <label class="control-label" for="tdrsenabled-group"><? echo $t->_("TDRs")?></label>
+                        <label class="control-label" for="tdrsenabled-group"><? echo $this->translate("TDRs")?></label>
                         <div class="controls">
                             <div class="btn-group" data-toggle="buttons-radio" id="tdrsenabled-group">
-                                <a class="btn api <?=$tdrsenabled?"active":""?>" inputId="tdrsenabled" value="1"><? echo $t->_("Enabled")?></a>
-                                <a class="btn api <?=$tdrsenabled?"":"active"?>" inputId="tdrsenabled" value="0"><? echo $t->_("Disabled")?></a>
+                                <a class="btn api <?=$tdrsenabled?"active":""?>" inputId="tdrsenabled" value="1"><? echo $this->translate("Enabled")?></a>
+                                <a class="btn api <?=$tdrsenabled?"":"active"?>" inputId="tdrsenabled" value="0"><? echo $this->translate("Disabled")?></a>
                             </div>
                             <input type="hidden" id="tdrsenabled" name="tdrsenabled" value="<?=$tdrsenabled?"1":"0"?>" />
                         </div>
@@ -308,7 +299,7 @@ $advancedOpen = ($api->getStatus() !== Status::$ACTIVE
                     <? SharedViewUtility::includeTdrRulesSnippet($api->tdrData, $validationErrors); ?>
                 </span>
             </div>
-            <input class="btn" type="submit" value="<? echo $t->_("Save")?>"/>
+            <input class="btn" type="submit" value="<? echo $this->translate("Save")?>"/>
         </fieldset>
     </form>
 </div> <!-- /container -->

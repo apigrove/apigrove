@@ -14,15 +14,8 @@
 $user = $this->user;
 $validationErrors = $this->validationErrors;
 ?>
-<?$t = new Zend_Translate(
-    'gettext',  //the adapter
-    APPLICATION_PATH.'/lang', //where the lang files will be stored
-    'auto',  //set to auto include .mo files
-    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
-);?>
-
 <div class="container">
-    <h1><?=empty($user['id'])?$t_("Create New User"):$t_("User Settings")?></h1>
+    <h1><?=empty($user['id'])?$this->translate("Create New User"):$this->translate("User Settings")?></h1>
     <? if(!empty($this->messages)): ?>
     <div class="control-group success">
         <span class="help-block" id="messages">
@@ -36,34 +29,34 @@ $validationErrors = $this->validationErrors;
     <form method="POST" class="well form-horizontal">
         <fieldset>
             <div class="control-group <?=empty($validationErrors['username'])?"":"error"?>" id="controlGroup-username">
-                <label class="control-label" for="username"><? echo $t->_("Username")?></label>
+                <label class="control-label" for="username"><? echo $this->translate("Username")?></label>
                 <div class="controls">
                     <input type="text" name="user[username]" id="username" value="<?=@$user['username']?>"/>
                     <span class="help-inline"><?=@$validationErrors['username']?></span>
                 </div>
             </div>
             <div class="control-group <?=empty($validationErrors['password'])?"":"error"?>" id="controlGroup-password">
-                <label class="control-label" for="password"><? echo $t->_("Password")?></label>
+                <label class="control-label" for="password"><? echo $this->translate("Password")?></label>
                 <div class="controls">
                     <input type="password" name="user[password]" id="password" value="<?=@$user['password']?>"/>
                     <span class="help-inline"><?=@$validationErrors['password']?></span>
                 </div>
             </div>
             <div class="control-group <?=empty($validationErrors['passwordConfirm'])?"":"error"?>" id="controlGroup-passwordConfirm">
-                <label class="control-label" for="passwordConfirm"><? echo $t->_("Confirm Password")?></label>
+                <label class="control-label" for="passwordConfirm"><? echo $this->translate("Confirm Password")?></label>
                 <div class="controls">
                     <input type="password" name="user[passwordConfirm]" id="passwordConfirm" value="<?=@$user['passwordConfirm']?>"/>
                     <span class="help-inline"><?=@$validationErrors['passwordConfirm']?></span>
                 </div>
             </div>
             <div class="control-group <?=empty($validationErrors['real_name'])?"":"error"?>" id="controlGroup-real_name">
-                <label class="control-label" for="real_name"><? echo $t->_("Real Name")?></label>
+                <label class="control-label" for="real_name"><? echo $this->translate("Real Name")?></label>
                 <div class="controls">
                     <input type="text" name="user[real_name]" id="real_name" value="<?=@$user['real_name']?>"/>
                     <span class="help-inline"><?=@$validationErrors['real_name']?></span>
                 </div>
             </div>
-            <input type="submit" class="btn btn-primary" value="<? echo $t->_("Save")?>"/>
+            <input type="submit" class="btn btn-primary" value="<? echo $this->translate("Save")?>"/>
         </fieldset>
     </form>
 </div>

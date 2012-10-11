@@ -25,6 +25,7 @@ require_once "flow/FlowController.php";
 require_once "Logging/LoggerInterface.php";
 require_once "SharedViewUtility.php";
 
+
 class ApiController extends FlowController {
 
     /**
@@ -65,18 +66,18 @@ class ApiController extends FlowController {
                 if($response){
                     if((string)$response->status === "SUCCESS"){
                         //success!
-                        $this->_helper->FlashMessenger("Api Successfully Deleted");
+                        $this->_helper->FlashMessenger($this->translate("Api Successfully Deleted"));
                     } else {
-                        $this->_helper->FlashMessenger("Error deleting api $apiid : ".$response->error->errorText);
+                        $this->_helper->FlashMessenger($this->translate("Error deleting api ") . $apiid . " : ".$response->error->errorText);
                     }
                 } else {
-                    $this->_helper->FlashMessenger("The delete action errored but didn't say why!");
+                    $this->_helper->FlashMessenger($this->translate("The delete action errored but didn't say why!"));
                 }
             } catch(Exception $e){
-                $this->_helper->FlashMessenger("Exception when deleting api $apiid : ".$e->getMessage());
+                $this->_helper->FlashMessenger($this->translate("Exception when deleting api ") .$apiid . " : ".$e->getMessage());
             }
         } else {
-            $this->_helper->FlashMessenger("Api id is empty!");
+            $this->_helper->FlashMessenger($this->translate("Api id is empty!"));
         }
         $this->_helper->redirector("index", "api");
     }
@@ -128,7 +129,7 @@ class ApiController extends FlowController {
                     $api = $this->getManager()->getApi($apiid);
                     $flowScope["api"] = $api;
                 } catch (Exception $e){
-                    $this->_helper->FlashMessenger("Error fetching api $apiid : ".$e->getMessage());
+                    $this->_helper->FlashMessenger($this->translate("Error fetching api ") . $apiid . " : ".$e->getMessage());
                     $this->_helper->redirector("index", "api");
                 }
             }
@@ -149,13 +150,13 @@ class ApiController extends FlowController {
         if(isset($_POST["apiName"]) && !empty($_POST["apiName"])){
             $api->displayName = $_POST["apiName"];
         } else {
-            $validationErrors["name"] = "Apis must have a name.";
+            $validationErrors["name"] = $this->translate("Apis must have a name.");
         }
 
         if(isset($_POST["apiEndpoint"]) && !empty($_POST["apiEndpoint"])){
             $api->endpoint = $_POST["apiEndpoint"];
         } else {
-            $validationErrors["endpoint"] = "Apis must have an endpoint.";
+            $validationErrors["endpoint"] = $this->translate("Apis must have an endpoint.");
         }
 
         $targetHosts = array();
@@ -168,7 +169,7 @@ class ApiController extends FlowController {
         }
 
         if(empty($targetHosts)) {
-            $validationErrors["targethost0"] = "Apis must have at least one targethost.";
+            $validationErrors["targethost0"] = $this->translate("Apis must have at least one targethost.");
         } else {
             $contexts = $api->getContexts();
             if(empty($contexts)){
@@ -219,7 +220,7 @@ class ApiController extends FlowController {
             $provAuth->setAuthKey($authkeykey);
             $api->setAuthentication($provAuth);
         } else {
-            $validationErrors["auth"] = "Apis must have at least one auth type.";
+            $validationErrors["auth"] = $this->translate("Apis must have at least one auth type.");
         }
 
         if($_POST["https"]){
@@ -227,7 +228,7 @@ class ApiController extends FlowController {
             $https->setEnabled("true");
             $https_mode = $_POST["https-mode"];
             if(empty($https_mode) || TLSMode::fromString($https_mode) === null){
-                $validationErrors["https-mode"] = "With https on, TLS Mode must be 1way or 2way";
+                $validationErrors["https-mode"] = $this->translate("With https on, TLS Mode must be 1way or 2way");
             } else {
                 $https->setTlsMode(TLSMode::fromString($https_mode));
             }
@@ -263,16 +264,16 @@ class ApiController extends FlowController {
                 } else {
                     switch($tpx){
                         case "tps-warn":
-                            $validationErrors[$tpx] = "Transactions-per-second warning trigger must be a number";
+                            $validationErrors[$tpx] = $this->translate("Transactions-per-second warning trigger must be a number");
                             break;
                         case "tps-threshold":
-                            $validationErrors[$tpx] = "Transactions-per-second cutoff threshold must be a number";
+                            $validationErrors[$tpx] = $this->translate("Transactions-per-second cutoff threshold must be a number");
                             break;
                         case "tpm-warn":
-                            $validationErrors[$tpx] = "Transactions-per-minute warning trigger must be a number";
+                            $validationErrors[$tpx] = $this->translate("Transactions-per-minute warning trigger must be a number");
                             break;
                         case "tpm-threshold":
-                            $validationErrors[$tpx] = "Transactions-per-minute cutoff threshold must be a number";
+                            $validationErrors[$tpx] = $this->translate("Transactions-per-minute cutoff threshold must be a number");
                             break;
                     }
                 }
@@ -321,14 +322,14 @@ class ApiController extends FlowController {
 
     function target_host_is_bad($th){
         if(empty($th)){
-            return "This targethost cannot be empty";
+            return $this->translate("This targethost cannot be empty");
         }
         return false;
     }
 
     function auth_key_key_is_bad($authkeykey){
         if(empty($authkeykey)){
-            return "Auth Key Key cannot be empty";
+            return $this->translate("Auth Key Key cannot be empty");
         }
         return null;
     }
@@ -354,9 +355,9 @@ class ApiController extends FlowController {
             return "success";
         } else {
             if(isset($xmlresponse->error)) {
-                $flowScope["validationErrors"]= array("default"=>"Error: ".(string)$xmlresponse->error->errorText);
+                $flowScope["validationErrors"]= array("default"=>$this->translate("Error: ").(string)$xmlresponse->error->errorText);
             } else {
-                $flowScope["validationErrors"]= array("default"=>"Unknown error when posting this Api");
+                $flowScope["validationErrors"]= array("default"=>$this->translate("Unknown error when posting this Api"));
             }
             return "failed";
         }

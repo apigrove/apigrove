@@ -42,17 +42,11 @@ $id = $policy->getId();
 if (!isset($this->isNew)) { $this->isNew = empty($id); }
 $formAction = $this->isNew ? "/policy/create" : "/policy/".$id;
 ?>
-<?$t = new Zend_Translate(
-    'gettext',  //the adapter
-    APPLICATION_PATH.'/lang', //where the lang files will be stored
-    'auto',  //set to auto include .mo files
-    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
-);?>
 <div class="container">
-    <h1><?php if ($this->isNew) {echo $t->_("Create Policy");} else {echo $t->_("Edit Policy");} ?></h1>
+    <h1><?php if ($this->isNew) {echo $this->translate("Create Policy");} else {echo $this->translate("Edit Policy");} ?></h1>
     <? if(!empty($validationErrors['default'])):?>
     <div class="control-group error">
-        <span class="help-inline"><? echo $t->_("Server Error")?>: <?=$validationErrors['default']?></span>
+        <span class="help-inline"><? echo $this->translate("Server Error")?>: <?=$validationErrors['default']?></span>
     </div>
     <? endif; ?>
     <? if(!empty($this->messages)): ?>
@@ -67,14 +61,14 @@ $formAction = $this->isNew ? "/policy/create" : "/policy/".$id;
     <form class="well form-horizontal" action="<?php echo $formAction ?>" method="POST">
         <fieldset>
             <div class="control-group">
-                <label class="control-label" for="policy_id"><? echo $t->_("ID")?></label>
+                <label class="control-label" for="policy_id"><? echo $this->translate("ID")?></label>
                 <div class="controls">
                     <input type="text" class="input-xlarge" id="policy_id" name="policy_id" value="<?php echo $id ?>"<?php if (!$this->isNew) {echo " disabled";} ?> />
                     <span class="help-inline"><?=@$validationErrors['policyId']?></span>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="selectAPI"><? echo $t->_("APIs")?></label>
+                <label class="control-label" for="selectAPI"><? echo $this->translate("APIs")?></label>
                 <div class="controls">
                     <select id="selectAPI" name="selected_api[]" multiple="multiple" style="width: 400px; height: 200px;">
                         <?php foreach ($this->apis as $api): ?>
@@ -87,11 +81,11 @@ $formAction = $this->isNew ? "/policy/create" : "/policy/".$id;
                         <option value="<?= $this->escape($apiId); ?>" <?php echo $selectedAttr ?>><?= $this->escape($api->getEndpoint()); ?></option>
                         <?php endforeach ?>
                     </select>
-                    <span class="help-inline"><? echo $t->_("Choose which APIs this Policy will apply to.")?></span>
+                    <span class="help-inline"><? echo $this->translate("Choose which APIs this Policy will apply to.")?></span>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="selectAuth"><? echo $t->_("Auths")?></label>
+                <label class="control-label" for="selectAuth"><? echo $this->translate("Auths")?></label>
                 <div class="controls">
                     <select id="selectAuth" name="selected_auth[]" multiple="multiple" style="width: 400px; height: 200px;">
                         <?php foreach ($this->auths as $auth): ?>
@@ -104,7 +98,7 @@ $formAction = $this->isNew ? "/policy/create" : "/policy/".$id;
                         <option value="<?= $this->escape($authId); ?>" <?php echo $selectedAttr ?>><?= $this->escape($authId.": ".$auth->getType()); ?></option>
                         <?php endforeach ?>
                     </select>
-                    <span class="help-inline"><? echo $t->_("Choose which Auths this Policy will apply to")?>.</span>
+                    <span class="help-inline"><? echo $this->translate("Choose which Auths this Policy will apply to")?>.</span>
                     <input type="hidden" class="input-xlarge" id="auth_bucket_id" name="auth_bucket_id" value="<?= $authBucketId ?>" />
                 </div>
             </div>
@@ -134,74 +128,74 @@ $formAction = $this->isNew ? "/policy/create" : "/policy/".$id;
                 || !empty($policy->tdr->dynamicTdrs)
                 || !empty($policy->tdrData->staticTdrs));?>
             <div class="control-group">
-                <label class="control-label"><button class="btn" id="showAdvanced"><strong><? echo $t->_("Advanced")?></strong>
+                <label class="control-label"><button class="btn" id="showAdvanced"><strong><? echo $this->translate("Advanced")?></strong>
                     <i class="icon-chevron-down advbtn" <?=!$advancedOpen?"":"style=\"display:none\""?>></i><i class="icon-chevron-up advbtn" <?=$advancedOpen?"":"style=\"display:none\""?>></i>
                 </button></label>
             </div>
             <div id="advancedSection" class="well well-small" style="background-color: #DCDCDC; <?= $advancedOpen?"":"display:none"?>">
                 <div id="quotaGroup">
                     <div class="control-group <?=(!empty($validationErrors['per_second']))?"error":""?>" id="secondQuotaGroup">
-                        <label class="control-label" for="TPS"><? echo $t->_("TPS")?></label>
+                        <label class="control-label" for="TPS"><? echo $this->translate("TPS")?></label>
                         <div class="controls">
                             <select class="input-small" name="per_second[action]">
                                 <?php $action = !empty($per_second_counter) ? $per_second_counter->getAction() : null; ?>
-                                <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>><? echo $t->_("Ignore")?></option>
-                                <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>><? echo $t->_("Reject")?></option>
+                                <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>><? echo $this->translate("Ignore")?></option>
+                                <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>><? echo $this->translate("Reject")?></option>
                             </select>
-                            <input type="text" class="input-small" id="TPS" name="per_second[warning]" placeholder="<? echo $t->_("Warning")?>" <?php if (!empty($per_second_warning)) { echo 'value="'.$per_second_warning.'"';} ?>>
-                            <input type="text" class="input-small" name="per_second[threshold]" placeholder="<? echo $t->_("Threshold")?>" <?php if (!empty($per_second_threshold)) { echo 'value="'.$per_second_threshold.'"';} ?>>
+                            <input type="text" class="input-small" id="TPS" name="per_second[warning]" placeholder="<? echo $this->translate("Warning")?>" <?php if (!empty($per_second_warning)) { echo 'value="'.$per_second_warning.'"';} ?>>
+                            <input type="text" class="input-small" name="per_second[threshold]" placeholder="<? echo $this->translate("Threshold")?>" <?php if (!empty($per_second_threshold)) { echo 'value="'.$per_second_threshold.'"';} ?>>
                             <span class="help-inline"><?=@$validationErrors['per_second']?></span>
                         </div>
                     </div>
                     <div class="control-group <?=(!empty($validationErrors['per_minute']))?"error":""?>" id="minuteQuotaGroup">
-                        <label class="control-label" for="TPM"><? echo $t->_("TPM")?></label>
+                        <label class="control-label" for="TPM"><? echo $this->translate("TPM")?></label>
                         <div class="controls">
                             <select class="input-small" name="per_minute[action]">
                                 <?php $action = !empty($per_minute_counter) ? $per_minute_counter->getAction() : null; ?>
-                                <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>><? echo $t->_("Ignore")?></option>
-                                <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>><? echo $t->_("Reject")?></option>
+                                <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>><? echo $this->translate("Ignore")?></option>
+                                <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>><? echo $this->translate("Reject")?></option>
                             </select>
-                            <input type="text" class="input-small" id="TPM" name="per_minute[warning]" placeholder="<? echo $t->_("Warning")?>" <?php if (!empty($per_minute_warning)) { echo 'value="'.$per_minute_warning.'"';} ?>>
-                            <input type="text" class="input-small" name="per_minute[threshold]" placeholder="<? echo $t->_("Threshold")?>" <?php if (!empty($per_minute_threshold)) { echo 'value="'.$per_minute_threshold.'"';} ?>>
+                            <input type="text" class="input-small" id="TPM" name="per_minute[warning]" placeholder="<? echo $this->translate("Warning")?>" <?php if (!empty($per_minute_warning)) { echo 'value="'.$per_minute_warning.'"';} ?>>
+                            <input type="text" class="input-small" name="per_minute[threshold]" placeholder="<? echo $this->translate("Threshold")?>" <?php if (!empty($per_minute_threshold)) { echo 'value="'.$per_minute_threshold.'"';} ?>>
                             <span class="help-inline"><?=@$validationErrors['per_minute']?></span>
                         </div>
                     </div>
                     <div class="control-group <?=(!empty($validationErrors['per_day']))?"error":""?>" id="dailyQuotaGroup">
-                        <label class="control-label" for="daily"><? echo $t->_("Daily")?></label>
+                        <label class="control-label" for="daily"><? echo $this->translate("Daily")?></label>
                         <div class="controls">
                             <select class="input-small" name="per_day[action]">
                                 <?php $action = !empty($per_day_counter) ? $per_day_counter->getAction() : null; ?>
-                                <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>><? echo $t->_("Ignore")?></option>
-                                <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>><? echo $t->_("Reject")?></option>
+                                <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>><? echo $this->translate("Ignore")?></option>
+                                <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>><? echo $this->translate("Reject")?></option>
                             </select>
-                            <input type="text" class="input-small" id="daily" name="per_day[warning]" placeholder="<? echo $t->_("Warning")?>" <?php if (!empty($per_day_warning)) { echo 'value="'.$per_day_warning.'"';} ?>>
-                            <input type="text" class="input-small" name="per_day[threshold]" placeholder="<? echo $t->_("Threshold")?>" <?php if (!empty($per_day_threshold)) { echo 'value="'.$per_day_threshold.'"';} ?>>
+                            <input type="text" class="input-small" id="daily" name="per_day[warning]" placeholder="<? echo $this->translate("Warning")?>" <?php if (!empty($per_day_warning)) { echo 'value="'.$per_day_warning.'"';} ?>>
+                            <input type="text" class="input-small" name="per_day[threshold]" placeholder="<? echo $this->translate("Threshold")?>" <?php if (!empty($per_day_threshold)) { echo 'value="'.$per_day_threshold.'"';} ?>>
                             <span class="help-inline"><?=@$validationErrors['per_day']?></span>
                         </div>
                     </div>
                     <div class="control-group <?=(!empty($validationErrors['per_week']))?"error":""?>" id="weeklyQuotaGroup">
-                        <label class="control-label" for="TPW"><? echo $t->_("Weekly")?></label>
+                        <label class="control-label" for="TPW"><? echo $this->translate("Weekly")?></label>
                         <div class="controls">
                             <select class="input-small" name="per_week[action]">
                                 <?php $action = !empty($per_week_counter) ? $per_week_counter->getAction() : null; ?>
-                                <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>><? echo $t->_("Ignore")?></option>
-                                <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>><? echo $t->_("Reject")?></option>
+                                <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>><? echo $this->translate("Ignore")?></option>
+                                <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>><? echo $this->translate("Reject")?></option>
                             </select>
-                            <input type="text" class="input-small" id="TPW" name="per_week[warning]" placeholder="<? echo $t->_("Warning")?>" <?php if (!empty($per_week_warning)) { echo 'value="'.$per_week_warning.'"';} ?>>
-                            <input type="text" class="input-small" name="per_week[threshold]" placeholder="<? echo $t->_("Threshold")?>" <?php if (!empty($per_week_threshold)) { echo 'value="'.$per_week_threshold.'"';} ?>>
+                            <input type="text" class="input-small" id="TPW" name="per_week[warning]" placeholder="<? echo $this->translate("Warning")?>" <?php if (!empty($per_week_warning)) { echo 'value="'.$per_week_warning.'"';} ?>>
+                            <input type="text" class="input-small" name="per_week[threshold]" placeholder="<? echo $this->translate("Threshold")?>" <?php if (!empty($per_week_threshold)) { echo 'value="'.$per_week_threshold.'"';} ?>>
                             <span class="help-inline"><?=@$validationErrors['per_week']?></span>
                         </div>
                     </div>
                     <div class="control-group <?=(!empty($validationErrors['per_month']))?"error":""?>" id="monthlyQuotaGroup">
-                        <label class="control-label" for="monthly"><? echo $t->_("Monthly")?></label>
+                        <label class="control-label" for="monthly"><? echo $this->translate("Monthly")?></label>
                         <div class="controls">
                             <select class="input-small" name="per_month[action]">
                                 <?php $action = !empty($per_month_counter) ? $per_month_counter->getAction() : null; ?>
-                                <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>><? echo $t->_("Ignore")?></option>
-                                <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>><? echo $t->_("Reject")?></option>
+                                <option value="<?php echo Action::$IGNORE ?>"<?php if ($action === Action::$IGNORE) {echo ' selected="selected"';} ?>><? echo $this->translate("Ignore")?></option>
+                                <option value="<?php echo Action::$REJECT ?>"<?php if ($action === Action::$REJECT) {echo ' selected="selected"';} ?>><? echo $this->translate("Reject")?></option>
                             </select>
-                            <input type="text" class="input-small" id="monthly" name="per_month[warning]" placeholder="<? echo $t->_("Warning")?>" <?php if (!empty($per_month_warning)) { echo 'value="'.$per_month_warning.'"';} ?>>
-                            <input type="text" class="input-small" name="per_month[threshold]" placeholder="<? echo $t->_("Threshold")?>" <?php if (!empty($per_month_threshold)) { echo 'value="'.$per_month_threshold.'"';} ?>>
+                            <input type="text" class="input-small" id="monthly" name="per_month[warning]" placeholder="<? echo $this->translate("Warning")?>" <?php if (!empty($per_month_warning)) { echo 'value="'.$per_month_warning.'"';} ?>>
+                            <input type="text" class="input-small" name="per_month[threshold]" placeholder="<? echo $this->translate("Threshold")?>" <?php if (!empty($per_month_threshold)) { echo 'value="'.$per_month_threshold.'"';} ?>>
                             <span class="help-inline"><?=@$validationErrors['per_month']?></span>
                         </div>
                     </div>

@@ -15,16 +15,10 @@ $policies = $this->policies;
 $auths = $this->auths;
 $apis = $this->apis;
 ?>
-<?$t = new Zend_Translate(
-    'gettext',  //the adapter
-    APPLICATION_PATH.'/lang', //where the lang files will be stored
-    'auto',  //set to auto include .mo files
-    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
-);?>
 <div class="container">
     <div class="hero-unit">
-        <h1><? echo $t->_("Policies")?></h1>
-        <p><? echo $t->_("Choose a Policy from the list below to edit")?></p>
+        <h1><? echo $this->translate("Policies")?></h1>
+        <p><? echo $this->translate("Choose a Policy from the list below to edit")?></p>
     </div>
     <? if(!empty($this->messages)): ?>
     <div class="control-group success">
@@ -38,9 +32,9 @@ $apis = $this->apis;
     <div class="well">
         <div id="list">
             <div class="listItem">
-                <div class="item-div pull-left"><label class="item1"><strong><? echo $t->_("Policy ID")?></strong></label></div>
-                <div class="item-div pull-left"><span class="item2"><strong><? echo $t->_("APIs")?></strong></span></div>
-                <div class="item-div pull-left"><span class="item3"><strong><? echo $t->_("Auths")?></strong></span></div>
+                <div class="item-div pull-left"><label class="item1"><strong><? echo $this->translate("Policy ID")?></strong></label></div>
+                <div class="item-div pull-left"><span class="item2"><strong><? echo $this->translate("APIs")?></strong></span></div>
+                <div class="item-div pull-left"><span class="item3"><strong><? echo $this->translate("Auths")?></strong></span></div>
                 <div class="item-div pull-left"><span class="item4"><a href="/policy/create" class="btn btn-success">+</a></div>
                 <span class="clearfix"></span>
             </div>
@@ -52,7 +46,7 @@ $apis = $this->apis;
                 <div class="listItem">
                     <div class="item-div pull-left"><label class="item1"><a href="/policy/<?=$policy->id?>"><strong><?if(strlen($policy->id) > 15){ echo substr($policy->id, 0, 15) . "...";}else{ echo $policy->id;} ;?></strong></a></label></div>
                     <div class="item-div pull-left"><span class="item2">
-                       <?= empty($policy->apiIds)?$t->_("None"):""?>
+                       <?= empty($policy->apiIds)?$this->translate("None"):""?>
                        <? foreach($policy->apiIds as $apiId):
                         /** @var Api $api */
                         $api = $apis[$apiId]; ?>
@@ -61,7 +55,7 @@ $apis = $this->apis;
                     </span></div>
                     <div class="item-div pull-left">
                         <span class="item3">
-                        <? if(empty($policy->authIds)): echo $t->_("None");
+                        <? if(empty($policy->authIds)): echo $this->translate("None");
                             else:
                                 foreach($policy->authIds[0]->authIds as $authId):
                                 /** @var Auth $auth */
@@ -73,7 +67,7 @@ $apis = $this->apis;
                     </div>
                     <div class="item-div pull-left">
                         <span class="item4">
-                        <a href="/policy/<?=$policy->id?>/delete" id="policy-<?=$policy->id?>-delete" class="btn btn-danger delete"><? echo $t->_("Delete")?></a>
+                        <a href="/policy/<?=$policy->id?>/delete" id="policy-<?=$policy->id?>-delete" class="btn btn-danger delete"><? echo $this->translate("Delete")?></a>
                         </span>
                     </div>
                     <span class="clearfix"></span>

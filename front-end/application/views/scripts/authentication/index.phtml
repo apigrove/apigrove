@@ -13,22 +13,16 @@
 
 $users = $this->users;
 ?>
-<?$t = new Zend_Translate(
-    'gettext',  //the adapter
-    APPLICATION_PATH.'/lang', //where the lang files will be stored
-    'auto',  //set to auto include .mo files
-    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
-);?>
 <div class="container">
     <div class="hero-unit">
-        <h1><? echo $t->_("List of Users")?></h1>
-        <p><? echo $t->_("Choose a user from the list below to edit")?></p>
+        <h1><? echo $this->translate("List of Users")?></h1>
+        <p><? echo $this->translate("Choose a user from the list below to edit")?></p>
     </div>
     <div class="well">
         <div id="list">
             <div class="listItem">
-                <div class="item-div pull-left"><span class="item1"><strong><? echo $t->_("Username")?></strong></span></div>
-                <div class="item-div pull-left"><span class="item2"><strong><? echo $t->_("Real Name")?></strong></span></div>
+                <div class="item-div pull-left"><span class="item1"><strong><? echo $this->translate("Username")?></strong></span></div>
+                <div class="item-div pull-left"><span class="item2"><strong><? echo $this->translate("Real Name")?></strong></span></div>
                 <div class="item-div pull-left"><span class="item2"><a href="/user/create" class="btn btn-success">+</a></div>
             </div>
             <? foreach($users as $user){?>
@@ -37,7 +31,7 @@ $users = $this->users;
                 <div class="item-div pull-left"><span class="item2"><?=@$user['real_name'];?></span></div>
                 <div class="item-div pull-left">
                       <span class="item4">
-                      <a href="/user/<?=$user['id']?>/delete" class="btn btn-danger"><? echo $t->_("Delete")?></a>
+                      <a href="/user/<?=$user['id']?>/delete" class="btn btn-danger"><? echo $this->translate("Delete")?></a>
                       </span>
                 </div>
             </div>

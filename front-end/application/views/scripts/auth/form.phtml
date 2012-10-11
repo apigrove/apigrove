@@ -35,49 +35,43 @@ else if($auth->type === AuthType::$WSSE){
     $password = $auth->wsseAuth->password;
 }
 ?>
-<?$t = new Zend_Translate(
-    'gettext',  //the adapter
-    APPLICATION_PATH.'/lang', //where the lang files will be stored
-    'auto',  //set to auto include .mo files
-    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
-);?>
 <div class="container">
-    <h1><?=($flow->flowScope['isNew'])?$t->_("Create"):$t->_("Update")?> <? echo $t->_("Auth")?></h1>
+    <h1><?=($flow->flowScope['isNew'])?$this->translate("Create"):$this->translate("Update")?> <? echo $this->translate("Auth")?></h1>
 <? if(!empty($validationErrors['default'])):?>
     <div class="control-group error">
-        <span class="help-inline"><? echo $t->_("Server Error")?>: <?=$validationErrors['default']?></span>
+        <span class="help-inline"><? echo $this->translate("Server Error")?>: <?=$validationErrors['default']?></span>
     </div>
 <? endif; ?>
     <form class="well form-horizontal" method="POST">
         <fieldset>
             <div class="control-group">
-                <label class="control-label" for="input01"><? echo $t->_("ID")?></label>
+                <label class="control-label" for="input01"><? echo $this->translate("ID")?></label>
                 <div class="controls">
-                    <input type="text" class="input-xlarge" id="input01" name="authid" value="<?=$auth->id===$t->_("create")?"":$auth->id?>" <?=($flow->flowScope['isNew'])?"":$t->_("disabled")?>/>
+                    <input type="text" class="input-xlarge" id="input01" name="authid" value="<?=$auth->id===$this->translate("create")?"":$auth->id?>" <?=($flow->flowScope['isNew'])?"":$this->translate("disabled")?>/>
                 </div>
             </div>
             <div class="control-group ">
-                <label class="control-label" for="authCheck" reado><? echo $t->_("Type")?></label>
+                <label class="control-label" for="authCheck" reado><? echo $this->translate("Type")?></label>
                 <div class="controls">
                     <div class="btn-group" data-toggle="buttons-radio" id="authCheck">
-                        <a class="btn auth hiddenValue <?=$auth->type==="basic"?"active":""?>" inputId="type" value="basic" id="authtype-basic"><? echo $t->_("Basic")?></a>
-                        <a class="btn auth hiddenValue <?=$auth->type==="authKey"?"active":""?>" inputId="type" value="authKey" id="authtype-authkey"><? echo $t->_("Auth Key")?></a>
-                        <a class="btn auth hiddenValue <?=$auth->type==="wsse"?"active":""?>" inputId="type" value="wsse" id="authtype-wsse"><? echo $t->_("WSSE")?></a>
-                        <a class="btn auth hiddenValue <?=$auth->type==="ipWhiteList"?"active":""?>" inputId="type" value="ipWhiteList" id="authtype-ipwhitelist"><? echo $t->_("IP Whitelist")?></a>
+                        <a class="btn auth hiddenValue <?=$auth->type==="basic"?"active":""?>" inputId="type" value="basic" id="authtype-basic"><? echo $this->translate("Basic")?></a>
+                        <a class="btn auth hiddenValue <?=$auth->type==="authKey"?"active":""?>" inputId="type" value="authKey" id="authtype-authkey"><? echo $this->translate("Auth Key")?></a>
+                        <a class="btn auth hiddenValue <?=$auth->type==="wsse"?"active":""?>" inputId="type" value="wsse" id="authtype-wsse"><? echo $this->translate("WSSE")?></a>
+                        <a class="btn auth hiddenValue <?=$auth->type==="ipWhiteList"?"active":""?>" inputId="type" value="ipWhiteList" id="authtype-ipwhitelist"><? echo $this->translate("IP Whitelist")?></a>
                     </div>
                     <input type="hidden" name="type" value="<?=$auth->type?>" id="type"/>
                 </div>
             </div>
             <span id="un-pw" style="display:none">
                 <div id="userName" class="control-group <?=(!empty($validationErrors['username']))?"error":""?>">
-                    <label class="control-label" for="userName0"><? echo $t->_("Username")?></label>
+                    <label class="control-label" for="userName0"><? echo $this->translate("Username")?></label>
                     <div class="controls">
                         <input type="text" class="input-xlarge" id="userName0" name="username" value="<?=$username?>"/>
                         <span class="help-inline"><?=@$validationErrors['username']?></span>
                     </div>
                 </div>
                 <div id="password" class="control-group <?=(!empty($validationErrors['password']))?"error":""?>">
-                    <label class="control-label" for="password0"><? echo $t->_("Password")?></label>
+                    <label class="control-label" for="password0"><? echo $this->translate("Password")?></label>
                     <div class="controls">
                         <input type="text" class="input-xlarge" id="password0" name="password" value="<?=$password?>"/>
                         <span class="help-inline"><?=@$validationErrors['password']?></span>
@@ -85,17 +79,17 @@ else if($auth->type === AuthType::$WSSE){
                 </div>
             </span>
             <div id="authKey" class="control-group <?=!empty($validationErrors['authKey'])?"error":""?>" style="display:none">
-                <label class="control-label" for="authKey0"><? echo $t->_("Auth Key")?></label>
+                <label class="control-label" for="authKey0"><? echo $this->translate("Auth Key")?></label>
                 <div class="controls">
                     <input type="text" class="input-xlarge" id="authKey0" name="authKey" value="<?=$auth->authKeyAuth->keyValue?>"/>
                     <span class="help-inline"><?=@$validationErrors['authKey']?></span>
                 </div>
             </div>
             <div id="IPs"  class="control-group <?=!empty($validationErrors['ipWhiteList'])?"error":""?>" style="display:none">
-                <label class="control-label" for="selectIPs"><? echo $t->_("IPs")?></label>
+                <label class="control-label" for="selectIPs"><? echo $this->translate("IPs")?></label>
                 <div class="controls">
                     <textarea type="text" class="input-xlarge" id="selectIPs" name="ipWhiteList" ><?=implode(",",$auth->ipWhiteListAuth->ips) ?></textarea>
-                    <span class="help-inline"><? echo $t->_("Comma separated")?><br/> <?=@$validationErrors['ipWhiteList']?></span>
+                    <span class="help-inline"><? echo $this->translate("Comma separated")?><br/> <?=@$validationErrors['ipWhiteList']?></span>
                 </div>
             </div>
             <? $advancedOpen = (!empty($auth->headerTransformations) || !empty($auth->properties)
@@ -103,18 +97,18 @@ else if($auth->type === AuthType::$WSSE){
                             || !empty($auth->tdrData->staticTdrs)
                             || $auth->status !== 'active');?>
             <div class="control-group">
-                <label class="control-label"><button class="btn" id="showAdvanced"><strong><? echo $t->_("Advanced")?></strong>
+                <label class="control-label"><button class="btn" id="showAdvanced"><strong><? echo $this->translate("Advanced")?></strong>
                     <i class="icon-chevron-down advbtn" <?=!$advancedOpen?"":"style=\"display:none\""?>></i><i class="icon-chevron-up advbtn" <?=$advancedOpen?"":"style=\"display:none\""?>></i>
                 </button></label>
             </div>
 
             <div id="advancedSection" class="well well-small" style="background-color: #DCDCDC; <?= $advancedOpen?"":"display:none"?>">
                 <div class="control-group">
-                    <label class="control-label" for="enabled"><? echo $t->_("Enabled")?></label>
+                    <label class="control-label" for="enabled"><? echo $this->translate("Enabled")?></label>
                     <div class="controls">
                         <div class="btn-group" data-toggle="buttons-radio" id="enabled">
-                            <button class="btn auth-enabled <?=$auth->status==="active"?"active":""?>" name="enabled-true" value="active"><? echo $t->_("Enabled")?></button>
-                            <button class="btn auth-enabled <?=$auth->status!=="active"?"active":""?>" name="enabled-false" value="inactive"><? echo $t->_("Disabled")?></button>
+                            <button class="btn auth-enabled <?=$auth->status==="active"?"active":""?>" name="enabled-true" value="active"><? echo $this->translate("Enabled")?></button>
+                            <button class="btn auth-enabled <?=$auth->status!=="active"?"active":""?>" name="enabled-false" value="inactive"><? echo $this->translate("Disabled")?></button>
                         </div>
                         <input type="hidden" class="enabled-true" name="status" value="<?=$auth->status?>" id="status"/>
                     </div>
@@ -131,7 +125,7 @@ else if($auth->type === AuthType::$WSSE){
 
             </div>
             <input type="hidden" name="_faction" value="submit" />
-            <input type="submit" class="btn confirm-toggle btn-primary" value="<? echo $t->_("Save")?>" />
+            <input type="submit" class="btn confirm-toggle btn-primary" value="<? echo $this->translate("Save")?>" />
         </fieldset>
     </form>
 </div> <!-- /container -->

@@ -61,7 +61,7 @@ class CertificateController extends Zend_Controller_Action{
         if ($key == null) {
             $error = CertificateManager::error();
             if (empty($error)) {
-                $error = "Unable to retrieve key ".$id;
+                $error = $this->translate("Unable to retrieve key ").$id;
             }
             $validationErrors['default'] = $error;
         } else {
@@ -98,13 +98,13 @@ class CertificateController extends Zend_Controller_Action{
             $success = $newKey ? $this->certificateManager->createKey($key) : $this->certificateManager->updateKey($key);
             if (!$success)  {
                 $operation = $newKey ? "creating" : "updating";
-                $validationErrors['default'] = "Error ".$operation." key: ".CertificateManager::error();
+                $validationErrors['default'] = $this->translate("Error ").$operation." key: ".CertificateManager::error();
             } else {
                 if (!empty($cert)) {
                     $success = $newCert ? $this->certificateManager->createCert($key->getId(), $cert) : $this->certificateManager->updateCert($key->getId(), $cert);
                     if (!$success)  {
                         $operation = $newCert ? "creating" : "updating";
-                        $validationErrors['default'] = "Error ".$operation." certificate: ".CertificateManager::error();
+                        $validationErrors['default'] = $this->translate("Error ").$operation." certificate: ".CertificateManager::error();
                     } else {
                         $certId = $cert->getId();
                     }
@@ -116,7 +116,7 @@ class CertificateController extends Zend_Controller_Action{
                     $key->setActiveCert($certId == null ? "" : $certId);
                     $success = $this->certificateManager->updateKey($key);
                     if (!$success)  {
-                        $validationErrors['default'] = "Couldn't update key with new active certificate: ".CertificateManager::error();
+                        $validationErrors['default'] = $this->translate("Couldn't update key with new active certificate: ").CertificateManager::error();
                     }
                 }
             }
@@ -124,7 +124,7 @@ class CertificateController extends Zend_Controller_Action{
 
         if ($success) {
             $messenger = $this->_helper->getHelper('FlashMessenger');
-            $messenger->addMessage($newKey ? "Successfully Created Key" : "Successfully Updated Key");
+            $messenger->addMessage($newKey ? $this->translate("Successfully Created Key") : $this->translate("Successfully Updated Key"));
             $this->_redirect("/certificate");
         } else {
             $this->view->isNew = $newKey;
@@ -142,7 +142,7 @@ class CertificateController extends Zend_Controller_Action{
         // Do we need to delete certs associated with this key, or does server do so?
         if ($this->certificateManager->deleteKey($this->_getParam("id"))) {
             $messenger = $this->_helper->getHelper('FlashMessenger');
-            $messenger->addMessage("Successfully Deleted Key");
+            $messenger->addMessage($this->translate("Successfully Deleted Key"));
         }
         $this->_redirect("/certificate");
     }
@@ -155,7 +155,7 @@ class CertificateController extends Zend_Controller_Action{
 
         $name = $_POST['key_name'];
         if (!$validate_alnum_wspace->isValid($name)) {
-            $validationErrors['key_name'] = "The key name must be only alpha-numeric characters";
+            $validationErrors['key_name'] = $this->translate("The key name must be only alpha-numeric characters");
         }
         $key->setDisplayName($_POST['key_name']);
 
@@ -170,14 +170,14 @@ class CertificateController extends Zend_Controller_Action{
                 if ($contents !== false) {
                     $key->setContent($contents);
                 } else {
-                    $validationErrors['key_file'] = "There was an error getting contents of Key file.";
+                    $validationErrors['key_file'] = $this->translate("There was an error getting contents of Key file.");
                 }
             } else {
-                $validationErrors['key_file'] = "There was an error uploading file: ".$_FILES['key_file']['error'];
+                $validationErrors['key_file'] = $this->translate("There was an error uploading file: ").$_FILES['key_file']['error'];
             }
         } else if (empty($id)) {
             // A create operation (new SSLKey) must provide a content file
-            $validationErrors['key_file'] = "Please upload a key file.";
+            $validationErrors['key_file'] = $this->translate("Please upload a key file.");
         }
 
         return $key;
@@ -200,7 +200,7 @@ class CertificateController extends Zend_Controller_Action{
 
             $name =  $nameSet ? $_POST['cert_name'] : null;
             if (!$validate_alnum_wspace->isValid($name)) {
-                $validationErrors['cert_name'] = "The certificate name must be only alpha-numeric characters";
+                $validationErrors['cert_name'] = $this->translate("The certificate name must be only alpha-numeric characters");
             }
             $cert->setDisplayName($name);
 
@@ -211,14 +211,14 @@ class CertificateController extends Zend_Controller_Action{
                     if ($contents !== false) {
                         $cert->setContent($contents);
                     } else {
-                        $validationErrors['cert_file'] = "There was an error getting contents of Certificate file.";
+                        $validationErrors['cert_file'] = $this->translate("There was an error getting contents of Certificate file.");
                     }
                 } else {
-                    $validationErrors['cert_file'] = "There was an error uploading file: ".$_FILES['cert_file']['error'];
+                    $validationErrors['cert_file'] = $this->translate("There was an error uploading file: ").$_FILES['cert_file']['error'];
                 }
             } else if (empty($certId)) {
                 // If the user has specified a certificate name, they must also specify a contents file
-                $validationErrors['cert_file'] = "Please upload a certificate file.";
+                $validationErrors['cert_file'] = $this->translate("Please upload a certificate file.");
             }
         }
 
@@ -274,12 +274,12 @@ class CertificateController extends Zend_Controller_Action{
             $success = $newCA ? $this->certificateManager->createCA($ca) : $this->certificateManager->updateCA($ca);
             if (!$success)  {
                 $operation = $newCA ? "creating" : "updating";
-                $validationErrors['default'] = "Error ".$operation." CA: ".CertificateManager::error();
+                $validationErrors['default'] = $this->translate("Error ").$operation." CA: ".CertificateManager::error();
             }
         }
         if ($success) {
             $messenger = $this->_helper->getHelper('FlashMessenger');
-            $messenger->addMessage($newCA ? "Successfully Created Certificate Authority" : "Successfully Updated Certificate Authority");
+            $messenger->addMessage($newCA ? $this->translate("Successfully Created Certificate Authority") : $this->translate("Successfully Updated Certificate Authority"));
             $this->_redirect("/certificate");
         } else {
             $this->view->isNew = $newCA;
@@ -295,7 +295,7 @@ class CertificateController extends Zend_Controller_Action{
     {
         if ($this->certificateManager->deleteCA($this->_getParam("id"))) {
             $messenger = $this->_helper->getHelper('FlashMessenger');
-            $messenger->addMessage("Successfully Deleted Certificate Authority");
+            $messenger->addMessage($this->translate("Successfully Deleted Certificate Authority"));
         }
         $this->_redirect("/certificate");
     }
@@ -312,7 +312,7 @@ class CertificateController extends Zend_Controller_Action{
 
         $name = $_POST['ca_name'];
         if (!$validate_alnum_wspace->isValid($name)) {
-            $validationErrors['ca_name'] = "The CA name must be only alpha-numeric characters";
+            $validationErrors['ca_name'] = $this->translate("The CA name must be only alpha-numeric characters");
         }
         $ca->setDisplayName($_POST['ca_name']);
 
@@ -322,13 +322,13 @@ class CertificateController extends Zend_Controller_Action{
                 if ($contents !== false) {
                     $ca->setContent($contents);
                 } else {
-                    $validationErrors['ca_file'] = "There was an error getting contents of CA file.";
+                    $validationErrors['ca_file'] = $this->translate("There was an error getting contents of CA file.");
                 }
             } else {
-                $validationErrors['ca_file'] = "There was an error uploading file: ".$_FILES['content']['error'];
+                $validationErrors['ca_file'] = $this->translate("There was an error uploading file: ").$_FILES['content']['error'];
             }
         } else if (empty($id))  {
-            $validationErrors['ca_file'] = "Please upload a CA file.";
+            $validationErrors['ca_file'] = $this->translate("Please upload a CA file.");
         }
         return $ca;
     }
@@ -362,7 +362,7 @@ class CertificateController extends Zend_Controller_Action{
         if ($crl == null) {
             $error = CertificateManager::error();
             if (empty($error)) {
-                $error = "Unable to retrieve CRL ".$id;
+                $error = $this->translate("Unable to retrieve CRL ").$id;
             }
             $validationErrors['default'] = $error;
         }
@@ -383,12 +383,12 @@ class CertificateController extends Zend_Controller_Action{
             $success = $newCRL ? $this->certificateManager->createCRL($crl) : $this->certificateManager->updateCRL($crl);
             if (!$success)  {
                 $operation = $newCRL ? "creating" : "updating";
-                $validationErrors['default'] = "Error ".$operation." CRL: ".CertificateManager::error();
+                $validationErrors['default'] = $this->translate("Error ").$operation." CRL: ".CertificateManager::error();
             }
         }
         if ($success) {
             $messenger = $this->_helper->getHelper('FlashMessenger');
-            $messenger->addMessage($newCRL ? "Successfully Created Certificate Revocation List" : "Successfully Updated Certificate Revocation List");
+            $messenger->addMessage($newCRL ? $this->translate("Successfully Created Certificate Revocation List") : $this->translate("Successfully Updated Certificate Revocation List"));
             $this->_redirect("/certificate");
         } else {
             $this->view->isNew = $newCRL;
@@ -404,7 +404,7 @@ class CertificateController extends Zend_Controller_Action{
     {
         if ($this->certificateManager->deleteCRL($this->_getParam("id"))) {
             $messenger = $this->_helper->getHelper('FlashMessenger');
-            $messenger->addMessage("Successfully Deleted Certificate Revocation List");
+            $messenger->addMessage($this->translate("Successfully Deleted Certificate Revocation List"));
         }
         $this->_redirect("/certificate");
     }
@@ -421,7 +421,7 @@ class CertificateController extends Zend_Controller_Action{
 
         $name = $_POST['crl_name'];
         if (!$validate_alnum_wspace->isValid($name)) {
-            $validationErrors['crl_name'] = "The CRL name must be only alpha-numeric characters";
+            $validationErrors['crl_name'] = $this->translate("The CRL name must be only alpha-numeric characters");
         }
         $crl->setDisplayName($_POST['crl_name']);
 
@@ -431,13 +431,13 @@ class CertificateController extends Zend_Controller_Action{
                 if ($contents !== false) {
                     $crl->setContent($contents);
                 } else {
-                    $validationErrors['crl_file'] = "There was an error getting contents of CRL file.";
+                    $validationErrors['crl_file'] = $this->translate("There was an error getting contents of CRL file.");
                 }
             } else {
-                $validationErrors['crl_file'] = "There was an error uploading file: ".$_FILES['content']['error'];
+                $validationErrors['crl_file'] = $this->translate("There was an error uploading file: ").$_FILES['content']['error'];
             }
         } else if (empty($id)) {
-            $validationErrors['crl_file'] = "Please upload a CRL file.";
+            $validationErrors['crl_file'] = $this->translate("Please upload a CRL file.");
         }
         return $crl;
     }

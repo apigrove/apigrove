@@ -11,14 +11,8 @@
  */
 $ve = $this->validationErrors;
 ?>
-<?$t = new Zend_Translate(
-    'gettext',  //the adapter
-    APPLICATION_PATH.'/lang', //where the lang files will be stored
-    'auto',  //set to auto include .mo files
-    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
-);?>
 <div class="container">
-    <h1><? echo $t->_("Login")?></h1>
+    <h1><? echo $this->translate("Login")?></h1>
     <? if(!empty($this->messages)): ?>
     <div class="control-group error">
             <span class="help-block">
@@ -31,20 +25,20 @@ $ve = $this->validationErrors;
     <form method="POST" class="well form-horizontal">
         <fieldset>
             <div class="control-group <?=!empty($ve['login']['username'])?"error":""?>" >
-                <label class="control-label" for="username"><? echo $t->_("Username")?></label>
+                <label class="control-label" for="username"><? echo $this->translate("Username")?></label>
                 <div class="controls">
                     <input type="text" name="username" id="username" value="<?=$this->username?>"/>
                     <span class="help-inline"><?=@$ve['login']['username']?></span>
                 </div>
             </div>
             <div class="control-group <?=!empty($ve['login']['password'])?"error":""?>">
-                <label class="control-label" for="password"><? echo $t->_("Password")?></label>
+                <label class="control-label" for="password"><? echo $this->translate("Password")?></label>
                 <div class="controls">
                     <input type="password" name="password" id="password"/>
                     <span class="help-inline"><?=@$ve['login']['password']?></span>
                 </div>
             </div>
-            <input type="submit" class="btn btn-inverse" value="<? echo $t->_("Login")?>"/>
+            <input type="submit" class="btn btn-inverse" value="<? echo $this->translate("Login")?>"/>
         </fieldset>
     </form>
 </div>

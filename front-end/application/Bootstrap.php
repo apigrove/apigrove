@@ -214,5 +214,36 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected function _initACL(){
         Zend_Controller_Front::getInstance()->registerPlugin(new ACLPlugin());
     }
+
+    protected function _initTranslate(){
+        // Get current registry
+        $registry = Zend_Registry::getInstance();
+        /**
+         * Set application wide source Locale
+         * This is usually your source string language;
+         * i.e. $this->translate('Hi I am an English String');
+         */
+        $locale = new Zend_Locale('en');
+
+        /**
+         * Set up and load the translations (all of them!)
+         * resources.translate.options.disableNotices = true
+         * resources.translate.options.logUntranslated = true
+         */
+        $translate = new Zend_Translate('gettext',
+            APPLICATION_PATH . DIRECTORY_SEPARATOR .'lang', 'auto',
+            array(
+                'scan' => Zend_Translate::LOCALE_FILENAME, //set to scan lang files
+                'disableNotices' => true,    // This is a very good idea!
+            )
+        );
+        /**
+         * Both of these registry keys are magical and makes
+         * ZF 1.7+ do automagical things.
+         */
+        $registry->set('Zend_Locale', $locale);
+        $registry->set('Zend_Translate', $translate);
+        return $registry;
+    }
 }
 

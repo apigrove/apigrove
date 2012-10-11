@@ -10,34 +10,28 @@
  * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
  */
 ?>
-<?$t = new Zend_Translate(
-    'gettext',  //the adapter
-    APPLICATION_PATH.'/lang', //where the lang files will be stored
-    'auto',  //set to auto include .mo files
-    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
-);?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title><? echo $t->_("Whoops")?></title>
+  <title><? echo $this->translate("Whoops")?></title>
 </head>
 <body>
-  <h1><? echo $t->_("An error occurred")?></h1>
+  <h1><? echo $this->translate("An error occurred")?></h1>
   <h2><?php echo $this->message ?></h2>
 
   <?php if (isset($this->exception)): ?>
   
-  <h3><? echo $t->_("Exception information")?>:</h3>
+  <h3><? echo $this->translate("Exception information")?>:</h3>
   <p>
-      <b><? echo $t->_("Message")?>:</b> <?php echo $this->exception->getMessage() ?>
+      <b><? echo $this->translate("Message")?>:</b> <?php echo $this->exception->getMessage() ?>
   </p>
 
-  <h3><? echo $t->_("Stack trace")?>:</h3>
+  <h3><? echo $this->translate("Stack trace")?>:</h3>
   <pre><?php echo $this->exception->getTraceAsString() ?>
   </pre>
 
-  <h3><? echo $t->_("Request Parameters")?>:</h3>
+  <h3><? echo $this->translate("Request Parameters")?>:</h3>
   <pre><?php echo $this->escape(var_export($this->request->getParams(), true)) ?>
   </pre>
 

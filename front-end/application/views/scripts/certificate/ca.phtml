@@ -8,23 +8,17 @@ $id = $ca->getId();
 if (!isset($this->isNew)) { $this->isNew = empty($id); }
 $formAction = $this->isNew ? "/certificate/ca/create" : "/certificate/ca/".$id;
 ?>
-<?$t = new Zend_Translate(
-    'gettext',  //the adapter
-    APPLICATION_PATH.'/lang', //where the lang files will be stored
-    'auto',  //set to auto include .mo files
-    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
-);?>
 <div class="container">
-    <h1><?php echo $this->isNew ? $t->_("Add") : $t->_("Edit"); ?> <? echo $t->_("Trusted Certificate Authority")?></h1>
+    <h1><?php echo $this->isNew ? $this->translate("Add") : $this->translate("Edit"); ?> <? echo $this->translate("Trusted Certificate Authority")?></h1>
 <? if(!empty($validationErrors['default'])):?>
     <div class="control-group error">
-        <span class="help-inline"><? echo $t->_("Server Error")?>: <?=$validationErrors['default']?></span>
+        <span class="help-inline"><? echo $this->translate("Server Error")?>: <?=$validationErrors['default']?></span>
     </div>
 <? endif; ?>
     <form class="well form-horizontal" method="POST" enctype="multipart/form-data">
         <fieldset>
             <div class="control-group">
-                <label class="control-label" for="ca_name"><? echo $t->_("Name")?></label>
+                <label class="control-label" for="ca_name"><? echo $this->translate("Name")?></label>
                 <div class="controls">
                     <input type="text" class="input-xlarge" id="ca_name" name="ca_name" value="<?php echo $ca->getDisplayName(); ?>"/>
                     <input type="hidden" class="input-xlarge" id="ca_id" name="ca_id" value="<?php echo $id ?>" />
@@ -32,14 +26,14 @@ $formAction = $this->isNew ? "/certificate/ca/create" : "/certificate/ca/".$id;
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="ca_file"><? echo $t->_("Certificate")?></label>
+                <label class="control-label" for="ca_file"><? echo $this->translate("Certificate")?></label>
                 <div class="controls">
-                    <input type="file" id="ca_file" name="ca_file" value="<? echo $t->_("Choose file")?>" <?php if (!$this->isNew) { echo 'disabled="disabled"'; } ?>/>
+                    <input type="file" id="ca_file" name="ca_file" value="<? echo $this->translate("Choose file")?>" <?php if (!$this->isNew) { echo 'disabled="disabled"'; } ?>/>
                     <span class="help-inline"><?=@$validationErrors['ca_file']?></span>
                 </div>
             </div>
             <input type="hidden" name="_faction" value="submit" />
-            <input type="submit" class="btn confirm-toggle btn-primary" value="<?php echo $this->isNew ? $t->_('Create') : $t->_('Save'); ?> <? echo $t->_("Certificate Authority")?>" />
+            <input type="submit" class="btn confirm-toggle btn-primary" value="<?php echo $this->isNew ? $this->translate('Create') : $this->translate('Save'); ?> <? echo $this->translate("Certificate Authority")?>" />
         </fieldset>
     </form>
 </div> <!-- /container -->

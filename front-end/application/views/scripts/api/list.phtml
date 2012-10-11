@@ -12,16 +12,10 @@
  */
 
 ?>
-<?$t = new Zend_Translate(
-    'gettext',  //the adapter
-    APPLICATION_PATH.'/lang', //where the lang files will be stored
-    'auto',  //set to auto include .mo files
-    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
-);?>
 <div class="container">
     <div class="hero-unit">
         <h1>APIs</h1>
-        <p><? echo $t->_("Choose an API from the list below to edit")?></p>
+        <p><? echo $this->translate("Choose an API from the list below to edit")?></p>
     </div>
     <? if(!empty($this->messages)): ?>
     <div class="control-group success">
@@ -36,8 +30,8 @@
 
         <div id="list">
             <div class="listItem">
-                <div class="item-div pull-left"><label class="item1"><strong><? echo $t->_("API Name")?></strong></label></div>
-                <div class="item-div pull-left"><span class="item2"><strong><? echo $t->_("Endpoint")?></strong></div>
+                <div class="item-div pull-left"><label class="item1"><strong><? echo $this->translate("API Name")?></strong></label></div>
+                <div class="item-div pull-left"><span class="item2"><strong><? echo $this->translate("Endpoint")?></strong></div>
                 <div class="item-div pull-left"><span class="item4"><a href="/api/create" class="btn btn-success">+</a></div>
                 <span class="clear"></span>
             </div>
@@ -61,7 +55,7 @@
                 ?>
                 <div class="item-div pull-left">
                         <span class="item5">
-                            <a href="/api/<?=$api->getId()?>/delete" class="btn btn-danger delete" id="delete-<?=$api->getId()?>"><? echo $t->_("Delete")?></a>
+                            <a href="/api/<?=$api->getId()?>/delete" class="btn btn-danger delete" id="delete-<?=$api->getId()?>"><? echo $this->translate("Delete")?></a>
                         </span>
                 </div>
             </div>
