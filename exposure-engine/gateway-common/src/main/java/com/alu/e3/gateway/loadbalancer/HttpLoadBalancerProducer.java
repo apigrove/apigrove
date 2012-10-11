@@ -18,12 +18,19 @@
  */
 package com.alu.e3.gateway.loadbalancer;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.camel.CamelExchangeException;
 import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.component.http4.HttpEndpoint;
 import org.apache.camel.component.http4.HttpProducer;
+import org.apache.camel.spi.HeaderFilterStrategy;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.params.HttpConnectionParamBean;
 import org.apache.http.params.HttpParams;
@@ -34,23 +41,62 @@ public class HttpLoadBalancerProducer extends HttpProducer {
 
 	public HttpLoadBalancerProducer(HttpEndpoint endpoint) {
 		super(endpoint);
-		// TODO Auto-generated constructor stub
 	}
 
-    protected HttpRequestBase createMethod(Exchange exchange) throws URISyntaxException, CamelExchangeException {
-    	HttpRequestBase httpRequest = super.createMethod(exchange);
-    	HttpParams params = httpRequest.getParams();
-    	
-    	Integer connectionTimeout = exchange.getProperty(ExchangeConstantKeys.E3_HTTP_CONNECTION_TIMEOUT.toString(), Integer.class);
-    	Integer socketTimeout = exchange.getProperty(ExchangeConstantKeys.E3_HTTP_SOCKET_TIMEOUT.toString(), Integer.class);
+	protected HttpRequestBase createMethod(Exchange exchange) throws URISyntaxException, CamelExchangeException {
+		HttpRequestBase httpRequest = super.createMethod(exchange);
+		HttpParams params = httpRequest.getParams();
 
-        HttpConnectionParamBean httpConnectionParamBean = new HttpConnectionParamBean(params);
-		if(connectionTimeout != null)
+		Integer connectionTimeout = exchange.getProperty(ExchangeConstantKeys.E3_HTTP_CONNECTION_TIMEOUT.toString(), Integer.class);
+		Integer socketTimeout = exchange.getProperty(ExchangeConstantKeys.E3_HTTP_SOCKET_TIMEOUT.toString(), Integer.class);
+
+		HttpConnectionParamBean httpConnectionParamBean = new HttpConnectionParamBean(params);
+		if (connectionTimeout != null)
 			httpConnectionParamBean.setConnectionTimeout(connectionTimeout);
-		if(socketTimeout != null)
+		if (socketTimeout != null)
 			httpConnectionParamBean.setSoTimeout(socketTimeout);
 
 		return httpRequest;
-    }
-    
+	}
+
+	@Override
+	protected void populateResponse(Exchange exchange, HttpRequestBase httpRequest, HttpResponse httpResponse, Message in, HeaderFilterStrategy strategy, int responseCode) throws IOException,
+			ClassNotFoundException {
+
+		Message answer = exchange.getOut();
+		
+		// propagate HTTP 'in' headers
+		// Old method: answer.setHeaders(in.getHeaders());
+		// Uses the same strategy (if any) to only add 'technical' in.headers to answer
+		// (The default used strategy is camel technical header aware)
+		if (strategy != null) {
+			Map<String, Object> headers = in.getHeaders();
+			Set<String> headersSet = headers.keySet();
+			for (String inHeader : headersSet) {
+				Object value = headers.get(inHeader);
+				if(strategy.applyFilterToCamelHeaders(inHeader, value, exchange)) {
+					answer.setHeader(inHeader, value);
+				}
+			}
+		}
+
+		answer.setHeader(Exchange.HTTP_RESPONSE_CODE, responseCode);
+		answer.setBody(extractResponseBody(httpRequest, httpResponse, exchange));
+
+		// propagate HTTP response headers
+		if (strategy != null) {
+			Header[] headers = httpResponse.getAllHeaders();
+			for (Header header : headers) {
+				String name = header.getName();
+				String value = header.getValue();
+				if (name.toLowerCase().equals("content-type")) {
+					name = Exchange.CONTENT_TYPE;
+				}
+				if (!strategy.applyFilterToExternalHeaders(name, value, exchange)) {
+					answer.setHeader(name, value);
+				}
+			}
+		}
+	}
+
 }
