@@ -18,7 +18,7 @@
  */
 package com.alu.e3.topology;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -42,12 +42,13 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 	private ITopologyClient topologyClient;
 	private IHealthCheckFactory healthCheckFactory;
 		
-	private List<Instance> upGateways = new LinkedList<Instance>();
-	private List<Instance> upGatewaysActive = new LinkedList<Instance>();
-	private List<Instance> downGateways = new LinkedList<Instance>();
+	private List<Instance> upGateways = new ArrayList<Instance>();
+	private List<Instance> upGatewaysActive = new ArrayList<Instance>();
+	private List<Instance> downGateways = new ArrayList<Instance>();
 
-	private List<Instance> upSpeakers = new LinkedList<Instance>();
-	private List<Instance> upSpeakersActive = new LinkedList<Instance>();
+	private List<Instance> upSpeakers = new ArrayList<Instance>();
+	private List<Instance> upSpeakersActive = new ArrayList<Instance>();
+	private List<Instance> downSpeakers = new ArrayList<Instance>();
 	
 	private int pollingInterval = E3Constant.HEALTH_CHECK_POLLING_INTERVAL;
 	
@@ -92,21 +93,22 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 			if (nodeList != null) {
 				upGateways.addAll(nodeList);
 			}
-
+			
 			nodeList = topologyClient.getAllInstancesOfType(E3Constant.E3GATEWAY_ACTIVE);
 			if (nodeList != null) {
 				upGatewaysActive.addAll(nodeList);
 			}
-
+			
 			nodeList = topologyClient.getAllInstancesOfType(E3Constant.E3SPEAKER);
 			if (nodeList != null) {
 				upSpeakers.addAll(nodeList);
 			}
-
+			
 			nodeList = topologyClient.getAllInstancesOfType(E3Constant.E3SPEAKER_ACTIVE);
 			if (nodeList != null) {
 				upSpeakersActive.addAll(nodeList);
 			}
+			
 		}
 		
 		// start the watching of nodes
@@ -121,10 +123,14 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 	 * Stops watching the nodes
 	 */
 	public void destroy() {
-		logger.debug("Stopping TopologyWatcher ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Stopping TopologyWatcher ...");
+		}
 		setRunning(false);
 
-		logger.debug("Clearing TopologyWatcher list ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Clearing TopologyWatcher list ...");
+		}
 		synchronized (this) {
 			upGateways.clear();
 			upGatewaysActive.clear();
@@ -132,16 +138,22 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 			upSpeakersActive.clear();
 		}
 
-		logger.debug("Clearing TopologyWatcher listeners ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Clearing TopologyWatcher listeners ...");
+		}
 		topologyClient.removeInstanceListener(this);
 
-		logger.debug("TopologyWatcher waiting for its local thread (join) ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("TopologyWatcher waiting for its local thread (join) ...");
+		}
 		try {
 			localThread.join();
 		} catch (InterruptedException e) {
 			logger.error("Unable to join TopologyWatcher local thread", e);
 		}
-		logger.debug("TopologyWatcher destroyed.");
+		if(logger.isDebugEnabled()) {
+			logger.debug("TopologyWatcher destroyed.");
+		}
 	}
 
 	/**
@@ -164,9 +176,17 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 					// if an active speaker is down, it is removed from the list of E3SPEAKER_ACTIVE in the TopologyClient
 					checkUpNodes(upSpeakersActive, null, E3Constant.E3SPEAKER_ACTIVE);
 					
+					// check the speakers which are up
+					// if a speaker is down, it is removed from the list of E3SPEAKER in the TopologyClient
+					checkUpNodes(upSpeakers, downSpeakers, E3Constant.E3SPEAKER);
+					
 					// check the gateways which are down
 					// if a gateway becomes up, it is added to the list of E3GATEWAY in the TopologyClient
 					checkDownNodes(upGateways, downGateways, E3Constant.E3GATEWAY);
+					
+					// check the speakers which are down
+					// if a speaker becomes up, it is added to the list of E3SPEAKER in the TopologyClient
+					checkDownNodes(upSpeakers, downSpeakers, E3Constant.E3SPEAKER);
 					
 					// check the gateways that are becoming active
 					// if a gateway becomes active, it is added to the list of E3GATEWAY_ACTIVE in the TopologyClient
@@ -174,7 +194,7 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 					
 					// check if there's a new speaker
 					// if a speaker becomes active, it is added to the list of E3SPEAKER_ACTIVE in the TopologyClient
-					checkForNewSpeakers();
+					checkForNewElectedSpeakers();
 				}
 				Thread.sleep(pollingInterval);
 			} catch (InterruptedException e) {
@@ -212,6 +232,8 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 			Instance node = nodes[i];
 			
 			if (!upGatewaysActive.contains(node) && checkIfUp(getIPWithArea(node), E3Constant.E3GATEWAY_ACTIVE)) {
+				logger.info("A gateway became active: {}", node);
+				
 				upGatewaysActive.add(node); // keep the node
 				Instance newNode = new Instance(node);
 				newNode.setType(E3Constant.E3GATEWAY_ACTIVE);
@@ -223,7 +245,7 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 	/**
 	 * Check if a new speaker is up
 	 */
-	private void checkForNewSpeakers() {
+	private void checkForNewElectedSpeakers() {
 		// iterate over the speakers and check if the Speaker heart beat is up 
 		Instance[] nodes = new Instance[0];
 		
@@ -232,6 +254,8 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 		for (int i = 0; i < nodes.length; i++) {
 			Instance node = nodes[i];
 			if (!upSpeakersActive.contains(node) && checkIfUp(getIPWithArea(node), E3Constant.E3SPEAKER_ACTIVE)) {
+				logger.info("A speaker became elected: {}", node);
+				
 				upSpeakersActive.add(node); // keep the node
 				Instance newNode = new Instance(node);
 				newNode.setType(E3Constant.E3SPEAKER_ACTIVE);
@@ -251,7 +275,8 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 		for (int i = 0; i < nodes.length; i++) {
 			Instance node = nodes[i];
 			if (!checkIfUp(getIPWithArea(node), type)) {
-
+				logger.info("A node became down: {}", node);
+				
 				upNodes.remove(node);
 				
 				if (downNodes != null) {
@@ -276,6 +301,7 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 		for (int i = 0; i < nodes.length; i++) {
 			Instance node = nodes[i];
 			if (checkIfUp(getIPWithArea(node), type)) {
+				logger.info("A node became up: {}", node);
 
 				downNodes.remove(node);
 				upNodes.add(node);
@@ -291,7 +317,7 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 	private boolean checkIfUp(String node, String type) {
 		
 		if (healthCheckFactory == null) {
-			// TODO log error
+			logger.warn("No health check factory available for now");
 			return false;
 		}
 		
@@ -300,6 +326,12 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 		if (E3Constant.E3GATEWAY.equals(type)) {
 			instanceType = IHealthCheckFactory.GATEWAY_INTERNAL_TYPE;
 		}
+		else if (E3Constant.E3SPEAKER.equals(type)) {
+			// While SPEAKER feature does not exist without a GATEWAY
+			// it hasn't its own INTERNAL_TYPE port
+			// So, let's check a SPEAKER existence when a GATEWAY is Active (and provisioned)
+			instanceType = IHealthCheckFactory.GATEWAY_TYPE;
+		}
 		else if (E3Constant.E3GATEWAY_ACTIVE.equals(type)) {
 			instanceType = IHealthCheckFactory.GATEWAY_TYPE;
 		}
@@ -307,7 +339,7 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 			instanceType = IHealthCheckFactory.SPEAKER_TYPE;
 		}
 		else {
-			// TODO log error
+			logger.warn("Unknown type: {} while creating HealthCheckService", type);
 			return false;
 		}
 		
@@ -318,11 +350,11 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 		return healthCheckService.check(node);
 	}
 
-	private boolean checkIfExist(Instance instance, List<Instance> list)
+	private boolean isAlreadyRegistered(Instance instance, List<Instance> list)
 	{
 		for (Instance i : list)
 		{
-			if (i.getName().equals(instance.getName()) )
+			if (i.getName().equals(instance.getName()))
 			{
 				return true;
 			}
@@ -336,26 +368,40 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 	@Override
 	public synchronized void instanceAdded(InstanceEvent event) {
 		if (E3Constant.E3GATEWAY.equals(event.getType())) {
-			if (!checkIfExist(event.getInstance(), upGateways))
+			if (isAlreadyRegistered(event.getInstance(), downGateways) || isAlreadyRegistered(event.getInstance(), upGateways))
 			{
-				upGateways.add(event.getInstance());
+				return;
 			}
-			logger.debug("E3GATEWAY added: {}", event.getInstance());
+			
+			upGateways.add(event.getInstance());
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("E3GATEWAY added: {}", event.getInstance());
+			}
 		}
 		
 		else if (E3Constant.E3SPEAKER.equals(event.getType())) {
-			if (!checkIfExist(event.getInstance(), upSpeakers))
+			if (isAlreadyRegistered(event.getInstance(), downSpeakers) || isAlreadyRegistered(event.getInstance(), upSpeakers))
 			{
-				upSpeakers.add(event.getInstance());
+				return;
 			}
-			logger.debug("E3SPEAKER added: {}", event.getInstance());
+			
+			upSpeakers.add(event.getInstance());
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("E3SPEAKER added: {}", event.getInstance());
+			}
 		}
 		
 		else if (E3Constant.E3GATEWAY_ACTIVE.equals(event.getType())) {
-			logger.debug("E3GATEWAY_ACTIVE added: {}", event.getInstance());
+			if(logger.isDebugEnabled()) {
+				logger.debug("E3GATEWAY_ACTIVE added: {}", event.getInstance());
+			}
 		}
 		else if (E3Constant.E3SPEAKER_ACTIVE.equals(event.getType())) {
-			logger.debug("E3SPEAKER_ACTIVE added: {}", event.getInstance());
+			if(logger.isDebugEnabled()) {
+				logger.debug("E3SPEAKER_ACTIVE added: {}", event.getInstance());
+			}
 		}
 	}
 
@@ -365,46 +411,27 @@ public class TopologyWatcher implements Runnable, IInstanceListener {
 	@Override
 	public synchronized void instanceRemoved(InstanceEvent event) {
 		if (E3Constant.E3GATEWAY.equals(event.getType())) {
-			upGateways.remove(event.getInstance());
-			logger.debug("E3GATEWAY removed: {}", event.getInstance());
+			//upGateways.remove(event.getInstance());
+			if(logger.isDebugEnabled()) {
+				logger.debug("E3GATEWAY removed: {}", event.getInstance());
+			}
 		}
 		else if (E3Constant.E3SPEAKER.equals(event.getType())) {
-			upSpeakers.remove(event.getInstance());
-			logger.debug("E3SPEAKER removed: {}", event.getInstance());
+			//upSpeakers.remove(event.getInstance());
+			if(logger.isDebugEnabled()) {
+				logger.debug("E3SPEAKER removed: {}", event.getInstance());
+			}
 		}
 		else if (E3Constant.E3GATEWAY_ACTIVE.equals(event.getType())) {
-			logger.debug("E3GATEWAY_ACTIVE removed: {}", event.getInstance());
+			if(logger.isDebugEnabled()) {
+				logger.debug("E3GATEWAY_ACTIVE removed: {}", event.getInstance());
+			}
 		}
 		else if (E3Constant.E3SPEAKER_ACTIVE.equals(event.getType())) {
-			logger.debug("E3SPEAKER_ACTIVE removed: {}", event.getInstance());
+			if(logger.isDebugEnabled()) {
+				logger.debug("E3SPEAKER_ACTIVE removed: {}", event.getInstance());
+			}
 		}
-	}
-
-	/**
-	 * General Setters
-	 */
-	public void setUpGateways(List<Instance> upGateways) {
-		synchronized (this) {
-			this.upGateways = upGateways;
-		}
-	}
-
-	public void setUpGatewaysActive(List<Instance> upGatewaysActive) {
-		this.upGatewaysActive = upGatewaysActive;
-	}
-
-	public void setDownGateways(List<Instance> downGateways) {
-		this.downGateways = downGateways;
-	}
-
-	public void setUpSpeakers(List<Instance> upSpeakers) {
-		synchronized (this) {
-			this.upSpeakers = upSpeakers;
-		}
-	}
-
-	public void setUpSpeakersActive(List<Instance> upSpeakersActive) {
-		this.upSpeakersActive = upSpeakersActive;
 	}
 
 	public void setRunning(boolean running) {

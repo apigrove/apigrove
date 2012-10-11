@@ -42,6 +42,9 @@ public interface ICacheTable<K, V> {
 	
 	void addEntryListener(IEntryListener<K, V> listener);
 	void removeEntryListener(IEntryListener<K, V> listener);
+	
+	void addEntryListener(IEntryListener<K,V> listener, K key);
+	void removeEntryListener(IEntryListener<K,V> listener, K key);
 
 	// populate a slave instance with the master content 
 	void reloadSlave(String ip);

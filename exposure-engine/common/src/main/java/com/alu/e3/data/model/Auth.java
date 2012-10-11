@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alu.e3.data.model.enumeration.StatusType;
 import com.alu.e3.data.model.sub.AuthIds;
 import com.alu.e3.data.model.sub.HeaderTransformation;
 import com.alu.e3.data.model.sub.TdrGenerationRule;
@@ -36,7 +37,8 @@ public class Auth implements Serializable {
 	private static final long serialVersionUID = 4591944093429136320L;
 
 	private String id;
-
+	private StatusType status;
+	
 	private List<AuthIds> policyContexts;
 
 	private String apiContext;
@@ -54,6 +56,7 @@ public class Auth implements Serializable {
 	private byte[] wssePassword;
 	private WSSEAuthPassType passwordType;
 
+
 	public String getId() {
 		return id;
 	}
@@ -61,6 +64,13 @@ public class Auth implements Serializable {
 		this.id = id;
 	}
 
+	public StatusType getStatus() {
+		return status;
+	}
+	public void setStatus(StatusType status) {
+		this.status = status;
+	}
+	
 	public List<AuthIds> getPolicyContexts() {
 		if (policyContexts==null) policyContexts = new ArrayList<AuthIds>();
 		return policyContexts;

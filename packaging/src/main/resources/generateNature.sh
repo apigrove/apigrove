@@ -245,9 +245,9 @@ if [ $IS_MANAGER = 1 ] ; then
 	fi	
 fi
 
-iptables -A E3-Firewall-INPUT -p tcp --dport 8888 -j ACCEPT $SOURCE_RESTICT
-iptables -A E3-Firewall-INPUT -p tcp --dport 8889 -j ACCEPT $SOURCE_RESTICT
-iptables -A E3-Firewall-INPUT -p tcp --dport 8988 -j ACCEPT $SOURCE_RESTICT
+iptables -A E3-Firewall-INPUT -p tcp --dport 8888 -j ACCEPT
+iptables -A E3-Firewall-INPUT -p tcp --dport 8889 -j ACCEPT
+iptables -A E3-Firewall-INPUT -p tcp --dport 8988 -j ACCEPT
 
 if [ ! $IS_E3_AIB ] ; then
     iptables -A E3-Firewall-INPUT -p tcp --dport 8082 -j ACCEPT $SOURCE_RESTICT

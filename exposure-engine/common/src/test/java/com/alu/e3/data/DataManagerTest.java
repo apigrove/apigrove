@@ -510,6 +510,7 @@ public class DataManagerTest {
 		// Add a new Auth
 		Auth auth = new Auth();
 		auth.setId("id2");
+		auth.setStatus(StatusType.ACTIVE);
 		auth.setAuthDetail(new AuthDetail());
 		auth.getAuthDetail().setType(NBAuthType.AUTHKEY);
 		auth.getAuthDetail().setAuthKeyValue("authKey10");
@@ -567,6 +568,7 @@ public class DataManagerTest {
 		// Add a new Auth
 		Auth auth = new Auth();
 		auth.setId("id52");
+		auth.setStatus(StatusType.ACTIVE);
 		auth.setAuthDetail(new AuthDetail());
 		auth.getAuthDetail().setType(NBAuthType.AUTHKEY);
 		auth.getAuthDetail().setAuthKeyValue("authKey20");
@@ -604,6 +606,7 @@ public class DataManagerTest {
 		// Add a new Auth
 		Auth auth = new Auth();
 		auth.setId("id62");
+		auth.setStatus(StatusType.ACTIVE);
 		auth.setAuthDetail(new AuthDetail());
 		auth.getAuthDetail().setType(NBAuthType.AUTHKEY);
 		auth.getAuthDetail().setAuthKeyValue("authKey30");
@@ -660,8 +663,8 @@ public class DataManagerTest {
 		// Add a new Auth
 		Auth auth = new Auth();
 		auth.setId("id31");
+		auth.setStatus(StatusType.ACTIVE);
 		AuthDetail detail = new AuthDetail();
-		detail.setStatus(StatusType.ACTIVE);
 		auth.setAuthDetail(detail);
 		auth.getAuthDetail().setType(NBAuthType.AUTHKEY);
 		auth.getAuthDetail().setAuthKeyValue("authKey31");
@@ -670,8 +673,8 @@ public class DataManagerTest {
 		// Add a new Auth
 		Auth auth2 = new Auth();
 		auth2.setId("id32");
+		auth2.setStatus(StatusType.ACTIVE);
 		AuthDetail detail2 = new AuthDetail();
-		detail2.setStatus(StatusType.ACTIVE);
 		auth2.setAuthDetail(detail2);
 		auth2.getAuthDetail().setType(NBAuthType.AUTHKEY);
 		auth2.getAuthDetail().setAuthKeyValue("authKey32");
@@ -680,8 +683,8 @@ public class DataManagerTest {
 		// Add a new Auth
 		Auth auth3 = new Auth();
 		auth3.setId("id33");
+		auth3.setStatus(StatusType.ACTIVE);
 		AuthDetail detail3 = new AuthDetail();
-		detail3.setStatus(StatusType.ACTIVE);
 		auth3.setAuthDetail(detail3);
 		auth3.getAuthDetail().setType(NBAuthType.AUTHKEY);
 		auth3.getAuthDetail().setAuthKeyValue("authKey33");
@@ -690,8 +693,8 @@ public class DataManagerTest {
 		// Add a new Auth
 		Auth auth4 = new Auth();
 		auth4.setId("id34");
+		auth4.setStatus(StatusType.ACTIVE);
 		AuthDetail detail4 = new AuthDetail();
-		detail4.setStatus(StatusType.ACTIVE);
 		auth4.setAuthDetail(detail4);
 		auth4.getAuthDetail().setType(NBAuthType.BASIC);
 		auth4.getAuthDetail().setUsername("user1");
@@ -852,6 +855,7 @@ public class DataManagerTest {
 		// Add a new Auth
 		Auth auth = new Auth();
 		auth.setId("authId1");
+		auth.setStatus(StatusType.ACTIVE);
 		auth.setAuthDetail(new AuthDetail());
 		auth.getAuthDetail().setType(NBAuthType.AUTHKEY);
 		auth.getAuthDetail().setAuthKeyValue("authKey");
@@ -910,6 +914,7 @@ public class DataManagerTest {
 		// Prepare Auths
 		Auth auth = new Auth();
 		auth.setId("authId1");
+		auth.setStatus(StatusType.ACTIVE);
 		auth.setAuthDetail(new AuthDetail());
 		auth.getAuthDetail().setType(NBAuthType.AUTHKEY);
 		auth.getAuthDetail().setAuthKeyValue("authKey1");
@@ -917,6 +922,7 @@ public class DataManagerTest {
 
 		Auth auth2 = new Auth();
 		auth2.setId("authId2");
+		auth2.setStatus(StatusType.ACTIVE);
 		auth2.setAuthDetail(new AuthDetail());
 		auth2.getAuthDetail().setType(NBAuthType.AUTHKEY);
 		auth2.getAuthDetail().setAuthKeyValue("authKey2");
@@ -1003,6 +1009,7 @@ public class DataManagerTest {
 		// Prepare Auths
 		Auth auth = new Auth();
 		auth.setId("authId1");
+		auth.setStatus(StatusType.ACTIVE);
 		auth.setAuthDetail(new AuthDetail());
 		auth.getAuthDetail().setType(NBAuthType.AUTHKEY);
 		auth.getAuthDetail().setAuthKeyValue("authKey1");
@@ -1010,6 +1017,7 @@ public class DataManagerTest {
 
 		Auth auth2 = new Auth();
 		auth2.setId("authId2");
+		auth2.setStatus(StatusType.ACTIVE);
 		auth2.setAuthDetail(new AuthDetail());
 		auth2.getAuthDetail().setType(NBAuthType.AUTHKEY);
 		auth2.getAuthDetail().setAuthKeyValue("authKey2");
@@ -1017,6 +1025,7 @@ public class DataManagerTest {
 
 		Auth auth3 = new Auth();
 		auth3.setId("authId3");
+		auth3.setStatus(StatusType.ACTIVE);
 		auth3.setAuthDetail(new AuthDetail());
 		auth3.getAuthDetail().setType(NBAuthType.AUTHKEY);
 		auth3.getAuthDetail().setAuthKeyValue("authKey3");
@@ -1161,8 +1170,8 @@ public class DataManagerTest {
 		// Add a new Auth
 		Auth auth = new Auth();
 		auth.setId("id31");
+		auth.setStatus(StatusType.ACTIVE);
 		AuthDetail detail = new AuthDetail();
-		detail.setStatus(StatusType.ACTIVE);
 		auth.setAuthDetail(detail);
 		auth.getAuthDetail().setType(NBAuthType.AUTHKEY);
 		auth.getAuthDetail().setAuthKeyValue("authKey31");
@@ -1171,6 +1180,7 @@ public class DataManagerTest {
 		// Add a new Auth
 		Auth auth2 = new Auth();
 		auth2.setId("id32");
+		auth2.setStatus(StatusType.ACTIVE);
 		auth2.setAuthDetail(new AuthDetail());
 		auth2.getAuthDetail().setType(NBAuthType.BASIC);
 		auth2.getAuthDetail().setUsername("username");
@@ -1180,6 +1190,7 @@ public class DataManagerTest {
 		// Add a new Auth
 		Auth auth3 = new Auth();
 		auth3.setId("id33");
+		auth3.setStatus(StatusType.ACTIVE);
 		auth3.setAuthDetail(new AuthDetail());
 		auth3.getAuthDetail().setType(NBAuthType.IP_WHITE_LIST);
 		auth3.getAuthDetail().getWhiteListedIps().add("12.23.45.56");

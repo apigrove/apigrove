@@ -33,7 +33,9 @@ public class HeaderTransResponseProcessor implements Processor {
 		try{
 			HeaderTransHelper.applyHeaderTransforms(HeaderTransformationType.RESPONSE, exchange);
 		} catch(Exception e){
-			logger.error(e.getMessage(), e);
+			if (logger.isErrorEnabled()) {
+				logger.error(e.getMessage(), e);
+			}
 		}
 	}
 }

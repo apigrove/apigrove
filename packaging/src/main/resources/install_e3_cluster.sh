@@ -13,10 +13,18 @@ fi
 
 PATH_TO_TAR_GZ=$1
 
-if [ ! -e $PATH_TO_TAR_GZ ] ; then
-    echo "File $PATH_TO_TAR_GZ does not exist"
-    exit 1
+if [[ $PATH_TO_TAR_GZ = /* ]]
+then
+	if [ ! -e $PATH_TO_TAR_GZ ]
+	then
+		echo "File $PATH_TO_TAR_GZ does not exist"
+		exit 1
+	fi
+else
+        echo "Error: Please provide the absolute path to the archive"
+        exit 1
 fi
+
 
 # Install manager
 sh $DIR/install.sh manager
@@ -100,7 +108,7 @@ credentials64=`printf "$credentials"|base64`
 curl -k --header "Authorization: Basic $credentials64" -s -o result.log -w "%{http_code}" $HTTP_SCHEME://localhost:$PORT/cxf/e3/system-manager/install/$TAR_MODULE_PATH > log.log
 
 result=`cat log.log`
-if [[ $result != *200* ]]; then
+if [[ "$result" != *200* ]]; then
   HTTP_CODE_RETURN=1
 fi
 
@@ -109,12 +117,17 @@ cat result.log
 echo " WebService response end "
 
 if ! [ $HTTP_CODE_RETURN = 0 ] ; then
-	exit $HTTP_CODE_RETURN
+        echo "Install failed"
+        exit $HTTP_CODE_RETURN
 fi
+
 
 chmod 600 $E3_HOME/topology.xml
 if [ $? != 0 ]
 then
-    echo "unable to chmod the topology in E3 home."
+    echo "unable to chmod the topology in E3 home, exiting"
     exit 1
 fi
+
+echo "Install successful"
+

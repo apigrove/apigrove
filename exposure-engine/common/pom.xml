@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>exposure-engine</artifactId>
 		<groupId>com.alu.e3</groupId>
-		<version>1.0.1</version>
+		<version>0.0.0.2962</version>
 		<relativePath>..</relativePath>
 	</parent>
 	

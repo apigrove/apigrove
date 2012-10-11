@@ -24,7 +24,6 @@ public interface ICacheManager {
 
 	<K, V> ICacheTable<K, V> createTable(String name, boolean isReplicated, Map<String, String> properties);
 	<K, V> ICacheTable<K, V> createOrGetTable(String name, boolean isReplicated, Map<String, String> properties);
-	<K, V extends IAckData> ICacheTable<K, V> createAckTable(String name, boolean isReplicated, Map<String, String> properties);
 	
 	<E> ICacheQueue<E> createQueue(String name, Map<String, String> properties);
 	<E> ICacheQueue<E> getOrCreateQueue(String name, Map<String, String> properties);

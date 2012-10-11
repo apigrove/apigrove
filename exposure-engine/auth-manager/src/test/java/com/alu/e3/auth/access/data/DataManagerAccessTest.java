@@ -41,11 +41,13 @@ public class DataManagerAccessTest {
 		MockDataManager mockDataManager = new MockDataManager();
 		dataAccess.setDataManager(mockDataManager);
 		
-		// no API found
-		assertNull(dataAccess.checkAllowed("api").getAuthIdentity());
-		
 		Api api = new Api();
+		api.setId("api");
 		api.setStatus(StatusType.ACTIVE);
+		
+		// no API found
+		assertNull(dataAccess.checkAllowed(api).getAuthIdentity());
+		
 		mockDataManager.setApi(api);
 		
 		// No policy found for the API
@@ -55,7 +57,7 @@ public class DataManagerAccessTest {
 		mockDataManager.getCallDescriptors().add(new CallDescriptor(policy, 1, 2));
 		
 		
-		AuthReport authReport = dataAccess.checkAllowed("api");
+		AuthReport authReport = dataAccess.checkAllowed(api);
 		AuthIdentity authIdentity = authReport.getAuthIdentity();
 		assertNotNull(authIdentity);
 		
@@ -73,39 +75,41 @@ public class DataManagerAccessTest {
 		dataAccess.setDataManager(mockDataManager);
 		
 		Api api = new Api();
+		api.setId("api");
 		api.setStatus(StatusType.ACTIVE);
 		mockDataManager.setApi(api);
 		
 		// no auth found
-		assertNull(dataAccess.checkAllowed("authKey", "api").getAuthIdentity());
-		assertNull(dataAccess.checkAllowed("username", "password", "api").getAuthIdentity());
-		assertNull(dataAccess.checkAllowed(new CanonicalizedIpAddress("127.0.0.1"), "api").getAuthIdentity());
+		assertNull(dataAccess.checkAllowed(api, "authKey").getAuthIdentity());
+		assertNull(dataAccess.checkAllowed(api, "username", "password").getAuthIdentity());
+		assertNull(dataAccess.checkAllowed(api, new CanonicalizedIpAddress("127.0.0.1")).getAuthIdentity());
 		
 		Auth auth = new Auth();
+		auth.setStatus(StatusType.ACTIVE);
 		mockDataManager.setAuth(auth);
 		
 		// No policy found
-		assertNull(dataAccess.checkAllowed("authKey", "api").getAuthIdentity());
-		assertNull(dataAccess.checkAllowed("username", "password", "api").getAuthIdentity());
-		assertNull(dataAccess.checkAllowed(new CanonicalizedIpAddress("127.0.0.1"), "api").getAuthIdentity());
+		assertNull(dataAccess.checkAllowed(api, "authKey").getAuthIdentity());
+		assertNull(dataAccess.checkAllowed(api, "username", "password").getAuthIdentity());
+		assertNull(dataAccess.checkAllowed(api, new CanonicalizedIpAddress("127.0.0.1")).getAuthIdentity());
 		
 		Policy policy = new Policy();
 		mockDataManager.getCallDescriptors().add(new CallDescriptor(policy, 1, 2));
 		
-		AuthIdentity authIdentity = dataAccess.checkAllowed("authKey", "api").getAuthIdentity();
+		AuthIdentity authIdentity = dataAccess.checkAllowed(api, "authKey").getAuthIdentity();
 		assertNotNull(authIdentity);		
 		assertNotNull(authIdentity.getApi() == api); // compare memory reference
 		assertNotNull(authIdentity.getAuth() == auth); // compare memory reference
 		assertNotNull(authIdentity.getCallDescriptors().get(0).getPolicy() == policy); // compare memory reference
 
-		authIdentity = dataAccess.checkAllowed("username", "password", "api").getAuthIdentity();
+		authIdentity = dataAccess.checkAllowed(api, "username", "password").getAuthIdentity();
 		assertNotNull(authIdentity);		
 		assertNotNull(authIdentity.getApi() == api); // compare memory reference
 		assertNotNull(authIdentity.getAuth() == auth); // compare memory reference
 		assertNotNull(authIdentity.getCallDescriptors().get(0).getPolicy() == policy); // compare memory reference
 		
 		
-		authIdentity = dataAccess.checkAllowed(new CanonicalizedIpAddress("127.0.0.1"), "api").getAuthIdentity();
+		authIdentity = dataAccess.checkAllowed(api, new CanonicalizedIpAddress("127.0.0.1")).getAuthIdentity();
 		assertNotNull(authIdentity);	
 		assertNotNull(authIdentity.getApi() == api); // compare memory reference
 		assertNotNull(authIdentity.getAuth() == auth); // compare memory reference

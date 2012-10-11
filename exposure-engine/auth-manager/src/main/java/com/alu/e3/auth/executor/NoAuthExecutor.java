@@ -26,25 +26,26 @@ import com.alu.e3.common.camel.AuthReport;
 import com.alu.e3.common.logging.Category;
 import com.alu.e3.common.logging.CategoryLogger;
 import com.alu.e3.common.logging.CategoryLoggerFactory;
+import com.alu.e3.data.model.Api;
 import com.alu.e3.gateway.common.camel.exception.GatewayExceptionCode;
 
 public class NoAuthExecutor implements IAuthExecutor {
 
 	private static final CategoryLogger logger = CategoryLoggerFactory.getLogger(NoAuthExecutor.class, Category.AUTH);
 	
-	private String apiId;
 	private IAuthDataAccess dataAccess;
 	
-	public NoAuthExecutor(String apiId, IAuthDataAccess dataAccess) {
-		this.apiId = apiId;
+	public NoAuthExecutor(IAuthDataAccess dataAccess) {
 		this.dataAccess = dataAccess;
 	}
 	
 	
 	@Override
-	public AuthReport checkAllowed(Exchange exchange) {
-		logger.debug("Check if the API allows NoAuth");
-		return  this.dataAccess.checkAllowed(apiId);
+	public AuthReport checkAllowed(Exchange exchange, Api api) {
+		if(logger.isDebugEnabled()) {
+			logger.debug("Check if the API allows NoAuth");
+		}
+		return  this.dataAccess.checkAllowed(api);
 	}
 
 	@Override

@@ -57,15 +57,39 @@ public class DummyTopologyClient implements ITopologyClient {
 	@Override
 	public void addInstance(Instance inst) {
 		if (inst.getType().equals(E3Constant.E3GATEWAY)) {
+			for (Instance i : gateways)
+			{
+				if (instanceEquals(i, inst)) {
+					return;
+				}
+			}
 			gateways.add(inst);
 		}
 		else if (inst.getType().equals(E3Constant.E3GATEWAY_ACTIVE)) {
+			for (Instance i : gatewaysActive)
+			{
+				if (instanceEquals(i, inst)) {
+					return;
+				}
+			}
 			gatewaysActive.add(inst);
 		}
 		else if (inst.getType().equals(E3Constant.E3SPEAKER)) {
+			for (Instance i : speakers)
+			{
+				if (instanceEquals(i, inst)) {
+					return;
+				}
+			}
 			speakers.add(inst);
 		}
 		else if (inst.getType().equals(E3Constant.E3SPEAKER_ACTIVE)) {
+			for (Instance i : speakersActive)
+			{
+				if (instanceEquals(i, inst)) {
+					return;
+				}
+			}
 			speakersActive.add(inst);
 		}
 		
@@ -96,7 +120,7 @@ public class DummyTopologyClient implements ITopologyClient {
 		while (itr.hasNext()) {
 			if (itr.next().getInternalIP().equals(inst.getInternalIP())) {
 				itr.remove();
-		fireInstanceRemoved(new InstanceEvent(inst));
+					fireInstanceRemoved(new InstanceEvent(inst));
 				return true;
 			}
 		}
@@ -243,6 +267,27 @@ public class DummyTopologyClient implements ITopologyClient {
 	public Instance whoAmI(String type) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void reloadInstanceTopology(Instance instance) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void reloadInstanceTopology(String ip) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/**
+	 * Tells if two {@link Instance} object are in fact same
+	 * @param a the first instance to compare
+	 * @param b the second instance to compare
+	 * @return true if a and b are in fact the same
+	 */
+	public boolean instanceEquals(final Instance a, final Instance b) {
+		return a != null && b != null && a.getName() != null && a.getName().equals(b.getName()); 
 	}
 
 }

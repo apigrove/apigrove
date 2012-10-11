@@ -14,6 +14,7 @@
 	<context:annotation-config />
 
 	<!-- Imports in this camel context, OSGi references of CamelComponent factories -->
+	<osgi:reference id="ipWhiteList" interface="org.apache.camel.Component" bean-name="ipWhiteList" />
 	<osgi:reference id="auth" interface="org.apache.camel.Component" bean-name="auth" />
 	<osgi:reference id="rateLimitProcessor" interface="org.apache.camel.Processor" bean-name="rateLimitProcessor" />
 	<osgi:reference id="validator" interface="org.apache.camel.Component" bean-name="validator" />
@@ -118,13 +119,13 @@
     <route id="API_${exchange.properties.E3_API_ID_ENCODED}">
     <#assign endpoint=exchange.properties.E3_REQUEST_PAYLOAD.endpoint?replace('^/*', '', 'fr') />
     <#if exchange.properties.E3_REQUEST_PAYLOAD.https.enabled>
-      	<from uri="ssljetty:https://0.0.0.0:25101/${endpoint}?matchOnUriPrefix=true"/>
+      	<from uri="ssljetty:https://0.0.0.0:25101/${endpoint}?matchOnUriPrefix=true&amp;enableMultipartFilter=false"/>
       	
       	<#if exchange.properties.E3_REQUEST_PAYLOAD.https.tlsMode.value() == "2Way">
       	<to uri="clientCertificateValidator"/>
       	</#if>
     <#else>
-    	<from uri="jetty:http://0.0.0.0:25100/${endpoint}?matchOnUriPrefix=true"/>
+    	<from uri="jetty:http://0.0.0.0:25100/${endpoint}?matchOnUriPrefix=true&amp;enableMultipartFilter=false"/>
    	</#if>
 	              
 	  <#if tdrEnabled>
@@ -137,6 +138,11 @@
       </#if>
       
       
+      <#if exchange.properties.E3_REQUEST_PAYLOAD.ipWhiteList??>
+	      <#assign ipWhiteListParams = "apiId="+exchange.properties.E3_API_ID>
+	      <to uri="ipWhiteList:check?${ipWhiteListParams}" />
+      </#if>
+
       <#assign authParams = "apiId="+exchange.properties.E3_API_ID>
       <#if exchange.properties.E3_REQUEST_PAYLOAD.authentication??>
         <#if exchange.properties.E3_REQUEST_PAYLOAD.authentication.useAuthKey>
@@ -218,7 +224,7 @@
  	  	<to uri="headerTransRequestProcessor" />
  	  </#if>
  	  
- 	  <#assign idCondition = "{property.E3_AUTH_IDENTITY.auth.apiContext}"> 
+ 	  <#assign idCondition = "{property.E3_AUTH_IDENTITY_APICONTEXT}"> 
  	  <choice>
  	  	 <#list exchange.properties.E3_REQUEST_PAYLOAD.contexts as context>
       	<when>

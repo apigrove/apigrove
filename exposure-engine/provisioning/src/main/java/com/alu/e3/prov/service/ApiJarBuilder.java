@@ -131,7 +131,9 @@ public class ApiJarBuilder implements IApiJarBuilder {
 			}
 
 		} catch (Exception e) {
-			LOG.error("Error building the jar for apiID:" + api.getId(), e);
+			if(LOG.isErrorEnabled()) {
+				LOG.error("Error building the jar for apiID:" + api.getId(), e);
+			}
 		} finally {
 			if (jos != null)
 				try {

@@ -20,9 +20,7 @@ package com.alu.e3.data.model;
 
 import java.io.Serializable;
 
-import com.alu.e3.common.caching.IAckData;
-
-public class Certificate implements Serializable, IAckData {
+public class Certificate implements Serializable {
 
 	/**
 	 * 

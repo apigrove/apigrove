@@ -26,8 +26,7 @@ import org.apache.camel.impl.DefaultComponent;
 public class MockIpWhitelistExecutorFactory extends BaseExecutorFactory {
 
 	@Override
-	public IAuthExecutor getExecutor(DefaultComponent component, String apiId,
-			Map<String, Object> parameters) {
+	public IAuthExecutor getExecutor(DefaultComponent component, Map<String, Object> parameters) {
 		return new MockIpWhitelistExecutor();
 	}
 

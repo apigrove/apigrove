@@ -52,7 +52,9 @@ public class HazelcastCacheManager implements ICacheManager {
 	}
 	
 	public void init(boolean portAutoIncrement) {
-		logger.debug("Init of cacheManager with portAutoIncrement: {}", portAutoIncrement);
+		if (logger.isDebugEnabled()) {
+			logger.debug("Init of cacheManager with portAutoIncrement: {}", portAutoIncrement);
+		}
 		// check if an Hazelcast instance is already running
 		setHazelcastInstance(Hazelcast.getHazelcastInstanceByName(E3Constant.HAZELCAST_NAME));
 		
@@ -61,7 +63,9 @@ public class HazelcastCacheManager implements ICacheManager {
 			logger.warn("HazelcastCacheManager: HazelcastInstance is already running");
 		}
 		else {
-			logger.debug("Normal start of new HazelcastInstance");
+			if (logger.isDebugEnabled()) {
+				logger.debug("Normal start of new HazelcastInstance");
+			}
 			// create the instance
 			Config cfg = new Config();
 			cfg.setPort(E3Constant.HAZELCAST_PORT);
@@ -80,8 +84,9 @@ public class HazelcastCacheManager implements ICacheManager {
 			
 
 			setHazelcastInstance(Hazelcast.newHazelcastInstance(cfg));
-
-			logger.debug("Normal start: done.");
+			if (logger.isDebugEnabled()) {
+				logger.debug("Normal start: done.");
+			}
 		}
 	}
 
@@ -89,12 +94,16 @@ public class HazelcastCacheManager implements ICacheManager {
 	 * Called when the bundle is stopped.
 	 */
 	public void destroy() {
-		logger.debug("Destroy HazelcastInstance ...");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Destroy HazelcastInstance ...");
+		}
 		this.hazelcastInstance.getLifecycleService().shutdown();
 
 		int attempt = 10;
 		do {
-			logger.debug("Waiting HazelcastInstance termination, attempt:{}", attempt);
+			if (logger.isDebugEnabled()) {
+				logger.debug("Waiting HazelcastInstance termination, attempt:{}", attempt);
+			}
 			try {
 				Thread.sleep(1000L);
 			} catch (InterruptedException e) {
@@ -105,12 +114,15 @@ public class HazelcastCacheManager implements ICacheManager {
 		// Force killing it !
 		if (this.hazelcastInstance.getLifecycleService().isRunning())
 			this.hazelcastInstance.getLifecycleService().kill();
-		
-		logger.debug("Destroy: Done and forced.");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Destroy: Done and forced.");
+		}
 	}
 	
 	public void setTopologyClient(ITopologyClient topologyClient) {
-		logger.debug("Set ITopologyClient on cacheManager");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Set ITopologyClient on cacheManager");
+		}
 		
 		this.topologyClient = topologyClient;
 	}
@@ -151,29 +163,6 @@ public class HazelcastCacheManager implements ICacheManager {
 		if (table == null)
 			table = (ICacheTable<K, V>) tables.get(name);
 		return table;
-	}
-
-	@Override
-	public <K, V extends IAckData> ICacheTable<K, V> createAckTable(String name, boolean isReplicated, Map<String, String> properties) {
-		// Same as createTable(...)
-		// but with <K, V>
-		if(tables.get(name) == null) {
-			setTableProperties(name, properties);
-
-			HazelcastAckCache<K, V> table = new HazelcastAckCache<K, V>();
-			tables.put(name, table);
-
-			IMap<K, V> map = hazelcastInstance.getMap(name);
-			table.setMap(map);
-			table.setTopologyClient(topologyClient);
-			table.setIsReplicated(isReplicated);
-
-			return table;
-		}
-		else {
-			// error: already created
-			return null;
-		}
 	}
 
 	@Override

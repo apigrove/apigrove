@@ -20,7 +20,7 @@ package com.alu.e3.data.model.sub;
 
 import java.io.Serializable;
 
-public class ForwardProxy implements Serializable {
+public class ForwardProxy implements Serializable, IForwardProxy {
 	
 	private static final long serialVersionUID = 6290190762467317009L;
 	
@@ -29,28 +29,44 @@ public class ForwardProxy implements Serializable {
     private String proxyUser;
     private String proxyPass;
 
-    public String getProxyHost() {
+    /* (non-Javadoc)
+	 * @see com.alu.e3.data.model.sub.IForwardProxy#getProxyHost()
+	 */
+    @Override
+	public String getProxyHost() {
         return proxyHost;
     }
     public void setProxyHost(String value) {
         this.proxyHost = value;
     }
 
-    public String getProxyPort() {
+    /* (non-Javadoc)
+	 * @see com.alu.e3.data.model.sub.IForwardProxy#getProxyPort()
+	 */
+    @Override
+	public String getProxyPort() {
         return proxyPort;
     }
     public void setProxyPort(String value) {
         this.proxyPort = value;
     }
    
-    public String getProxyUser() {
+    /* (non-Javadoc)
+	 * @see com.alu.e3.data.model.sub.IForwardProxy#getProxyUser()
+	 */
+    @Override
+	public String getProxyUser() {
         return proxyUser;
     }
     public void setProxyUser(String value) {
         this.proxyUser = value;
     }
     
-    public String getProxyPass() {
+    /* (non-Javadoc)
+	 * @see com.alu.e3.data.model.sub.IForwardProxy#getProxyPass()
+	 */
+    @Override
+	public String getProxyPass() {
         return proxyPass;
     }
     public void setProxyPass(String value) {

@@ -32,7 +32,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<jaxrs:providers>
 			
 			<ref bean="basicAuthFilter"/>		
-			
+			<ref bean="e3QueryHandlerRegistry" />
 			<ref bean="E3ExceptionMapper" />
 			<!-- XML validation done here -->
 			<ref bean="jaxbProvider" />

@@ -56,6 +56,7 @@ import javax.xml.bind.annotation.XmlType;
 		"authentication",
 		"tdrEnabled",
 		"status",
+		"ipWhiteList",
 		"contexts",
 		"tdrOnUse",
 		"tdrOnLimitReached",
@@ -149,7 +150,13 @@ public class Api {
 	@XmlElement(required = true)
 	protected Status status;
 
-	/**
+    /**
+     * The IP white list for the API.
+     */
+    @XmlElement(required = true)
+    protected IpWhiteList ipWhiteList;
+
+    /**
 	 * The contexts definition for the API.
 	 * <p>Could be: production, sandbox, test
 	 */
@@ -491,7 +498,31 @@ public class Api {
 		this.status = value;
 	}
 
-	/**
+    /**
+     * Gets the value of the ipWhiteList property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link IpWhiteList }
+     *     
+     */
+    public IpWhiteList getIpWhiteList() {
+        return ipWhiteList;
+    }
+
+    /**
+     * Sets the value of the ipWhiteList property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link IpWhiteList }
+     *     
+     */
+    public void setIpWhiteList(IpWhiteList value) {
+        this.ipWhiteList = value;
+    }    
+
+    /**
 	 * Gets the value of the contexts property.
 	 * 
 	 * @return

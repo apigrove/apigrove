@@ -24,25 +24,23 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Level;
 
 import com.alu.e3.common.E3Constant;
 import com.alu.e3.common.InvalidIDException;
 import com.alu.e3.common.NullHazelcastTableException;
-import com.alu.e3.common.caching.IAckData;
 import com.alu.e3.common.caching.ICacheManager;
-import com.alu.e3.common.caching.ICacheQueue;
 import com.alu.e3.common.caching.ICacheTable;
 import com.alu.e3.common.caching.IEntryListener;
 import com.alu.e3.common.caching.internal.HandlerPool;
 import com.alu.e3.common.caching.internal.MapHandler;
-import com.alu.e3.common.caching.internal.QueueHandler;
 import com.alu.e3.common.info.GatewayStatus;
 import com.alu.e3.common.info.RemoteInstanceInfo;
 import com.alu.e3.common.logging.Category;
@@ -127,7 +125,6 @@ public class DataManager implements IDataManager, IInstanceListener {
 	private Set<IDataManagerListener> listeners = new HashSet<IDataManagerListener>();
 	private Set<IDataManagerUsedBucketIdsListener> usedBucketIdslisteners = new HashSet<IDataManagerUsedBucketIdsListener>();
 
-	protected HandlerPool<String, QueueHandler<CacheAck>> queueHandlerPool = new HandlerPool<String, QueueHandler<CacheAck>>(E3Constant.HAZELCAST_HANDLER_POOL_MAX_SIZE);
 	protected HandlerPool<String, MapHandler<String, ApiJar>> mapHandlerPool = new HandlerPool<String, MapHandler<String, ApiJar>>(E3Constant.HAZELCAST_HANDLER_POOL_MAX_SIZE);
 
 
@@ -255,7 +252,7 @@ public class DataManager implements IDataManager, IInstanceListener {
 			setCachingTableContext(cacheManager.createTable("cachingTableContext", false, null));
 			setCachingTableSettings(cacheManager.createTable("cachingTableSettings", false, null));
 
-			setCachingTableApiJars(cacheManager.createAckTable("cachingTableApiJars", false, null));
+			setCachingTableApiJars(cacheManager.createTable("cachingTableApiJars", false, null));
 			setCachingTableLogLevel(cacheManager.createTable("cachingTableLogLevel", false, null));
 
 			isHazelCastTablesInitialized = true;
@@ -331,11 +328,11 @@ public class DataManager implements IDataManager, IInstanceListener {
 				properties.put("map-store-name", "policy");
 				setCachingTablePolicy(cacheManager.createTable("cachingTablePolicy", true, properties));
 				properties.put("map-store-name", "key");
-				setCachingTableKey(cacheManager.createAckTable("cachingTableKey", true, properties));
+				setCachingTableKey(cacheManager.createTable("cachingTableKey", true, properties));
 				properties.put("map-store-name", "certificate");
 				setCachingTableCertificate(cacheManager.createTable("cachingTableCertificate", true, properties));
 				properties.put("map-store-name", "ca");
-				setCachingTableCA(cacheManager.createAckTable("cachingTableCA", true, properties));
+				setCachingTableCA(cacheManager.createTable("cachingTableCA", true, properties));
 				properties.put("map-store-name", "crl");
 				setCachingTableCRL(cacheManager.createTable("cachingTableCRL", true, properties));
 
@@ -344,7 +341,7 @@ public class DataManager implements IDataManager, IInstanceListener {
 				setCachingTableSettings(cacheManager.createTable("cachingTableSettings", true, null));
 
 				properties.put("map-store-name", "jars");
-				setCachingTableApiJars(cacheManager.createAckTable("cachingTableApiJars", true, properties));
+				setCachingTableApiJars(cacheManager.createTable("cachingTableApiJars", true, properties));
 
 				properties.put("map-store-name", "logLevel");
 				setCachingTableLogLevel(cacheManager.createTable("cachingTableLogLevel", true, properties));
@@ -359,7 +356,8 @@ public class DataManager implements IDataManager, IInstanceListener {
 
 				// no need to be notified on the topology again
 				this.topologyClient.removeInstanceListener(this);
-				this.topologyClient = null;
+				// TODO: Clean 
+				//this.topologyClient = null;
 			}
 		}
 	}
@@ -510,7 +508,6 @@ public class DataManager implements IDataManager, IInstanceListener {
 
 	@Override
 	public void removeApi(String id) throws InvalidIDException {
-
 		Api api = cachingTableApi.remove(id);
 
 		ApiDetail detail = cachingTableApiDetails.remove(id);
@@ -599,6 +596,15 @@ public class DataManager implements IDataManager, IInstanceListener {
 
 		return result;
 	}
+	
+	/**
+	 * Uses SHA1 algorithm to hash authId.
+	 * @param auth
+	 * @return The hexa conversion of SHA-1(auth)
+	 */
+	private String hashAuthId(String auth){
+		return DigestUtils.shaHex(auth);
+	}
 
 	private String createTokenFromAuth(Auth auth) {
 		if (auth.getAuthDetail() == null)
@@ -627,7 +633,8 @@ public class DataManager implements IDataManager, IInstanceListener {
 	}
 
 	private String createTokenFromUserPass(String username, String password) {
-		return username + ":" + password;
+		// Encrypt
+		return username + ":" + hashAuthId(password);
 	}
 
 	private String createWsseTokenFromUser(String username) {
@@ -749,7 +756,7 @@ public class DataManager implements IDataManager, IInstanceListener {
 
 		// Update the status
 		for (AuthIds authId : auth.getPolicyContexts()) {
-			authId.setStatusActive((auth.getAuthDetail() != null)?auth.getAuthDetail().getStatus()==StatusType.ACTIVE:false);
+			authId.setStatusActive(auth.getStatus().isActive());
 			authId.setPolicyContextId(getPolicyContextId(auth, getPolicyById(authId.getPolicyId())));
 		}
 
@@ -877,27 +884,39 @@ public class DataManager implements IDataManager, IInstanceListener {
 					try {
 						then = WsseTools.getCreatedDate(created).getTime();
 					} catch (ParseException e) {
-						logger.debug("invalid WSSE: created parse error: " + created);
+						if (logger.isDebugEnabled()) {
+							logger.debug("invalid WSSE: created parse error: " + created);
+						}
 						return null;
 					}
 					long now = System.currentTimeMillis();
 					if (then > now + (WSSE_AGE_SECONDS * 1000)) {   // allow client to be up to 5 minutes in the future
-						logger.debug("invalid WSSE: created in the future: " + created);
+						if (logger.isDebugEnabled()) {
+							logger.debug("invalid WSSE: created in the future: " + created);
+						}
 						return null;
 					} else if (then < now - (WSSE_AGE_SECONDS * 1000)) {
-						logger.debug("invalid WSSE: old created: " + created);
+						if (logger.isDebugEnabled()) {
+							logger.debug("invalid WSSE: old created: " + created);
+						}
 						return null;
 					}
 				}
 				if (WsseTools.isValid(password, nonce, created, auth.getWssePassword())) {
 					if (nonce != null && liveNonces.contains(nonce)) {
-						logger.debug("invalid WSSE: familiar nonce: " + nonce + " (created " + created + ")");
+						if (logger.isDebugEnabled()) {
+							logger.debug("invalid WSSE: familiar nonce: " + nonce + " (created " + created + ")");
+						}
 						return null;
 					}
-					logger.debug("valid WSSE");
+					if (logger.isDebugEnabled()) {
+						logger.debug("valid WSSE");
+					}
 					return auth;
 				}
-				logger.debug("invalid WSSE: digest validation failed");
+				if (logger.isDebugEnabled()) {
+					logger.debug("invalid WSSE: digest validation failed");
+				}
 			}
 		}
 		return null;
@@ -951,15 +970,31 @@ public class DataManager implements IDataManager, IInstanceListener {
 	}
 
 	private int getPolicyContextId(Auth auth, Policy policy) {
-
+		if (logger.isDebugEnabled()) {
+			logger.debug("getPolicyContextId({}, {})", auth.getId(), policy.getId());
+		}
+		
 		for (Context ctx : policy.getContexts()) {
-			if ((ctx.getId() != null) && (ctx.getId().equals(auth.getPolicyContext())))
+			if ((ctx.getId() != null) && (ctx.getId().equals(auth.getPolicyContext()))) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("Found a policy context matching auth's policyContext: {}", auth.getPolicyContext());
+				}
 				return ctx.getContextId();
+			}
 		}
 
 		for (Context ctx : policy.getContexts()) {
-			if ((ctx.getId() == null ) || ctx.getId().isEmpty())
+			// * is the default context to be used when context specified by auth cannot be found
+			if ((ctx.getId() != null ) && ctx.getId().equals("*")) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("No explicit policy context matching but there is a default context, using it");
+				}
 				return ctx.getContextId();
+			}
+		}
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("getPolicyContextId didn't find in policy any default or matching context withauth's policyContext {}", auth.getPolicyContext());
 		}
 
 		return -1;
@@ -1115,8 +1150,7 @@ public class DataManager implements IDataManager, IInstanceListener {
 				}
 
 				if (!found) {
-					AuthDetail detail = cachingTableAuthDetails.get(authToken);
-					auth.getPolicyContexts().add(new AuthIds(policy.getId(), bucket.getId(), getPolicyContextId(auth, policy), bucket.getBucketId(), (detail != null)?detail.getStatus()==StatusType.ACTIVE:false));
+					auth.getPolicyContexts().add(new AuthIds(policy.getId(), bucket.getId(), getPolicyContextId(auth, policy), bucket.getBucketId(), auth.getStatus().isActive()));
 					cachingTableAuth.set(authToken, auth);
 				}
 			}
@@ -1241,8 +1275,7 @@ public class DataManager implements IDataManager, IInstanceListener {
 			}
 
 			if (!found) {
-				AuthDetail detail = cachingTableAuthDetails.get(authToken);
-				auth.getPolicyContexts().add(new AuthIds(policyId, bucket.getId(), getPolicyContextId(auth, policy), bucket.getBucketId(), (detail != null)?detail.getStatus()==StatusType.ACTIVE:false));
+				auth.getPolicyContexts().add(new AuthIds(policyId, bucket.getId(), getPolicyContextId(auth, policy), bucket.getBucketId(), auth.getStatus().isActive()));
 				cachingTableAuth.set(authToken, auth);
 			}
 		}
@@ -1321,8 +1354,7 @@ public class DataManager implements IDataManager, IInstanceListener {
 			}
 
 			if (!found) {
-				AuthDetail detail = cachingTableAuthDetails.get(authToken);
-				auth.getPolicyContexts().add(new AuthIds(policyId, bucketId, getPolicyContextId(auth, policy), pAuthIds.getBucketId(), (detail != null)?detail.getStatus()==StatusType.ACTIVE:false));
+				auth.getPolicyContexts().add(new AuthIds(policyId, bucketId, getPolicyContextId(auth, policy), pAuthIds.getBucketId(), auth.getStatus().isActive()));
 				cachingTableAuth.set(authToken, auth);
 			}
 		}
@@ -1462,6 +1494,13 @@ public class DataManager implements IDataManager, IInstanceListener {
 	@Override
 	public List<CallDescriptor> getMatchingPolicies(Api api, Auth auth) {
 
+		if (logger.isDebugEnabled()) {
+			logger.debug("getMatchingPolicies({}, {})", 
+					api != null ? api.getId() : null, 
+					auth != null ? auth.getId() : null
+					);
+		}
+		
 		List<CallDescriptor> result = null;
 
 		// If no Auth, check if we have an API
@@ -1469,7 +1508,7 @@ public class DataManager implements IDataManager, IInstanceListener {
 
 			// No Auth and no API ? What are we doing here ?!
 			if (api != null) {
-
+				
 				// No Auth, but an API: return all Policies with no Auth associated
 				// => API doesn't have any authentification method
 				for (String policyIdInApi : api.getPolicyIds()) {
@@ -1484,9 +1523,19 @@ public class DataManager implements IDataManager, IInstanceListener {
 						}
 					}
 					if(add) {
+						if (logger.isDebugEnabled()) {
+							logger.debug("Adding policy {} as it does not have any auth in it's contexts", policy.getId());
+						}
 						if (result == null)
 							result = new ArrayList<CallDescriptor>();
-						result.add(new CallDescriptor(policy, -1, -1));
+
+						int policyIdx = -1;
+						if (policy != null && policy.getContextIds().size() > 0) {
+							policyIdx = policy.getContextIds().get(0);
+						}
+						
+						result.add(new CallDescriptor(policy, policyIdx , -1));
+
 					}
 				}
 
@@ -1497,8 +1546,16 @@ public class DataManager implements IDataManager, IInstanceListener {
 
 					// Looking for default context, placed at index 0 by addApi
 					ApiIds ctx = api.getContextIds().get(0);
-					if (ctx.isStatusActive())
+					if (ctx.isStatusActive()) {
+						if (logger.isDebugEnabled()) {
+							logger.debug("Adding CallDescriptor({}, {}, {})", new String[] {
+									null, 
+									""+ctx.getApiContextId(), 
+									""+ctx.getApiBucketId()
+									});
+						}
 						result.add(new CallDescriptor(null, ctx.getApiContextId(), ctx.getApiBucketId()));
+					}
 				}
 			}
 		} else {
@@ -1519,8 +1576,16 @@ public class DataManager implements IDataManager, IInstanceListener {
 							Policy policy = getPolicyById(policyIdInAuth);
 							if (result == null)
 								result = new ArrayList<CallDescriptor>();
-							if (authCtx.isStatusActive())
+							if (authCtx.isStatusActive()) {
+								if (logger.isDebugEnabled()) {
+									logger.debug("Adding CallDescriptor({}, {}, {})", new String[] {
+											policy.getId(), 
+											""+authCtx.getPolicyContextId(), 
+											""+authCtx.getPolicyBucketId()
+											});
+								}
 								result.add(new CallDescriptor(policy, authCtx.getPolicyContextId(), authCtx.getPolicyBucketId()));
+							}
 							policyAdded = true;
 						}
 					}
@@ -1533,8 +1598,9 @@ public class DataManager implements IDataManager, IInstanceListener {
 					if ((policy.getApiIds() == null) || policy.getApiIds().isEmpty()) {
 						if (result == null)
 							result = new ArrayList<CallDescriptor>();
-						if (authCtx.isStatusActive())
+						if (authCtx.isStatusActive()) {
 							result.add(new CallDescriptor(policy, authCtx.getPolicyContextId(), authCtx.getPolicyBucketId()));
+						}
 					}
 				}
 			}
@@ -1545,8 +1611,16 @@ public class DataManager implements IDataManager, IInstanceListener {
 					if (ctx.getApiContextName().equals(auth.getApiContext())) {
 						if (result == null)
 							result = new ArrayList<CallDescriptor>();
-						if (ctx.isStatusActive())
+						if (ctx.isStatusActive()) {
+							if (logger.isDebugEnabled()) {
+								logger.debug("Adding CallDescriptor({}, {}, {})", new String[] {
+										null, 
+										""+ctx.getApiContextId(), 
+										""+ctx.getApiBucketId()
+										});
+							}
 							result.add(new CallDescriptor(null, ctx.getApiContextId(), ctx.getApiBucketId()));
+						}
 					}
 				}
 			}
@@ -1904,7 +1978,7 @@ public class DataManager implements IDataManager, IInstanceListener {
 	@Override
 	public boolean deployApi(String apiId, byte[] jarData) {
 		ApiJar data = new ApiJar();
-		data.setId(UUID.randomUUID().toString());
+		data.setId(apiId);
 		data.setData(jarData);
 		boolean result = cachingTableApiJars.set(apiId, data);
 		return result;
@@ -1929,12 +2003,6 @@ public class DataManager implements IDataManager, IInstanceListener {
 	@Override
 	public void removeApiDeploymentListener(IEntryListener<String, ApiJar> listener) {
 		cachingTableApiJars.removeEntryListener(listener);
-	}
-
-	@Override
-	public synchronized void postAcknowledgment(String localQueueName, CacheAck ack) throws InterruptedException {
-		ICacheQueue<CacheAck> localQueue = cacheManager.getOrCreateQueue(localQueueName, null);
-		localQueue.post(ack);
 	}
 
 	@Override
@@ -2009,18 +2077,38 @@ public class DataManager implements IDataManager, IInstanceListener {
 			logger.info("Running ProvisionGateway(ip:{}) ...", ip);
 			RemoteInstanceInfo.setGatewayStatus(ip, GatewayStatus.PROVISIONING);
 			
+			logger.debug("Reloading topology to ip:{} ...", ip);
+			topologyClient.reloadInstanceTopology(ip);
+			
 			logger.debug("Loading CA/CRL for ip:{} ...", ip);
 			cachingTableCA.reloadSlave(ip);
 			cachingTableCRL.reloadSlave(ip);
 
-			logger.debug("Loading ApiDetails for ip:{} ...", ip);
-			cachingTableApiDetails.reloadSlave(ip);
-
-			logger.debug("Loading AuthDetails for ip:{} ...", ip);
-			cachingTableAuthDetails.reloadSlave(ip);
+			// TODO: Clean
+			// This table is not flagged as 'replicated'
+			//logger.debug("Loading ApiDetails for ip:{} ...", ip);
+			//cachingTableApiDetails.reloadSlave(ip);
 			
-			logger.debug("Loading AuthIdToAuthToken for ip:{} ...", ip);
-			cachingTableAuthIdToAuthToken.reloadSlave(ip);
+			// Missing tables flagged as 'replicated'
+			// Becareful, load Certificate -before- Keys
+			logger.debug("Loading Certificate for ip:{} ...", ip);
+			cachingTableCertificate.reloadSlave(ip);
+			
+			logger.debug("Loading Key for ip:{} ...", ip);
+			cachingTableKey.reloadSlave(ip);
+
+			logger.debug("Loading LogLevel for ip:{} ...", ip);
+			cachingTableLogLevel.reloadSlave(ip);
+
+			// TODO: Clean
+			// This table is not flagged as 'replicated'
+			//logger.debug("Loading AuthDetails for ip:{} ...", ip);
+			//cachingTableAuthDetails.reloadSlave(ip);
+			
+			// TODO: Clean
+			// This table is not flagged as 'replicated'
+			//logger.debug("Loading AuthIdToAuthToken for ip:{} ...", ip);
+			//cachingTableAuthIdToAuthToken.reloadSlave(ip);
 			
 			logger.debug("Loading Auth for ip:{} ...", ip);
 			cachingTableAuth.reloadSlave(ip);
@@ -2039,7 +2127,7 @@ public class DataManager implements IDataManager, IInstanceListener {
 			
 			logger.debug("Loading Settings for ip:{} ...", ip);
 			cachingTableSettings.reloadSlave(ip);
-
+			
 			// All the routes were previously removed from the gateway
 			for (ApiJar apiJar: cachingTableApiJars.getAllValues()) {
 				logger.debug("Deploying api:{} for ip:{} ...", apiJar.getId(), ip);
@@ -2316,7 +2404,7 @@ public class DataManager implements IDataManager, IInstanceListener {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <K, V extends IAckData> void setCachingTableApiJars(ICacheTable<K, V> iCacheTable) {
+	public <K, V> void setCachingTableApiJars(ICacheTable<K, V> iCacheTable) {
 		if (iCacheTable == null)
 			throw new RuntimeException("Error: table cachingTableApiJars already created.");
 		this.cachingTableApiJars = (ICacheTable<String, ApiJar>) iCacheTable;
@@ -2373,6 +2461,10 @@ public class DataManager implements IDataManager, IInstanceListener {
 		public void removeEntryListener(IEntryListener<K, V> listener)	{ throwNullTableException(); }
 		@Override
 		public void reloadSlave(String ip) 								{ throwNullTableException(); }
+		@Override
+		public void addEntryListener(IEntryListener<K, V> listener, K key) { throwNullTableException(); }
+		@Override
+		public void removeEntryListener(IEntryListener<K, V> listener, K key) { throwNullTableException(); }
 
 		// constructor
 		public SanityCheckCacheTable(String tableName) {  
@@ -2385,6 +2477,31 @@ public class DataManager implements IDataManager, IInstanceListener {
 		{
 			throw new NullHazelcastTableException("Hazelcast table:" + tableName + " hasn't been intialized. DataManager is not ready yet.");
 		}
+	}
+
+	@Override
+	public boolean isIpAllowed(Api api, String ip) {
+		boolean result = false;
+		if(api != null) {
+			List<String> ipWhiteList = api.getWhiteListedIps();
+			Iterator<String> it = ipWhiteList.iterator();			
+			while(!result && it.hasNext()) {
+				String ip2 = it.next();
+				result = ip2.equals(ip);
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public void addGlobalProxyListener3(IEntryListener<String, String> listener) {
+		// A better approach consists in pre-filtering based on the key "addEntryListener(listener, E3Constant.GLOBAL_PROXY_SETTINGS)". Unfortunatly, it's buggy
+		this.cachingTableSettings.addEntryListener(listener);
+	}
+
+	@Override
+	public void removeGlobalProxyListener3(IEntryListener<String, String> listener) {
+		this.cachingTableSettings.removeEntryListener(listener);
 	}
 }
 

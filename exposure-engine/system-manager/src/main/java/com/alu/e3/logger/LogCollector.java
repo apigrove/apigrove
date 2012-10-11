@@ -173,7 +173,9 @@ public class LogCollector implements Callable<Long> {
 	@Override
 	public Long call() throws InterruptedException, TimeoutException, NonExistingManagerException
 	{
-		logger.debug("Call to LogCollector.call()");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Call to LogCollector.call()");
+		}
 		long bytesCollected = collectAllLogs(0, TimeUnit.SECONDS);
 		return Long.valueOf(bytesCollected);
 	}
@@ -190,7 +192,9 @@ public class LogCollector implements Callable<Long> {
 	 */
 	public long collectAllLogs(long waitTimeout, TimeUnit unit) throws InterruptedException, TimeoutException, NonExistingManagerException
 	{
-		logger.debug("Launching system-manager log-file collection ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Launching system-manager log-file collection ...");
+		}
 		if (!LogCollector.writerLock.tryLock(waitTimeout, unit)) {
 			logger.warn("Attempt to run log collector but cannot acquire lock (another collection must be running)");
 			throw new TimeoutException("Timeout waiting to acquire log collector write lock");
@@ -211,7 +215,9 @@ public class LogCollector implements Callable<Long> {
 			
 			Instance logCollectorInstance = Utilities.getManagerByIP(CommonTools.getLocalHostname(), CommonTools.getLocalAddress(),  topology.getInstancesByType(E3Constant.E3MANAGER), logger);
 			List<Instance> instances = getInstanceList(this.topology);
-			logger.debug("There are {} instances in the current topology", instances.size());
+			if(logger.isDebugEnabled()) {
+				logger.debug("There are {} instances in the current topology", instances.size());
+			}
 			for (Instance logSource : instances) {
 				LogCollector.logInstance(logSource);	// for debugging
 
@@ -225,7 +231,9 @@ public class LogCollector implements Callable<Long> {
 					ipAddress = E3Constant.localhost;	// stay consistent
 				}
 				if (visitedIPs.contains(ipAddress)) {
-					logger.debug("Skipping already-visited address: {}", ipAddress);
+					if(logger.isDebugEnabled()) {
+						logger.debug("Skipping already-visited address: {}", ipAddress);
+					}
 					continue;
 				}
 				visitedIPs.add(ipAddress);
@@ -259,11 +267,15 @@ public class LogCollector implements Callable<Long> {
 					try {
 						collectionCount += collectAllRemoteLogs(logSource, logCollectorInstance, instanceCollectionDir);					
 					} catch (JSchException ex) {
-						logger.debug("Could not connect to host: {}", logSource.getInternalIP());
-						logger.debug(ex.getLocalizedMessage());
+						if(logger.isDebugEnabled()) {
+							logger.debug("Could not connect to host: {}", logSource.getInternalIP());
+							logger.debug(ex.getLocalizedMessage());
+						}
 					} catch (IOException ex) {
-						logger.debug("Got IOException while connecting to or transferring files from host: {}", logSource.getInternalIP());
-						logger.debug(ex.getLocalizedMessage());
+						if(logger.isDebugEnabled()) {
+							logger.debug("Got IOException while connecting to or transferring files from host: {}", logSource.getInternalIP());
+							logger.debug(ex.getLocalizedMessage());
+						}
 					}
 				}
 
@@ -366,14 +378,20 @@ public class LogCollector implements Callable<Long> {
    			return null;
    		}
 		
-   		logger.debug("Attempting to get all collected logs ...");
+   		if(logger.isDebugEnabled()) {
+   			logger.debug("Attempting to get all collected logs ...");
+   		}
 		StringBuilder logLines = new StringBuilder();	
    		File[] files = collectionDir.listFiles();	// get a list of instance directories
    		for (File item : files) {
-   			logger.debug("Collection directory entry: {}", item.getAbsolutePath());
+   			if(logger.isDebugEnabled()) {
+   				logger.debug("Collection directory entry: {}", item.getAbsolutePath());
+   			}
    			if (item.isDirectory()) {
    				String ipAddress = collectionDirectoryToIP(item.getName());
-   				logger.debug("Getting logs from: {}", ipAddress);
+   				if(logger.isDebugEnabled()) {
+   					logger.debug("Getting logs from: {}", ipAddress);
+   				}
    				// First get the java logs
    				String contents = getCollectedLogLinesFromInstance(ipAddress, LogFileSource.JAVA, numLines);
    				if (contents != null) {
@@ -443,13 +461,19 @@ public class LogCollector implements Callable<Long> {
    		try {
    			for (File file : files) {
    				String fileName = file.getName();
-   				logger.debug("Consider file: {}", fileName);
+   				if(logger.isDebugEnabled()) {
+   					logger.debug("Consider file: {}", fileName);
+   				}
    				logFilePath = file.getAbsolutePath();
-   				logger.debug("Retrieving {} log lines from file {}", String.valueOf(numLines-lineCount), logFilePath);
+   				if(logger.isDebugEnabled()) {
+   					logger.debug("Retrieving {} log lines from file {}", String.valueOf(numLines-lineCount), logFilePath);
+   				}
    				String logContent = LogCollector.getTailOfFile(file, numLines - lineCount); 
    				logLines.insert(0, logContent);
    				int retrievedCount = lineCount(logContent);
-   				logger.debug("Actually got {} lines", String.valueOf(retrievedCount));
+   				if(logger.isDebugEnabled()) {
+   					logger.debug("Actually got {} lines", String.valueOf(retrievedCount));
+   				}
    				lineCount += retrievedCount;
    				if (lineCount >= numLines) {
    					break;
@@ -459,7 +483,9 @@ public class LogCollector implements Callable<Long> {
    			// Swallow exception from any one file read and hope to get lines from the next log
    			logger.warn("Couldn't read from log file {}", logFilePath == null ? "(null)" : logFilePath);
    		}  		
-   		logger.debug("Got {} of {} requested lines", String.valueOf(lineCount), String.valueOf(numLines));
+   		if(logger.isDebugEnabled()) {
+   			logger.debug("Got {} of {} requested lines", String.valueOf(lineCount), String.valueOf(numLines));
+   		}
    		
  		return LoggingResponseBuilder.logLinesToXml(logSource, ipAddress, 
 			StringEscapeUtils.escapeXml(logLines.toString()));
@@ -486,7 +512,9 @@ public class LogCollector implements Callable<Long> {
 			logger.warn("Localhost is not using E3Appender, using default log-file path (check log-config file: {})", LoggingUtil.defaultConfigPath);
 			logFilePath = LoggingUtil.defaultLogPath;
 		}
-   		logger.debug("java log file path {}", logFilePath);
+		if(logger.isDebugEnabled()) {
+			logger.debug("java log file path {}", logFilePath);
+		}
    		File logFile = new File(logFilePath);
    		bytesCollected += collectLocalLogs(logFile.getParentFile(), instanceCollectionDir, logFile.getName(), LogFileSource.JAVA);
 	   	
@@ -497,7 +525,9 @@ public class LogCollector implements Callable<Long> {
 			logger.warn("Localhost log-config file ({}) does not specify servicemix log location, using default", LoggingUtil.defaultConfigPath);
 			logFilePath = LoggingUtil.defaultSMXLogPath;
 		}
-   		logger.debug("smx log file path {}", logFilePath);
+		if(logger.isDebugEnabled()) {
+			logger.debug("smx log file path {}", logFilePath);
+		}
 	   	File smxLogFile = new File(logFilePath);
 	   	bytesCollected += collectLocalLogs(smxLogFile.getParentFile(), instanceCollectionDir, smxLogFile.getName(), LogFileSource.SMX);
 	
@@ -508,7 +538,9 @@ public class LogCollector implements Callable<Long> {
 			logFilePath = NonJavaLogger.defaultLogFilePath;
 			logger.warn("Localhost syslog-config file ({}) does not specify log location, using default", logFilePath);
 		}
-	   	logger.debug("syslog file path: {}", logFilePath);
+	   	if(logger.isDebugEnabled()) {
+	   		logger.debug("syslog file path: {}", logFilePath);
+	   	}
 	   	File syslogFile = new File(logFilePath);
 	   	bytesCollected += collectLocalLogs(syslogFile.getParentFile(), instanceCollectionDir, syslogFile.getName(), LogFileSource.SYSLOG);
 	   	return bytesCollected;
@@ -535,7 +567,9 @@ public class LogCollector implements Callable<Long> {
 		// First, try to open a new SSH session to instance
 		long bytesCollected = 0L;
 		String ipAddress = logSource.getInternalIP();
-		logger.debug("trying to connect to {} via ssh ...", ipAddress);
+		if(logger.isDebugEnabled()) {
+			logger.debug("trying to connect to {} via ssh ...", ipAddress);
+		}
 		SSHCommand sshCommand = new SSHCommand();
 		sshCommand.connect(logDestination.getSSHKey(), ipAddress, 22, logSource.getUser(), logSource.getPassword(), sshSessionTimeout);					
 		
@@ -633,7 +667,9 @@ public class LogCollector implements Callable<Long> {
 		
 		// We're done - disconnect and return number of bytes copied
 		sshCommand.disconnect();
-		logger.debug("connected/disconnected!");
+		if(logger.isDebugEnabled()) {
+			logger.debug("connected/disconnected!");
+		}
 		return bytesCollected;
 	}
 	
@@ -673,7 +709,9 @@ public class LogCollector implements Callable<Long> {
    		File logFile;
 	 	for (File log : logFiles) {
 	 		logFile = log;
-	 		logger.debug("Copying log file {} ...", logFile.getAbsolutePath());
+	 		if(logger.isDebugEnabled()) {
+	 			logger.debug("Copying log file {} ...", logFile.getAbsolutePath());
+	 		}
 	 		String destFileName = targetNameForLogFile(logFile, targetDir);
 	 		File destFile = new File(targetDir, destFileName);
 	 		try {
@@ -991,7 +1029,9 @@ public class LogCollector implements Callable<Long> {
 		// Copy and validate result
 		try {
 			// Rename source file to temporary name before copying
-			logger.debug("Renaming local file to: {}", tempFile.getPath());
+			if(logger.isDebugEnabled()) {
+				logger.debug("Renaming local file to: {}", tempFile.getPath());
+			}
 			if (!sourceFile.renameTo(tempFile)) {
 				logger.error("Could not move file to new name: {}", tempFile.getAbsolutePath());
 			} else {
@@ -1009,7 +1049,9 @@ public class LogCollector implements Callable<Long> {
 		} catch (IOException ex) {
 			// If there's been an error copying the file, we may be left with a zero-length or incomplete file
 			if (!success) {
-				logger.debug("Deleting failed copy of local file: {}", destFile.getAbsolutePath());
+				if(logger.isDebugEnabled()) {
+					logger.debug("Deleting failed copy of local file: {}", destFile.getAbsolutePath());
+				}
 				destFile.delete();
 			}
 		} finally {
@@ -1023,7 +1065,9 @@ public class LogCollector implements Callable<Long> {
 					destination.close();
 				}
 				if (deleteSource && success) {
-					logger.debug("Deleting local source file: {}", tempFile.getAbsolutePath());
+					if(logger.isDebugEnabled()) {
+						logger.debug("Deleting local source file: {}", tempFile.getAbsolutePath());
+					}
 					tempFile.delete();
 				} else {
 					// Move source file back from temp name
@@ -1136,13 +1180,17 @@ public class LogCollector implements Callable<Long> {
 			for (String pathCand : pathCandidates) {
 				String remoteConfigPath = pathCand;	
 				try {
-					logger.debug("Trying syslog config path: {}", pathCand);
+					if(logger.isDebugEnabled()) {
+						logger.debug("Trying syslog config path: {}", pathCand);
+					}
 					if (sshCommand.copyFrom(remoteConfigPath, destFilePath) > 0) {
 						success = true;
 						break;
 					}
 				} catch (Exception ex) {
-					logger.debug("Failed on path {}", remoteConfigPath);
+					if(logger.isDebugEnabled()) {
+						logger.debug("Failed on path {}", remoteConfigPath);
+					}
 				}
 			}			
 		} else {
@@ -1268,11 +1316,15 @@ public class LogCollector implements Callable<Long> {
 					targetFile = new File(localTargetDir, localName + "." + String.valueOf(id));
 				}
 				if (uniquified) {
-					logger.debug("Uniquified filename {} to {}", logFile.getName(), targetFile.getName());					
+					if(logger.isDebugEnabled()) {
+						logger.debug("Uniquified filename {} to {}", logFile.getName(), targetFile.getName());
+					}
 				}
 				localName = targetFile.getName();
 			}
-			logger.debug("Changed target filename {} to {}", logFile.getName(), localName);
+			if(logger.isDebugEnabled()) {
+				logger.debug("Changed target filename {} to {}", logFile.getName(), localName);
+			}
 		}
 		return localName;
 	}
@@ -1310,11 +1362,15 @@ public class LogCollector implements Callable<Long> {
 						break;
 					}
 					targetFile = new File(localTargetDir, localName + "." + String.valueOf(id));
-					logger.debug("Uniquified filename {} to {}", logFile.getName(), targetFile.getName());
+					if(logger.isDebugEnabled()) {
+						logger.debug("Uniquified filename {} to {}", logFile.getName(), targetFile.getName());
+					}
 				}
 				localName = targetFile.getName();
 			}
-			logger.debug("Changed target filename {} to {}", logFile.getName(), localName);
+			if(logger.isDebugEnabled()) {
+				logger.debug("Changed target filename {} to {}", logFile.getName(), localName);
+			}
 		}
 		return localName;
 	}
@@ -1345,7 +1401,9 @@ public class LogCollector implements Callable<Long> {
 		// Copy file and validate result
 		try {
 			// Rename the remote file with a temporary name before copying	
-			logger.debug("Renaming remote file to: {}", tempRemotePath);
+			if(logger.isDebugEnabled()) {
+				logger.debug("Renaming remote file to: {}", tempRemotePath);
+			}
 			sshCommand.execShellCommand("mv " + remoteFilePath + " " + tempRemotePath);
 
 			// Copy the (renamed) remote file to local destination
@@ -1363,7 +1421,9 @@ public class LogCollector implements Callable<Long> {
 		} catch (IOException ex) {
 			// If there's been an error copying the file, we may be left with a zero-length or incomplete file
 			if ((localFile != null) && localFile.exists() && !success) {
-				logger.debug("Deleting failed local copy of remote file: {}", localFile.getAbsolutePath());
+				if(logger.isDebugEnabled()) {
+					logger.debug("Deleting failed local copy of remote file: {}", localFile.getAbsolutePath());
+				}
 				localFile.delete();
 			}
 		} finally {
@@ -1371,7 +1431,9 @@ public class LogCollector implements Callable<Long> {
 			// main file-copy try-block doesn't
 			try {
 				if (deleteSource && success) {
-					logger.debug("Deleting remote file: {}", tempRemotePath);
+					if(logger.isDebugEnabled()) {
+						logger.debug("Deleting remote file: {}", tempRemotePath);
+					}
 					sshCommand.execShellCommand("rm " + tempRemotePath);
 				} else {
 					// Move source file back from temporary name
@@ -1452,7 +1514,9 @@ public class LogCollector implements Callable<Long> {
 
 		String tailCmd = "/usr/bin/tail -n " + numLinesArg + " " + remoteFilePath;
 		ShellCommandResult sshResult = sshCommand.execShellCommand(tailCmd);
-		logger.debug("Remote tail process exited with code {}", String.valueOf(sshResult.getExitStatus()));
+		if(logger.isDebugEnabled()) {
+			logger.debug("Remote tail process exited with code {}", String.valueOf(sshResult.getExitStatus()));
+		}
 		String logLines = sshResult.getResult();
 		return logLines;
 	}
@@ -1500,7 +1564,9 @@ public class LogCollector implements Callable<Long> {
 	 */
 	public static void logInstance(Instance instance) 
 	{
-		logger.debug("Got instance: {}", instance);
+		if(logger.isDebugEnabled()) {
+			logger.debug("Got instance: {}", instance);
+		}
 		logger.trace("SSHKeyName: {}", instance.getSSHKeyName());
 		logger.trace("User: {}", instance.getUser());
 		logger.trace("Password: {}", instance.getPassword());

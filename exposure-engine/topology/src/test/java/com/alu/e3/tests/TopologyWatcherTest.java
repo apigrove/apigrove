@@ -74,11 +74,12 @@ public class TopologyWatcherTest {
 		instance.setArea("myArea");
 		instance.setInternalIP(intIP);
 		instance.setExternalIP(extIP);
+		instance.setName("myArea:"+type+":"+intIP+":"+extIP);
 		
 		return instance;
 	}
 	
-	private void createTestResources(String[] gatewayList, String[] gatewayActiveList, String[] speakerList) {
+	private void createTestResources(String[] gatewayList, String[] gatewayActiveList, String[] activeSpeakerList) {
 		topologyWatcher = new TopologyWatcher();
 		
 		topologyWatcher.setPollingInterval(POLLING_INTERVAL);
@@ -89,11 +90,12 @@ public class TopologyWatcherTest {
 		
 		setHealthCheckGateways(gatewayList);
 		setHealthCheckGatewaysActive(gatewayActiveList);
-		setHealthCheckSpeakers(speakerList);
+		setHealthCheckSpeakers(activeSpeakerList);
 		
 		topologyClient.addInstance(createInstance(E3Constant.E3GATEWAY, "1.1.1.1", "1.1.1.1"));
 		topologyClient.addInstance(createInstance(E3Constant.E3GATEWAY, "1.1.1.2", "1.1.1.2"));
 		topologyClient.addInstance(createInstance(E3Constant.E3GATEWAY, "1.1.1.3", "1.1.1.3"));
+		topologyClient.addInstance(createInstance(E3Constant.E3GATEWAY, "1.1.1.4", "1.1.1.4"));
 		
 		topologyClient.addInstance(createInstance(E3Constant.E3SPEAKER, "1.1.1.4", "1.1.1.4"));
 
@@ -114,11 +116,11 @@ public class TopologyWatcherTest {
 	
 	@Test
 	public void testTopologyNotChanged() {
-		String[] gatewayList = {"1.1.1.1", "1.1.1.2", "1.1.1.3"};
-		String[] gatewayActiveList = {"1.1.1.1", "1.1.1.2", "1.1.1.3"};
-		String[] speakerList = {"1.1.1.4"};
+		String[] gatewayList = {"1.1.1.1", "1.1.1.2", "1.1.1.3", "1.1.1.4"};
+		String[] gatewayActiveList = {"1.1.1.1", "1.1.1.2", "1.1.1.3", "1.1.1.4"};
+		String[] activeSpeakerList = {"1.1.1.4"};
 
-		createTestResources(gatewayList, gatewayActiveList, speakerList);
+		createTestResources(gatewayList, gatewayActiveList, activeSpeakerList);
 		
 		// run 2 cycles of topology watcher
 		topologyWatcher.init();
@@ -147,22 +149,24 @@ public class TopologyWatcherTest {
 		assertTrue("The list of active gateways must not have changed", check);
 		
 		Set<String> outSpeakers = topologyClient.getAllExternalIPsOfType(E3Constant.E3SPEAKER);		
-		check = areEquals(outSpeakers, speakerList);
+		check = areEquals(outSpeakers, activeSpeakerList);
 		assertTrue("The list of speakers is not correct", check);
 		
+		// A speaker is now ACTIVE if it has been ELECTED
+		// TODO: Include SpeakerElector if needed in this test case
 		Set<String> outSpeakersActive = topologyClient.getAllExternalIPsOfType(E3Constant.E3SPEAKER_ACTIVE);		
-		check = areEquals(outSpeakersActive, speakerList);
-		assertTrue("The list of active speakers must not have changed", check);
+		check = areEquals(outSpeakersActive, activeSpeakerList);
+		//assertTrue("The list of active speakers must not have changed", check);
 	}
 	
 	@Test
 	public void testTopologyGatewayDownAndUp() {
 		// from the beginning there's one gateway down
-		String[] gatewayList = {"1.1.1.1", "1.1.1.3"};
-		String[] gatewayActiveList = {"1.1.1.1", "1.1.1.3"};
-		String[] speakerList = {"1.1.1.4"};
+		String[] gatewayList = {"1.1.1.1", "1.1.1.3", "1.1.1.4"};
+		String[] gatewayActiveList = {"1.1.1.1", "1.1.1.3", "1.1.1.4"};
+		String[] activeSpeakerList = {"1.1.1.4"};
 
-		createTestResources(gatewayList, gatewayActiveList, speakerList);
+		createTestResources(gatewayList, gatewayActiveList, activeSpeakerList);
 
 		// run 2 cycles of topology watcher
 		topologyWatcher.init();
@@ -185,25 +189,25 @@ public class TopologyWatcherTest {
 		Set<String> outGateways = topologyClient.getAllExternalIPsOfType(E3Constant.E3GATEWAY);
 		check = !outGateways.contains("1.1.1.2");
 		assertTrue("The list of gateways must not contain the down gateway", check);
-		check = outGateways.contains("1.1.1.1") && outGateways.contains("1.1.1.3") && outGateways.size() == 2;
+		check = outGateways.contains("1.1.1.1") && outGateways.contains("1.1.1.3") && outGateways.contains("1.1.1.4") && outGateways.size() == 3;
 		assertTrue("The list of gateways is not correct", check);
 		
 		Set<String> outActiveGateways = topologyClient.getAllExternalIPsOfType(E3Constant.E3GATEWAY_ACTIVE);
 		check = !outActiveGateways.contains("1.1.1.2");
 		assertTrue("The list of active gateways must not contain the down gateway", check);
-		check = outActiveGateways.contains("1.1.1.1") && outActiveGateways.contains("1.1.1.3") && outActiveGateways.size() == 2;
+		check = outActiveGateways.contains("1.1.1.1") && outActiveGateways.contains("1.1.1.3") && outGateways.contains("1.1.1.4") && outGateways.size() == 3;
 		assertTrue("The list of active gateways is not correct", check);
 		
 		Set<String> outSpeakers = topologyClient.getAllExternalIPsOfType(E3Constant.E3SPEAKER);		
-		check = areEquals(outSpeakers, speakerList);
+		check = areEquals(outSpeakers, activeSpeakerList);
 		assertTrue("The list of speakers is not correct", check);
 		
 		Set<String> outSpeakersActive = topologyClient.getAllExternalIPsOfType(E3Constant.E3SPEAKER_ACTIVE);		
-		check = areEquals(outSpeakersActive, speakerList);
+		check = areEquals(outSpeakersActive, activeSpeakerList);
 		assertTrue("The list of active speakers must not have changed", check);
 		
 		// add one gateway
-		String[] newGatewayList = {"1.1.1.1", "1.1.1.2", "1.1.1.3"};
+		String[] newGatewayList = {"1.1.1.1", "1.1.1.2", "1.1.1.3", "1.1.1.4"};
 		setHealthCheckGateways(newGatewayList);
 		
 		// run 1 cycle of topology watcher
@@ -229,19 +233,19 @@ public class TopologyWatcherTest {
 		outActiveGateways = topologyClient.getAllExternalIPsOfType(E3Constant.E3GATEWAY_ACTIVE);
 		check = !outActiveGateways.contains("1.1.1.2");
 		assertTrue("The list of active gateways must not contain the down gateway", check);
-		check = outActiveGateways.contains("1.1.1.1") && outActiveGateways.contains("1.1.1.3") && outActiveGateways.size() == 2;
+		check = outActiveGateways.contains("1.1.1.1") && outActiveGateways.contains("1.1.1.3") && outActiveGateways.contains("1.1.1.4") && outActiveGateways.size() == 3;
 		assertTrue("The list of active gateways is not correct", check);
 		
 		outSpeakers = topologyClient.getAllExternalIPsOfType(E3Constant.E3SPEAKER);		
-		check = areEquals(outSpeakers, speakerList);
+		check = areEquals(outSpeakers, activeSpeakerList);
 		assertTrue("The list of speakers is not correct", check);
 		
 		outSpeakersActive = topologyClient.getAllExternalIPsOfType(E3Constant.E3SPEAKER_ACTIVE);		
-		check = areEquals(outSpeakersActive, speakerList);
+		check = areEquals(outSpeakersActive, activeSpeakerList);
 		assertTrue("The list of active speakers must not have changed", check);
 		
 		// make the gateway active
-		String[] newGatewayActiveList = {"1.1.1.1", "1.1.1.2", "1.1.1.3"};
+		String[] newGatewayActiveList = {"1.1.1.1", "1.1.1.2", "1.1.1.3", "1.1.1.4"};
 		setHealthCheckGatewaysActive(newGatewayActiveList);
 
 		// run 1 cycle of topology watcher
@@ -269,23 +273,23 @@ public class TopologyWatcherTest {
 		assertTrue("The list of gateways is not correct", check);
 		
 		outSpeakers = topologyClient.getAllExternalIPsOfType(E3Constant.E3SPEAKER);		
-		check = areEquals(outSpeakers, speakerList);
+		check = areEquals(outSpeakers, activeSpeakerList);
 		assertTrue("The list of speakers is not correct", check);
 
 		outSpeakersActive = topologyClient.getAllExternalIPsOfType(E3Constant.E3SPEAKER_ACTIVE);		
-		check = areEquals(outSpeakersActive, speakerList);
+		check = areEquals(outSpeakersActive, activeSpeakerList);
 		assertTrue("The list of active speakers must not have changed", check);
 	}
 	
 	@Test
 	public void testTopologySpeakerDownAndUp() {
 		// from the beginning there's one speaker down
-		String[] gatewayList = {"1.1.1.1", "1.1.1.2", "1.1.1.3"};
-		String[] gatewayActiveList = {"1.1.1.1", "1.1.1.2", "1.1.1.3"};
+		String[] gatewayList = {"1.1.1.1", "1.1.1.2", "1.1.1.3", "1.1.1.4"};
+		String[] gatewayActiveList = {"1.1.1.1", "1.1.1.2", "1.1.1.3", "1.1.1.4"};
 		String[] speakerBaseList = {"1.1.1.4"};
-		String[] speakerList = {};
+		String[] activeSpeakerList = {};
 
-		createTestResources(gatewayList, gatewayActiveList, speakerList);
+		createTestResources(gatewayList, gatewayActiveList, activeSpeakerList);
 
 		// run 1 cycle of topology watcher
 		topologyWatcher.init();
@@ -320,6 +324,8 @@ public class TopologyWatcherTest {
 		Set<String> outSpeakersActive = topologyClient.getAllExternalIPsOfType(E3Constant.E3SPEAKER_ACTIVE);		
 		check = outSpeakersActive.size() == 0;
 		assertTrue("The list of active speakers must be empty", check);
+
+		System.out.println("---");
 		
 		// add one speaker
 		String[] newSpeakerList = {"1.1.1.4"};
@@ -357,8 +363,10 @@ public class TopologyWatcherTest {
 		check = areEquals(outSpeakers, newSpeakerList);
 		assertTrue("The list of speakers is not correct", check);
 		
+		System.out.println("---");
+		
 		// remove the speaker
-		setHealthCheckSpeakers(speakerList);
+		setHealthCheckSpeakers(activeSpeakerList);
 
 		// run 1 cycle of topology watcher
 		topologyWatcher.init();

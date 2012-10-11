@@ -22,6 +22,7 @@ import com.alu.e3.auth.access.IAuthDataAccess;
 import com.alu.e3.common.camel.AuthIdentity;
 import com.alu.e3.common.camel.AuthReport;
 import com.alu.e3.common.tools.CanonicalizedIpAddress;
+import com.alu.e3.data.model.Api;
 
 /**
  * A mock AuthManager class to help with testing.
@@ -40,7 +41,7 @@ public class MockAuthDataAccess implements IAuthDataAccess {
 	}
 	 
 	@Override
-	public AuthReport checkAllowed(String authKey, String apiId) {
+	public AuthReport checkAllowed(Api api, String authKey) {
 		
 		AuthReport authReport = new AuthReport();
 		
@@ -65,7 +66,7 @@ public class MockAuthDataAccess implements IAuthDataAccess {
 	}
 
 	@Override
-	public AuthReport checkAllowed(CanonicalizedIpAddress ip, String apiId) {
+	public AuthReport checkAllowed(Api api, CanonicalizedIpAddress ip) {
 		
 		AuthReport authReport = new AuthReport();
 	
@@ -87,7 +88,7 @@ public class MockAuthDataAccess implements IAuthDataAccess {
 	}
 	
 	@Override
-	public AuthReport checkAllowed(String user, String password, String apiId) {
+	public AuthReport checkAllowed(Api api, String user, String password) {
 		
 		AuthReport authReport = new AuthReport();
 		
@@ -109,13 +110,13 @@ public class MockAuthDataAccess implements IAuthDataAccess {
 	}
 
 	@Override
-	public AuthReport checkAllowed(String username, String passwordDigest, boolean isPasswordText, String nonce, String created, String apiId) {
+	public AuthReport checkAllowed(Api api, String username, String passwordDigest, boolean isPasswordText, String nonce, String created) {
 		// TODO: Implement MockAuthDataAccess to support the WSSE test method
-		return checkAllowed(username, "", apiId);
+		return checkAllowed(api, username, "");
 	}
 
 	@Override
-	public AuthReport checkAllowed(String apiId) {
+	public AuthReport checkAllowed(Api api) {
 		
 		AuthReport authReport = new AuthReport();
 
@@ -128,7 +129,7 @@ public class MockAuthDataAccess implements IAuthDataAccess {
 	}
 
 	@Override
-	public AuthReport checkOAuthAllowed(String clientId, String clientSecret, String apiId) {
+	public AuthReport checkOAuthAllowed(Api api, String clientId, String clientSecret) {
 		// TODO: Implement MockAuthDataAccess to support the OAuth test method
 		return null;
 	}

@@ -18,6 +18,7 @@
  */
 package com.alu.e3.auth.executor;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.camel.Exchange;
@@ -29,34 +30,40 @@ import com.alu.e3.common.logging.Category;
 import com.alu.e3.common.logging.CategoryLogger;
 import com.alu.e3.common.logging.CategoryLoggerFactory;
 import com.alu.e3.common.tools.CanonicalizedIpAddress;
+import com.alu.e3.common.tools.CommonTools;
+import com.alu.e3.data.model.Api;
+
 import com.alu.e3.gateway.common.camel.exception.GatewayExceptionCode;
 
 public class IpWhitelistExecutor implements IAuthExecutor {
 
 	private static final CategoryLogger logger = CategoryLoggerFactory.getLogger(IpWhitelistExecutor.class, Category.AUTH);
 
-	private String apiId;
 	private IAuthDataAccess dataAccess;
 
 
-	public IpWhitelistExecutor(String apiId, IAuthDataAccess dataAccess) {
-		this.apiId = apiId;
+	public IpWhitelistExecutor(IAuthDataAccess dataAccess) {
 		this.dataAccess = dataAccess;
 	}
 
 	@Override
-	public AuthReport checkAllowed(Exchange exchange) {
+	public AuthReport checkAllowed(Exchange exchange, Api api) {
 		
 		AuthReport authReport = new AuthReport();
-		
-		logger.debug("Hit the IpWhitelistExecutor.isAllowed");
+		 
+		if(logger.isDebugEnabled()) {
+			logger.debug("Hit the IpWhitelistExecutor.isAllowed");
+		}
 		
 		// magic Jetty stuff
 		HttpServletRequest request = (HttpServletRequest) exchange.getIn().getHeader(Exchange.HTTP_SERVLET_REQUEST);
 		
 		if(request != null) {
-			CanonicalizedIpAddress ip = new CanonicalizedIpAddress(request.getRemoteAddr());
-			authReport = dataAccess.checkAllowed(ip, apiId);
+			//retrieve the real IP adress from the request
+			String remoteAddr = CommonTools.remoteAddr(request);
+	        
+	        CanonicalizedIpAddress ip = new CanonicalizedIpAddress(remoteAddr);
+			authReport = dataAccess.checkAllowed(api, ip);
 		} else {
 			authReport.setBadRequest(true);
 		}

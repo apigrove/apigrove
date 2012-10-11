@@ -140,4 +140,16 @@ public class HashCacheTable<K, V> implements ICacheTable<K, V> {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public void addEntryListener(IEntryListener<K, V> listener, K key) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeEntryListener(IEntryListener<K, V> listener, K key) {
+		// TODO Auto-generated method stub
+		
+	}
 }

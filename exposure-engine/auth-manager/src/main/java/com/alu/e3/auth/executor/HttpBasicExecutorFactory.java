@@ -41,8 +41,8 @@ public class HttpBasicExecutorFactory extends BaseExecutorFactory {
 	}
 
 	@Override
-	public IAuthExecutor getExecutor(DefaultComponent component, String apiId, Map<String, Object> parameters) {
-		return new HttpBasicExecutor(apiId, dataAccess);
+	public IAuthExecutor getExecutor(DefaultComponent component, Map<String, Object> parameters) {
+		return new HttpBasicExecutor(dataAccess);
 	}
 
 	@Override

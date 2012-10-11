@@ -41,7 +41,7 @@ public class TdrCommonRuleProducer extends DefaultProducer {
 		try { 
 			hostname = ":"+InetAddress.getLocalHost().getHostName();
 		} catch (Exception e) {
-			logger.error("Unable to initialize SYSTEM_ID", e);
+			logger.error("Unable to initialize SYSTEM_ID", e);			
 			hostname = "";
 		}
 		SYSTEM_ID = new StringBuilder("E3:GATEWAY").append(hostname).toString();
@@ -71,7 +71,9 @@ public class TdrCommonRuleProducer extends DefaultProducer {
 			String clientIp = (String) method.invoke(request);
 			TDRDataService.addCommonProperty(exchange, TDRConstant.CLIENT, clientIp);
 		} catch(Exception e){
-			logger.debug("Could not obtain clientIP");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Could not obtain clientIP");
+			}
 		}
 
 		String endpoint = exchange.getIn().getHeader(Exchange.HTTP_URL, String.class);

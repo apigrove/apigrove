@@ -21,5 +21,9 @@ package com.alu.e3.data.model.enumeration;
 public enum StatusType {
 	ACTIVE,
 	INACTIVE,
-	PENDING
+	PENDING;
+	
+	public boolean isActive() {
+		return this == ACTIVE;
+	}
 }

@@ -18,10 +18,11 @@
  */
 package com.alu.e3.common.camel;
 
-public class AuthReport {
+public class AuthReport implements Comparable<AuthReport> {
 	
 	private AuthIdentity authIdentity;
 	private boolean isApiActive;
+	private boolean isAuthActive;
 	private boolean isStatusChecked;
 	private boolean isNotAuthorized;
 
@@ -36,9 +37,8 @@ public class AuthReport {
 	 * @return
 	 */
 	public boolean isAllowed() {
-		return (authIdentity != null && isApiActive);
+		return (authIdentity != null && isApiActive && isAuthActive);
 	}
-	
 	
 	/**
 	 * @return the isNotAuthorized
@@ -112,6 +112,20 @@ public class AuthReport {
 	}
 
 	/**
+	 * @return the isAuthActive
+	 */
+	public boolean isAuthActive() {
+		return isAuthActive;
+	}
+
+	/**
+	 * @param isAuthActive the isAuthActive to set
+	 */
+	public void setAuthActive(boolean isAuthActive) {
+		this.isAuthActive = isAuthActive;
+	}
+
+	/**
 	 * @return the isAuthNotFound
 	 */
 	public boolean isAuthNotFound() {
@@ -139,14 +153,12 @@ public class AuthReport {
 		this.isBadRequest = isBadRequest;
 	}
 
-
 	/**
 	 * @return the hasStatusChecked
 	 */
 	public boolean isStatusChecked() {
 		return isStatusChecked;
 	}
-
 
 	/**
 	 * @param hasStatusChecked the hasStatusChecked to set
@@ -155,6 +167,60 @@ public class AuthReport {
 		this.isStatusChecked = isStatusChecked;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "AuthReport ["
+				+ (authIdentity != null ? "authIdentity=" + authIdentity + ", "
+						: "") + "isApiActive=" + isApiActive
+				+ ", isAuthActive=" + isAuthActive + ", isStatusChecked="
+				+ isStatusChecked + ", isNotAuthorized=" + isNotAuthorized
+				+ ", hasNoPolicy=" + hasNoPolicy + ", isApiNotFound="
+				+ isApiNotFound + ", isAuthNotFound=" + isAuthNotFound
+				+ ", isBadRequest=" + isBadRequest + "]";
+	}
+
+	@Override
+	public int compareTo(AuthReport o) {
+		final int THIS = -1;
+		final int OTHER = 1;
+
+		// abnormal cases
+		if (isBadRequest()) {
+			return OTHER;
+		}
+		if (o == null) {
+			return THIS;
+		}
+		if (o.isBadRequest()) {
+			return THIS;
+		}
+		
+		// compare
+		if (isNotAuthorized()) {
+			return THIS;
+		} else if (o.isNotAuthorized()) {
+			return OTHER;
+		}
+		if (!isApiActive()) {
+			return THIS;
+		} else if (!o.isApiActive()) {
+			return OTHER;
+		}
+		if (!isAuthNotFound()) {
+			return THIS;
+		} else if (!o.isAuthNotFound()) {
+			return OTHER;
+		}
+		if (!isAuthActive()) {
+			return THIS;
+		} else if (!o.isAuthActive()){
+			return OTHER;
+		}
+		return THIS;
+	}
 
 
 }

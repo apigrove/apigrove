@@ -27,6 +27,7 @@ import org.junit.Test;
 
 import com.alu.e3.auth.MockAuthDataAccess;
 import com.alu.e3.common.camel.AuthReport;
+import com.alu.e3.data.model.Api;
 
 public class NoAuthExecutorTest {
 	
@@ -37,10 +38,13 @@ public class NoAuthExecutorTest {
 		
 		Exchange exchange = new DefaultExchange(context);
 		
+		Api api = new Api();
+		api.setId("api3234");
+
 		MockAuthDataAccess mockDA = new MockAuthDataAccess(null, null, null);
-		NoAuthExecutor executor = new NoAuthExecutor("api3234", mockDA);
+		NoAuthExecutor executor = new NoAuthExecutor(mockDA);
 		
-		AuthReport authReport = executor.checkAllowed(exchange);
+		AuthReport authReport = executor.checkAllowed(exchange, api);
 		
 		assertNotNull("This authentication should have succeeded", authReport.getAuthIdentity());
 	}

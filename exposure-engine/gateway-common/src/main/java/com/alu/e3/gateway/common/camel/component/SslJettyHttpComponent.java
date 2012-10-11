@@ -24,25 +24,22 @@ import java.util.Collection;
 import java.util.Map;
 
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.apache.camel.Endpoint;
-import org.apache.camel.component.jetty.JettyHttpComponent;
 import org.eclipse.jetty.http.ssl.SslContextFactory;
 import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alu.e3.gateway.security.E3TrustManager;
-
-public class SslJettyHttpComponent extends JettyHttpComponent {
+public class SslJettyHttpComponent extends DispatchingHttpComponent {
 
 	Logger LOG = LoggerFactory.getLogger(SslJettyHttpComponent.class);
 	
+	private X509TrustManager trustManager;
 	private String keyStorePath;
 	private String keyStorePassword;
 	private String keyStoreKeyPassword;
-	private String trustStorePath;
-	private String trustStorePassword;
 	
 	@Override
 	protected Endpoint createEndpoint(String uri, String remaining,
@@ -54,18 +51,20 @@ public class SslJettyHttpComponent extends JettyHttpComponent {
 	@Override
 	protected SslSelectChannelConnector createSslSocketConnector()
 			throws Exception {
-		
-		LOG.debug("A new SSL Connector is being made!!");
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("A new SSL Connector is being made!!");
+		}
 		
 		SslContextFactory sslContextFactory = new SslContextFactory() {
 			@Override
 			protected TrustManager[] getTrustManagers(KeyStore trustStore,
 					Collection<? extends CRL> crls) throws Exception
 			{
-				E3TrustManager trustManager = new E3TrustManager(trustStore);
-				// set this flag only when there's at least one CA 
-				setWantClientAuth(trustManager.getAcceptedIssuers().length > 0);
-				return new TrustManager[] {trustManager};
+				if (trustManager != null) {
+					return new TrustManager[] {trustManager};
+				} else {
+					return super.getTrustManagers(trustStore, crls);
+				}
 			}
 		};
 
@@ -77,16 +76,19 @@ public class SslJettyHttpComponent extends JettyHttpComponent {
 		sslContextFactory.setKeyStorePassword(keyStorePassword);
 		
 		sslContextFactory.setKeyStore(keyStorePath);
+
+		if (trustManager != null) {
+			// set this flag only when there's at least one CA 
+			sslContextFactory.setWantClientAuth(trustManager.getAcceptedIssuers().length > 0);
+		}
 		
-		sslContextFactory.setTrustStoreType("BKS");
-		sslContextFactory.setTrustStoreProvider("BC");
-
-		sslContextFactory.setTrustStorePassword(trustStorePassword);
-		sslContextFactory.setTrustStore(trustStorePath);
-
 		return new SslSelectChannelConnector(sslContextFactory);
 	}
 	
+	public void setTrustManager(X509TrustManager trustManager) {
+		this.trustManager = trustManager;
+	}
+
 	public void setKeyStorePath(String keyStorePath) {
 		this.keyStorePath = keyStorePath;
 	}
@@ -97,13 +99,5 @@ public class SslJettyHttpComponent extends JettyHttpComponent {
 	
 	public void setKeyStoreKeyPassword(String keyStoreKeyPassword) {
 		this.keyStoreKeyPassword = keyStoreKeyPassword;
-	}
-	
-	public void setTrustStorePath(String trustStorePath) {
-		this.trustStorePath = trustStorePath;
-	}
-	
-	public void setTrustStorePassword(String trustStorePassword) {
-		this.trustStorePassword = trustStorePassword;
 	}
 }

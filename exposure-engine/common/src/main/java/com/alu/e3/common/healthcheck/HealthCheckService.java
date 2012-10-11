@@ -26,6 +26,9 @@ import java.net.SocketException;
 import java.security.InvalidParameterException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alu.e3.common.E3Constant;
 import com.alu.e3.common.osgi.api.IHealthCheckFactory;
 import com.alu.e3.data.IHealthCheckService;
@@ -35,6 +38,8 @@ import com.alu.e3.data.IHealthCheckService;
  */
 public class HealthCheckService implements IHealthCheckService, Runnable {
 
+	private static final Logger LOG = LoggerFactory.getLogger(HealthCheckService.class);
+	
 	/* final members. */
 	private static final String HTTP_RESPONSE_OK = "HTTP/1.0 200 OK\r\nContent-Type: text/plain\r\nConnection: Close\r\n\r\nHealth check ok.";
 
@@ -45,7 +50,7 @@ public class HealthCheckService implements IHealthCheckService, Runnable {
 	private AtomicBoolean alive;
 
 	private HealthCheckService() {
-		alive = new AtomicBoolean(true);
+		alive = new AtomicBoolean(false);
 	}
 	
 	/**
@@ -71,14 +76,19 @@ public class HealthCheckService implements IHealthCheckService, Runnable {
 	@Override
 	public void start()
 	{
-		try {
-			this.stop();
-			serverSocket = new ServerSocket(listeningPort);	
-			alive.set(true);
-			new Thread(this).start();
-	
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (!alive.get()) {
+			try {
+				this.stop();
+				serverSocket = new ServerSocket(listeningPort);	
+				alive.set(true);
+				new Thread(this).start();
+		
+			} catch (IOException e) {
+				LOG.warn("Problem while starting health check server", e);
+			}
+		}
+		else {
+			LOG.warn("Health check already started");
 		}
 	}
 	
@@ -96,10 +106,11 @@ public class HealthCheckService implements IHealthCheckService, Runnable {
 		try {
 			serverSocket.close(); // if the service is running, it may make accept() fail.
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.warn("IO problem while stopping health check server", e);
 		} finally {
 			serverSocket = null;
 		}
+		LOG.info("Health check stopped");
 	}
 	
 	/**
@@ -110,9 +121,11 @@ public class HealthCheckService implements IHealthCheckService, Runnable {
 		while (alive.get()) {
 			
 			/* service not started. */
-			if (serverSocket == null || serverSocket.isClosed())
+			if (serverSocket == null || serverSocket.isClosed()) {
+				LOG.info("Health check server thread end");
+				alive.set(false);
 				return;
-			
+			}
 			try {
 				Socket socket = serverSocket.accept();
 				DataOutputStream out = new DataOutputStream(socket.getOutputStream());
@@ -123,9 +136,15 @@ public class HealthCheckService implements IHealthCheckService, Runnable {
 				socket.close();
 
 			} catch (SocketException e) {
-				System.out.println("Socket closed.");
+				if (LOG.isDebugEnabled()) {
+					// This probably means Manager has closed to communication socket without
+					// listening our answer.
+					LOG.debug("Communication problem", e);
+				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("IO problem", e);
+				}
 			}
 		}
 	}

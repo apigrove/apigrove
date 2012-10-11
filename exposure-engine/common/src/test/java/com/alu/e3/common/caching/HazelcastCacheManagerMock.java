@@ -37,10 +37,14 @@ public class HazelcastCacheManagerMock extends HazelcastCacheManager {
 		
 		if (this.hazelcastInstance  != null) {
 			// should not happen except when running the JUnit
-			logger.warn("WARNING: HazelcastCacheManager: HazelcastInstance is already running");
+			if (logger.isWarnEnabled()) {
+				logger.warn("WARNING: HazelcastCacheManager: HazelcastInstance is already running");
+			}
 		}
 		else {
-			logger.debug("Normal start of new HazelcastInstance");
+			if (logger.isDebugEnabled()) {
+				logger.debug("Normal start of new HazelcastInstance");
+			}
 			// create the instance
 			Config cfg = new Config();
 			cfg.setPort(E3Constant.HAZELCAST_PORT);
@@ -52,7 +56,9 @@ public class HazelcastCacheManagerMock extends HazelcastCacheManager {
 
 			setHazelcastInstance(Hazelcast.newHazelcastInstance(cfg));
 
-			logger.debug("Normal start: done.");
+			if (logger.isDebugEnabled()) {
+				logger.debug("Normal start: done.");
+			}
 		}
 	}
 

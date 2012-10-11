@@ -42,6 +42,7 @@ import com.alu.e3.common.logging.Category;
 import com.alu.e3.common.logging.CategoryLogger;
 import com.alu.e3.common.logging.CategoryLoggerFactory;
 import com.alu.e3.common.osgi.api.IDataManager;
+import com.alu.e3.data.model.WSSEAuthPassType;
 import com.alu.e3.data.wrapper.BeanConverterUtil;
 import com.alu.e3.prov.restapi.model.Auth;
 import com.alu.e3.prov.restapi.model.AuthKeyAuth;
@@ -49,7 +50,7 @@ import com.alu.e3.prov.restapi.model.AuthResponse;
 import com.alu.e3.prov.restapi.model.AuthType;
 import com.alu.e3.prov.restapi.model.BasicAuth;
 import com.alu.e3.prov.restapi.model.Error;
-import com.alu.e3.prov.restapi.model.IpWhiteListAuth;
+import com.alu.e3.prov.restapi.model.IpWhiteList;
 import com.alu.e3.prov.restapi.model.Key;
 import com.alu.e3.prov.restapi.model.WSSEAuth;
 
@@ -263,7 +264,7 @@ public class AuthManager extends BasicManager{
 				com.alu.e3.prov.restapi.model.Error error = validate(auth);
 
 				if(LOG.isDebugEnabled())
-					LOG.debug("Creating Auth ID:", auth.getId());
+					LOG.debug("Creating Auth ID: {}", auth.getId());
 
 				AuthResponse response = new AuthResponse(AuthResponse.SUCCESS);
 				if(error == null){
@@ -412,8 +413,8 @@ public class AuthManager extends BasicManager{
 						error.setErrorText(error.getErrorText()+" Passowrd must not be empty for WSSE authentication type.");
 					}
 					if(basicAuth.getPasswordType() == null){
-						inError = true;
-						error.setErrorText(error.getErrorText()+" PasswordType must not be empty for WSSE authentication type.");
+						// we want to get rid of the password type, in the meantime we make it optional and set a default value if needed
+						basicAuth.setPasswordType(WSSEAuthPassType.PASSWORD_DIGEST);
 					}
 				}
 			}
@@ -430,7 +431,7 @@ public class AuthManager extends BasicManager{
 				}
 			}
 			else if(authType.equals(AuthType.IP_WHITE_LIST)){
-				IpWhiteListAuth ipWhiteListAuth = auth.getIpWhiteListAuth();
+				IpWhiteList ipWhiteListAuth = auth.getIpWhiteListAuth();
 				if(ipWhiteListAuth == null) {
 					inError = true;
 					error.setErrorText("Request did not contain ipWhiteListAuth info.");							
@@ -441,7 +442,8 @@ public class AuthManager extends BasicManager{
 					Set<String> testSet = new HashSet<String>();
 					for (String ip : ipList) {
 						if (testSet.contains(ip)) {
-							LOG.debug("Found duplicate whitelist ip: {}", ip);
+							if(LOG.isDebugEnabled())
+								LOG.debug("Found duplicate whitelist ip: {}", ip);
 							inError = true;
 							error.setErrorText("Duplicate ip in white-list: " + ip);
 							break;

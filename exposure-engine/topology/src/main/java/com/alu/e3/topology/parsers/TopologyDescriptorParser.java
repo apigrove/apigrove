@@ -48,14 +48,18 @@ public class TopologyDescriptorParser {
 	
 	
 	public Topology parse(String topologyFilePath) throws TopologyParserException, UnsupportedEncodingException {
-		logger.debug("Parsing file at path: " + topologyFilePath);
+		if(logger.isDebugEnabled()) {
+			logger.debug("Parsing file at path: " + topologyFilePath);
+		}
 		
 		FileInputStream fin = null;
 		
 		try {
 			fin = new FileInputStream(topologyFilePath);
 		} catch (FileNotFoundException e) {
-			logger.error(e.getMessage());
+			if(logger.isErrorEnabled()) {
+				logger.error(e.getMessage());
+			}
 			throw new TopologyParserException(e.getMessage());
 		}
 		
@@ -67,7 +71,9 @@ public class TopologyDescriptorParser {
 		Element rootElement = getRootElement(topologyInputStream);
 		
 		String type = rootElement.getAttribute("type");
-		logger.debug("Topology type: " + type);
+		if(logger.isDebugEnabled()) {
+			logger.debug("Topology type: " + type);
+		}
 		
 		TopologyParser parser = getParser(type);
 		
@@ -88,7 +94,9 @@ public class TopologyDescriptorParser {
 			return rootElement;
 		
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			if(logger.isErrorEnabled()) {
+				logger.error(e.getMessage());
+			}
 			throw new TopologyParserException(e.getMessage());
 		}
 
@@ -113,7 +121,9 @@ public class TopologyDescriptorParser {
 			
 			// Finding keypair to use
 			NodeList keyNodes = rootElement.getElementsByTagName("Key");
-			logger.debug("Found " + keyNodes.getLength() + " SSH keys");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Found " + keyNodes.getLength() + " SSH keys");
+			}
 			for(int i = 0; i < keyNodes.getLength(); i++)
 			{
 				Element keyElement = (Element) keyNodes.item(i);
@@ -142,7 +152,9 @@ public class TopologyDescriptorParser {
 			        		
 			        		
 					} catch (Exception e) {
-						logger.error(e.getMessage());
+						if(logger.isErrorEnabled()) {
+							logger.error(e.getMessage());
+						}
 						throw new TopologyParserException(e.getMessage());
 					}
 				}	
@@ -156,12 +168,16 @@ public class TopologyDescriptorParser {
 				SSHKey key = new SSHKey(strKeyName, strPrivateKey == null ? null : strPrivateKey.getBytes("UTF-8"), strPublicKey.getBytes("UTF-8"));
 				topology.addKey(key);
 				
-				logger.debug(key.toString());
+				if(logger.isDebugEnabled()) {
+					logger.debug(key.toString());
+				}
 			}
 			
 
 			NodeList labNodes = rootElement.getElementsByTagName("Node");
-			logger.debug("Found " + labNodes.getLength() + " nodes in this topology");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Found " + labNodes.getLength() + " nodes in this topology");
+			}
 			
 			HashSet<String> instancesNameAlreadyAdded = new HashSet<String>();
 			

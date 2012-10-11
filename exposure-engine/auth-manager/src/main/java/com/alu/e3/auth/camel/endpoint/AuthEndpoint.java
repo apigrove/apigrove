@@ -29,17 +29,21 @@ import org.apache.camel.impl.DefaultEndpoint;
 
 import com.alu.e3.auth.camel.producer.AuthProducer;
 import com.alu.e3.auth.executor.IAuthExecutor;
+import com.alu.e3.common.osgi.api.IDataManager;
 
 public class AuthEndpoint extends DefaultEndpoint {
 
 	private String uri;
+	private String apiId;
+	private IDataManager dataManager;
 	
 	private List<IAuthExecutor> executors;
 	
-	public AuthEndpoint(String uri, Component component, List<IAuthExecutor> executors) throws CamelException {
+	public AuthEndpoint(String uri, Component component, List<IAuthExecutor> executors, IDataManager dataManager, String apiId) throws CamelException {
 		super(uri, component);
 		this.uri = uri;
-		
+		this.dataManager = dataManager;
+		this.apiId = apiId;
 		this.executors = executors;
 	}
 	
@@ -50,7 +54,7 @@ public class AuthEndpoint extends DefaultEndpoint {
 	 
 	@Override  
 	public Producer createProducer() throws Exception {
-		return new AuthProducer(this, executors);
+		return new AuthProducer(this, executors, dataManager, apiId);
 	}
 
 	@Override

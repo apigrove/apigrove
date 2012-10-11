@@ -222,6 +222,9 @@ public class ApiService implements IApiService {
 		// Checking if the API has one default context, throw an exception
 		// otherwise.
 		apiChecker.assertHasDefaultContext(api);
+		
+		//checking if the API is set to validate, and validation content is correct
+		apiChecker.assertHasIsMainForWSDLValidation(api);
 
 		// Checking PassThrough/Composite/Notification/Subscription
 		// consistency

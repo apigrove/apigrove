@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import com.alu.e3.common.caching.IEntryListener;
 import com.alu.e3.common.osgi.api.IDataManager;
 import com.alu.e3.common.osgi.api.ITrustStoreService;
-import com.alu.e3.data.CacheAck;
 import com.alu.e3.data.DataEntryEvent;
 import com.alu.e3.data.IDataManagerListener;
 
@@ -64,8 +63,6 @@ public class TrustStoreListener implements IEntryListener<String, com.alu.e3.dat
 	private void addCertificate(String alias, com.alu.e3.data.model.Certificate model) {
 		Certificate cert;
 		
-		CacheAck ack = CacheAck.KO;
-		
 		try {
 			PEMReader pemr = new PEMReader(new StringReader(model.getData()));
 			cert = (Certificate)pemr.readObject();
@@ -73,44 +70,24 @@ public class TrustStoreListener implements IEntryListener<String, com.alu.e3.dat
 			KeyStore ks = trustStoreService.loadTrustStore();
 			ks.setCertificateEntry(alias, cert);
 			trustStoreService.saveTrustStore(ks);
-			
-			ack = CacheAck.OK;
 		}
 		catch (Exception e) {
-			LOG.error("Error while storing the certificate " + alias, e);			
-		}
-		finally {
-			try {
-				dataManager.postAcknowledgment(model.getId(), ack);
-			}
-			catch (InterruptedException e) {
-				LOG.error("Error while posting acknowledgment " + alias, e);			
-			}
+			LOG.error("Error while storing the certificate " + alias, e);
+			throw new RuntimeException("Error while storing the certificate " + alias);
 		}
 	}
 
 	private void removeCertificate(String alias, com.alu.e3.data.model.Certificate model) {
 		
-		CacheAck ack = CacheAck.KO;
-
 		try {
 			KeyStore ks = trustStoreService.loadTrustStore();
 			ks.deleteEntry(alias);
 			trustStoreService.saveTrustStore(ks);
-			
-			ack = CacheAck.OK;
 		} 
 		catch (Exception e) {
 			LOG.error("Error while deleting the certificate " + alias, e);
+			throw new RuntimeException("Error while deleting the certificate " + alias);
 		}				
-		finally {
-			try {
-				dataManager.postAcknowledgment(model.getId(), ack);
-			}
-			catch (InterruptedException e) {
-				LOG.error("Error while posting acknowledgment " + alias, e);			
-			}
-		}
 	}
 	
 	@Override

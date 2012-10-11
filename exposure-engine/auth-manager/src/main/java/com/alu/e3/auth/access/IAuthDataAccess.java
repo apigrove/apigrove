@@ -20,15 +20,16 @@ package com.alu.e3.auth.access;
 
 import com.alu.e3.common.camel.AuthReport;
 import com.alu.e3.common.tools.CanonicalizedIpAddress;
+import com.alu.e3.data.model.Api;
 
 /**
  * Interface IAuthDataAccess
  */
 public interface IAuthDataAccess {
-	public AuthReport checkAllowed(String apiId);
-	public AuthReport checkAllowed(String authKey, String apiId);
-	public AuthReport checkAllowed(CanonicalizedIpAddress ip, String apiId);
-	public AuthReport checkAllowed(String username, String password, String apiId);
-	public AuthReport checkAllowed(String username, String passwordDigest, boolean isPasswordText, String nonce, String created, String apiId);
-	public AuthReport checkOAuthAllowed(String clientId, String clientSecret, String apiId);
+	public AuthReport checkAllowed(Api api);
+	public AuthReport checkAllowed(Api api, String authKey);
+	public AuthReport checkAllowed(Api api, CanonicalizedIpAddress ip);
+	public AuthReport checkAllowed(Api api, String username, String password);
+	public AuthReport checkAllowed(Api api, String username, String passwordDigest, boolean isPasswordText, String nonce, String created);
+	public AuthReport checkOAuthAllowed(Api api, String clientId, String clientSecret);
 }

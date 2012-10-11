@@ -26,10 +26,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 
+import javax.servlet.http.HttpServletRequest;
+
+import com.alu.e3.common.E3Constant;
+
 public class CommonTools {
 
 	protected static InetAddress localInetAddress;
 
+	
 	static {
 		if (localInetAddress == null) {
 			try {
@@ -91,6 +96,31 @@ public class CommonTools {
 		} catch (MalformedURLException e) {
 			return null;
 		}
+	}
+	
+	
+	/**
+	 * get the real remote address from a request header
+	 * @return the real remote address
+	 */
+	public static String remoteAddr(HttpServletRequest request){
+		String remoteAddr = null;
+
+		if (request != null){
+			
+			//get the real remote address, if x-forwarded-for field not empty, retrieve IP address inside
+			remoteAddr = request.getRemoteAddr();
+			String x;
+			if ((x = request.getHeader(E3Constant.HEADER_X_FORWARDED_FOR)) != null) {
+				remoteAddr = x;
+				int idx = remoteAddr.indexOf(',');
+				if (idx > -1) {
+					remoteAddr = remoteAddr.substring(0, idx);
+				}
+			}
+		}
+
+		return remoteAddr;
 	}
 	
 }

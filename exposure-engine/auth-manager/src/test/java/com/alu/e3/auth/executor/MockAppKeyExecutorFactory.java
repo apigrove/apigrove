@@ -25,8 +25,7 @@ import org.apache.camel.impl.DefaultComponent;
 public class MockAppKeyExecutorFactory extends BaseExecutorFactory {
 
 	@Override
-	public IAuthExecutor getExecutor(DefaultComponent component, String apiId,
-			Map<String, Object> parameters) {
+	public IAuthExecutor getExecutor(DefaultComponent component, Map<String, Object> parameters) {
 		if(parameters.containsKey("keyName")){
 			component.getAndRemoveParameter(parameters, "keyName", String.class);
 		}

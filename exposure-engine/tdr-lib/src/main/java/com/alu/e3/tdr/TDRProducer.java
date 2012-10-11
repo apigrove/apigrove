@@ -67,7 +67,9 @@ public class TDRProducer extends DefaultProducer {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		logger.debug("TDR Processor Hit");
+		if(logger.isDebugEnabled()) {
+			logger.debug("TDR Processor Hit");
+		}
 		Map<String, Object> tdrProps = TDRDataService.getTxTDRProperties(exchange);
 				
         Document doc = docBuilder.newDocument();

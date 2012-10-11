@@ -27,6 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.alu.e3.common.tools.CanonicalizedIpAddress;
+import com.alu.e3.data.model.Api;
 
 public class FileDataTest {
 	
@@ -40,28 +41,35 @@ public class FileDataTest {
 
 	@Test
 	public void test1() throws Exception {
+		Api api = new Api();
+		api.setId("test");
+
 		fileData = new FileData("/notAValidFile.db");
 		assertNotNull(fileData);
-		assertNull(fileData.checkAllowed("test", "test").getAuthIdentity());
+		assertNull(fileData.checkAllowed(api, "test").getAuthIdentity());
 	}
 	
 	@Test
 	public void testIsAssociated() throws Exception {
 		
+		Api api = new Api();
+		api.setId("api1234");
+
 		URL fileURL = getClass().getResource(DB_PATH);
 		
 		fileData = new FileData(fileURL.getPath());
 		
-		assertNotNull(fileData.checkAllowed("appKey1234", "api1234").getAuthIdentity());
-		assertNotNull(fileData.checkAllowed("user", "pass", "api1234").getAuthIdentity());
-		assertNotNull(fileData.checkAllowed(new CanonicalizedIpAddress("127.0.0.1"), "api1234").getAuthIdentity());
-		assertNotNull(fileData.checkAllowed("api1234").getAuthIdentity());
+		assertNotNull(fileData.checkAllowed(api, "appKey1234").getAuthIdentity());
+		assertNotNull(fileData.checkAllowed(api, "user", "pass").getAuthIdentity());
+		assertNotNull(fileData.checkAllowed(api, new CanonicalizedIpAddress("127.0.0.1")).getAuthIdentity());
+		assertNotNull(fileData.checkAllowed(api).getAuthIdentity());
 		
+		api.setId("apiASDF");
 		
-		assertNull(fileData.checkAllowed("badbad", "apiASDF").getAuthIdentity());
-		assertNull(fileData.checkAllowed("bad", "bad", "apiASDF").getAuthIdentity());
-		assertNull(fileData.checkAllowed(new CanonicalizedIpAddress("10.0.0.1"), "apiASDF").getAuthIdentity());
-		assertNull(fileData.checkAllowed("badbad", "badbad").getAuthIdentity());
-		assertNull(fileData.checkAllowed("apiASDF").getAuthIdentity());
+		assertNull(fileData.checkAllowed(api, "badbad").getAuthIdentity());
+		assertNull(fileData.checkAllowed(api, "bad", "bad").getAuthIdentity());
+		assertNull(fileData.checkAllowed(api, new CanonicalizedIpAddress("10.0.0.1")).getAuthIdentity());
+		assertNull(fileData.checkAllowed(api, "badbad", "badbad").getAuthIdentity());
+		assertNull(fileData.checkAllowed(api).getAuthIdentity());
 	}
 }

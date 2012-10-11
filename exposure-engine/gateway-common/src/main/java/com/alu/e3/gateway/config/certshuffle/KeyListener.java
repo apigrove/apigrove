@@ -35,7 +35,6 @@ import com.alu.e3.common.InvalidIDException;
 import com.alu.e3.common.caching.IEntryListener;
 import com.alu.e3.common.osgi.api.IDataManager;
 import com.alu.e3.common.osgi.api.IKeyStoreService;
-import com.alu.e3.data.CacheAck;
 import com.alu.e3.data.DataEntryEvent;
 import com.alu.e3.data.IDataManagerListener;
 import com.alu.e3.data.model.Certificate;
@@ -97,8 +96,6 @@ public class KeyListener implements IEntryListener<String, Key>, IDataManagerLis
 
 		synchronized(keyStoreService) {
 			
-			CacheAck ack = CacheAck.KO;
-			
 			KeyStore ks = keyStoreService.loadKeyStore();
 			
 			if(ks == null){
@@ -111,32 +108,15 @@ public class KeyListener implements IEntryListener<String, Key>, IDataManagerLis
 					}
 					
 					keyStoreService.saveKeyStore(ks);
-					
-					ack = CacheAck.OK;
 				} 
 				catch (KeyStoreException e) {
 					LOG.error("Error while removing the key", e);
+					throw new RuntimeException("Error while removing the key");
 				}
-			}
-			
-			try {
-				dataManager.postAcknowledgment(event.getValue().getId(), ack);
-			}
-			catch (InterruptedException e) {
-				LOG.error("Error while posting acknowledgment " + event.getKey(), e);			
 			}
 		}
 	}
 	
-	private void postAcknowledgment(String queueName, CacheAck ack) {
-		try {
-			dataManager.postAcknowledgment(queueName, ack);
-		}
-		catch (InterruptedException e) {
-			LOG.error("Error while posting acknowledgment", e);			
-		}		
-	}
-
 	private void doKeyStoreUpdate(DataEntryEvent<String, Key> event) {
 		final Key key = event.getValue();
 		Certificate cert = null;
@@ -146,15 +126,13 @@ public class KeyListener implements IEntryListener<String, Key>, IDataManagerLis
 			}
 			catch (InvalidIDException e) {
 				LOG.error("Certificate not found "+key.getActiveCertId(), e);
-				postAcknowledgment(key.getId(), CacheAck.KO);
-				return;
+				throw new RuntimeException("Certificate not found "+key.getActiveCertId());
 			}
 		}
 		
 		if(cert == null){
 			// A key has been uploaded without a certificate. Don't add it to the keystore. 
 			// This is a standard use-case. Don't error.			
-			postAcknowledgment(key.getId(), CacheAck.OK);
 			return;
 		}
 
@@ -183,13 +161,11 @@ public class KeyListener implements IEntryListener<String, Key>, IDataManagerLis
 				jkey = (PrivateKey)pemobj;
 			} else {
 				LOG.error("The PEM object in Key "+key.getId()+" is not a Private Key");
-				postAcknowledgment(key.getId(), CacheAck.KO);
-				return;
+				throw new RuntimeException("The PEM object in Key "+key.getId()+" is not a Private Key");
 			}
 		} catch(IOException e){
 			LOG.error("Failed to read Key "+key.getId()+" data.", e);
-			postAcknowledgment(key.getId(), CacheAck.KO);
-			return;
+			throw new RuntimeException("Failed to read Key "+key.getId()+" data.");
 		}
 		
 		try{
@@ -199,25 +175,20 @@ public class KeyListener implements IEntryListener<String, Key>, IDataManagerLis
 				jcert = (java.security.cert.Certificate)pemobj;
 			} else {
 				LOG.error("The PEM object in Certificate "+cert.getId()+" is not a Certificate");
-				postAcknowledgment(key.getId(), CacheAck.KO);
-				return;
+				throw new RuntimeException("The PEM object in Certificate "+cert.getId()+" is not a Certificate");
 			}
 		} catch(IOException e){
 			LOG.error("Failed to read Certificate "+cert.getId()+" data.", e);
-			postAcknowledgment(key.getId(), CacheAck.KO);
-			return;
+			throw new RuntimeException("Failed to read Certificate "+cert.getId()+" data.");
 		}
 		
 		synchronized(keyStoreService) {
-			
-			CacheAck ack = CacheAck.KO;
 			
 			KeyStore ks = keyStoreService.loadKeyStore();
 			
 			if(ks == null) {
 				LOG.error("KeyStoreService did not give me my keystore!");
-				postAcknowledgment(key.getId(), CacheAck.KO);
-				return;
+				throw new RuntimeException("KeyStoreService did not give me my keystore!");
 			}
 			
 			try {
@@ -228,15 +199,11 @@ public class KeyListener implements IEntryListener<String, Key>, IDataManagerLis
 				ks.setKeyEntry(ALIAS, jkey, keyStoreKeyPassword.toCharArray(), (java.security.cert.Certificate[]) Arrays.asList(jcert).toArray());
 				
 				keyStoreService.saveKeyStore(ks);
-				
-				ack = CacheAck.OK;
-				
 			}
 			catch (KeyStoreException e) {
 				LOG.error("Key not updated", e);
+				throw new RuntimeException("Key not updated");
 			}
-			
-			postAcknowledgment(key.getId(), ack);
 		}
 	}
 	

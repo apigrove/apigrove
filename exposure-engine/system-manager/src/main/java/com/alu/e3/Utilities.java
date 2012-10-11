@@ -97,18 +97,24 @@ public class Utilities {
 				logger.warn("Encountered instance in topology with null internal IP: {}", currentInstance);
 				continue;
 			}
-			logger.debug("Comparing manager ip '" + managerIP + "' with current instance internal ip '" + currentIP + "'");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Comparing manager ip '" + managerIP + "' with current instance internal ip '" + currentIP + "'");
+			}
 			//instance internal ip has to match manager ip or manager hostname (allows to work with both) 
 			//for AIB install, the internalIP for the manager is "localhost", so for AIB allow match on "localhost"
 			if (currentIP.equals(managerIP) || currentIP.equals(managerHostName) || currentIP.equals(E3Constant.localhost)) {
 				found = true;
-				logger.debug("Found manager with ip '" + managerIP + "' found");
+				if(logger.isDebugEnabled()) {
+					logger.debug("Found manager with ip '" + managerIP + "' found");
+				}
 				manager = currentInstance;
 			}
 		}
 		
 		if (!found) { //this manager ip does not exist
-			logger.error("No manager with ip '" + managerIP + "' found");
+			if(logger.isErrorEnabled()) {
+				logger.error("No manager with ip '" + managerIP + "' found");
+			}
 			throw new NonExistingManagerException("No manager with ip '" + managerIP + "' found");
 		}
 		

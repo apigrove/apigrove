@@ -37,6 +37,16 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
     
     <context:annotation-config />
     
+    <context:property-placeholder location="file:${user.home}/configuration.properties" />
+
+	<bean class="com.alu.e3.SettingsBootstrapper" init-method="init">
+		<property name="dataManager" ref="dataManager"/>
+		<property name="proxyHost" value="${global_proxy.host}" />
+		<property name="proxyPort" value="${global_proxy.port}" />
+		<property name="proxyUser" value="${global_proxy.user}" />
+		<property name="proxyPass" value="${global_proxy.pass}" />
+	</bean>
+
     <bean id="basicAuthWrapper" class="com.alu.e3.BasicAuthFilterWrapper">
         <property name="basicAuthFilter" ref="basicAuthFilter" />
     </bean>

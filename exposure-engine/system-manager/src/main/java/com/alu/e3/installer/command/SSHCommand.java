@@ -169,7 +169,9 @@ public class SSHCommand implements ICommand {
 			strCommand = "cd " + workingDir + "; " + strCommand;
 
 		/* execute command */
-		logger.debug("remote execShellCommand " + strCommand);
+		if(logger.isDebugEnabled()) {
+			logger.debug("remote execShellCommand " + strCommand);
+		}
 		Channel channel = m_tSession.openChannel("exec");
 		((ChannelExec) channel).setCommand(strCommand);
 
@@ -200,7 +202,9 @@ public class SSHCommand implements ICommand {
 		channel.disconnect();
 
 		/* return answer. */
-		logger.debug("remote execShellCommand returned:\nexit status" + nExitStatus + "\n" + strAnswer);
+		if(logger.isDebugEnabled()) {
+			logger.debug("remote execShellCommand returned:\nexit status" + nExitStatus + "\n" + strAnswer);
+		}
 		return new ShellCommandResult(strAnswer.toString(), nExitStatus);
 	}
 
@@ -218,7 +222,9 @@ public class SSHCommand implements ICommand {
 			throw new JSchException(
 					"Session not initializad, use connect() first");
 
-		logger.debug("remote copy from " + sourcePath + " to " + targetPath);
+		if(logger.isDebugEnabled()) {
+			logger.debug("remote copy from " + sourcePath + " to " + targetPath);
+		}
 		String command = "scp -p -t  " + targetPath;
 		Channel channel = m_tSession.openChannel("exec");
 		((ChannelExec) channel).setCommand(command);
@@ -231,7 +237,9 @@ public class SSHCommand implements ICommand {
 
 			// send "C0644 filesize filename", where filename should not include '/'
 			long filesize = (new File(sourcePath)).length();
-			logger.debug("scp filesize = " + filesize);
+			if(logger.isDebugEnabled()) {
+				logger.debug("scp filesize = " + filesize);
+			}
 			command = "C0644 " + filesize + " ";
 			if (sourcePath.lastIndexOf('/') > 0) {
 				command += sourcePath.substring(sourcePath.lastIndexOf('/') + 1);
@@ -271,8 +279,9 @@ public class SSHCommand implements ICommand {
 		}
 
 		channel.disconnect();
-
-		logger.debug("scp done");
+		if(logger.isDebugEnabled()) {
+			logger.debug("scp done");
+		}
 	}
 
 	// From: http://www.jcraft.com/jsch/examples/ScpFrom.java.html
@@ -283,7 +292,9 @@ public class SSHCommand implements ICommand {
 			throw new JSchException("Session not initializad, use connect() first");
 		}
 
-		logger.debug("remote copy from {} to {}", remotePath, localPath);
+		if(logger.isDebugEnabled()) {
+			logger.debug("remote copy from {} to {}", remotePath, localPath);
+		}
 
 		long copiedByteCount = 0L;
 		FileOutputStream fos = null;
@@ -378,10 +389,14 @@ public class SSHCommand implements ICommand {
 			}
 
 			channel.disconnect();
-			logger.debug("scp done");
+			if(logger.isDebugEnabled()) {
+				logger.debug("scp done");
+			}
 
 		} catch (Exception e) {
-			logger.error(e.getLocalizedMessage());
+			if(logger.isErrorEnabled()) {
+				logger.error(e.getLocalizedMessage());
+			}
 			try { if (fos != null) fos.close(); } catch(Exception ee){}
 		}
 		return copiedByteCount;

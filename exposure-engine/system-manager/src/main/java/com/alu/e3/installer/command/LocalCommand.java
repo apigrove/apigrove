@@ -60,7 +60,9 @@ public class LocalCommand implements ICommand {
 	public ShellCommandResult execShellCommand(String strCommand, String workingDir) throws IOException, InterruptedException {
 		
 		/* Init answer. */
-		logger.debug("local execShellCommand " + strCommand + "(dir:" + workingDir + ")");
+		if(logger.isDebugEnabled()) {
+			logger.debug("local execShellCommand " + strCommand + "(dir:" + workingDir + ")");
+		}
 		int nExitStatus = 0;
 		StringBuilder strAnswer = new StringBuilder();
 
@@ -94,7 +96,9 @@ public class LocalCommand implements ICommand {
 
 		String answer = strAnswer.toString();
 		/* return answer. */
-		logger.debug("local execShellCommand returned: exit status" + nExitStatus + "\n" + answer);
+		if(logger.isDebugEnabled()) {
+			logger.debug("local execShellCommand returned: exit status" + nExitStatus + "\n" + answer);
+		}
 		return new ShellCommandResult(answer, nExitStatus);
 	}
 
@@ -109,7 +113,9 @@ public class LocalCommand implements ICommand {
 	public void copy(String sourcePath, String targetPath) throws IOException  {
 
 		/* Fast java copy file */
-		logger.debug("local copy from " + sourcePath + " to " + targetPath);
+		if(logger.isDebugEnabled()) {
+			logger.debug("local copy from " + sourcePath + " to " + targetPath);
+		}
 		File tDestFile = new File(targetPath);
 		File tSourceFile = new File(sourcePath);
 
@@ -133,7 +139,9 @@ public class LocalCommand implements ICommand {
 			}
 		}
 		
-		logger.debug("local copy done ");
+		if(logger.isDebugEnabled()) {
+			logger.debug("local copy done ");
+		}
 	}
 
 	/**

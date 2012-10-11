@@ -447,7 +447,9 @@ public class LoggingUtil {
 	 */
 	public static boolean setLocalLogLevel(LogFileSource logSource, LogLevel logLevel) throws IOException
 	{
-		logger.debug("Call to setLocalLogLevel with level {} and source {}", logLevel, logSource);
+		if (logger.isDebugEnabled()) {
+			logger.debug("Call to setLocalLogLevel with level {} and source {}", logLevel, logSource);
+		}
 		if (LogFileSource.JAVA.equals(logSource)) {
 			return LoggingUtil.setLocalJavaLogLevel(logLevel);
 		} else if (LogFileSource.SMX.equals(logSource)) {
@@ -485,7 +487,9 @@ public class LoggingUtil {
 		synchronized(LoggingUtil.getConfigFileLock()) {
 			// Requires re-entrant config-file lock!
 			if (newLogLevel.equals(getLocalLogLevel(LogFileSource.JAVA))) {
-				logger.debug("Java log-level set to existing level: {}", newLogLevel);
+				if (logger.isDebugEnabled()) {
+					logger.debug("Java log-level set to existing level: {}", newLogLevel);
+				}
 				return true;
 			}
 			try {
@@ -516,7 +520,9 @@ public class LoggingUtil {
 
 			// If E3 rules aren't found, append the default config settings
 			if (!foundThresholdRule && !foundLoggerRule) {
-				logger.debug("Using default config lines");
+				if (logger.isDebugEnabled()) {
+					logger.debug("Using default config lines");
+				}
 				String log4jConf = defaultLog4jConf.replaceAll("\\$\\{level\\}", newLogLevel.toString()).replaceAll("\\$\\{logPath\\}", LoggingUtil.defaultLogPath);
 				modContents.append(newLine + log4jConf + newLine);
 			}

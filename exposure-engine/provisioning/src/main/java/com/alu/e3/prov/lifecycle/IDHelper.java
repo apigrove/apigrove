@@ -57,7 +57,9 @@ public class IDHelper {
 			apiID = IDHelper.decode(apiIDEncoded);
 		} catch (RuntimeException e) {
 			e.printStackTrace();
-			logger.error("Undecodable apiId:{}", apiIDEncoded);
+			if(logger.isErrorEnabled()) {
+				logger.error("Undecodable apiId:{}", apiIDEncoded);
+			}
 		}
 		String provID = m.group(2);
 		

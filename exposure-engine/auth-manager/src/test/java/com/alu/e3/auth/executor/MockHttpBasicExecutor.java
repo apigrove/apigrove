@@ -24,12 +24,13 @@ import com.alu.e3.auth.AuthHttpHeaders;
 import com.alu.e3.auth.model.AuthType;
 import com.alu.e3.common.camel.AuthIdentity;
 import com.alu.e3.common.camel.AuthReport;
+import com.alu.e3.data.model.Api;
 import com.alu.e3.gateway.common.camel.exception.GatewayExceptionCode;
 
 public class MockHttpBasicExecutor implements IAuthExecutor {
 
 	@Override
-	public AuthReport checkAllowed(Exchange exchange) {
+	public AuthReport checkAllowed(Exchange exchange, Api api) {
 		
 		AuthReport authReport = new AuthReport();
 		
@@ -38,6 +39,7 @@ public class MockHttpBasicExecutor implements IAuthExecutor {
 			authIdentity.setAppId("1234");
 			authReport.setAuthIdentity(authIdentity);
 			authReport.setApiActive(true);
+			authReport.setAuthActive(true);
 		}
 		
 		//return exchange.getIn().getHeader(AuthHeaders.AuthHttpHeaders.key)==null?null:new AppIdentity("1234");

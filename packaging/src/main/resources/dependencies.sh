@@ -290,12 +290,12 @@ function redhat_filelimits {
         echo "fs.file-max = $FILE_MAX" >> /etc/sysctl.conf
     fi
     
-    if ! grep -qE "hard    nofile        $FILE_LIMITS" /etc/security/limits.conf ; then
+    if ! grep -qE "hard\s*nofile\s*$FILE_LIMITS" /etc/security/limits.conf ; then
         echo "Patching /etc/security/limits.conf (hard limit)"
         sed -i -e "/# End of file/ i \*        hard    nofile        $FILE_LIMITS" /etc/security/limits.conf
     fi
     
-    if ! grep -qE "soft    nofile        $FILE_LIMITS" /etc/security/limits.conf ; then
+    if ! grep -qE "soft\s*nofile\s*$FILE_LIMITS" /etc/security/limits.conf ; then
         echo "Patching /etc/security/limits.conf (soft limit)"
         sed -i -e "/# End of file/ i \*        soft    nofile        $FILE_LIMITS" /etc/security/limits.conf
     fi

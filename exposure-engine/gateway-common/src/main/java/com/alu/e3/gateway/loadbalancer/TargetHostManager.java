@@ -34,6 +34,7 @@ import com.alu.e3.data.IDataManagerListener;
 import com.alu.e3.data.model.Api;
 import com.alu.e3.data.model.sub.APIContext;
 import com.alu.e3.data.model.sub.ApiIds;
+import com.alu.e3.data.model.sub.GlobalForwardProxy;
 import com.alu.e3.data.model.sub.LoadBalancing;
 import com.alu.e3.data.model.sub.TargetHost;
 import com.alu.e3.gateway.targethealthcheck.ITargetHealthCheckService;
@@ -54,6 +55,12 @@ import com.alu.e3.gateway.targethealthcheck.ITargetHealthCheckService;
 public class TargetHostManager implements ITargetHostManager, IEntryListener<String, Api>, IDataManagerListener {
 
 	protected IDataManager dataManager;
+	
+	protected GlobalForwardProxy globalForwardProxy;
+
+	public GlobalForwardProxy getGlobalForwardProxy() {
+		return globalForwardProxy;
+	}
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TargetHostManager.class);
 
@@ -84,13 +91,19 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 	 * Will register and start all TargetHealthCheck services.
 	 */
 	public void init() {
-		LOGGER.debug("Initializing TargethostManager");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Initializing TargethostManager");
+		}
 		
 		// Registering as Listener on DataManager
 		if(this.dataManager != null) {
 			this.dataManager.addListener(this);
 		}
-
+		
+		globalForwardProxy = new GlobalForwardProxy();
+		globalForwardProxy.setDataManager(dataManager);
+		globalForwardProxy.init();
+		
 		// Starts the list of HealthCheckServices
 		if (servicesToStart != null) {
 			for (ITargetHealthCheckService service : servicesToStart) {
@@ -106,7 +119,9 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 	 * Stops listening on API create/update/delete operations.
 	 */
 	public void destroy() {
-		LOGGER.debug("Destroying TargethostManager");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Destroying TargethostManager");
+		}
 		
 		if(this.dataManager != null) {
 			this.dataManager.removeApiListener(this);
@@ -127,7 +142,9 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 	 * @param services The list of ITargetHealthCheckService to register and start.
 	 */
 	public void setHealthCheckServices(List<ITargetHealthCheckService> services) {
-		LOGGER.debug("Registering {} HealthCheck services", services.size());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Registering {} HealthCheck services", services.size());
+		}
 		this.servicesToStart = services;
 	}
 
@@ -140,7 +157,9 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 	 */
 	protected void registerHealthCheckService(ITargetHealthCheckService service) {
 		if(service.getName() != null) {
-			LOGGER.debug("Registering HealthCheck service {} ({})", service.getName(), service.getClass().getName());
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Registering HealthCheck service {} ({})", service.getName(), service.getClass().getName());
+			}
 			
 			if(!this.targetHealthCheckServices.containsKey(service.getName())) {
 				this.targetHealthCheckServices.put(service.getName(), service);
@@ -181,7 +200,9 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 			apis = Collections.synchronizedMap(new HashMap<String, List<TargetReference>>());
 			this.targetReferencesMap.put(apiId, apis);
 		} else {
-			LOGGER.debug("Apis already initialized for api id {}; nothing to do", apiId);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Apis already initialized for api id {}; nothing to do", apiId);
+			}
 		}
 		
 		return apis;
@@ -202,7 +223,9 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 			contexts = Collections.synchronizedList(new ArrayList<TargetReference>());
 			apis.put(apiId, contexts);
 		} else {
-			LOGGER.debug("Contexts already initialized for api id {} and context id {}; nothing to do", apiId, contextId);
+			if (LOGGER.isDebugEnabled()) {	
+				LOGGER.debug("Contexts already initialized for api id {} and context id {}; nothing to do", apiId, contextId);
+			}
 		}
 
 		return contexts;
@@ -222,30 +245,40 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 	 * @param apiId The API Id to register.
 	 */
 	protected void registerAPI(String apiId) {
-		LOGGER.debug("Registering API {}", apiId);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Registering API {}", apiId);
+		}
 		
 		// Gets the API
 		Api api = dataManager.getApiById(apiId, true);
 
 		// Get context Ids (because apis are incomplete on Gateway only machines)
 		List<ApiIds> ids = api.getContextIds();
-		LOGGER.debug("Browsing {} contexts for API #{}", ids.size(), apiId);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Browsing {} contexts for API #{}", ids.size(), apiId);
+		}
 		
 		// Get or create the Api Context map for this API
 		Map<String, List<TargetReference>> map = getApiMap(apiId);
-		LOGGER.debug("Size of api context map for api id {}: {}", apiId, map.size());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Size of api context map for api id {}: {}", apiId, map.size());
+		}
 		
 		// Browsing API Contexts
 		for(ApiIds id : ids) {
 			// Get the ApiContext by its ID (this map is populated on all gateways)
-			LOGGER.debug("Getting api context for api id {}", apiId);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Getting api context for api id {}", apiId);
+			}
 			APIContext context = dataManager.getApiContextById(id.getApiContextId());
 			
 			// Shouldn't be null...
 			if(context != null) {
 				// Prepare the list of TargetReference
 				List<TargetReference> targetReferences = new ArrayList<TargetReference>();
-				LOGGER.debug("Registering Context {} ({} TargetHosts)", context.getId(), context.getTargetHosts().size());
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Registering Context {} ({} TargetHosts)", context.getId(), context.getTargetHosts().size());
+				}
 				
 				// Store requested HealthCheck service for later use
 				ITargetHealthCheckService healthCheckService = null;
@@ -257,22 +290,37 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 				}
 				
 				if(healthCheckServiceName != null) {
-					LOGGER.debug("Will use HealthCheck service ", healthCheckServiceName);
-					
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Will use HealthCheck service ", healthCheckServiceName);
+					}
+						
 					// Getting corresponding HealthCheck Service
 					healthCheckService = targetHealthCheckServices.get(healthCheckServiceName);
 					if(healthCheckService != null) {
-						LOGGER.debug("Found a HealthCheckService ({}) for this name: {}", healthCheckService.getClass().getName(), healthCheckServiceName);
+						if (LOGGER.isDebugEnabled()) {
+							LOGGER.debug("Found a HealthCheckService ({}) for this name: {}", healthCheckService.getClass().getName(), healthCheckServiceName);
+						}
 					} else {
-						LOGGER.debug("No HealthCheckService found for this name: {}", healthCheckServiceName);
+						if (LOGGER.isDebugEnabled()) {
+							LOGGER.debug("No HealthCheckService found for this name: {}", healthCheckServiceName);
+						}
 					}
 				} else {
-					LOGGER.debug("Will NOT use HealthCheck service for following targets");
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Will NOT use HealthCheck service for following targets");
+					}
 				}
 				
 				
 				// For each TargetHost, check if there is already a corresponding ManagedTargetHost
 				for(TargetHost targetHost : context.getTargetHosts()) {
+					
+					/* 
+					 * If the api has its own proxy settings, they were automatically set by the DataManager while loading the api. Nothing to do.
+					 * If the api uses global proxy settings,  we have to retrieve a reference on this shared instance
+					 */
+					
+					targetHost.setForwardProxy( api.isUseGlobalProxy() ? globalForwardProxy : api.getForwardProxy() );
 					
 					// Using a "hash differentiation string":
 					// We need to take into account the HealthCheckService associated to a TargetHost
@@ -284,7 +332,9 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 									
 					ManagedTargetHost target = targets.get(managedReference);		
 					if(target == null) {
-						LOGGER.debug("No corresponding ManagedTarget, creating a new one");
+						if (LOGGER.isDebugEnabled()) {
+							LOGGER.debug("No corresponding ManagedTarget, creating a new one");
+						}
 						
 						// Instantiating and remembering managed target
 						target = new ManagedTargetHost(targetHost);
@@ -293,21 +343,29 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 						
 						// Registering managed target on health check service
 						if(healthCheckService != null) {
-							LOGGER.debug("Target #{} registered on HealthCheck service {}", managedReference, healthCheckService.getName());
+							if (LOGGER.isDebugEnabled()) {
+								LOGGER.debug("Target #{} registered on HealthCheck service {}", managedReference, healthCheckService.getName());
+							}
 							
 							healthCheckService.registerTarget(target);
 							target.setHealthCheckService(healthCheckService);
 						} else {
-							LOGGER.debug("Target #{} not registered on HealthCheck service");
+							if (LOGGER.isDebugEnabled()) {
+								LOGGER.debug("Target #{} not registered on HealthCheck service");
+							}
 						}
 					} else {
 						// We already have a ManagedTarget for this protocol+host+port+healthcheck
-						LOGGER.debug("There is already a corresponding ManagedTarget: #{} ", managedReference);
+						if (LOGGER.isDebugEnabled()) {
+							LOGGER.debug("There is already a corresponding ManagedTarget: #{} ", managedReference);
+						}
 					}
 					
 					// Incrementing counter of use (used for unregister method)
 					target.getNumberOfUse().incrementAndGet();
-					LOGGER.debug("New usage for target #{}: {}", managedReference, target.getNumberOfUse());
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("New usage for target #{}: {}", managedReference, target.getNumberOfUse());
+					}
 					
 					// Adding this reference to the list that will be returned to the LoadBalancer later on
 					TargetReference targetReference = new TargetReference();
@@ -335,26 +393,36 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 	 * @param targetHostReference The reference String of the ManagedTargetHost to unregister. 
 	 */
 	protected void unregisterTargetHost(String targetHostReference) {
-		LOGGER.debug("Unregistering target with reference {}", targetHostReference);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Unregistering target with reference {}", targetHostReference);
+		}
 		ManagedTargetHost target = targets.get(targetHostReference);
 		if(target != null) {
 			int usage = target.getNumberOfUse().decrementAndGet();
-			LOGGER.debug("Target #{} found, new usage: {}", targetHostReference, usage);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Target #{} found, new usage: {}", targetHostReference, usage);
+			}
 			
 			// ManagedTarget is no longer used
 			if(usage == 0) {
-				LOGGER.debug("Usage == 0, removing target #{}", targetHostReference);
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Usage == 0, removing target #{}", targetHostReference);
+				}
 				// Unregistering it from the HealthCheck service
 				ITargetHealthCheckService healthCheckService = target.getHealthCheckService();
 				if(healthCheckService != null) {
-					LOGGER.debug("Unregistering target #{} from HealthCheckService {}", targetHostReference, healthCheckService.getName());
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Unregistering target #{} from HealthCheckService {}", targetHostReference, healthCheckService.getName());
+					}
 					healthCheckService.unregisterTarget(target);
 					target.setHealthCheckService(null);
 				}
 
 				// Removing it from the local targets map
 				targets.remove(targetHostReference);
-				LOGGER.debug("Target #{} removed from TargetHostManager DB", targetHostReference);
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Target #{} removed from TargetHostManager DB", targetHostReference);
+				}
 			}
 		}
 	}
@@ -371,10 +439,14 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 	public void notifyFailed(String targetHostReference) {
 		ManagedTargetHost target = targets.get(targetHostReference);
 		if (target != null && target.getHealthCheckService() != null) {
-			LOGGER.debug("TargetHost {} has been notified as UNAVAILABLE, marking it");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("TargetHost {} has been notified as UNAVAILABLE, marking it");
+			}
 			target.setStatus(TargetStatus.UNAVAILABLE);
 		} else {
-			LOGGER.debug("TargetHost {} has been notified as UNAVAILABLE, but is not healthChecked, so ignoring.");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("TargetHost {} has been notified as UNAVAILABLE, but is not healthChecked, so ignoring.");
+			}
 		}
 	}
 
@@ -391,7 +463,9 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 		if(target != null) {
 			return target.isAvailable();
 		} else {
-			LOGGER.warn("Asked invalid reference {}", targetReference);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.warn("Asked invalid reference {}", targetReference);
+			}
 			return false;
 		}
 	}
@@ -402,7 +476,9 @@ public class TargetHostManager implements ITargetHostManager, IEntryListener<Str
 	 */
 	@Override
 	public void dataManagerReady() {
-		LOGGER.debug("Adding TargethostManager as listener on DataManager");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Adding TargethostManager as listener on DataManager");
+		}
 		if(this.dataManager != null) {
 			// Removing from DataManagerListener
 			this.dataManager.removeListener(this);

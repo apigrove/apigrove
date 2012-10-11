@@ -47,10 +47,14 @@ public class Operation <K, V> {
 			throw new InvalidParameterException("the parameter 'key' cannot be null");
 		
 		if (operationType == OperationType.CREATE && previousValue != null)
-			log.warn("An entry that is to be created but seem to have a previous value (key: " + key + ", map: " + cacheTable.getName() + ")");
+			if (log.isWarnEnabled()) {
+				log.warn("An entry that is to be created but seem to have a previous value (key: " + key + ", map: " + cacheTable.getName() + ")");
+			}
 		
 		if (operationType == OperationType.UPDATE && previousValue == null)
-			log.warn("An entry that is to be updated does not already exist (key: " + key + ", map: " + cacheTable.getName() + ")");
+			if (log.isWarnEnabled()) {
+				log.warn("An entry that is to be updated does not already exist (key: " + key + ", map: " + cacheTable.getName() + ")");
+			}
 
 		this.operationType = operationType;
 		this.key = key;

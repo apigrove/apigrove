@@ -4,7 +4,7 @@
 
 	<groupId>com.alu.opensource</groupId>
 	<artifactId>e3</artifactId>
-	<version>1.0.1</version>
+	<version>0.0.0.2962</version>
 	<packaging>pom</packaging>
 	<name>e3</name>
 
@@ -43,7 +43,7 @@
 		<profile>
 			<id>build-front-end-module</id>
 			<modules>
-				<module>front-end</module>
+				<module>front-end/pom-assembly.xml</module>
 			</modules>
 		</profile>
 		

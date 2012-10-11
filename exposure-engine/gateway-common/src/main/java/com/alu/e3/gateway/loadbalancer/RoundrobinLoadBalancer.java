@@ -23,25 +23,11 @@ import java.util.List;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.component.http4.HttpProducer;
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.Credentials;
-import org.apache.http.auth.NTCredentials;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.params.ConnRouteParamBean;
-import org.apache.http.conn.routing.HttpRoute;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.HttpConnectionParamBean;
-import org.apache.http.params.HttpParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alu.e3.common.camel.ExchangeConstantKeys;
 import com.alu.e3.data.model.sub.ConnectionParameters;
-import com.alu.e3.data.model.sub.ForwardProxy;
-import com.alu.e3.data.model.sub.TargetHost;
-import com.alu.e3.gateway.TargetHost2HttpRouteUtil;
 import com.alu.e3.tdr.TDRConstant;
 import com.alu.e3.tdr.TDRDataService;
 
@@ -75,8 +61,9 @@ public class RoundrobinLoadBalancer {
 	}
 	
 	public void addTargetHostReference(TargetReference targetReference) {
-		
-		LoadBalancerDisplay.logDebug(LOGGER, name, "Add and register the target host " + targetReference);
+		if (LOGGER.isDebugEnabled()) {
+			LoadBalancerDisplay.logDebug(LOGGER, name, "Add and register the target host " + targetReference);
+		}
 		
 		this.targetReferences.add(targetReference);
 		this.numberOfReferences++;
@@ -90,7 +77,9 @@ public class RoundrobinLoadBalancer {
 	}
 	
 	public void setHttpProducer(HttpProducer httpProducer) {
-		LOGGER.debug("Setting a new HttpProducer ...");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Setting a new HttpProducer ...");
+		}
 		this.httpProducer = httpProducer;
 		LoadBalancerDisplay.displayConfig(LOGGER, name, maxAttemptsExceeded, failedOver, failedOverErrorCode, numberOfReferences);
 	}
@@ -102,36 +91,52 @@ public class RoundrobinLoadBalancer {
 		
 		// get current 
 		int localIndex = getNextGlobalIndex();
-		LoadBalancerDisplay.logDebug(LOGGER, name, "Local index served = "+localIndex);
+		if (LOGGER.isDebugEnabled()) {
+			LoadBalancerDisplay.logDebug(LOGGER, name, "Local index served = "+localIndex);
+		}
 		
 		TargetReference targetReference = null;
 				
 		for(int attempt = 0; attempt < maxAttemptsExceeded; attempt++) {
 			
-			LoadBalancerDisplay.logDebug(LOGGER, name,"Try "+ (attempt+1) +"/"+ maxAttemptsExceeded +" to get a valid target host"); 
+			if (LOGGER.isDebugEnabled()) {
+				LoadBalancerDisplay.logDebug(LOGGER, name,"Try "+ (attempt+1) +"/"+ maxAttemptsExceeded +" to get a valid target host");
+			}
 			
 			targetReference = targetReferences.get(localIndex);
-			LoadBalancerDisplay.logDebug(LOGGER, name, "Recovered target ref = '"+targetReference.getReference()+ "'. Will check if available");
+			if (LOGGER.isDebugEnabled()) {
+				LoadBalancerDisplay.logDebug(LOGGER, name, "Recovered target ref = '"+targetReference.getReference()+ "'. Will check if available");
+			}
 			
 			boolean isAvailable = targetHostManager.isAvailable(targetReference.getReference());
 			
 			if(isAvailable) {
-				LoadBalancerDisplay.logDebug(LOGGER, name, "Target host with reference ["+targetReference.getReference()+"] is available");
+				if (LOGGER.isDebugEnabled()) {
+					LoadBalancerDisplay.logDebug(LOGGER, name, "Target host with reference ["+targetReference.getReference()+"] is available");
+				}
 				boolean isOk = send(exchange, targetReference);
 				if(isOk) {	
 					success = isOk;
-					LoadBalancerDisplay.logDebug(LOGGER, name, "Succss with a try "+ (attempt+1) +"/"+ maxAttemptsExceeded); 
+					if (LOGGER.isDebugEnabled()) {
+						LoadBalancerDisplay.logDebug(LOGGER, name, "Succss with a try "+ (attempt+1) +"/"+ maxAttemptsExceeded);
+					}
 					break;
 				} else {
-					LoadBalancerDisplay.logWarn(LOGGER, name, "Unable to call the target host while it is supposed to be available, notify that the target host ["+targetReference.getTargetHost().getUrl()+"] is invalid");
+					if (LOGGER.isWarnEnabled()) {
+						LoadBalancerDisplay.logWarn(LOGGER, name, "Unable to call the target host while it is supposed to be available, notify that the target host ["+targetReference.getTargetHost().getUrl()+"] is invalid");
+					}
 					targetHostManager.notifyFailed(targetReference.getReference());
 				}
 			} else {
-				LoadBalancerDisplay.logDebug(LOGGER, name, "Target host with reference ["+targetReference.getReference()+"] is NOT available");
+				if (LOGGER.isDebugEnabled()) {
+					LoadBalancerDisplay.logDebug(LOGGER, name, "Target host with reference ["+targetReference.getReference()+"] is NOT available");
+				}
 			}
 			++localIndex;
 			if(localIndex > numberOfReferences - 1) {
-				LoadBalancerDisplay.logDebug(LOGGER, name, "End of reference list; setting index to first element");
+				if (LOGGER.isDebugEnabled()) {
+					LoadBalancerDisplay.logDebug(LOGGER, name, "End of reference list; setting index to first element");
+				}
 				localIndex = 0;
 			}			
 		}
@@ -146,8 +151,9 @@ public class RoundrobinLoadBalancer {
 	
 	
 	private synchronized int getNextGlobalIndex() {
-		
-		LoadBalancerDisplay.logDebug(LOGGER, name, "Global index found = " + globalIndex);
+		if (LOGGER.isDebugEnabled()) {
+			LoadBalancerDisplay.logDebug(LOGGER, name, "Global index found = " + globalIndex);
+		}
 		
 		int nextGlobalIndex = globalIndex;
 		
@@ -159,7 +165,9 @@ public class RoundrobinLoadBalancer {
 			globalIndex = 0;
 		} 
 		
-		LoadBalancerDisplay.logDebug(LOGGER, name, "Next global index computed = " + globalIndex);
+		if (LOGGER.isDebugEnabled()) {
+			LoadBalancerDisplay.logDebug(LOGGER, name, "Next global index computed = " + globalIndex);
+		}
 		
 		return nextGlobalIndex;
 	}
@@ -168,7 +176,9 @@ public class RoundrobinLoadBalancer {
 		
 		boolean isOk = false;
 		
-		LoadBalancerDisplay.logDebug(LOGGER, name, "Set target host [" + targetReference.getTargetHost().getUrl() + "]");
+		if (LOGGER.isDebugEnabled()) {
+			LoadBalancerDisplay.logDebug(LOGGER, name, "Set target host [" + targetReference.getTargetHost().getUrl() + "]");
+		}
 		
 		String url = targetReference.getTargetHost().getUrl();
 		String queryParams = null;
@@ -192,16 +202,30 @@ public class RoundrobinLoadBalancer {
 			exchange.getIn().setHeader(Exchange.HTTP_QUERY, queryParams);
 		}
 		
-		config(targetReference.getTargetHost());
-		
 		LoadBalancerDisplay.displayExchange(LOGGER, name, exchange, " IN");
 
-		LoadBalancerDisplay.logDebug(LOGGER, name, "Send HTTP request to target reference '" +targetReference.getReference()+ "'");
+		if (LOGGER.isDebugEnabled()) {
+			LoadBalancerDisplay.logDebug(LOGGER, name, "Send HTTP request to target reference '" +targetReference.getReference()+ "'");
+		}
 		
 		try {
 		
+			ConnectionParameters connectionParameters = targetReference.getTargetHost().getConnectionParameters();
+			if(connectionParameters != null) {
+				Integer connectionTimeout = targetReference.getTargetHost().getConnectionParameters().getConnectionTimeout();
+				if(connectionTimeout != null) {
+					exchange.setProperty(ExchangeConstantKeys.E3_HTTP_CONNECTION_TIMEOUT.toString(), connectionTimeout);
+				}
+				Integer socketTimeout = targetReference.getTargetHost().getConnectionParameters().getSocketTimeout();
+				if(socketTimeout != null) {
+					exchange.setProperty(ExchangeConstantKeys.E3_HTTP_SOCKET_TIMEOUT.toString(), socketTimeout);
+				}
+			}
+			
 			httpProducer.process(exchange);
-			LoadBalancerDisplay.logDebug(LOGGER, name, "Successfully sent request to target reference '" +targetReference.getReference()+ "'");
+			if (LOGGER.isDebugEnabled()) {
+				LoadBalancerDisplay.logDebug(LOGGER, name, "Successfully sent request to target reference '" +targetReference.getReference()+ "'");
+			}
 			isOk = checkResponse(exchange);
 			
 		} catch(Exception e) {
@@ -216,82 +240,24 @@ public class RoundrobinLoadBalancer {
 		return isOk;
 	}
 	
-	protected void config(TargetHost targetHost){
-		if(targetHost == null){
-			throw new RuntimeException("Targethost cannot be null!");
-		}
-		
-		DefaultHttpClient client = (DefaultHttpClient) httpProducer.getHttpClient();
-		HttpParams params = client.getParams();
-		
-		ConnectionParameters connParams = targetHost.getConnectionParameters();
-		if(connParams != null){
-			HttpConnectionParamBean httpConnectionParamBean = new HttpConnectionParamBean(params);
-			if(connParams.getConnectionTimeout() != null)
-				httpConnectionParamBean.setConnectionTimeout(connParams.getConnectionTimeout());
-			if(connParams.getSocketTimeout() != null)
-				httpConnectionParamBean.setSoTimeout(connParams.getSocketTimeout());
-			
-			ClientConnectionManager ccm = client.getConnectionManager();
-			if(ccm instanceof ThreadSafeClientConnManager){
-				ThreadSafeClientConnManager tsccm = (ThreadSafeClientConnManager) ccm;
-				HttpRoute route = TargetHost2HttpRouteUtil.fromTargetHost(targetHost); 
-				if(connParams.getMaxConnections() != null)
-					tsccm.setMaxForRoute(route, targetHost.getConnectionParameters().getMaxConnections());
-			}
-			
-			
-		} else {
-			LOGGER.debug("Connection parameters for target host {} are NULL", targetHost.getUrl());
-		}
-        
-		ForwardProxy forwardProxy = targetHost.getForwardProxy();
-		if(forwardProxy != null){
-			String host = forwardProxy.getProxyHost();
-			String port = forwardProxy.getProxyPort();
-			if(host != null && port != null){
-		        ConnRouteParamBean connRouteParamBean = new ConnRouteParamBean(params);
-				int iport = new Integer(port);
-				HttpHost proxy = new HttpHost(host, iport);
-				connRouteParamBean.setDefaultProxy(proxy);
-				
-				String user = forwardProxy.getProxyUser();
-				String pass = forwardProxy.getProxyPass();
-				if(user != null && pass != null){
-					Credentials credentials = null;
-					
-					String ntdomain = null; //targetHost.getForwardProxy().getProxyNtDomain;
-					String ntworkstation = null; //targetHost.getForwardProxy().getProxyNtWorkstation();
-					if(ntdomain != null || ntworkstation != null){
-						credentials = new NTCredentials(user, pass, ntworkstation, ntdomain);
-					} else {
-						credentials = new UsernamePasswordCredentials(user,pass);
-					}
-					AuthScope authscope = new AuthScope(host, iport);
-					client.getCredentialsProvider().setCredentials(authscope, credentials);
-				}
-			} else {
-				LOGGER.debug("Host or port for target host {} forward proxy are NULL", targetHost.getUrl());
-			}
-		} else {
-			LOGGER.debug("Forward proxy for target host {} is NULL", targetHost.getUrl());
-		}
-		
-		
-	}
-	
 	private boolean checkResponse(Exchange exchange) {
 		// isOK = false : launch Failover process for trying another target
 		boolean isOk = false;
 		
 		int httpCode = (Integer) exchange.getOut().getHeader(Exchange.HTTP_RESPONSE_CODE);
-		LoadBalancerDisplay.logDebug(LOGGER, name, "HTTP request response code '" +httpCode+ "'");
+		if (LOGGER.isDebugEnabled()) {
+			LoadBalancerDisplay.logDebug(LOGGER, name, "HTTP request response code '" +httpCode+ "'");
+		}
 		
 		if (httpCode != this.failedOverErrorCode) {
-			LoadBalancerDisplay.logDebug(LOGGER, name, "HTTP request response code '" +httpCode+ "' is not failover code");
+			if (LOGGER.isDebugEnabled()) {
+				LoadBalancerDisplay.logDebug(LOGGER, name, "HTTP request response code '" +httpCode+ "' is not failover code");
+			}
 			isOk = true;
 		} else {
-			LoadBalancerDisplay.logWarn(LOGGER, name, "Failover http error code : " + this.failedOverErrorCode + " detected, Failover process launched.");
+			if (LOGGER.isWarnEnabled()) {
+				LoadBalancerDisplay.logWarn(LOGGER, name, "Failover http error code : " + this.failedOverErrorCode + " detected, Failover process launched.");
+			}
 		}
 		
 		return isOk;		

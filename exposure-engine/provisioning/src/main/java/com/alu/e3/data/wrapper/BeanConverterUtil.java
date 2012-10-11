@@ -49,8 +49,10 @@ import com.alu.e3.data.model.sub.Context;
 import com.alu.e3.data.model.sub.Counter;
 import com.alu.e3.data.model.sub.FailOver;
 import com.alu.e3.data.model.sub.ForwardProxy;
+import com.alu.e3.data.model.sub.GlobalForwardProxy;
 import com.alu.e3.data.model.sub.HTTPSType;
 import com.alu.e3.data.model.sub.HeaderTransformation;
+import com.alu.e3.data.model.sub.IForwardProxy;
 import com.alu.e3.data.model.sub.LoadBalancing;
 import com.alu.e3.data.model.sub.QuotaRLBucket;
 import com.alu.e3.data.model.sub.SBAuthentication;
@@ -67,7 +69,7 @@ import com.alu.e3.prov.restapi.model.Authkey;
 import com.alu.e3.prov.restapi.model.BasicAuth;
 import com.alu.e3.prov.restapi.model.Data;
 import com.alu.e3.prov.restapi.model.DynamicTdr;
-import com.alu.e3.prov.restapi.model.IpWhiteListAuth;
+import com.alu.e3.prov.restapi.model.IpWhiteList;
 import com.alu.e3.prov.restapi.model.Key;
 import com.alu.e3.prov.restapi.model.NotificationFormat;
 import com.alu.e3.prov.restapi.model.OAuth;
@@ -100,6 +102,7 @@ public final class BeanConverterUtil {
 		provisionData.setType					(fromDataModel(api.getApiDetail().getType()));
 		provisionData.setSubscriptionStep		(fromDataModel(api.getApiDetail().getSubscriptionStep()));
 		provisionData.setNotificationFormat		(fromDataModel(api.getApiDetail().getNotificationFormat()));
+		provisionData.setIpWhiteList(fromDataModelToIpWhiteListApi(api));
 		provisionData.getContexts().addAll		(BeanConverterUtil.<com.alu.e3.prov.restapi.model.ApiContext, APIContext>fromDataModels(api.getApiDetail().getContexts()));
 		provisionData.setAuthentication			(fromDataModelToProvisionAuthentication(api.getApiDetail()));
 		provisionData.setTdr					(fromDataModel(api.getTdrGenerationRule()));		
@@ -128,9 +131,9 @@ public final class BeanConverterUtil {
 		if(api.isUseGlobalProxy()){
 			proxySettings = new ApiProxySettings();
 			proxySettings.setGlobalProxy(new ApiProxySettings.GlobalProxy());
-		}else if(api.getLocalProxy() != null){
+		}else if(api.getForwardProxy() != null){
 			proxySettings = new ApiProxySettings();
-			proxySettings.setLocalProxy(fromDataModel(api.getLocalProxy()));
+			proxySettings.setLocalProxy(fromDataModel(api.getForwardProxy()));
 		}
 		provisionData.setProxySettings(proxySettings);
 		
@@ -165,6 +168,9 @@ public final class BeanConverterUtil {
 		apiDetail.setSubscriptionStep			(toDataModel(provisionData.getSubscriptionStep()));
 		apiDetail.setNotificationFormat			(toDataModel(provisionData.getNotificationFormat()));
 		apiDetail.setVersion					(provisionData.getVersion());
+		if(provisionData.getIpWhiteList() != null) {
+			api.getWhiteListedIps().addAll(provisionData.getIpWhiteList().getIp());
+		}
 		apiDetail.getContexts().addAll			(BeanConverterUtil.<APIContext, com.alu.e3.prov.restapi.model.ApiContext>toDataModels(provisionData.getContexts()));
 		apiDetail.setTdrEnabled					(toDataModel(provisionData.getTdrEnabled()));
 		if (provisionData.getAuthentication() != null && provisionData.getAuthentication().getAuthKey() != null) {
@@ -189,9 +195,9 @@ public final class BeanConverterUtil {
 			if(provisionData.getProxySettings().getGlobalProxy() != null){
 				api.setUseGlobalProxy(true);
 			}else if (provisionData.getProxySettings().getLocalProxy() != null){
-				api.setLocalProxy( toDataModel(provisionData.getProxySettings().getLocalProxy()) );
-			}// else no proxy
-		}
+				api.setForwardProxy( toDataModel(provisionData.getProxySettings().getLocalProxy()) );
+			}
+		} // else no proxy
 		
 		
 		return api;
@@ -227,7 +233,7 @@ public final class BeanConverterUtil {
 
 		com.alu.e3.prov.restapi.model.Auth a = new com.alu.e3.prov.restapi.model.Auth();
 		a.setId							(auth.getId());
-		a.setStatus						(fromDataModel(auth.getAuthDetail().getStatus()));
+		a.setStatus						(fromDataModel(auth.getStatus()));
 		a.setApiContext					(auth.getApiContext());
 		a.setPolicyContext				(auth.getPolicyContext());
 		a.setType						(fromDataModel(auth.getAuthDetail().getType()));
@@ -271,6 +277,7 @@ public final class BeanConverterUtil {
 
 		Auth auth = new Auth();	
 		auth.setId						(authData.getId());
+		auth.setStatus					(toDataModel(authData.getStatus()));
 		auth.setTdrGenerationRule		(toDataModel(authData.getTdr()));
 		auth.setApiContext       		(authData.getApiContext());
 		auth.setPolicyContext     		(authData.getPolicyContext());
@@ -284,7 +291,6 @@ public final class BeanConverterUtil {
 		auth.setAuthDetail				(authDetail);
 
 		authDetail.setType				(toDataModel(authData.getType()));
-		authDetail.setStatus			(toDataModel(authData.getStatus()));
 
 		switch(authData.getType()) {
 		case AUTHKEY:
@@ -752,10 +758,17 @@ public final class BeanConverterUtil {
 		return b;
 	}
 
-	private static IpWhiteListAuth fromDataModelToIpWhiteListAuth(AuthDetail authDetail) {
+	private static IpWhiteList fromDataModelToIpWhiteListAuth(AuthDetail authDetail) {
 		if (authDetail==null) throw new IllegalArgumentException("authDetail must not be null");
-		IpWhiteListAuth i = new IpWhiteListAuth();
+		IpWhiteList i = new IpWhiteList();
 		i.getIp().addAll	(authDetail.getWhiteListedIps());
+		return i;
+	}
+
+	private static IpWhiteList fromDataModelToIpWhiteListApi(Api apiDetail) {
+		if (apiDetail==null) throw new IllegalArgumentException("apiDetail must not be null");
+		IpWhiteList i = new IpWhiteList();
+		i.getIp().addAll	(apiDetail.getWhiteListedIps());
 		return i;
 	}
 
@@ -1091,7 +1104,7 @@ public final class BeanConverterUtil {
 		return r;		
 	}
 
-	public static final com.alu.e3.prov.restapi.model.ForwardProxy fromDataModel(ForwardProxy forwardProxy) {
+	public static final com.alu.e3.prov.restapi.model.ForwardProxy fromDataModel(IForwardProxy forwardProxy) {
 		if (forwardProxy==null) return null;
 
 		com.alu.e3.prov.restapi.model.ForwardProxy fp = new com.alu.e3.prov.restapi.model.ForwardProxy();

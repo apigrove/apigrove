@@ -29,7 +29,7 @@
 	 
 	<!-- Jetty HTTP Component (max threads will be 100 + 100) --> 
 	<!-- USED BY ROUTE -->
-    <bean id="jetty" class="org.apache.camel.component.jetty.JettyHttpComponent">
+    <bean id="jetty" class="com.alu.e3.gateway.common.camel.component.DispatchingHttpComponent">
         <property name="minThreads" value="100" />
         <property name="maxThreads" value="500" />
         <property name="httpClientMinThreads" value="100" />
@@ -45,7 +45,7 @@
 	<bean class="com.alu.e3.gateway.security.SslJettyComponentReloader" init-method="init" destroy-method="destroy">
 		<property name="contextXmlClasspath" value="classpath:META-INF/spring-optional/gateway-common.reloadable-jetty-https-component-context.xml" />
 		<property name="keyStoreService" ref="keyStoreFileService" />
-		<property name="trustStoreService" ref="trustStoreFileService" />
+		<property name="trustConfigProvider" ref="x509Store" />
 	</bean>
 
     <bean id="clientCertificateValidator" class="com.alu.e3.gateway.common.camel.processor.ClientCertificateValidator">

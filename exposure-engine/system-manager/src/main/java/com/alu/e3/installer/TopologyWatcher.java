@@ -41,10 +41,14 @@ public class TopologyWatcher
 	
 	public void processTopology(Exchange exchange) throws Exception 
 	{
-		logger.debug("New topology.xml file detected");
+		if(logger.isDebugEnabled()) {
+			logger.debug("New topology.xml file detected");
+		}
 		
 		if(topologyProcessed) {
-			logger.debug("Topology.xml already processed. Ignoring.");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Topology.xml already processed. Ignoring.");
+			}
 			return;
 		}
 		
@@ -52,19 +56,27 @@ public class TopologyWatcher
 		
 		if (topology != null)
 		{
-			logger.debug("Setting new topology.xml file on topology service.");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Setting new topology.xml file on topology service.");
+			}
 			topology.setTopology("null");
 		}
 		else
-			logger.warn("Topology file is null. Ignoring.");
+			if(logger.isWarnEnabled()) {
+				logger.warn("Topology file is null. Ignoring.");
+			}
 	}
 
 	public void processSystemTopology(Exchange exchange) throws Exception 
 	{
-		logger.debug("New system-topology.xml file detected");
+		if(logger.isDebugEnabled()) {
+			logger.debug("New system-topology.xml file detected");
+		}
 		
 		if(systemTopologyProcessed) {
-			logger.debug("system-topology.xml already processed. Ignoring.");
+			if(logger.isDebugEnabled()) {
+				logger.debug("system-topology.xml already processed. Ignoring.");
+			}
 			return;
 		}
 		
@@ -72,11 +84,15 @@ public class TopologyWatcher
 		
 		if (topology != null)
 		{
-			logger.debug("Setting new system-topology.xml file on topology service.");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Setting new system-topology.xml file on topology service.");
+			}
 			topology.setSystemTopology("null");
 		}
 		else
-			logger.warn("system-topology file is null. Ignoring.");
+			if(logger.isWarnEnabled()) {
+				logger.warn("system-topology file is null. Ignoring.");
+			}
 	}
 
 	/**

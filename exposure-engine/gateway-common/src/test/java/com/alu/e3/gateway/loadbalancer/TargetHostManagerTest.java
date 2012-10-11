@@ -31,6 +31,8 @@ import org.junit.Test;
 
 import com.alu.e3.data.model.Api;
 import com.alu.e3.data.model.sub.APIContext;
+import com.alu.e3.data.model.sub.ForwardProxy;
+import com.alu.e3.data.model.sub.IForwardProxy;
 import com.alu.e3.gateway.loadbalancer.TargetHostManager.TargetStatus;
 import com.alu.e3.gateway.targethealthcheck.ITargetHealthCheckService;
 
@@ -53,6 +55,9 @@ public class TargetHostManagerTest extends TargetHostManagerBase {
 				// Assert that all targets are Available (their default status)
 				assertTrue(targetHostManager.isAvailable(target.getReference()));
 				
+				// No proxy associated to the API
+				assertNull(target.getTargetHost().getForwardProxy());
+				
 				// Assert that the TargetHost referenced by the TargetReference obejct returned by TargetHostManager is really part of API Context's TargetHost
 				assertTrue("TargetHost in TargetReference is part of API Context's TargetHosts", context.getTargetHosts().contains(target.getTargetHost()));
 			}
@@ -61,6 +66,99 @@ public class TargetHostManagerTest extends TargetHostManagerBase {
 			targetHostManager.notifyFailed(references.get(0).getReference());
 			assertTrue(targetHostManager.isAvailable(references.get(0).getReference()));
 		}
+	}
+	
+	@Test
+	public void noProxySet() {
+		Api api = newApi(null);
+		
+		dataManager.addApi(api);
+		targetHostManager.registerAPI(api.getId());
+		
+		for(APIContext context : api.getApiDetail().getContexts()) {
+			List<TargetReference> references = targetHostManager.getTargetReferences(api.getId(), context.getId());
+				
+			for(TargetReference target : references) {
+				
+				// No proxy associated to the API
+				assertNull(target.getTargetHost().getForwardProxy());
+			}
+			
+		}
+	}
+	
+	@Test
+	public void localProxySet() {
+		Api api = newApi(null);
+		
+		ForwardProxy localProxy = new ForwardProxy();
+		localProxy.setProxyHost("host1");
+		localProxy.setProxyPass("pass1");
+		localProxy.setProxyPort("port1");
+		localProxy.setProxyUser("user1");
+		api.setForwardProxy(localProxy);
+		
+		dataManager.addApi(api);
+		targetHostManager.registerAPI(api.getId());
+		
+		for(APIContext context : api.getApiDetail().getContexts()) {
+			List<TargetReference> references = targetHostManager.getTargetReferences(api.getId(), context.getId());
+			
+			IForwardProxy refProxy;
+			for(TargetReference target : references) {
+				
+				refProxy = target.getTargetHost().getForwardProxy();
+				assertEquals("host1", refProxy.getProxyHost());
+				assertEquals("pass1", refProxy.getProxyPass());
+				assertEquals("port1", refProxy.getProxyPort());
+				assertEquals("user1", refProxy.getProxyUser());
+			}
+			
+		}
+	}
+	
+	@Test
+	public void globalProxyPreSetThenUpdated() {
+		dataManager.addGlobalProxyListener3(targetHostManager.getGlobalForwardProxy());
+		
+		dataManager.addProxy("host2#port2#user2#pass2");
+
+		Api api = newApi(null);
+		api.setUseGlobalProxy(true);
+		
+		dataManager.addApi(api);
+		targetHostManager.registerAPI(api.getId());
+		
+		for(APIContext context : api.getApiDetail().getContexts()) {
+			List<TargetReference> references = targetHostManager.getTargetReferences(api.getId(), context.getId());
+			
+			IForwardProxy refProxy;
+			for(TargetReference target : references) {
+				
+				refProxy = target.getTargetHost().getForwardProxy();
+				assertEquals("host2", refProxy.getProxyHost());
+				assertEquals("pass2", refProxy.getProxyPass());
+				assertEquals("port2", refProxy.getProxyPort());
+				assertEquals("user2", refProxy.getProxyUser());
+			}
+		}
+		
+		dataManager.addProxy("host3#port3#user3#pass3");
+
+		for(APIContext context : api.getApiDetail().getContexts()) {
+			List<TargetReference> references = targetHostManager.getTargetReferences(api.getId(), context.getId());
+			
+			IForwardProxy refProxy;
+			for(TargetReference target : references) {
+				
+				refProxy = target.getTargetHost().getForwardProxy();
+				assertEquals("host3", refProxy.getProxyHost());
+				assertEquals("pass3", refProxy.getProxyPass());
+				assertEquals("port3", refProxy.getProxyPort());
+				assertEquals("user3", refProxy.getProxyUser());
+			}
+		}
+		
 	}
 	
 	@Test

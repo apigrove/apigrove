@@ -258,4 +258,15 @@ public class DummyTopologyClient implements ITopologyClient {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void reloadInstanceTopology(Instance instance) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void reloadInstanceTopology(String ip) {
+		// TODO Auto-generated method stub
+		
+	}
 }

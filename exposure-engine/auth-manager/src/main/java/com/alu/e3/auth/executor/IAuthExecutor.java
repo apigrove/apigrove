@@ -22,10 +22,11 @@ import org.apache.camel.Exchange;
 
 import com.alu.e3.auth.model.AuthType;
 import com.alu.e3.common.camel.AuthReport;
+import com.alu.e3.data.model.Api;
 import com.alu.e3.gateway.common.camel.exception.GatewayExceptionCode;
 
 public interface IAuthExecutor {
-	public AuthReport checkAllowed(Exchange exchange);
+	public AuthReport checkAllowed(Exchange exchange, Api api);
 	public AuthType getType();
 	public GatewayExceptionCode getErrorCode();
 }

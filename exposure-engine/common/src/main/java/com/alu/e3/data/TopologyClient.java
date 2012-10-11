@@ -69,38 +69,50 @@ public class TopologyClient implements ITopologyClient {
 	 * Set the cache manager
 	 */
 	public void setCacheManager(ICacheManager cacheManager) {
-		logger.debug("Set ICacheManager on TopologyClient");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Set ICacheManager on TopologyClient");
+		}
 		this.cacheManager = cacheManager;
 	}
 	
 	public void init() {
-		logger.debug("TopologyClient initialization");
+		if (logger.isDebugEnabled()) {
+			logger.debug("TopologyClient initialization");
+		}
 		cachingTableTopology = cacheManager.createTable("cachingTableTopology", true, null);
 	}
 
 	/**
-	 * Add an instance
+	 * Adds an {@link Instance} to the local topology.
+	 * If the given {@link Instance} already present in this topology,
+	 * the given {@link Instance} will be ignored.
+	 * @see instanceEquals method
+	 * @param inst the {@link Instance} to add
 	 */
 	public void addInstance(Instance inst) {
-		logger.debug("Adding instance: {}", inst);
+		if (logger.isDebugEnabled()) {
+			logger.debug("Adding instance: {}", inst);
+		}
 		
 		if (inst == null || inst.getType().isEmpty() || inst.getInternalIP().isEmpty())
 			throw new IllegalArgumentException("Invalid type or ip");
-
+		
 		ArrayList<Instance> list = cachingTableTopology.get(inst.getType());
 		if (list == null)
 		{
-			logger.debug("Creating cachingTableTopology element for type: {}", inst.getType());
-			cachingTableTopology.set(inst.getType(), new ArrayList<Instance>());
-			list = cachingTableTopology.get(inst.getType());
+			if (logger.isDebugEnabled()) {
+				logger.debug("Creating cachingTableTopology element for type: {}", inst.getType());
+			}
+			list = new ArrayList<Instance>();
 		}
-
+		
 		for (Instance i : list)
 		{
-			if ( i.getName().equals(inst.getName()) )
-			{
-				deleteInstance(i);
-				break;
+			if (instanceEquals(i, inst)) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("Intance:{} already presents in topology for type: {}", inst, inst.getType());
+				}
+				return;
 			}
 		}
 		
@@ -113,8 +125,10 @@ public class TopologyClient implements ITopologyClient {
 		synchronized (this) {
 			currentAreaList = null;
 		}
-
-		logger.debug("Instance added: {}", inst);
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("Instance added: {}", inst);
+		}
 	}
 
 	/**
@@ -131,7 +145,6 @@ public class TopologyClient implements ITopologyClient {
 				itr.remove();
 				cachingTableTopology.set(inst.getType(), list);
 				fireInstanceRemoved(new InstanceEvent(inst));
-				ArrayList<Instance> list22 = cachingTableTopology.get(inst.getType());
 				// This is to clean the current cache
 				currentAreaList = null;
 				
@@ -366,7 +379,9 @@ public class TopologyClient implements ITopologyClient {
 	 * Fire the instanceAdded event
 	 */
 	private void fireInstanceAdded(final InstanceEvent event) {
-		logger.debug("Firing instance added event for instance:{}", event.getInstance());
+		if (logger.isDebugEnabled()) {
+			logger.debug("Firing instance added event for instance:{}", event.getInstance());
+		}
 
 		IInstanceListener[] currentListOfListeners = instanceListeners.toArray(new IInstanceListener[]{});
 		
@@ -379,7 +394,9 @@ public class TopologyClient implements ITopologyClient {
 	 * Fire the instanceRemoved event
 	 */
 	private void fireInstanceRemoved(final InstanceEvent event) {
-		logger.debug("Firing instance removed event for instance:{}", event.getInstance());
+		if (logger.isDebugEnabled()) {
+			logger.debug("Firing instance removed event for instance:{}", event.getInstance());
+		}
 		
 		IInstanceListener[] currentListOfListeners = instanceListeners.toArray(new IInstanceListener[]{});
 		
@@ -408,12 +425,16 @@ public class TopologyClient implements ITopologyClient {
 		if (whoIAm.get(type) != null) {
 			return whoIAm.get(type);
 		}
-		logger.debug("Trying to find my Instance for type: " + type);
+		if (logger.isDebugEnabled()) {
+			logger.debug("Trying to find my Instance for type: " + type);
+		}	
 
 		List<Instance> instances;
 		instances = getAllInstancesOfType(type);
 		if (instances == null) {
-			logger.debug("Found no Instances of type.");
+			if (logger.isDebugEnabled()) {
+				logger.debug("Found no Instances of type.");
+			}
 			return null;
 		}
 		//add all possible IPs (and hostname) to this map for easy retrieval
@@ -445,19 +466,25 @@ public class TopologyClient implements ITopologyClient {
 		try {
 			nets = NetworkInterface.getNetworkInterfaces();
 			for (NetworkInterface netint : Collections.list(nets)) {
-				logger.debug("Checking Interface " + netint.getDisplayName());
+				if (logger.isDebugEnabled()) {
+					logger.debug("Checking Interface " + netint.getDisplayName());
+				}
 				
 				//check ips for each interface
 		        Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
 		        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
 		        	String myIp = inetAddress.getHostAddress();
-		        	logger.debug("Checking IP : " + myIp);
+		        	if (logger.isDebugEnabled()) {
+		        		logger.debug("Checking IP : " + myIp);
+		        	}
 		        	
 		        	//if there is an instance associated with myIP, that is me
 		        	Instance instance = ipToInstance.get(myIp);
 		        	if (instance != null) {
 			        	whoIAm.put(type, instance);
-			        	logger.debug("Found an IP match with Instance " + instance.getName());
+			        	if (logger.isDebugEnabled()) {
+			        		logger.debug("Found an IP match with Instance " + instance.getName());
+			        	}
 		        		return instance;
 		        	}
 		        }
@@ -467,7 +494,39 @@ public class TopologyClient implements ITopologyClient {
 					e.getMessage());
 			logger.warn(e.getMessage(), e);
 		}
-		logger.debug("Could not find an Instance with a matching IP");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Could not find an Instance with a matching IP");
+		}
 		return null;
+	}
+
+	@Override
+	public void reloadInstanceTopology(Instance toReloadInstance){
+		logger.info("Reloading topology for node: {}", toReloadInstance);
+		
+		String reloadIP = toReloadInstance.getInternalIP();
+		if( !currentArea.equals(toReloadInstance.getArea()) ){
+			reloadIP = toReloadInstance.getExternalIP();
+		}
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("Reloading topology for ip: {}", reloadIP);
+		}
+		reloadInstanceTopology(reloadIP);
+	}
+	
+	@Override
+	public void reloadInstanceTopology(String ip) {
+		cachingTableTopology.reloadSlave(ip);
+	}
+	
+	/**
+	 * Tells if two {@link Instance} object are in fact same
+	 * @param a the first instance to compare
+	 * @param b the second instance to compare
+	 * @return true if a and b are in fact the same
+	 */
+	public boolean instanceEquals(final Instance a, final Instance b) {
+		return a != null && b != null && a.getName() != null && a.getName().equals(b.getName()); 
 	}
 }

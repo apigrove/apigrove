@@ -25,7 +25,6 @@ package com.alu.e3.gateway.loadbalancer;
 import org.junit.After;
 import org.junit.Before;
 
-import com.alu.e3.common.osgi.api.IDataManager;
 import com.alu.e3.data.model.Api;
 import com.alu.e3.data.model.ApiDetail;
 import com.alu.e3.data.model.sub.APIContext;
@@ -35,7 +34,7 @@ import com.alu.e3.gateway.targethealthcheck.ITargetHealthCheckService;
 
 public class TargetHostManagerBase {
 	
-	protected IDataManager dataManager;
+	protected DataManagerMock dataManager;
 	protected TargetHostManager targetHostManager;
 
 	public TargetHostManagerBase() {

@@ -27,8 +27,15 @@
 		<property name="trustStoreService" ref="trustStoreFileService" />
 	</bean>
 	
-	<bean id="crlListener" class="com.alu.e3.gateway.config.certshuffle.CrlListener" init-method="init" destroy-method="destroy">
+	<bean id="x509Store" class="com.alu.e3.gateway.security.X509TrustStore" init-method="init" destroy-method="destroy">
+		<property name="provider" value="BC" />
 		<property name="dataManager" ref="dataManager" />
+	</bean>
+	
+	<bean id="trustManager" class="com.alu.e3.gateway.security.PKIXTrustManager" init-method="init">
+		<property name="provider" value="BC" />
+		<property name="configProvider" ref="x509Store" />
+		<property name="allowEmptyClientCert" value="true" />
 	</bean>
 	
 	<bean id="gatewayInfo" class="com.alu.e3.gateway.GatewayInfo" init-method="init" destroy-method="destroy">
@@ -62,6 +69,12 @@
 	<osgi:service id="subscriberIDExtractor_Exposed" ref="subscriberIDExtractor" interface="org.apache.camel.Processor" />
 	<osgi:service id="notifyUrlHeaderProcessor_Exposed" ref="notifyUrlHeaderProcessor" interface="org.apache.camel.Processor" />
 	<osgi:service id="notifyUrlWSAProcessor_Exposed" ref="notifyUrlWSAProcessor" interface="org.apache.camel.Processor" />
+
+	<bean id="ipWhiteList" class="com.alu.e3.gateway.common.camel.component.IpWhiteListComponent">
+	   <property name="dataManager" ref="dataManager" />
+	</bean>
+	
+	<osgi:service ref="ipWhiteList" interface="org.apache.camel.Component" />
     <!--/USED BY ROUTE -->
 	
 </beans>

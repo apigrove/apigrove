@@ -71,12 +71,16 @@ public class Installer {
 			this.springContextBoostrapper = springCtxBootstrapper;
 			
 			/* Parsing Configuration File */
-			logger.debug("new instance Installer");
-			logger.debug("Parsing xml: " + configFilePath);
+			if(logger.isDebugEnabled()) {
+				logger.debug("new instance Installer");
+				logger.debug("Parsing xml: " + configFilePath);
+			}
 			InstallerConfigurationParser configParser = new InstallerConfigurationParser();
 			this.configurations = configParser.parse(configFilePath);
 		}catch (Exception e){
-			logger.error("Exception: " + e.getMessage() + "\n" + Utilities.getStackTrace(e));
+			if(logger.isErrorEnabled()) {
+				logger.error("Exception: " + e.getMessage() + "\n" + Utilities.getStackTrace(e));
+			}
 			e.printStackTrace();
 			throw new Exception("Xml parsing failed", e); 
 		}
@@ -89,14 +93,17 @@ public class Installer {
 	 */
 	public Installer(InputStream configInput) throws Exception {
 		try {
-			logger.debug("new instance Installer");
-			
-			/* Parsing Configuration InputStream */
-			logger.debug("Parsing xml: configInput stream");
+			if(logger.isDebugEnabled()) {
+				logger.debug("new instance Installer");
+				/* Parsing Configuration InputStream */
+				logger.debug("Parsing xml: configInput stream");
+			}
 			InstallerConfigurationParser configParser = new InstallerConfigurationParser();
 			this.configurations = configParser.parse(configInput);
 		}catch (Exception e){
-			logger.error("Exception: " + e.getMessage() + "\n" + Utilities.getStackTrace(e));
+			if(logger.isErrorEnabled()) {
+				logger.error("Exception: " + e.getMessage() + "\n" + Utilities.getStackTrace(e));
+			}
 			e.printStackTrace();
 			throw new Exception("Xml parsing failed", e); 
 		}
@@ -113,7 +120,9 @@ public class Installer {
 		
 		/* Get local ip and host name. */
 		String managerIP = CommonTools.getLocalAddress();
-		logger.debug("call Installer.deploy() on machine " + CommonTools.getLocalHostname() + "(IP:" + managerIP + ")");
+		if(logger.isDebugEnabled()) {
+			logger.debug("call Installer.deploy() on machine " + CommonTools.getLocalHostname() + "(IP:" + managerIP + ")");
+		}
 		
 		//retrieve manager area
 		String managerArea = getManagerAreaByIP(CommonTools.getLocalHostname(), managerIP);
@@ -127,13 +136,17 @@ public class Installer {
 			{
 				try {					
 					String localizedGatewayIP = getLocalizedGatewayIP(instance, managerArea);
-					logger.debug("deploying: '" + instance.toString() + "' using ip '" + localizedGatewayIP + "'");
+					if(logger.isDebugEnabled()) {
+						logger.debug("deploying: '" + instance.toString() + "' using ip '" + localizedGatewayIP + "'");
+					}
 					
 					/* copy and launch installers */
 					List<Configuration> instanceConfigurations = configurations.get(instance.getType());
 					if(instanceConfigurations != null) {
 						for(Configuration config : instanceConfigurations) {
-							logger.debug("installing: " + config);
+							if(logger.isDebugEnabled()) {
+								logger.debug("installing: " + config);
+							}
 							
 							/* copy and start installer setup script. */
 							ICommand cmd = Command.getCommand(localizedGatewayIP);
@@ -144,8 +157,11 @@ public class Installer {
 								// return manager can not be null
 								Instance manager = Utilities.getManagerByIP(CommonTools.getLocalHostname(), CommonTools.getLocalAddress(),  topology.getInstancesByType(E3Constant.E3MANAGER), logger);
 								SSHKey key = manager.getSSHKey();
-								if (key != null)
-									logger.debug("using key: " + key.getName());
+								if (key != null) {
+									if(logger.isDebugEnabled()) {
+										logger.debug("using key: " + key.getName());
+									}
+								}
 								
 								/* Connect via ssh. */
 								SSHCommand sshCommand = (SSHCommand) cmd;
@@ -159,7 +175,9 @@ public class Installer {
 									throw new InstallerDeployException(errorSshMsg);
 								}
 								
-								logger.debug("command type: " + cmd.getImplementationType());
+								if(logger.isDebugEnabled()) {
+									logger.debug("command type: " + cmd.getImplementationType());
+								}
 								
 								/* check if the destination directory already exists. */
 								ShellCommandResult dirExistResult = cmd.execShellCommand("ls "+ config.getRemotePath());
@@ -173,7 +191,9 @@ public class Installer {
 									}
 								
 									/* Remote copy the package. */
-									logger.debug("package url: " + config.getPackageUrl());
+									if(logger.isDebugEnabled()) {
+										logger.debug("package url: " + config.getPackageUrl());
+									}
 									URL urlPackage = new URL(config.getPackageUrl());
 									String strFilename;
 									if (urlPackage.getProtocol().equals("file")) 
@@ -183,7 +203,9 @@ public class Installer {
 										
 									} else {
 										/* TODO: handle HTTP package URL ? */
-										logger.debug("URL type " + urlPackage.getProtocol() + " is not supported yet.");
+										if(logger.isDebugEnabled()) {
+											logger.debug("URL type " + urlPackage.getProtocol() + " is not supported yet.");
+										}
 										continue;
 									}
 								
@@ -197,7 +219,9 @@ public class Installer {
 								}
 								
 								String fullyQualifiedInstallerCmd = replaceManagerIPPattern(config.getInstallerCmd(), managerIP);
-								logger.debug("Executing shell command '" + fullyQualifiedInstallerCmd + "'");
+								if(logger.isDebugEnabled()) {
+									logger.debug("Executing shell command '" + fullyQualifiedInstallerCmd + "'");
+								}
 								
 								/* Launch Install. */
 								ShellCommandResult cmdResInstallation = cmd.execShellCommand(fullyQualifiedInstallerCmd, config.getRemotePath());
@@ -223,13 +247,17 @@ public class Installer {
 								{
 								
 									String fullyQualifiedGenerateNatureCmd = replaceManagerIPPattern(generateNatureCmd, managerIP);
-									logger.debug("Executing shell command '" + fullyQualifiedGenerateNatureCmd + "'");
+									if(logger.isDebugEnabled()) {
+										logger.debug("Executing shell command '" + fullyQualifiedGenerateNatureCmd + "'");
+									}
 									
 									/* Get the ssh key. TODO: handle case without sshkey (eg. if user/password provided) */
 									SSHKey key = instance.getSSHKey();
-									if (key != null)
-										logger.debug("using key: " + key.getName());
-									
+									if (key != null) {
+										if(logger.isDebugEnabled()) {
+											logger.debug("using key: " + key.getName());
+										}
+									}
 									/* Connect via ssh. */
 									SSHCommand sshCommand = (SSHCommand) cmd;
 									sshCommand.connect(key, localizedGatewayIP, 22, instance.getUser(), instance.getPassword());
@@ -257,15 +285,21 @@ public class Installer {
 							}
 						}
 					} else {
-						logger.debug("Nothing to install for type " + instance.getType());
+						if(logger.isDebugEnabled()) {
+							logger.debug("Nothing to install for type " + instance.getType());
+						}
 					}
 				
 				}
 				catch (Exception e)
 				{
-					logger.error("Exception: " + e.getMessage() + "\n" + Utilities.getStackTrace(e));
+					if(logger.isErrorEnabled()) {
+						logger.error("Exception: " + e.getMessage() + "\n" + Utilities.getStackTrace(e));
+					}
 					e.printStackTrace();
-					logger.debug("Install for type " + instance.getType() + " has failed. (" + e.getMessage() + ")");
+					if(logger.isDebugEnabled()) {
+						logger.debug("Install for type " + instance.getType() + " has failed. (" + e.getMessage() + ")");
+					}
 					throw e;
 				}
 			
@@ -308,10 +342,14 @@ public class Installer {
 	private String getLocalizedGatewayIP(Instance instance, String managerArea) {
 		String localizedGatewayIP = null;
 		if (managerArea.equals(instance.getArea())) { //gateway has same area than the manager -> use internal ip
-			logger.debug("Instance '" + instance.getName() + "' uses same area than the manager; using internal IP");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Instance '" + instance.getName() + "' uses same area than the manager; using internal IP");
+			}
 			localizedGatewayIP = instance.getInternalIP();
 		} else { //gateway has different area than the manager -> use external ip
-			logger.debug("Instance '" + instance.getName() + "' uses different area than the manager; using external IP");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Instance '" + instance.getName() + "' uses different area than the manager; using external IP");
+			}
 			localizedGatewayIP = instance.getExternalIP();
 		}
 		

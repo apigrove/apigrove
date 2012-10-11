@@ -28,10 +28,17 @@ then
     exit 1
 fi
 
-cp $DIR/aib_system_topology.xml $E3_HOME/system_topology.xml
+chmod 400 $DIR/../system_topology.xml
 if [ $? != 0 ]
 then
-    echo "unable to copy the system topology, exiting"
+    echo "unable to chmod the system topology."
+    exit 1
+fi
+
+cp $DIR/../system_topology.xml $E3_HOME/system_topology.xml
+if [ $? != 0 ]
+then
+    echo "unable to copy the system topology, you need to have a system_topology.xml file in $DIR/.."
     exit 1
 fi
 
@@ -55,3 +62,5 @@ then
     echo "unable to chmod the system topology, exiting"
     exit 1
 fi
+
+echo "Install successful"

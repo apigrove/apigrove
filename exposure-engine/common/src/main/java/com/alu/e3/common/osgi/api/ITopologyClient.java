@@ -59,4 +59,8 @@ public interface ITopologyClient {
 	void removeInstanceListener(IInstanceListener listener);
 	
 	public Instance whoAmI(String type);
+
+	void reloadInstanceTopology(Instance node);
+
+	void reloadInstanceTopology(String ip);
 }

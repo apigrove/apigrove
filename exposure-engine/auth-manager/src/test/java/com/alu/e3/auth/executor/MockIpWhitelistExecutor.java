@@ -23,12 +23,13 @@ import org.apache.camel.Exchange;
 import com.alu.e3.auth.model.AuthType;
 import com.alu.e3.common.camel.AuthIdentity;
 import com.alu.e3.common.camel.AuthReport;
+import com.alu.e3.data.model.Api;
 import com.alu.e3.gateway.common.camel.exception.GatewayExceptionCode;
 
 public class MockIpWhitelistExecutor implements IAuthExecutor {
 
 	@Override
-	public AuthReport checkAllowed(Exchange exchange) {
+	public AuthReport checkAllowed(Exchange exchange, Api api) {
 		
 		AuthReport authReport = new AuthReport();
 		
@@ -37,6 +38,7 @@ public class MockIpWhitelistExecutor implements IAuthExecutor {
 			authIdentity.setAppId("1234");
 			authReport.setAuthIdentity(authIdentity);
 			authReport.setApiActive(true);
+			authReport.setAuthActive(true);
 			
 		} else {
 			authReport.setBadRequest(true);

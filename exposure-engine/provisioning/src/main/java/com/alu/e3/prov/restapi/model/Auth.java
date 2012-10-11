@@ -111,7 +111,7 @@ public class Auth {
      * The IP white list if this auth is selected as a type.
      */
     @XmlElement(required = true)
-    protected IpWhiteListAuth ipWhiteListAuth;
+    protected IpWhiteList ipWhiteListAuth;
     
     /**
 	 * The IP white list if this auth is selected as a type.
@@ -343,10 +343,10 @@ public class Auth {
      * 
      * @return
      *     possible object is
-     *     {@link IpWhiteListAuth }
+     *     {@link IpWhiteList }
      *     
      */
-    public IpWhiteListAuth getIpWhiteListAuth() {
+    public IpWhiteList getIpWhiteListAuth() {
         return ipWhiteListAuth;
     }
 
@@ -355,10 +355,10 @@ public class Auth {
      * 
      * @param value
      *     allowed object is
-     *     {@link IpWhiteListAuth }
+     *     {@link IpWhiteList }
      *     
      */
-    public void setIpWhiteListAuth(IpWhiteListAuth value) {
+    public void setIpWhiteListAuth(IpWhiteList value) {
         this.ipWhiteListAuth = value;
     }    
     

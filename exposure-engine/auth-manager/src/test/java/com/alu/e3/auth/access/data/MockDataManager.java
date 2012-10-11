@@ -28,7 +28,6 @@ import com.alu.e3.common.caching.ICacheManager;
 import com.alu.e3.common.caching.IEntryListener;
 import com.alu.e3.common.logging.Category;
 import com.alu.e3.common.osgi.api.IDataManager;
-import com.alu.e3.data.CacheAck;
 import com.alu.e3.data.IAuthMatcher;
 import com.alu.e3.data.IDataManagerListener;
 import com.alu.e3.data.IDataManagerUsedBucketIdsListener;
@@ -322,11 +321,6 @@ public class MockDataManager implements IDataManager {
 	@Override
 	public boolean undeployApi(String apiId) {
 		return false;
-	}
-
-	@Override
-	public void postAcknowledgment(String queueName, CacheAck ack) {
-
 	}
 
 	@Override
@@ -675,6 +669,25 @@ public class MockDataManager implements IDataManager {
 	public boolean getLoggingCategory(Category category) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean isIpAllowed(Api api, String ip) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void addGlobalProxyListener3(IEntryListener<String, String> listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeGlobalProxyListener3(
+			IEntryListener<String, String> listener) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

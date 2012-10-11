@@ -30,6 +30,7 @@ import com.alu.e3.common.camel.ExchangeConstantKeys;
 import com.alu.e3.common.logging.Category;
 import com.alu.e3.common.logging.CategoryLogger;
 import com.alu.e3.common.logging.CategoryLoggerFactory;
+import com.alu.e3.data.model.Api;
 import com.alu.e3.gateway.common.camel.exception.GatewayExceptionCode;
 
 /**
@@ -41,16 +42,14 @@ public class AppKeyExecutor implements IAuthExecutor{
 	
 	private String keyName = "";
 	private String headerName = "";
-	private String apiId = "";
 	private IAuthDataAccess dataAccess; 
 	
 	/**
 	 * Constructor
 	 */
-	public AppKeyExecutor(String keyname, String headerName, String apiID, IAuthDataAccess dataAccess) {
+	public AppKeyExecutor(String keyname, String headerName, IAuthDataAccess dataAccess) {
 		this.keyName = keyname;
 		this.headerName = headerName;
-		this.apiId = apiID;
 		this.dataAccess = dataAccess;
 	}
 	
@@ -82,14 +81,16 @@ public class AppKeyExecutor implements IAuthExecutor{
 	}
 	
 	@Override
-	public AuthReport checkAllowed(Exchange exchange){
+	public AuthReport checkAllowed(Exchange exchange, Api api) {
 		
 		AuthReport authReport = new AuthReport();
 		Object keyObj = null;
 		
 		Map<?, ?> parameters = exchange.getProperty(ExchangeConstantKeys.E3_REQUEST_PARAMETERS.toString(), Map.class);
 		if (parameters == null) {
-			logger.error("Request parameters not set");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Request parameters not set");
+			}
 			authReport.setBadRequest(true);
 		} else {
 		
@@ -98,7 +99,9 @@ public class AppKeyExecutor implements IAuthExecutor{
 				keyObj = exchange.getIn().getHeader(headerName, String.class); 
 				if (keyObj == null) {		
 					// Abort
-					logger.debug("Unable to find url parameter or header matching the provisioned api key name");
+					if(logger.isDebugEnabled()) {
+						logger.debug("Unable to find url parameter or header matching the provisioned api key name");
+					}
 					authReport.setBadRequest(true);
 				}
 			}
@@ -108,7 +111,9 @@ public class AppKeyExecutor implements IAuthExecutor{
 		if(!authReport.isBadRequest()) {
 		
 			String authKey = keyObj.toString();
-			logger.debug("authKey= " + authKey);
+			if(logger.isDebugEnabled()) {
+				logger.debug("authKey= " + authKey);
+			}
 			
 			// remove the credential from URL
 			removeHttpQueryValue(exchange, keyName+"="+authKey);
@@ -118,11 +123,11 @@ public class AppKeyExecutor implements IAuthExecutor{
 	
 			//Call AuthManager
 			try {
-				authReport = dataAccess.checkAllowed(authKey, apiId);
+				authReport = dataAccess.checkAllowed(api, authKey);
 			} catch(DataAccessRuntimeException e) {
-				logger.error("Data Access Issue", e);
+					logger.error("Data Access Issue", e);
 			} catch(Exception e) {
-				logger.error("Data Access Issue", e);
+					logger.error("Data Access Issue", e);
 			}
 		}
 

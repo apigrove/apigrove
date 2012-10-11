@@ -48,13 +48,17 @@ public class InstallerConfigurationParser {
 	
 	
 	public Map<String, List<Configuration>> parse(String configFilePath) throws InstallerParserException {
-		logger.debug("Parsing file at path: " + configFilePath);
+		if(logger.isDebugEnabled()) {
+			logger.debug("Parsing file at path: " + configFilePath);
+		}
 		
 		FileInputStream fin = null;
 		try {
 			fin = new FileInputStream(configFilePath);
 		} catch (FileNotFoundException e) {
-			logger.error(e.getMessage());
+			if(logger.isErrorEnabled()) {
+				logger.error(e.getMessage());
+			}
 			throw new InstallerParserException(e);
 		}
 		return parse(fin);
@@ -75,7 +79,9 @@ public class InstallerConfigurationParser {
 			Element rootElement = doc.getDocumentElement();
 	
 			NodeList nodes = rootElement.getElementsByTagName("Configuration");
-			logger.debug("Found " + nodes.getLength() + " configurations");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Found " + nodes.getLength() + " configurations");
+			}
 			for(int i = 0; i < nodes.getLength(); i++)
 			{
 				Element el = (Element) nodes.item(i);
@@ -92,12 +98,16 @@ public class InstallerConfigurationParser {
 				// stores this new configuration in the configuration map to be returned
 				storeConfiguration(configurations, config);
 				
-				logger.debug(config.toString());
+				if(logger.isDebugEnabled()) {
+					logger.debug(config.toString());
+				}
 			} 
 		}
 		catch (Exception e)
 		{
-			logger.error(e.getMessage());
+			if(logger.isErrorEnabled()) {
+				logger.error(e.getMessage());
+			}
 			throw new InstallerParserException(e);
 		}
 		

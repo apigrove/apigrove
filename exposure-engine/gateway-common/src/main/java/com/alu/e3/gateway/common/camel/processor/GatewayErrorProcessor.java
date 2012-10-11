@@ -81,7 +81,9 @@ public class GatewayErrorProcessor implements Processor {
 			String body = "Issue: Internal Server Error\n" + exception.getMessage();
 			createHttpErrorResponse(exchange, errorCode, body);
 			isNoteSpecialized = false;
-			logger.debug(exception.getMessage(), exception);
+			if (logger.isDebugEnabled()) {
+				logger.debug(exception.getMessage(), exception);
+			}
 		}
 	}
 

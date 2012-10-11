@@ -150,6 +150,19 @@ public class TopologyClientMock implements ITopologyClient {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 
+
+	/* (non-Javadoc)
+	 * @see com.alu.e3.common.osgi.api.ITopologyClient#reloadInstanceTopology(com.alu.e3.data.model.Instance)
+	 */
+	@Override
+	public void reloadInstanceTopology(Instance instance) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void reloadInstanceTopology(String ip) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -95,27 +95,34 @@ public class SystemManagerService {
 			
 			Topology tmpTopology = topology.getTopologyFromFile(srcTopologyFile.getAbsolutePath());
 			
-			logger.debug("Installing E3 on all topology targets ...");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Installing E3 on all topology targets ...");
+			}
 			
 			Installer installer = new Installer(srcConfigFile.getAbsolutePath(), tmpTopology, springContextBootstrapper);
 			installer.deploy();
 			
-			logger.debug("Installation of all topology targets done.");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Installation of all topology targets done.");
+				logger.debug("Copying configFile and topologyFile to home user ...");
+			}
 			
-			logger.debug("Copying configFile and topologyFile to home user ...");
 			// The deploy has succeed, we can override manager topology
 			// Copying topology and configuration files
 			Utilities.copyFile(srcConfigFile, dstConfigFile, true);
 			Utilities.copyFile(srcTopologyFile, dstTopologyFile, true);
-			logger.debug("Copy done.");
-			
-			logger.debug("No listening on the topology.");
-			
+			if(logger.isDebugEnabled()) {
+				logger.debug("Copy done.");
+				logger.debug("No listening on the topology.");
+			}
+				
 			return Response.ok("Install successful").build();
 			
 		} catch (Exception e) {
 			
-			logger.error("An error occurs during the install",e);
+			if(logger.isErrorEnabled()) {
+				logger.error("An error occurs during the install",e);
+			}
 			
 			String result = "Path = " + pathToConfigFilesDirectory + "\n\n";
 			result += e.getMessage();

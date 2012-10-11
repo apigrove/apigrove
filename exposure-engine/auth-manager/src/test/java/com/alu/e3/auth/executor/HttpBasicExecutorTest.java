@@ -23,13 +23,18 @@ import org.apache.camel.Exchange;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.DefaultExchange;
 import org.apache.commons.codec.binary.Base64;
+
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 import com.alu.e3.auth.AuthHttpHeaders;
 import com.alu.e3.auth.MockAuthDataAccess;
 import com.alu.e3.common.camel.AuthReport;
+import com.alu.e3.data.model.Api;
 
 public class HttpBasicExecutorTest {
 
@@ -39,11 +44,14 @@ public class HttpBasicExecutorTest {
 	public void testWin() {
 		Exchange exchange = new DefaultExchange(context);
 		
+		Api api = new Api();
+		api.setId("123");
+
 		// Setting the username = "win" should succeed
 		exchange.getIn().setHeader(AuthHttpHeaders.Authorization.toString(), "Basic "+new String(Base64.encodeBase64("win:blarg".getBytes())));
-		HttpBasicExecutor executor = new HttpBasicExecutor("123", new MockAuthDataAccess(null, "win:blarg", null));
+		HttpBasicExecutor executor = new HttpBasicExecutor(new MockAuthDataAccess(null, "win:blarg", null));
 		
-		AuthReport authReport = executor.checkAllowed(exchange);		
+		AuthReport authReport = executor.checkAllowed(exchange, api);		
 
 		assertNotNull("This authentication should have succeeded", authReport.getAuthIdentity());
 	}
@@ -52,11 +60,14 @@ public class HttpBasicExecutorTest {
 	public void testFailNoEncoding(){
 		Exchange exchange = new DefaultExchange(context);
 		
+		Api api = new Api();
+		api.setId("123");
+
 		// Setting the username = "win" should succeed
 		exchange.getIn().setHeader(AuthHttpHeaders.Authorization.toString(), "Basic "+"win:blarg");
-		HttpBasicExecutor executor = new HttpBasicExecutor("123", new MockAuthDataAccess(null, "win:blarg", null));
+		HttpBasicExecutor executor = new HttpBasicExecutor(new MockAuthDataAccess(null, "win:blarg", null));
 		
-		AuthReport authReport = executor.checkAllowed(exchange);
+		AuthReport authReport = executor.checkAllowed(exchange, api);
 
 		assertNull("This authentication should have failed", authReport.getAuthIdentity());
 	}
@@ -65,10 +76,13 @@ public class HttpBasicExecutorTest {
 	public void testFailNoHeader(){
 		Exchange exchange = new DefaultExchange(context);
 		
+		Api api = new Api();
+		api.setId("123");
+
 		// Setting the username = "win" should succeed
-		HttpBasicExecutor executor = new HttpBasicExecutor("123", new MockAuthDataAccess(null, "win:blarg", null));
+		HttpBasicExecutor executor = new HttpBasicExecutor(new MockAuthDataAccess(null, "win:blarg", null));
 		
-		AuthReport authReport = executor.checkAllowed(exchange);
+		AuthReport authReport = executor.checkAllowed(exchange, api);
 
 		assertNull("This authentication should have failed", authReport.getAuthIdentity());
 	}
@@ -77,11 +91,14 @@ public class HttpBasicExecutorTest {
 	public void testFailBadFormat(){
 		Exchange exchange = new DefaultExchange(context);
 		
+		Api api = new Api();
+		api.setId("123");
+
 		// Setting the username = "win" should succeed
 		exchange.getIn().setHeader(AuthHttpHeaders.Authorization.toString(), "Vlasic "+new String(Base64.encodeBase64("win:blarg".getBytes())));
-		HttpBasicExecutor executor = new HttpBasicExecutor("123", new MockAuthDataAccess(null, "win:blarg", null));
+		HttpBasicExecutor executor = new HttpBasicExecutor(new MockAuthDataAccess(null, "win:blarg", null));
 		
-		AuthReport authReport = executor.checkAllowed(exchange);
+		AuthReport authReport = executor.checkAllowed(exchange, api);
 		
 		assertNull("This authentication should have failed", authReport.getAuthIdentity());
 	}
@@ -90,12 +107,15 @@ public class HttpBasicExecutorTest {
 	public void testFailBadFormat2(){
 		Exchange exchange = new DefaultExchange(context);
 		
+		Api api = new Api();
+		api.setId("123");
+
 		// Setting the username = "win" should succeed
 		// This one is bad because it is missing the space between Basic and the user/pass
 		exchange.getIn().setHeader(AuthHttpHeaders.Authorization.toString(), "Basic"+new String(Base64.encodeBase64("win:blarg".getBytes())));
-		HttpBasicExecutor executor = new HttpBasicExecutor("123", new MockAuthDataAccess(null, "win:blarg", null));
+		HttpBasicExecutor executor = new HttpBasicExecutor(new MockAuthDataAccess(null, "win:blarg", null));
 		
-		AuthReport authReport = executor.checkAllowed(exchange);		
+		AuthReport authReport = executor.checkAllowed(exchange, api);		
 
 		assertNull("This authentication should have failed", authReport.getAuthIdentity());
 	}
@@ -104,11 +124,14 @@ public class HttpBasicExecutorTest {
 	public void testFailNotAllowed(){
 		Exchange exchange = new DefaultExchange(context);
 
+		Api api = new Api();
+		api.setId("123");
+
 		// This one should be denied because the MockData is rigged to return null
 		exchange.getIn().setHeader(AuthHttpHeaders.Authorization.toString(), "Basic "+new String(Base64.encodeBase64("win:blarg".getBytes())));
-		HttpBasicExecutor executor = new HttpBasicExecutor("123", new MockAuthDataAccess(null, null, null));
+		HttpBasicExecutor executor = new HttpBasicExecutor(new MockAuthDataAccess(null, null, null));
 		
-		AuthReport authReport = executor.checkAllowed(exchange);
+		AuthReport authReport = executor.checkAllowed(exchange, api);
 		
 		assertNull("This authentication should have failed", authReport.getAuthIdentity());
 	}

@@ -40,8 +40,8 @@ public class IpWhitelistExecutorFactory extends BaseExecutorFactory {
 	}
 	
 	@Override
-	public IAuthExecutor getExecutor(DefaultComponent component, String apiId, Map<String, Object> parameters) {
-		return new IpWhitelistExecutor(apiId, dataAccess);
+	public IAuthExecutor getExecutor(DefaultComponent component, Map<String, Object> parameters) {
+		return new IpWhitelistExecutor(dataAccess);
 	}
 
 	@Override

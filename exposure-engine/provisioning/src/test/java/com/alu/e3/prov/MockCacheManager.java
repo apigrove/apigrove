@@ -20,7 +20,6 @@ package com.alu.e3.prov;
 
 import java.util.Map;
 
-import com.alu.e3.common.caching.IAckData;
 import com.alu.e3.common.caching.ICacheManager;
 import com.alu.e3.common.caching.ICacheQueue;
 import com.alu.e3.common.caching.ICacheTable;
@@ -38,12 +37,6 @@ public class MockCacheManager implements ICacheManager{
 
 	public <K, V> ICacheTable<K, V> createOrGetTable(String name, boolean isReplicated, Map<String, String> properties) {
 		return cacheManager.createOrGetTable(name, isReplicated, properties);
-
-	}
-
-	@Override
-	public <K, V extends IAckData> ICacheTable<K, V> createAckTable(String name, boolean isReplicated, Map<String, String> properties) {
-		return cacheManager.createTable(name, isReplicated, properties);
 
 	}
 

@@ -97,11 +97,15 @@ public class GatewayWatcher implements IGatewayInfoListener{
 		for(Bundle bundle : bundles) {
 			try {
 				if(bundle.getLocation().startsWith(prefix)) {
-					logger.debug("Uninstalling bundle " + bundle.getSymbolicName());
+					if(logger.isDebugEnabled()) {
+						logger.debug("Uninstalling bundle " + bundle.getSymbolicName());
+					}
 					bundle.uninstall();
 				}
 			} catch (BundleException e) {
-				logger.error("Unable to uninstall bundle " + bundle.getSymbolicName());
+				if(logger.isErrorEnabled()) {
+					logger.error("Unable to uninstall bundle " + bundle.getSymbolicName());
+				}
 			}
 		}
 	}

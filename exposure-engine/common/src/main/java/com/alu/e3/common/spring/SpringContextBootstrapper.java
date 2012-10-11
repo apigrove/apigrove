@@ -53,8 +53,12 @@ public class SpringContextBootstrapper implements ApplicationContextAware {
 
 	public void init() {
 		
-		logger.warn("System startup");
-		logger.debug("init Spring contexts (manager=" + manager + ",gateway="+ gateway + ")");
+		if(logger.isWarnEnabled()) {
+			logger.warn("System startup");	
+		}
+		if(logger.isDebugEnabled()) {
+			logger.debug("init Spring contexts (manager=" + manager + ",gateway="+ gateway + ")");
+		}
 
 		if (isManager()) {
 			childContextManager.setConfigLocations(new String[]{managerComponents});
@@ -95,7 +99,9 @@ public class SpringContextBootstrapper implements ApplicationContextAware {
 		/* Refresh only if state's changed. */
 		if (isManager && !isManager())
 		{
-			logger.debug("Refreshing manager Spring context.");
+			if (logger.isDebugEnabled()) {
+				logger.debug("Refreshing manager Spring context.");
+			}
 			childContextManager.setConfigLocations(new String[]{managerComponents});
 			childContextManager.refresh();
 		}
@@ -104,7 +110,9 @@ public class SpringContextBootstrapper implements ApplicationContextAware {
 		/* Refresh only if state's changed. */
 		if (isGateway && !isGateway())
 		{
-			logger.debug("Refreshing gateway Spring context.");
+			if (logger.isDebugEnabled()) {
+				logger.debug("Refreshing gateway Spring context.");
+			}
 			childContextGateway.setConfigLocations(new String[]{gatewayComponents});
 			childContextGateway.refresh();
 		}
@@ -119,7 +127,9 @@ public class SpringContextBootstrapper implements ApplicationContextAware {
 		if(isGateway()){
 			childContextGateway.close();
 		}
-		logger.warn("System shutdown");
+		if (logger.isWarnEnabled()) {
+			logger.warn("System shutdown");
+		}
 	}
 
 	public void setManager(boolean manager) {
@@ -156,8 +166,9 @@ public class SpringContextBootstrapper implements ApplicationContextAware {
 
 	@Override
 	public void setApplicationContext(ApplicationContext context) throws BeansException {
-		
-		logger.debug("Setting ApplicationContext: manager="+manager+" gateway="+ gateway);
+		if (logger.isDebugEnabled()) {
+			logger.debug("Setting ApplicationContext: manager="+manager+" gateway="+ gateway);
+		}
 		
 		//here, we have to use a context implementation having a parent context
 		//(ex: using the given AbstractRefreshableConfigApplicationContext would result in context overwrite)

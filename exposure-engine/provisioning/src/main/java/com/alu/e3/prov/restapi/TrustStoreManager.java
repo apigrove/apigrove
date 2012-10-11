@@ -242,7 +242,9 @@ public class TrustStoreManager extends BasicManager{
 
 			protected Object doAction(Object... params) {
 
-				LOG.debug("Get all CA");
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Get all CA");
+				}
 
 				SSLCertResponse response = new SSLCertResponse(SSLCertResponse.SUCCESS);
 				
@@ -266,7 +268,9 @@ public class TrustStoreManager extends BasicManager{
 					cert.setId(UUID.randomUUID().toString());
 				}
 				
-				LOG.debug("Creating CA:", cert.getId());
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Creating CA:", cert.getId());
+				}
 				
 				com.alu.e3.data.model.Certificate certDataModel = BeanConverterUtil.toDataModel(cert);
 				dataManager.addCA(certDataModel);
@@ -285,7 +289,9 @@ public class TrustStoreManager extends BasicManager{
 			protected Object doAction(Object... params) {
 				String caId = (String) params[0];
 
-				LOG.debug("Getting CA:", caId);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Getting CA:", caId);
+				}
 				
 				com.alu.e3.data.model.Certificate caDataModel = dataManager.getCAById(caId);
 				
@@ -306,7 +312,9 @@ public class TrustStoreManager extends BasicManager{
 				SSLCert cert = (SSLCert) params[0];
 				String caId = (String) params[1];
 
-				LOG.debug("Updating CA:", caId);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Updating CA:", caId);
+				}
 
 				if(cert.getId() == null || cert.getId().equals(""))
 					cert.setId(caId);
@@ -327,7 +335,9 @@ public class TrustStoreManager extends BasicManager{
 			protected Object doAction(Object... params) {
 				String caId = (String) params[0];
 
-				LOG.debug("Deleting CA:", caId);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Deleting CA:", caId);
+				}
 
 				dataManager.removeCA(caId);
 
@@ -341,7 +351,9 @@ public class TrustStoreManager extends BasicManager{
 
 			protected Object doAction(Object... params) {
 
-				LOG.debug("Get all CRL");
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Get all CRL");
+				}
 
 				SSLCRLResponse response = new SSLCRLResponse(SSLCRLResponse.SUCCESS);
 				
@@ -365,7 +377,9 @@ public class TrustStoreManager extends BasicManager{
 					crl.setId(UUID.randomUUID().toString());
 				}
 				
-				LOG.debug("Creating CLR:", crl.getId());
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Creating CLR:", crl.getId());
+				}
 				
 				com.alu.e3.data.model.SSLCRL clrDataModel = BeanConverterUtil.toDataModel(crl);
 				dataManager.addCRL(clrDataModel);
@@ -384,7 +398,9 @@ public class TrustStoreManager extends BasicManager{
 			protected Object doAction(Object... params) {
 				String crlID = (String) params[0];
 
-				LOG.debug("Getting CRL:", crlID);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Getting CRL:", crlID);
+				}
 				
 				com.alu.e3.data.model.SSLCRL crlDataModel = dataManager.getCRLById(crlID);
 				
@@ -405,7 +421,9 @@ public class TrustStoreManager extends BasicManager{
 				SSLCRL crl = (SSLCRL) params[0];
 				String crlID = (String) params[1];
 
-				LOG.debug("Updating CRL:", crlID);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Updating CRL:", crlID);
+				}
 
 				if(crl.getId() == null || crl.getId().equals(""))
 					crl.setId(crlID);
@@ -426,7 +444,9 @@ public class TrustStoreManager extends BasicManager{
 			protected Object doAction(Object... params) {
 				String crlId = (String) params[0];
 
-				LOG.debug("Deleting CRL:", crlId);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Deleting CRL:", crlId);
+				}
 
 				dataManager.removeCRL(crlId);
 

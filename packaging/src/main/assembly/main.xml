@@ -87,10 +87,6 @@
 			<outputDirectory>bin</outputDirectory>
 		</file>
 		<file>
-			<source>${basedir}/packaging/src/main/resources/aib_system_topology.xml</source>
-			<outputDirectory>bin</outputDirectory>
-		</file>
-		<file>
 			<source>${basedir}/packaging/src/main/resources/configuration-defaults.properties</source>
 			<outputDirectory>bin</outputDirectory>
 		</file>
@@ -104,7 +100,7 @@
 			<outputDirectory>templates</outputDirectory>
 		</file>
 		<file>
-			<source>${basedir}/packaging/src/main/resources/template-system_topology_cluster.xml</source>
+			<source>${basedir}/packaging/src/main/resources/template-system_topology.xml</source>
 			<outputDirectory>templates</outputDirectory>
 		</file>
 	</files>

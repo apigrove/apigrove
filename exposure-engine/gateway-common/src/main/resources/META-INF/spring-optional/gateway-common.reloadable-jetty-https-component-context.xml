@@ -37,11 +37,10 @@
         <property name="httpBinding">
         	<bean class="com.alu.e3.gateway.common.camel.component.E3HttpBinding"/>
         </property>
+        <property name="trustManager" ref="trustManager"/>
         <property name="keyStorePath" value="${e3.keystore.path}"/>
         <property name="keyStorePassword" value="${e3.keystore.password}"/>
         <property name="keyStoreKeyPassword" value="${e3.keystore.keypassword}"/>
-        <property name="trustStorePath" value="${e3.truststore.path}"/>
-        <property name="trustStorePassword" value="${e3.truststore.password}"/>
     </bean>
     <osgi:service id="ssljettyRegistration" ref="ssljetty" interface="org.apache.camel.Component" />
      

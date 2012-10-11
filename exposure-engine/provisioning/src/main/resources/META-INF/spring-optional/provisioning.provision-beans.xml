@@ -32,6 +32,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean id="schemaHolder" class="org.apache.cxf.jaxrs.utils.schemas.SchemaHandler">
 		<property name="schemas" ref="theSchemas" />
 	</bean>
+	
+	<bean id="e3QueryHandlerRegistry" class="com.alu.e3.prov.restapi.E3QueryHandlerRegistry" />
+	<bean id="wsdlQueryHandler" class="com.alu.e3.prov.restapi.WSDLQueryHandler" />
 
 	<bean id="E3ExceptionMapper" class="com.alu.e3.prov.E3ExceptionMapper" />
 

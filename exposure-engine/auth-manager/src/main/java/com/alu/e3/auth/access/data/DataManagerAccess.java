@@ -31,7 +31,6 @@ import com.alu.e3.common.tools.CanonicalizedIpAddress;
 import com.alu.e3.data.model.Api;
 import com.alu.e3.data.model.Auth;
 import com.alu.e3.data.model.CallDescriptor;
-import com.alu.e3.data.model.enumeration.StatusType;
 
 public class DataManagerAccess implements IAuthDataAccess {
 	
@@ -56,20 +55,19 @@ public class DataManagerAccess implements IAuthDataAccess {
 	}
 	
 	@Override
-	public AuthReport checkAllowed(String apiId) {
+	public AuthReport checkAllowed(Api api) {
 		
 		AuthReport authReport = new AuthReport();
 		
-		// get api
-		Api api = this.dataManager.getApiById(apiId, false);
-
 		if(api != null) {		
 
 			// check if the API is active (status)
-			authReport.setApiActive((api.getStatus() == StatusType.ACTIVE));	
+			authReport.setApiActive((api.getStatus().isActive()));
+			// For noAuth, Auth is always active
+			authReport.setAuthActive(true);
 			
 			if(authReport.isApiActive()) {
-				
+
 				List<CallDescriptor> descriptors = this.dataManager.getMatchingPolicies(api);
 				
 				if(descriptors != null) {
@@ -77,13 +75,17 @@ public class DataManagerAccess implements IAuthDataAccess {
 					authReport.getAuthIdentity().setApi(api);
 					authReport.getAuthIdentity().getCallDescriptors().addAll(descriptors);					
 				} else {
-					logger.debug("NoAuth method is not enabled");
+					if(logger.isDebugEnabled()) {
+						logger.debug("NoAuth method is not enabled");
+					}
 					authReport.setNotAuthorized(true);
 				}
 			}
 			
 		} else {
-			logger.debug("No api found " + apiId);
+			if(logger.isDebugEnabled()) {
+				logger.debug("No api found " + api.getId());
+			}
 			authReport.setApiNotFound(true);
 		}
 		
@@ -92,48 +94,53 @@ public class DataManagerAccess implements IAuthDataAccess {
 	}	
 	
 	@Override
-	public AuthReport checkAllowed(String authKey, String apiId) {
-		
-		logger.debug("Checking AuthKey [" + authKey + "] for Api [" + apiId + "]");
+	public AuthReport checkAllowed(Api api, String authKey) {
+		if(logger.isDebugEnabled()) {
+			logger.debug("Checking AuthKey [" + authKey + "] for Api [" + api.getId() + "]");
+		}
 		Auth auth = this.dataManager.getAuthByAuthKey(authKey);
 		
-		return getAuthReport(apiId, auth);
+		return getAuthReport(api, auth);
 	}
 
 	@Override
-	public AuthReport checkAllowed(CanonicalizedIpAddress ip, String apiId) {
-		
-		logger.debug("Checking authentication for IP address [" + ip.getIp() + "] for Api [" + apiId + "]");
+	public AuthReport checkAllowed(Api api, CanonicalizedIpAddress ip) {
+		if(logger.isDebugEnabled()) {
+			logger.debug("Checking authentication for IP address [" + ip.getIp() + "] for Api [" + api.getId() + "]");
+		}
 		Auth auth = this.dataManager.getAuthByIP(ip.getIp());
 		
-		return getAuthReport(apiId, auth);
+		return getAuthReport(api, auth);
 	}
 
 	@Override
-	public AuthReport checkAllowed(String username, String password, String apiId) {
-		
-		logger.debug("Try authentication for username [" + username + "] and password [" + password + "] for Api [" + apiId + "]");
+	public AuthReport checkAllowed(Api api, String username, String password) {
+		if(logger.isDebugEnabled()) {
+			logger.debug("Try authentication for username [" + username + "] and password [" + password + "] for Api [" + api.getId() + "]");
+		}
 		Auth auth = this.dataManager.getAuthByUserPass(username, password);
 		
-		return getAuthReport(apiId, auth);
+		return getAuthReport(api, auth);
 	}
 
 	@Override
-	public AuthReport checkAllowed(String username, String passwordDigest, boolean isPasswordText, String nonce, String created, String apiId) {
-		
-		logger.debug("Try authentication for username [" + username + "] for Api [" + apiId + "]");
+	public AuthReport checkAllowed(Api api, String username, String passwordDigest, boolean isPasswordText, String nonce, String created) {
+		if(logger.isDebugEnabled()) {
+			logger.debug("Try authentication for username [" + username + "] for Api [" + api.getId() + "]");
+		}
 		Auth auth = this.dataManager.getWsseAuth(username, passwordDigest, isPasswordText, nonce, created);
 
-		return getAuthReport(apiId, auth);		
+		return getAuthReport(api, auth);		
 	}
 
 	@Override
-	public AuthReport checkOAuthAllowed(String clientId, String clientSecret, String apiId) {
-		
-		logger.debug("Try authentication for cliendId [" + clientId + "] for Api [" + apiId + "]");
+	public AuthReport checkOAuthAllowed(Api api, String clientId, String clientSecret) {
+		if(logger.isDebugEnabled()) {
+			logger.debug("Try authentication for cliendId [" + clientId + "] for Api [" + api.getId() + "]");
+		}
 		Auth auth = this.dataManager.getAuthByOAuth(clientId, clientSecret);
 		
-		return getAuthReport(apiId, auth);				
+		return getAuthReport(api, auth);				
 	}
 
 
@@ -143,24 +150,23 @@ public class DataManagerAccess implements IAuthDataAccess {
 	 * @param auth
 	 * @return authReport instance
 	 */
-	private AuthReport getAuthReport(String apiId, Auth auth) {
+	private AuthReport getAuthReport(Api api, Auth auth) {
 	
 		AuthReport authReport = new AuthReport();
 		
-		// get api
-		Api api = this.dataManager.getApiById(apiId, false);
-
 		if(api != null) {
 
 			// check if the API is active (status)
-			authReport.setApiActive((api.getStatus() == StatusType.ACTIVE));	
+			authReport.setApiActive(api.getStatus().isActive());
 			
 			if(authReport.isApiActive()) {
 				
 				List<CallDescriptor> descriptors = null;
 					
 				if(auth != null) {
-										
+									
+					authReport.setAuthActive(auth.getStatus().isActive());
+					
 					// with auth					
 					descriptors = this.dataManager.getMatchingPolicies(api, auth);
 					
@@ -181,23 +187,31 @@ public class DataManagerAccess implements IAuthDataAccess {
 							authReport.getAuthIdentity().setAuth(auth);
 							authReport.getAuthIdentity().getCallDescriptors().addAll(descriptors);
 						} else {
-							logger.debug("No policy found");
+							if(logger.isDebugEnabled()) {
+								logger.debug("No policy found");
+							}
 							authReport.setHasNoPolicy(true);
 						}
 						
 					} else {
-						logger.debug("Auth does not match with API");
+						if(logger.isDebugEnabled()) {
+							logger.debug("Auth does not match with API");
+						}
 						authReport.setNotAuthorized(true);
 					}
 				} else {
-					logger.debug("No auth found for API");
+					if(logger.isDebugEnabled()) {
+						logger.debug("No auth found for API");
+					}
 					authReport.setAuthNotFound(true);
 				}
 				
 			}
 						
 		} else {
-			logger.debug("No api found " + apiId);
+			if(logger.isDebugEnabled()) {
+				logger.debug("No api found " + api.getId());
+			}
 			authReport.setApiNotFound(true);
 		}
 		

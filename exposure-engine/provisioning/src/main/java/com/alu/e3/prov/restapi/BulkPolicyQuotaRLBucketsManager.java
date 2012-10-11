@@ -108,7 +108,9 @@ public class BulkPolicyQuotaRLBucketsManager extends BasicManager {
 					authIds.setId(UUID.randomUUID().toString());
 				}
 
-				LOG.debug("Add auths to policies:" + policies + " on bucket:" + authIds);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Add auths to policies:" + policies + " on bucket:" + authIds);
+				}
 
 				com.alu.e3.data.model.sub.QuotaRLBucket authIdsDataModel = BeanConverterUtil.toDataModel(authIds);
 				dataManager.addAuthsToBucket(policies.getId(), authIds.getId(), authIdsDataModel);
@@ -164,7 +166,9 @@ public class BulkPolicyQuotaRLBucketsManager extends BasicManager {
 				
 				AuthIdsNoIdType authIds = request.getQuotaRLBucket();
 
-				LOG.debug("Add auths to policies:" + policies + " on bucket:" + authIds);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Add auths to policies:" + policies + " on bucket:" + authIds);
+				}
 
 				com.alu.e3.data.model.sub.QuotaRLBucket authIdsDataModel = BeanConverterUtil.toDataModel(authIds);
 				dataManager.appendAuthsToBucket(policies.getId(), authIds.getId(), authIdsDataModel);
@@ -205,7 +209,9 @@ public class BulkPolicyQuotaRLBucketsManager extends BasicManager {
 			protected Object doAction(Object... params) {
 				PolicyIdsType policies = request.getPolicies();
 
-				LOG.debug("Remove bucket ID:[" + bucketID + "] on policy:"+ policies.getId());
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Remove bucket ID:[" + bucketID + "] on policy:"+ policies.getId());
+				}
 
 				dataManager.removeBucket(policies.getId(), bucketID);
 
@@ -256,7 +262,9 @@ public class BulkPolicyQuotaRLBucketsManager extends BasicManager {
 				PolicyIdsType policies = request.getPolicies();
 				AuthIdsNoIdType authIds = request.getQuotaRLBucket();	
 				dataManager.removeAuthsFromBucket(policies.getId(), bucketID, authIds.getAuthIds());
-				LOG.debug("Remove auths from policies:" + policies + " on bucket:" + authIds);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Remove auths from policies:" + policies + " on bucket:" + authIds);
+				}
 				return new PolicyResponse(PolicyResponse.SUCCESS);
 			}
 		};

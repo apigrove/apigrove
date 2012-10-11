@@ -43,7 +43,7 @@ public class AppKeyExecutorFactory extends BaseExecutorFactory {
 	}
 	
 	@Override
-	public IAuthExecutor getExecutor(DefaultComponent component, String apiId, Map<String, Object> parameters) {
+	public IAuthExecutor getExecutor(DefaultComponent component, Map<String, Object> parameters) {
 		String keyName = null;
 		if(parameters.containsKey("keyName")){
 			keyName = component.getAndRemoveParameter(parameters, "keyName", String.class);
@@ -60,7 +60,7 @@ public class AppKeyExecutorFactory extends BaseExecutorFactory {
 			headerName = E3Constant.DEFAULT_APP_AUTHKEY_HEADER_NAME;
 		}
 		
-		return new AppKeyExecutor(keyName, headerName, apiId, dataAccess);
+		return new AppKeyExecutor(keyName, headerName, dataAccess);
 	}
 
 	@Override

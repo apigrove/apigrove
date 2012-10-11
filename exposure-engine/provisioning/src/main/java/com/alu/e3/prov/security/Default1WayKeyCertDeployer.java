@@ -94,19 +94,25 @@ public class Default1WayKeyCertDeployer implements IDataManagerListener, ITopolo
 	 * Initializes listeners on this 'Deployer'.
 	 */
 	protected void init() {
-		logger.debug("Initializing Default1WayKeyCertDeployer ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Initializing Default1WayKeyCertDeployer ...");
 		
-		logger.debug("Checking default key availabilty ...");
+			logger.debug("Checking default key availabilty ...");
+		}
 		File defaultKeyFile = new File(defaultKeyCertDirectory, KEY_FILE_NAME);
 		if (!defaultKeyFile.exists()) throw new IllegalArgumentException("Key file:"+defaultKeyFile.getAbsolutePath()+" does not exists");
 		if (!defaultKeyFile.isFile()) throw new IllegalArgumentException("Key file:"+defaultKeyFile.getAbsolutePath()+" is not a regular file");
 		
-		logger.debug("Checking default cert availabilty ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Checking default cert availabilty ...");
+		}
 		File defaultCertFile = new File(defaultKeyCertDirectory, CERT_FILE_NAME);
 		if (!defaultCertFile.exists()) throw new IllegalArgumentException("Cert file:"+defaultCertFile.getAbsolutePath()+" does not exists");
 		if (!defaultCertFile.isFile()) throw new IllegalArgumentException("Cert file:"+defaultCertFile.getAbsolutePath()+" is not a regular file");
 		
-		logger.debug("Loading default key data ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Loading default key data ...");
+		}
 		Reader readerKey = null;
 		try {
 			readerKey = new FileReader(defaultKeyFile);
@@ -120,7 +126,9 @@ public class Default1WayKeyCertDeployer implements IDataManagerListener, ITopolo
 			readerKey = null;
 		}
 		
-		logger.debug("Loading default cert data ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Loading default cert data ...");
+		}
 		Reader readerCert = null;
 		try {
 			readerCert = new FileReader(defaultCertFile);
@@ -134,20 +142,28 @@ public class Default1WayKeyCertDeployer implements IDataManagerListener, ITopolo
 			readerCert = null;
 		}
 		
-		logger.debug("Listening some needed services ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Listening some needed services ...");
+		}
 		topology.addTopologyListener(this);
 		dataManager.addListener(this);
-		logger.debug("Initialization done.");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Initialization done.");
+		}
 	}
 	
 	/**
 	 * Cleans listeners on this 'Deployer'.
 	 */
 	protected void destroy() {
-		logger.debug("Destroying Default1WayKeyCertDeployer ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Destroying Default1WayKeyCertDeployer ...");
+		}
 		topology.removeTopologyListener(this);
 		dataManager.removeListener(this);
-		logger.debug("Destroy done.");	
+		if(logger.isDebugEnabled()) {
+			logger.debug("Destroy done.");
+		}
 	}
 
 	/**
@@ -176,9 +192,11 @@ public class Default1WayKeyCertDeployer implements IDataManagerListener, ITopolo
 			// One of topology or dataManager service is not ready
 			return;
 		}
-		logger.debug("Installing default 1Way Key/Cert couple ...");
-		
-		logger.debug("Installing default 1Way Key ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Installing default 1Way Key/Cert couple ...");
+			
+			logger.debug("Installing default 1Way Key ...");
+		}
 		Key defaultKey = new Key();
 		KeyDetail defaultKeyDetail = new KeyDetail();
 		
@@ -194,7 +212,9 @@ public class Default1WayKeyCertDeployer implements IDataManagerListener, ITopolo
 		dataManager.addKey(defaultKey);
 		
 
-		logger.debug("Installing default 1Way Cert ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Installing default 1Way Cert ...");
+		}
 		Certificate defaultCert = new Certificate();
 		CertificateDetail defaultCertDetail = new CertificateDetail();
 		
@@ -211,12 +231,16 @@ public class Default1WayKeyCertDeployer implements IDataManagerListener, ITopolo
 		
 		// Now, key is installed, cert is installer under the previous key,0
 		// let's update the key to use the default cert
-		logger.debug("Updating default Key/Cert association ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Updating default Key/Cert association ...");
+		}
 		defaultKey.setData(null);
 		defaultKey.setActiveCertId(DEFAULT_CERT_ID);
 		dataManager.updateKey(defaultKey);
 		
-		logger.debug("Installation done.");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Installation done.");
+		}
 	}
 	
 }

@@ -74,10 +74,12 @@ public class LogUtil {
 		if (status == null)
 			status = "";
 
-		if (logger != null) {
-			logger.debug(LOG_PATTERN, new Object[] { provID, action, apiID, creationMode, encodedApiID, provID, phase, status });
+		if (logger != null) {			
+				logger.debug(LOG_PATTERN, new Object[] { provID, action, apiID, creationMode, encodedApiID, provID, phase, status });
 		} else {
-			LOG.debug(LOG_PATTERN, new Object[] { provID, action, apiID, creationMode, encodedApiID, provID, phase, status });
+			if(LOG.isDebugEnabled()) {
+				LOG.debug(LOG_PATTERN, new Object[] { provID, action, apiID, creationMode, encodedApiID, provID, phase, status });
+			}
 		}
 	}
 

@@ -32,6 +32,7 @@ import com.alu.e3.common.logging.Category;
 import com.alu.e3.common.logging.CategoryLogger;
 import com.alu.e3.common.logging.CategoryLoggerFactory;
 import com.alu.e3.common.tools.CanonicalizedIpAddress;
+import com.alu.e3.data.model.Api;
 import com.alu.e3.auth.model.AuthIdentityHelper;
 
 /**
@@ -52,8 +53,9 @@ public class FileData implements IAuthDataAccess {
 	 * @param filePath
 	 */
 	public FileData(String filePath) {
-		
-		logger.debug("new FileData object with file:" + filePath);
+		if(logger.isDebugEnabled()) {
+			logger.debug("new FileData object with file:" + filePath);
+		}
 		this.fData = new File(filePath);
 		
 		/* Look up in the resources if absolute path not found. */
@@ -103,19 +105,20 @@ public class FileData implements IAuthDataAccess {
 	 * check if an auth key and an app id match. 
 	 */
 	@Override 
-	public AuthReport checkAllowed(String authKey, String apiId) {
+	public AuthReport checkAllowed(Api api, String authKey) {
 
 		AuthReport authReport = new AuthReport();
+		if(logger.isDebugEnabled()) {
+			logger.debug("Lookup if AuthKey:" + authKey + " is associated with appId:" + api.getId());
+		}
 		
-		logger.debug("Lookup if AuthKey:" + authKey + " is associated with appId:" + apiId);
-		
-		String appId = findString(apiId, authKey);
+		String appId = findString(api.getId(), authKey);
 		
 		if(appId != null) {
 			
 			AuthIdentityHelper authIdentityHelper = new AuthIdentityHelper();
 			
-			authIdentityHelper.setApi(apiId);
+			authIdentityHelper.setApi(api.getId());
 			authIdentityHelper.setAppId(appId);
 			authIdentityHelper.setAuth(authKey);
 			
@@ -130,19 +133,20 @@ public class FileData implements IAuthDataAccess {
 	}
 	
 	@Override
-	public AuthReport checkAllowed(String username, String password, String apiId) {
+	public AuthReport checkAllowed(Api api, String username, String password) {
 		
 		AuthReport authReport  = new AuthReport();
+		if(logger.isDebugEnabled()) {
+			logger.debug("Lookup if username:password: " + username+":"+password + " is associated with appId:" + api.getId());
+		}
 		
-		logger.debug("Lookup if username:password: " + username+":"+password + " is associated with appId:" + apiId);
-		
-		String appId = findString(apiId, username+":"+password);
+		String appId = findString(api.getId(), username+":"+password);
 		
 		if(appId != null) {
 			
 			AuthIdentityHelper authIdentityHelper = new AuthIdentityHelper();
 			
-			authIdentityHelper.setApi(apiId);
+			authIdentityHelper.setApi(api.getId());
 			authIdentityHelper.setAppId(appId);
 			authIdentityHelper.setAuth(username, password);
 			
@@ -157,25 +161,25 @@ public class FileData implements IAuthDataAccess {
 	}
 
 	@Override
-	public AuthReport checkAllowed(String username, String passwordDigest, boolean isPasswordText, String nonce, String created, String apiId) {
+	public AuthReport checkAllowed(Api api, String username, String passwordDigest, boolean isPasswordText, String nonce, String created) {
 		// TODO: Implement FileDate to support WSSE
-		return checkAllowed(username, "", apiId);
+		return checkAllowed(api, username, "");
 	}
 
 	@Override
-	public AuthReport checkAllowed(CanonicalizedIpAddress ipCanonicalized, String apiId) {
+	public AuthReport checkAllowed(Api api, CanonicalizedIpAddress ipCanonicalized) {
 		
 		AuthReport authReport = new AuthReport();
 		
 		String ip = ipCanonicalized.getIp();
 		
-		String appId = findString(apiId, ip);
+		String appId = findString(api.getId(), ip);
 		
 		if(appId != null) {
 			
 			AuthIdentityHelper authIdentityHelper = new AuthIdentityHelper();
 
-			authIdentityHelper.setApi(apiId);
+			authIdentityHelper.setApi(api.getId());
 			authIdentityHelper.setAppId(appId);
 			authIdentityHelper.setAuth(ipCanonicalized);
 			
@@ -192,19 +196,20 @@ public class FileData implements IAuthDataAccess {
 	
 
 	@Override
-	public AuthReport checkAllowed(String apiId) {
+	public AuthReport checkAllowed(Api api) {
 		
 		AuthReport authReport = new AuthReport();
+		if(logger.isDebugEnabled()) {
+			logger.debug("Lookup if noauth is true for appId:" + api.getId());
+		}
 		
-		logger.debug("Lookup if noauth is true for appId:" + apiId);
-		
-		String appId = findString(apiId, "noauth:true");
+		String appId = findString(api.getId(), "noauth:true");
 		
 		if(appId != null) {
 			
 			AuthIdentityHelper authIdentityHelper = new AuthIdentityHelper();
 
-			authIdentityHelper.setApi(apiId);
+			authIdentityHelper.setApi(api.getId());
 			authIdentityHelper.setAppId(appId);
 			
 			authReport.setAuthIdentity( authIdentityHelper.getAuthIdentity());
@@ -218,19 +223,20 @@ public class FileData implements IAuthDataAccess {
 	}
 
 	@Override
-	public AuthReport checkOAuthAllowed(String clientId, String clientSecret, String apiId) {
+	public AuthReport checkOAuthAllowed(Api api, String clientId, String clientSecret) {
 		
 		AuthReport authReport = new AuthReport();
+		if(logger.isDebugEnabled()) {
+			logger.debug("Lookup if clientId:clientSecret: " + clientId+":"+clientSecret + " is associated with appId:" + api.getId());
+		}
 		
-		logger.debug("Lookup if clientId:clientSecret: " + clientId+":"+clientSecret + " is associated with appId:" + apiId);
-		
-		String appId = findString(apiId, clientId+":"+clientSecret);
+		String appId = findString(api.getId(), clientId+":"+clientSecret);
 		
 		if(appId != null) {
 			
 			AuthIdentityHelper authIdentityHelper = new AuthIdentityHelper();
 			
-			authIdentityHelper.setApi(apiId);
+			authIdentityHelper.setApi(api.getId());
 			authIdentityHelper.setAppId(appId);
 			authIdentityHelper.setOAuth(clientId, clientSecret);
 			

@@ -236,7 +236,9 @@ public class GatewayRateManager implements IGatewayRateManager {
 			}		
 		}
 		catch (Exception e) {
-			logger.error("Error checking if a route isAllowed in GatewayRateManager due to an exception", e);
+			if(logger.isErrorEnabled()) {
+				logger.error("Error checking if a route isAllowed in GatewayRateManager due to an exception", e);
+			}
 			apiCallStatus.apiCallAction = E3Constant.DEFAULT_ERROR_ACTION;
 			apiCallStatus.apiCallIsSuccess = false;
 			params.result.setActionTypeMessage(e.toString());

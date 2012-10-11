@@ -55,6 +55,13 @@ then
     exit 1
 fi
 
+if [ -n "$GLOBAL_PROXY_HOST" -a -n "$GLOBAL_PROXY_PORT" -a -n "$GLOBAL_PROXY_USER" -a -n "$GLOBAL_PROXY_PASS" ]
+then
+	sed -i -e "s/^\(global_proxy.host=.*\)$/global_proxy.host=$GLOBAL_PROXY_HOST/" $MODE_CONF_PATH
+	sed -i -e "s/^\(global_proxy.port=.*\)$/global_proxy.port=$GLOBAL_PROXY_PORT/" $MODE_CONF_PATH
+	sed -i -e "s/^\(global_proxy.user=.*\)$/global_proxy.user=$GLOBAL_PROXY_USER/" $MODE_CONF_PATH
+	sed -i -e "s/^\(global_proxy.pass=.*\)$/global_proxy.pass=$GLOBAL_PROXY_PASS/" $MODE_CONF_PATH
+fi
 
 sh $DIR/configSystem.sh $*
 if [ $? != 0 ]
@@ -71,7 +78,7 @@ then
     exit 1
 fi
 
-echo "Install success"
+echo "Install success: $*" 
 exit 0
 
  

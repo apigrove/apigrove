@@ -24,5 +24,5 @@ import org.apache.camel.impl.DefaultComponent;
 
 public interface IAuthExecutorFactory {
 	public String getName();
-	public IAuthExecutor getExecutor(DefaultComponent component, String apiId, Map<String, Object> parameters);
+	public IAuthExecutor getExecutor(DefaultComponent component, Map<String, Object> parameters);
 }

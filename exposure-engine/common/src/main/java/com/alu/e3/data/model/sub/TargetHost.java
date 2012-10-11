@@ -31,7 +31,7 @@ public class TargetHost implements Serializable {
 	private String site;
 	private SBAuthentication authentication; 
 	private ConnectionParameters connectionParameter;
-	private ForwardProxy forwardProxy;
+	private IForwardProxy forwardProxy;
 
 	// Authentifcation per targetHost !
 
@@ -63,10 +63,10 @@ public class TargetHost implements Serializable {
 	public void setConnectionParameters(ConnectionParameters connectionParameter) {
 		this.connectionParameter = connectionParameter;
 	}
-	public ForwardProxy getForwardProxy() {
+	public IForwardProxy getForwardProxy() {
 		return forwardProxy;
 	}
-	public void setForwardProxy(ForwardProxy forwardProxy) {
+	public void setForwardProxy(IForwardProxy forwardProxy) {
 		this.forwardProxy = forwardProxy;
 	}
 }

@@ -42,7 +42,6 @@ import com.alu.e3.common.logging.Category;
 import com.alu.e3.common.logging.CategoryLogger;
 import com.alu.e3.common.logging.CategoryLoggerFactory;
 import com.alu.e3.common.osgi.api.IDataManager;
-import com.alu.e3.data.CacheAck;
 import com.alu.e3.data.DataEntryEvent;
 import com.alu.e3.data.IDataManagerListener;
 import com.alu.e3.data.model.ApiJar;
@@ -66,14 +65,15 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 	protected BundleContext bundleContext;
 
 	// Used to associate a BundleEvent with an ack queue, via Bundle's location
-	protected Map<String, String> knownBundles;
 	protected Map<String, ApiJar> bundleBeeingUpdated;
 	protected Map<String, Semaphore> waitingActions;
 
 	public ApiDeploymentManager() {}
 
 	public void setDataManager(IDataManager dataManager) {
-		logger.debug("Setting DataManager");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Setting DataManager");	
+		}
 		// set dataManager before adding as listener, otherwise, dataManagerReady might fail!
 		this.dataManager = dataManager;
 	}
@@ -83,17 +83,22 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 	 * Called by DataManager when its ready (has loaded all it's tables)
 	 */
 	public void dataManagerReady() {
-		logger.debug("DataManager ready, registering as Api Deployment Listener");
+		if(logger.isDebugEnabled()) {
+			logger.debug("DataManager ready, registering as Api Deployment Listener");
+		}
 		dataManager.addApiDeploymentListener(this);
 	}
 	
 	public void init() {
-		logger.debug("Initializing ApiDeploymentManager");
-		knownBundles = Collections.synchronizedMap(new HashMap<String, String>());
+		if(logger.isDebugEnabled()) {
+			logger.debug("Initializing ApiDeploymentManager");
+		}
 		bundleBeeingUpdated = Collections.synchronizedMap(new HashMap<String, ApiJar>());
 		waitingActions = Collections.synchronizedMap(new HashMap<String, Semaphore>());
 
-		logger.debug("Setting as listener on BundleContext");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Setting as listener on BundleContext");
+		}
 		bundleContext.addBundleListener(this);
 		
 		dataManager.addListener(this);
@@ -103,7 +108,9 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 	 * Called by Spring magic 
 	 */
 	public void destroy() {
-		logger.debug("Destroying, removing as listener");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Destroying, removing as listener");
+		}
 		if(bundleContext != null) {
 			bundleContext.removeBundleListener(this);
 		}
@@ -118,7 +125,9 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 	 * A route has been added. Installing the bundle.
 	 */
 	public void entryAdded(DataEntryEvent<String, ApiJar> event) {
-		logger.debug("[EntryAdded] ApiId: " + event.getKey());
+		if(logger.isDebugEnabled()) {
+			logger.debug("[EntryAdded] ApiId: " + event.getKey());
+		}
 		
 		// A location which will identify the bundle in the bundle context
 		String location = BUNDLE_LOCATION_URI_PREFIX + event.getKey();
@@ -126,17 +135,11 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 		// The ApiJar object extracted from the event, containing the queueName to post ACKs and bundle's data
 		ApiJar jar = event.getValue();
 		
-		// The queueName for ACKs is the ID field of a IAckData (ApiJar is a IAckData)
-		String queueName = jar.getId();
-		
-		// Associating a location to a queueName
-		// This is used in bundleChanged method to retreive the queueName in which the ACK must be posted
-		knownBundles.put(location, queueName);
-		
 		// Start bundle installation
 		handleAddOrUpdateEvent(location, jar, event.getKey());
-			
-		logger.debug("[EntryAdded] Finished handling event for apiId " + event.getKey());
+		if(logger.isDebugEnabled()) {	
+			logger.debug("[EntryAdded] Finished handling event for apiId " + event.getKey());
+		}
 	}
 
 
@@ -145,7 +148,9 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 	 * A route has been updated, uninstalling previous one and installing new one
 	 */
 	public void entryUpdated(DataEntryEvent<String, ApiJar> event) {
-		logger.debug("[EntryUpdated] for apiId: " + event.getKey());
+		if(logger.isDebugEnabled()) {
+			logger.debug("[EntryUpdated] for apiId: " + event.getKey());
+		}
 		
 		// A location which will identify the bundle in the bundle context
 		String location = BUNDLE_LOCATION_URI_PREFIX + event.getKey();
@@ -153,17 +158,12 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 		// The ApiJar object extracted from the event, containing the queueName to post ACKs and bundle's data
 		ApiJar jar = event.getValue();
 		
-		// The queueName for ACKs is the ID field of a IAckData (ApiJar is a IAckData)
-		String queueName = jar.getId();
-		
-		// Associating a location to a queueName
-		// This is used in bundleChanged method to retreive the queueName in which the ACK must be posted
-		knownBundles.put(location, queueName);
-		
 		// Start bundle update
 		handleAddOrUpdateEvent(location, jar, event.getKey());
 		
-		logger.debug("[EntryUpdated] Finished handling event for apiId " + event.getKey());
+		if(logger.isDebugEnabled()) {
+			logger.debug("[EntryUpdated] Finished handling event for apiId " + event.getKey());
+		}
 	}
 
 
@@ -172,14 +172,13 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 	 * A route has been removed
 	 */
 	public void entryRemoved(DataEntryEvent<String, ApiJar> event) {
-		logger.debug("[EntryRemoved] Handling event for apiId: " + event.getKey());
+		if(logger.isDebugEnabled()) {
+			logger.debug("[EntryRemoved] Handling event for apiId: " + event.getKey());
+		}
 		String apiId = event.getKey();
 
 		// A location which will identify the bundle in the bundle context
 		String location = BUNDLE_LOCATION_URI_PREFIX + apiId;
-
-		// The queueName for ACKs is the ID field of a IAckData (ApiJar is a IAckData)
-		String queueName = event.getValue().getId();
 
 		// The bundle to remove
 		Bundle bundle = getBundle(location);
@@ -187,41 +186,45 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 		if(bundle != null) {
 			try {
 				Semaphore stopActionSemaphore = new Semaphore(0);
-				// Associating a location to a queueName
-				// This is used in bundleChanged method to retreive the queueName in which the ACK must be posted
-				knownBundles.put(location, queueName);
 				waitingActions.put(location, stopActionSemaphore);
 				
 				// Stopping the bundle
-				logger.debug("Stopping bundle for apiId " + apiId + ": " + bundle.getSymbolicName());
+				if(logger.isDebugEnabled()) {
+					logger.debug("Stopping bundle for apiId " + apiId + ": " + bundle.getSymbolicName());
+				}
 				bundle.stop();
 				stopActionSemaphore.tryAcquire(10L, TimeUnit.SECONDS);
-				logger.debug("Stop unlocked for apiId " + apiId);
+				if(logger.isDebugEnabled()) {
+					logger.debug("Stop unlocked for apiId " + apiId);
+				}
 
 				// Uninstalling the bundle
 				// The ACK will be post in "bundleChanged" method, when the event "UNINSTALLED" will be fired for this bundle
-				logger.debug("Uninstalling bundle for apiId " + apiId + ": " + bundle.getSymbolicName());
+				if(logger.isDebugEnabled()) {
+					logger.debug("Uninstalling bundle for apiId " + apiId + ": " + bundle.getSymbolicName());
+				}
 				bundle.uninstall();
 				stopActionSemaphore.tryAcquire(10L, TimeUnit.SECONDS);
-				logger.debug("Uninstall unlocked for apiId " + apiId);
+				if(logger.isDebugEnabled()) {
+					logger.debug("Uninstall unlocked for apiId " + apiId);
+				}
 				
-				postAck(CacheAck.OK, queueName);
 			} catch (Exception e) {
-				logger.error("Error stopping/uninstalling bundle " + bundle.getSymbolicName() + " after update ", e);
+				logger.error("Error stopping/uninstalling bundle " + bundle.getSymbolicName() + " after update ", e);				
 
 				// post back the error in the queue
-				postAck(CacheAck.KO, queueName);
+				throw new RuntimeException("Error stopping/uninstalling bundle " + bundle.getSymbolicName() + " after update ");
 			} finally {
 				// removing the queueName to prevent any later BundleEvent handling
-				knownBundles.remove(location);
 				waitingActions.remove(location);
 			}
 		} else {
 			// No bundle found, ignoring the request and sending an OK ack.
 			logger.warn("Bundle " + location + " not found in current context");
-			postAck(CacheAck.OK, queueName);
 		}
-		logger.debug("[EntryRemoved] Finished handling event for apiId " + apiId);
+		if(logger.isDebugEnabled()) {
+			logger.debug("[EntryRemoved] Finished handling event for apiId " + apiId);
+		}
 	}
 
 	/**
@@ -230,25 +233,24 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 	 * @param jar The ApiJar object containing the bundle to (re)install
 	 */
 	private void handleAddOrUpdateEvent(String location, ApiJar jar, String apiId) {
-		String queueName = jar.getId();
-
 		Bundle existingBundle = getBundle(location);
 		try {
 			if(existingBundle != null) {
 				Semaphore stopActionSemaphore = new Semaphore(0);
-				// Associating a location to a queueName
-				// This is used in bundleChanged method to retreive the queueName in which the ACK must be posted
-				knownBundles.put(location, queueName);
 				waitingActions.put(location, stopActionSemaphore);
 				
 				// Stopping the bundle
-				logger.debug("Stopping bundle for apiId " + apiId + ": " + existingBundle.getSymbolicName());
+				if(logger.isDebugEnabled()) {
+					logger.debug("Stopping bundle for apiId " + apiId + ": " + existingBundle.getSymbolicName());
+				}
 				existingBundle.stop();
 				stopActionSemaphore.tryAcquire(10L, TimeUnit.SECONDS);
 
 				// Uninstalling the bundle
 				// The ACK will be post in "bundleChanged" method, when the event "UNINSTALLED" will be fired for this bundle
-				logger.debug("Uninstalling bundle for apiId " + apiId + ": " + existingBundle.getSymbolicName());
+				if(logger.isDebugEnabled()) {
+					logger.debug("Uninstalling bundle for apiId " + apiId + ": " + existingBundle.getSymbolicName());
+				}
 				existingBundle.uninstall();
 				stopActionSemaphore.tryAcquire(10L, TimeUnit.SECONDS);
 				
@@ -256,23 +258,45 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 			}
 			
 			// no previous bundle, it's a fresh install so let's do it
-			installApiJar(location, jar);
+			installApiJar(location, jar, apiId);
 
 
 		} catch(Exception e) {
-			logger.error("An error occured while installing the bundle", e);
-			postAck(CacheAck.KO, queueName);
+			if(logger.isDebugEnabled()) {
+				logger.error("An error occured while installing the bundle", e);
+			}
+			throw new RuntimeException("An error occured while installing the bundle");
 		} finally {
 			waitingActions.remove(location);
 		}
 	}
 
-	private void installApiJar(String location, ApiJar jar) throws BundleException {
+	private void installApiJar(String location, ApiJar jar, String apiId) throws BundleException {
 		byte[] data = jar.getData();
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
 
 		Bundle bundle = bundleContext.installBundle(location, in);
-		bundle.start();
+
+		try {
+			Semaphore startActionSemaphore = new Semaphore(0);
+			waitingActions.put(location, startActionSemaphore);
+			
+			// Starting the bundle
+			if(logger.isDebugEnabled()) {
+				logger.debug("Starting bundle for apiId " + apiId + ": " + bundle.getSymbolicName());
+			}
+			bundle.start();
+			startActionSemaphore.tryAcquire(10L, TimeUnit.SECONDS);
+			
+			waitingActions.remove(location);
+		} catch(Exception e) {
+			if(logger.isDebugEnabled()) {
+				logger.error("An error occured while starting the bundle", e);
+			}
+			throw new RuntimeException("An error occured while starting the bundle");
+		} finally {
+			waitingActions.remove(location);
+		}
 	}
 
 	/**
@@ -303,63 +327,63 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 	public void bundleChanged(BundleEvent event) {
 		Bundle bundle = event.getBundle();
 		String location = bundle.getLocation();
-		String queueName = knownBundles.get(location);
 		Semaphore actionSemaphore = waitingActions.get(location);
-
-		// Ignore event if we have no queueName for this bundle in the map
-		if(queueName == null) {
-			logger.debug("Ignoring event for bundle " + bundle.getSymbolicName());
-			return;
-		} else {
-			logger.debug("Handling event of type " + event.getType() + " for bundle " + bundle.getSymbolicName());
-		}
-
-		// Preparing CacheACK to be posted
-		CacheAck ack = null;
 
 		switch(event.getType()) {			
 		case BundleEvent.STARTED:
-			logger.debug("Bundle " + bundle.getSymbolicName() + " STARTED");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Bundle " + bundle.getSymbolicName() + " STARTED");
+			}
 
 			// Starting a loop to check number of registered services, this allow to wait for the route to be UP
 			// Previously using ServiceListener (filtered with the two services CamelContext + another one)
 			// but took up to 20s to be notified for route startup (really random time)
 			boolean isBundleStarted = waitForBundleStarted(bundle);
-
 			if(isBundleStarted) {
-				ack = CacheAck.OK;
+				if (actionSemaphore!=null) actionSemaphore.release();
 			} else {
 				logger.error("Bundle " + bundle.getSymbolicName() + " not started in time");
-				ack = CacheAck.KO;
 			}
-
 			break;
-
 		case BundleEvent.UNINSTALLED:
-			logger.debug("Bundle " + bundle.getSymbolicName() + " UNINSTALLED");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Bundle " + bundle.getSymbolicName() + " UNINSTALLED");
+			}
 			
 			if (actionSemaphore!=null) actionSemaphore.release();
 			
 			break;
 
 		case BundleEvent.INSTALLED:
-			logger.debug("Bundle " + bundle.getSymbolicName() + " INSTALLED");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Bundle " + bundle.getSymbolicName() + " INSTALLED");
+			}
 			break;
 		case BundleEvent.RESOLVED:
-			logger.debug("Bundle " + bundle.getSymbolicName() + " RESOLVED");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Bundle " + bundle.getSymbolicName() + " RESOLVED");
+			}
 			break;
 		case BundleEvent.STARTING:
-			logger.debug("Bundle " + bundle.getSymbolicName() + " STARTING");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Bundle " + bundle.getSymbolicName() + " STARTING");
+			}
 			break;
 		case BundleEvent.STOPPED:
 			if (actionSemaphore!=null) actionSemaphore.release();
-			logger.debug("Bundle " + bundle.getSymbolicName() + " STOPPED");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Bundle " + bundle.getSymbolicName() + " STOPPED");
+			}
 			break;
 		case BundleEvent.STOPPING:
-			logger.debug("Bundle " + bundle.getSymbolicName() + " STOPPING");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Bundle " + bundle.getSymbolicName() + " STOPPING");
+			}
 			break;
 		case BundleEvent.UNRESOLVED:
-			logger.debug("Bundle " + bundle.getSymbolicName() + " UNRESOLVED");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Bundle " + bundle.getSymbolicName() + " UNRESOLVED");
+			}
 			break;
 		case BundleEvent.UPDATED:
 			logger.trace("Bundle " + bundle.getSymbolicName() + " UPDATED");
@@ -369,30 +393,8 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 			logger.trace("Unknown BundleEvent type");
 			break;
 		}
-
-		if(ack != null) {
-			logger.debug("Posting ack " + ack + " for bundle " + bundle.getSymbolicName() + " on queue " + queueName);
-			postAck(ack, queueName);
-		}
 	}
 
-
-	/**
-	 * Utility method to post an ACK on a given queue
-	 * @param ack The ACK to post
-	 * @param queueName The queue name on which the ACK must be posted
-	 */
-	private void postAck(CacheAck ack, String queueName) {
-		try {
-			logger.debug("Posted ACK " + ack + " on queue " + queueName);
-
-			// ACK will be posted on local queue
-			dataManager.postAcknowledgment(queueName, ack);
-
-		} catch (InterruptedException ex) {
-			logger.error("Unable to post ack", ex);
-		}
-	}
 
 	private boolean isBundleStarted(Bundle bundle) {
 		boolean isStarted = false;

@@ -37,7 +37,9 @@ public class SystemManagerInfo {
 	public SystemManagerInfo() {}
 	
 	public void init() {
-		logger.warn("Elected as manager");		
+		if(logger.isWarnEnabled()) {
+			logger.warn("Elected as manager");
+		}
 		instanceInfo.setManager(true);
 	}
 	

@@ -93,7 +93,9 @@ public class TdrXMLWriter extends TimerTask {
 	@Override
 	public void run() {
 		instanceIndex = INSTANCE_INDEX++;
-		logger.debug("TdrXMLWriter instance:"+instanceIndex+" Starting ...");
+		if(logger.isDebugEnabled()) {
+			logger.debug("TdrXMLWriter instance:"+instanceIndex+" Starting ...");
+		}
 		processTdrQueue();
 	}
 
@@ -112,12 +114,18 @@ public class TdrXMLWriter extends TimerTask {
 	private void writeTdrData(Map<String, List<Map<String, Object>>> tdrData) {
 		for (Entry<String, List<Map<String, Object>>> entry : tdrData.entrySet()) {
 			try {
-				logger.debug("Writing TDR: " + entry.getKey());
+				if(logger.isDebugEnabled()) {
+					logger.debug("Writing TDR: " + entry.getKey());
+				}
 				getTdrStreamWriter(entry.getKey()).writeTdrs(entry.getValue());
 			} catch (TransformerException e) {
-				logger.error(e.getMessage(), e);
+				if(logger.isErrorEnabled()) {
+					logger.error(e.getMessage(), e);
+				}
 			} catch (IOException e) {
-				logger.error(e.getMessage(), e);
+				if(logger.isErrorEnabled()) {
+					logger.error(e.getMessage(), e);
+				}
 			}
 		}
 	}

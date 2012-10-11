@@ -26,8 +26,8 @@ import java.util.Map;
 
 import com.alu.e3.data.model.enumeration.StatusType;
 import com.alu.e3.data.model.sub.ApiIds;
-import com.alu.e3.data.model.sub.ForwardProxy;
 import com.alu.e3.data.model.sub.HeaderTransformation;
+import com.alu.e3.data.model.sub.IForwardProxy;
 import com.alu.e3.data.model.sub.TdrGenerationRule;
 import com.alu.e3.data.model.sub.Validation;
 
@@ -59,11 +59,13 @@ public class Api implements Serializable {
 
 	private List<HeaderTransformation> headerTransformations;
 	
-	private ForwardProxy localProxy;
+	private IForwardProxy localProxy;
 	private boolean useGlobalProxy;
 
 	
 	private Boolean internal = false;
+
+	private List<String> whiteListedIps;
 
 	public String getId() {
 		return id;
@@ -159,10 +161,10 @@ public class Api implements Serializable {
 	public void setStatus(StatusType status) {
 		this.status = status;
 	}
-	public ForwardProxy getLocalProxy() {
+	public IForwardProxy getForwardProxy() {
 		return localProxy;
 	}
-	public void setLocalProxy(ForwardProxy localProxy) {
+	public void setForwardProxy(IForwardProxy localProxy) {
 		this.localProxy = localProxy;
 	}
 	public boolean isUseGlobalProxy() {
@@ -170,5 +172,9 @@ public class Api implements Serializable {
 	}
 	public void setUseGlobalProxy(boolean useGlobalProxy) {
 		this.useGlobalProxy = useGlobalProxy;
+	}
+	public List<String> getWhiteListedIps() {
+		if (whiteListedIps==null) whiteListedIps = new ArrayList<String>();
+		return whiteListedIps;
 	}
 }

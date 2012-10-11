@@ -29,7 +29,6 @@ import java.util.Set;
 import com.alu.e3.common.caching.ICacheManager;
 import com.alu.e3.common.caching.IEntryListener;
 import com.alu.e3.common.logging.Category;
-import com.alu.e3.data.CacheAck;
 import com.alu.e3.data.IAuthMatcher;
 import com.alu.e3.data.IDataManagerListener;
 import com.alu.e3.data.IDataManagerUsedBucketIdsListener;
@@ -170,8 +169,6 @@ public interface IDataManager {
 
 	void removeApiDeploymentListener(IEntryListener<String, ApiJar> listener);
 
-	void postAcknowledgment(String localQueueName, CacheAck ack) throws InterruptedException;
-
 	void addLogLevelListener(IEntryListener<String, LogLevel> listener);	
 	void removeLogLevelListener(IEntryListener<String, LogLevel> listener);
 	void setLogLevel(LogLevel logLevel);
@@ -207,5 +204,9 @@ public interface IDataManager {
 	
 	void addApiListener(IEntryListener<String, Api> listener);
 	void removeApiListener(IEntryListener<String, Api> listener);
+	boolean isIpAllowed(Api api, String ip);
 
+	// Global Proxy settings
+	void removeGlobalProxyListener3(IEntryListener<String, String> listener);
+	void addGlobalProxyListener3(IEntryListener<String, String> listener);
 }

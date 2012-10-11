@@ -27,6 +27,7 @@ import com.alu.e3.common.camel.AuthReport;
 import com.alu.e3.common.logging.Category;
 import com.alu.e3.common.logging.CategoryLogger;
 import com.alu.e3.common.logging.CategoryLoggerFactory;
+import com.alu.e3.data.model.Api;
 import com.alu.e3.gateway.common.camel.exception.GatewayExceptionCode;
 
 public class HttpBasicExecutor implements IAuthExecutor {
@@ -34,15 +35,13 @@ public class HttpBasicExecutor implements IAuthExecutor {
 	private static final CategoryLogger logger = CategoryLoggerFactory.getLogger(HttpBasicExecutor.class, Category.AUTH);
 		
 	private IAuthDataAccess dataAccess;
-	private String apiId = "";
 	
-	public HttpBasicExecutor(String apiId, IAuthDataAccess dataAcccess){
-		this.apiId = apiId;
+	public HttpBasicExecutor(IAuthDataAccess dataAcccess){
 		this.dataAccess = dataAcccess;
 	}
 	
 	@Override
-	public AuthReport checkAllowed(Exchange exchange) {
+	public AuthReport checkAllowed(Exchange exchange, Api api) {
 		
 		AuthReport authReport = new AuthReport();
 		
@@ -62,25 +61,33 @@ public class HttpBasicExecutor implements IAuthExecutor {
 						String user = chunks[0];
 						String pass = chunks[1];
 						// Checks if the user is allowed to use this service
-						authReport = dataAccess.checkAllowed(user, pass, apiId);
+						authReport = dataAccess.checkAllowed(api, user, pass);
 					}
 					else{
-						logger.debug("Unable to decode user/pass");
+						if(logger.isDebugEnabled()) {
+							logger.debug("Unable to decode user/pass");
+						}
 						authReport.setBadRequest(true);
 					}
 				}
 				else{
-					logger.debug("Auth scheme not Basic ("+scheme+"). Cannot authenticate request");
+					if(logger.isDebugEnabled()) {
+						logger.debug("Auth scheme not Basic ("+scheme+"). Cannot authenticate request");
+					}
 					authReport.setBadRequest(true);
 				}
 			}
 			else{
-				logger.debug("Improperly formed authorization header:"+authHeader);
+				if(logger.isDebugEnabled()) {
+					logger.debug("Improperly formed authorization header:"+authHeader);
+				}
 				authReport.setBadRequest(true);
 			}
 		}
 		else{
-			logger.debug("Http Basic Authentication Header is missing");
+			if(logger.isDebugEnabled()) {
+				logger.debug("Http Basic Authentication Header is missing");
+			}
 			authReport.setBadRequest(true);
 		}
 		

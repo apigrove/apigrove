@@ -50,7 +50,9 @@ public class TDRRequestProcessor implements Processor {
 				exchange.setProperty(TDR_REQ_PROC_RUN_KEY, Boolean.TRUE);
 			}
 		} catch(Exception e){
-			logger.error(e.getMessage(), e);
+			if (logger.isErrorEnabled()) {
+				logger.error(e.getMessage(), e);
+			}
 		}
 
 	}

@@ -187,7 +187,9 @@ public class ManagedTargetHost {
 		try {
 			url = new URL(strUrl);
 		} catch (MalformedURLException e) {
-			logger.error("Error when exploding URL", e);
+			if (logger.isErrorEnabled()) {
+				logger.error("Error when exploding URL", e);
+			}
 		}
 		
 		return url;

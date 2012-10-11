@@ -23,9 +23,7 @@ package com.alu.e3.data.model;
 
 import java.io.Serializable;
 
-import com.alu.e3.common.caching.IAckData;
-
-public class ApiJar implements Serializable, IAckData {
+public class ApiJar implements Serializable {
 	
 	private static final long serialVersionUID = -3228468215715921089L;
 	

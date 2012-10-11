@@ -95,9 +95,6 @@ public class HazelcastCache<K, V> implements ICacheTable<K, V> {
 	}
 
 	@Override
-	// ----------------------------------------------
-	// /!\ Do not forget to check HazelcastAckCache
-	// ----------------------------------------------
 	public boolean set(K key, V value) {
 		if (localMap == null) {
 			logger.error("Attempt to put a key in a cache without a map");
@@ -201,10 +198,12 @@ public class HazelcastCache<K, V> implements ICacheTable<K, V> {
 
 	@Override
 	public void reloadSlave(String ip) {
-		logger.debug("Reloading table:{} for node ip:{}", name, ip);
+		if (logger.isDebugEnabled()) {
+			logger.debug("Reloading table:{} for node ip:{}", name, ip);
+		}
 		
 		if (localMap == null) {
-			logger.error("Attempt to reload a slave cache from a master with no map");
+			logger.warn("Attempt to reload a slave cache from a master with no map");
 			return;
 		}
 
@@ -212,15 +211,21 @@ public class HazelcastCache<K, V> implements ICacheTable<K, V> {
 		try {
 			if (mapHandler==null)
 			{
-				logger.debug("Creating mapHandler for table:{} for node ip:{}", name, ip);
+				if (logger.isDebugEnabled()) {
+					logger.debug("Creating mapHandler for table:{} for node ip:{}", name, ip);
+				}
 				mapHandler = new MapHandler<K, V>(ip, localMap.getName());
 				mapHandlerPool.put(new StringBuffer(ip).append(localMap.getName()).toString(), mapHandler);
 			}else
 			{
-				logger.debug("Reusing mapHandler for table:{} for node ip:{}", name, ip);
+				if (logger.isDebugEnabled()) {
+					logger.debug("Reusing mapHandler for table:{} for node ip:{}", name, ip);
+				}
 				if (!mapHandler.isClientActive())
 				{
-					logger.debug("Recreating mapHandler for table:{} for node ip:{}", name, ip);
+					if (logger.isDebugEnabled()) {
+						logger.debug("Recreating mapHandler for table:{} for node ip:{}", name, ip);
+					}
 					mapHandler.dispose();
 					String poolKey = new StringBuffer(ip).append(localMap.getName()).toString();
 					mapHandlerPool.remove(poolKey);
@@ -230,18 +235,17 @@ public class HazelcastCache<K, V> implements ICacheTable<K, V> {
 			}
 			IMap<K, V> map = mapHandler.getMap();
 			if (!mapHandler.isLocal()) {
-				logger.debug("Pushing allData for table:{} for node ip:{}", name, ip);
+				if (logger.isDebugEnabled()) {
+					logger.debug("Pushing allData for table:{} for node ip:{}", name, ip);
+				}
 				map.putAll(localMap);
 			}
 		} catch (Exception e) {
-			logger.error("Unable to reload slave", e);
+			logger.warn("Unable to reload slave", e);
 		}
 	}
 
 	@Override
-	// ----------------------------------------------
-	// /!\ Do not forget to check HazelcastAckCache
-	// ----------------------------------------------
 	public V remove(Object key) {
 
 		if (localMap == null) {
@@ -309,22 +313,16 @@ public class HazelcastCache<K, V> implements ICacheTable<K, V> {
 		// add all gateway external IPs to use
 		instanceIPs.addAll(getExternalIPs(E3Constant.E3GATEWAY));
 
-		// add all speaker internal IPs to use
-		instanceIPs.addAll(getInternalIPs(E3Constant.E3SPEAKER));
-		// add all speaker external IPs to use
-		instanceIPs.addAll(getExternalIPs(E3Constant.E3SPEAKER));
-
-		// Need to check if the same instance is twice
-
 		return instanceIPs;
 	}
 
 	private Set<String> getInternalIPs(String type) {
 		// get manager area
 		String managerArea = topologyClient.getMyArea();
-		logger.debug("Current manager area '" + managerArea + "'");
-
-		logger.debug("Adding gateway internal ips for manager area '" + managerArea + "'");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Current manager area '" + managerArea + "'");
+			logger.debug("Adding gateway internal ips for manager area '" + managerArea + "'");
+		}
 		// use internal ip for gateways having the same area than the manager
 		return topologyClient.getInternalIPsOfType(type, managerArea);
 	}
@@ -336,7 +334,9 @@ public class HazelcastCache<K, V> implements ICacheTable<K, V> {
 
 		// iterate through area list to gather external gateway ips
 		for (String area : otherAreas) {
-			logger.debug("Adding gateway external ips non manager for area '" + area + "'");
+			if (logger.isDebugEnabled()) {
+				logger.debug("Adding gateway external ips non manager for area '" + area + "'");
+			}
 			externalGatewayIPs.addAll(topologyClient.getExternalIPsOfType(type, area));
 		}
 
@@ -409,31 +409,7 @@ public class HazelcastCache<K, V> implements ICacheTable<K, V> {
 
 	@Override
 	public void addEntryListener(final IEntryListener<K, V> listener) {
-		EntryListener<K, V> hzListener = new EntryListener<K, V>() {
-
-			@Override
-			public void entryAdded(EntryEvent<K, V> event) {
-				DataEntryEvent<K, V> dataEntryEvent = new DataEntryEvent<K, V>(event.getKey(), event.getValue());
-				listener.entryAdded(dataEntryEvent);
-			}
-
-			@Override
-			public void entryRemoved(EntryEvent<K, V> event) {
-				DataEntryEvent<K, V> dataEntryEvent = new DataEntryEvent<K, V>(event.getKey(), event.getValue());
-				listener.entryRemoved(dataEntryEvent);
-			}
-
-			@Override
-			public void entryUpdated(EntryEvent<K, V> event) {
-				DataEntryEvent<K, V> dataEntryEvent = new DataEntryEvent<K, V>(event.getKey(), event.getValue());
-				listener.entryUpdated(dataEntryEvent);
-			}
-
-			@Override
-			public void entryEvicted(EntryEvent<K, V> event) {
-
-			}
-		};
+		EntryListener<K, V> hzListener = new HZListener(listener);
 
 		getEntryListenersMap().put(listener, hzListener);
 
@@ -454,5 +430,53 @@ public class HazelcastCache<K, V> implements ICacheTable<K, V> {
 		if (entryListenersMap == null)
 			entryListenersMap = new HashMap<IEntryListener<K, V>, EntryListener<K, V>>();
 		return entryListenersMap;
+	}
+
+	@Override
+	public void addEntryListener(IEntryListener<K, V> listener, K key) {
+		EntryListener<K, V> hzListener = new HZListener(listener);
+
+		getEntryListenersMap().put(listener, hzListener);
+
+		localMap.addEntryListener(hzListener, key, true);
+	}
+
+	@Override
+	public void removeEntryListener(IEntryListener<K, V> listener, K key) {
+		EntryListener<K, V> hzListener = getEntryListenersMap().get(listener);
+		getEntryListenersMap().remove(listener);
+		localMap.removeEntryListener(hzListener, key);
+	}
+	
+	public class HZListener implements EntryListener<K, V> {
+		protected IEntryListener<K, V> listener;
+		
+		public HZListener(IEntryListener<K, V> listener) {
+			this.listener = listener;
+		}
+		
+		@Override
+		public void entryAdded(EntryEvent<K, V> event) {
+			DataEntryEvent<K, V> dataEntryEvent = new DataEntryEvent<K, V>(event.getKey(), event.getValue());
+			listener.entryAdded(dataEntryEvent);
+		}
+
+		@Override
+		public void entryRemoved(EntryEvent<K, V> event) {
+			DataEntryEvent<K, V> dataEntryEvent = new DataEntryEvent<K, V>(event.getKey(), event.getValue());
+			listener.entryRemoved(dataEntryEvent);
+		}
+
+		@Override
+		public void entryUpdated(EntryEvent<K, V> event) {
+			DataEntryEvent<K, V> dataEntryEvent = new DataEntryEvent<K, V>(event.getKey(), event.getValue());
+			listener.entryUpdated(dataEntryEvent);
+		}
+
+		@Override
+		public void entryEvicted(EntryEvent<K, V> event) {
+
+		}
+
 	}
 }

@@ -20,7 +20,12 @@ package com.alu.e3.common.caching.internal;
 
 import java.util.concurrent.RejectedExecutionException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alu.e3.common.E3Constant;
+import com.alu.e3.common.logging.Category;
+import com.alu.e3.common.logging.CategoryLoggerFactory;
 import com.alu.e3.common.tools.CommonTools;
 import com.hazelcast.client.ClientConfig;
 import com.hazelcast.client.HazelcastClient;
@@ -30,6 +35,8 @@ import com.hazelcast.core.IMap;
 
 public class MapHandler<K, V> implements Disposable {
 
+	private static final Logger logger = LoggerFactory.getLogger(MapHandler.class);
+	
 	private HazelcastClient client;
 	private IMap<K, V> map;
 	
@@ -42,15 +49,19 @@ public class MapHandler<K, V> implements Disposable {
 				map = hzI.getMap(mapName);
 			}
 			else {
-				// TODO log
-				System.out.println("MapHandler: HazelcastInstance not found");
+				logger.error("No HazelcastInstance found");
 			}
 		} else {
 
 			ClientConfig clientConfig = new ClientConfig();
 			clientConfig.addAddress(ip + ":" + E3Constant.HAZELCAST_PORT);
 			client = HazelcastClient.newHazelcastClient(clientConfig);
+			
 			map = client.getMap(mapName);
+		}
+		
+		if (map == null) {
+			logger.error("Can't create/connect to map name: {} for ip: {}", mapName, ip);
 		}
 	}
 	

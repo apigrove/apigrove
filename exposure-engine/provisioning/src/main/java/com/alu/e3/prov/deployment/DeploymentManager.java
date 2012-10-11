@@ -58,7 +58,9 @@ public class DeploymentManager implements IDeploymentManager {
 		}
 		
 		if(!result) {
-			logger.error("Deployment failed");
+			if(logger.isErrorEnabled()) {
+				logger.error("Deployment failed");
+			}
 			throw new DeploymentException(ApplicationCodeConstants.DEPLOYMENT_FAILED, "Deployment failed");
 		}
 
@@ -79,7 +81,9 @@ public class DeploymentManager implements IDeploymentManager {
 		boolean result = dataManager.undeployApi(apiId);
 		
 		if(!result) {
-			logger.error("UnDeployment failed");
+			if(logger.isErrorEnabled()) {
+				logger.error("UnDeployment failed");
+			}
 			throw new DeploymentException(ApplicationCodeConstants.DEPLOYMENT_FAILED, "Undeployment failed");
 		}
 

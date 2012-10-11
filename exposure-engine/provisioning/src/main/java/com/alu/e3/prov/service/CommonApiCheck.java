@@ -22,8 +22,11 @@ import java.util.List;
 
 import com.alu.e3.prov.restapi.model.Api;
 import com.alu.e3.prov.restapi.model.ApiContext;
+import com.alu.e3.prov.restapi.model.ResourceItem;
+import com.alu.e3.prov.restapi.model.SchemaValidationEnum;
 import com.alu.e3.prov.restapi.model.Status;
 import com.alu.e3.prov.restapi.model.SubscriptionStep;
+import com.alu.e3.prov.restapi.model.Validation;
 
 public class CommonApiCheck implements ICommonApiCheck  {
 	
@@ -47,6 +50,35 @@ public class CommonApiCheck implements ICommonApiCheck  {
 		}
 		if(!hasDefault) {
 			throw new IllegalArgumentException("An api must have one and only one default context.");
+		}
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see com.alu.e3.prov.service.ICommonApiCheck#assertHasDefaultContext(com.alu.e3.prov.restapi.model.Api)
+	 */
+	@Override
+	public final void assertHasIsMainForWSDLValidation(Api provRequest){
+		boolean hasMainValid = false;
+		
+		Validation val = provRequest.getValidation();
+		
+		//checking validation activated and is SOAP validation
+		if(val != null && val.getSchema() != null && val.getSchema().getType() == SchemaValidationEnum.WSDL){
+			//	provRequest.getValidation().getSoap()
+			for(ResourceItem resource : val.getSchema().getResourcesList()){
+				 if(resource.isIsMain()){
+					 hasMainValid = true;
+					 break;
+				 }
+			}
+		}else{
+			//nothing to do validation is not activated or is not WSDL validation
+			hasMainValid = true;
+		}
+		
+		if(!hasMainValid) {
+			throw new IllegalArgumentException("An api must have 'isMain' attribute when WSDL validation is activated");
 		}
 	}
 	

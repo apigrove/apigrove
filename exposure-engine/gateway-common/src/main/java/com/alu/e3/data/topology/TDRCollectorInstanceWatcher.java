@@ -60,12 +60,6 @@ public class TDRCollectorInstanceWatcher implements IEntryListener<String, Array
 	protected String writeLocation = E3Constant.TDR_TRANSFER_CONFIG_PATH;
 	protected String configName = E3Constant.TDR_TRANSFER_CONFIG_FILE;
 	protected String keyName = E3Constant.TDR_TRANSFER_CONFIG_KEY;
-	
-//	@Override
-//	public void instanceAdded(InstanceEvent event) {
-//		Instance instance = event.getInstance();
-//		onInstanceAdded(instance);
-//	}
 
 	private void onInstanceAdded(Instance instance) {
 		if (myName == null && E3Constant.E3GATEWAY.equals(instance.getType())) {
@@ -74,20 +68,33 @@ public class TDRCollectorInstanceWatcher implements IEntryListener<String, Array
 				writeConfigFile();
 			}
 		} else if (E3Constant.E3MANAGER.equals(instance.getType())) {
-			verifyCredentials(instance);
+			if(verifyCredentials(instance))
+				writeConfigFile();
 		} else if (E3Constant.TDR_COLLECTOR.equals(instance.getType())) {
-			logger.debug("Adding instance " + instance.getName() + " (" + instance.getInternalIP() + ")");
-			TDRCollectors.add(instance);
-			writeConfigFile();
+			if (logger.isDebugEnabled()) {
+				logger.debug("Adding instance " + instance.getName() + " (" + instance.getInternalIP() + ")");
+			}
+			// Delete instance is not safe, so on new TDRCollector instance, clean TDRCollectors list 
+			List<Instance> nodeList = topologyClient.getAllInstancesOfType(E3Constant.TDR_COLLECTOR);
+			if (nodeList != null && nodeList.size() != 0) {
+				if (!TDRCollectors.containsAll(nodeList) ){
+					TDRCollectors.clear();
+					this.user = null;
+					for(Instance currentInstance : nodeList){
+						verifyCredentialsUser(currentInstance);
+					}
+					TDRCollectors.addAll(nodeList);
+					writeConfigFile();
+				}
+			} else {
+				if (logger.isDebugEnabled()) {
+					logger.debug("No instances of type " + E3Constant.TDR_COLLECTOR + " were found.");
+				}
+			}
 		}
 	}
 
 	//if more instances are registered with the same InternalIP, only the first is removed
-//	@Override
-//	public void instanceRemoved(InstanceEvent event) {
-//		Instance removedInstance = event.getInstance();
-//		onInstanceRemoved(removedInstance);
-//	}
 
 	private void onInstanceRemoved(Instance removedInstance) {
 		if (!E3Constant.TDR_COLLECTOR.equals(removedInstance.getType())) return;
@@ -98,8 +105,10 @@ public class TDRCollectorInstanceWatcher implements IEntryListener<String, Array
 			}
 		}
 		if (toRemove != null) {
-			logger.debug("Removing instance " + removedInstance.getName() + 
-					" (" + removedInstance.getInternalIP() + ")");
+			if (logger.isDebugEnabled()) {
+				logger.debug("Removing instance " + removedInstance.getName() + 
+						" (" + removedInstance.getInternalIP() + ")");
+			}
 			TDRCollectors.remove(toRemove);
 			writeConfigFile();
 		} else {
@@ -112,15 +121,21 @@ public class TDRCollectorInstanceWatcher implements IEntryListener<String, Array
 		Instance inst = topologyClient.whoAmI(E3Constant.E3GATEWAY);
 		if (inst != null) {
 			myName = inst.getName();
-			logger.debug("I found my name: " + myName);
+			if (logger.isDebugEnabled()) {
+				logger.debug("I found my name: " + myName);
+			}
 		}
 	}
 	
 	//records: where the key is, what the user is, what the TDRCollectors are, and what the ID is
 	protected void writeConfigFile() {
-		logger.debug("Writing new TDR Transfer Config File");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Writing new TDR Transfer Config File");
+		}
 		if (keyName == null || user == null || TDRCollectors.isEmpty()) {
-			logger.debug("Missing required data for writing TDR Transfer Config File");
+			if (logger.isDebugEnabled()) {
+				logger.debug("Missing required data for writing TDR Transfer Config File");
+			}
 			return;
 		}
 		if (myName == null) getMyName();
@@ -150,12 +165,16 @@ public class TDRCollectorInstanceWatcher implements IEntryListener<String, Array
 				}
 			}
 		}
-
-		logger.debug("TDR Transfer Config File written.");
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("TDR Transfer Config File written.");
+		}
 	}
 	
 	protected boolean writeKeyFile() {
-		logger.debug("Writing new TDR Transfer Key File.");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Writing new TDR Transfer Key File.");
+		}
 		File keyfile = new File(new File(writeLocation), keyName);
 		OutputStream out = null;
 		try {
@@ -185,8 +204,10 @@ public class TDRCollectorInstanceWatcher implements IEntryListener<String, Array
 	}
 
 	public void init() {
-		logger.debug("Starting TDRCollectorInstanceWatcher ...");
-		logger.debug("Getting TDRCollectorInstance list ...");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Starting TDRCollectorInstanceWatcher ...");
+			logger.debug("Getting TDRCollectorInstance list ...");
+		}
 		List<Instance> nodeList;
 		
 		nodeList = topologyClient.getAllInstancesOfType(E3Constant.E3MANAGER);
@@ -203,24 +224,39 @@ public class TDRCollectorInstanceWatcher implements IEntryListener<String, Array
 		nodeList = topologyClient.getAllInstancesOfType(E3Constant.TDR_COLLECTOR);
 		if (nodeList != null && nodeList.size() != 0) {
 			TDRCollectors.addAll(nodeList);
-			logger.debug("Writing TDR Transfer Script configuration file.");
+			for (Instance instance : nodeList) {
+				verifyCredentialsUser(instance);
+			}
+			if (logger.isDebugEnabled()) {
+				logger.debug("Writing TDR Transfer Script configuration file.");
+			}
 			writeConfigFile();
 		} else {
-			logger.debug("No instances of type " + E3Constant.TDR_COLLECTOR + " were found.");
+			if (logger.isDebugEnabled()) {
+				logger.debug("No instances of type " + E3Constant.TDR_COLLECTOR + " were found.");
+			}
 		}
 		listenInstanceTypeListener();
 		getMyName();
-		logger.debug("TDRCollectorInstanceWatcher init'd.");
+		if (logger.isDebugEnabled()) {
+			logger.debug("TDRCollectorInstanceWatcher init'd.");
+		}
 	}
 	
 	public void destroy() {
-		logger.debug("Stopping TDRCollectorInstanceWatcher ...");
-		logger.debug("Clearing TDRCollectorInstance list ...");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Stopping TDRCollectorInstanceWatcher ...");
+			logger.debug("Clearing TDRCollectorInstance list ...");
+		}
 		TDRCollectors.clear();
-		logger.debug("Clearing TDRCollectorInstanceWatcher listeners ...");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Clearing TDRCollectorInstanceWatcher listeners ...");
+		}
 //		topologyClient.removeInstanceListener(this);
 		topologyClient.removeInstanceTypeListener(this);
-		logger.debug("TDRCollectorInstanceWatcher destroyed.");
+		if (logger.isDebugEnabled()) {
+			logger.debug("TDRCollectorInstanceWatcher destroyed.");
+		}
 	}
 	
 	// This function creates the key file if one doesn't exist, and monitors
@@ -235,22 +271,42 @@ public class TDRCollectorInstanceWatcher implements IEntryListener<String, Array
 		if (instKey != null) {
 			if (this.key == null) {
 				this.key = instKey;
-				this.user = instance.getUser();
 				if (!writeKeyFile()) {
 					this.key = null;
-					this.user = null;
 					return false;
 				}
 				return true;
 			}  
 			if (!instKey.isSameKey(this.key)) {
 				hasConsistentCredentials = false;
-				logger.error("Instance " + instance.getName() + " (" + instance.getInternalIP() +
+				logger.warn("Instance " + instance.getName() + " (" + instance.getInternalIP() +
 					") uses a different key than another " + E3Constant.TDR_COLLECTOR + " instance!");
-			} 
-			if (instance.getUser() != this.user) {
+			}
+		} else {
+			logger.warn("Instance " + instance.getName() + " (" + instance.getInternalIP() +
+					") has no key specified!");
+		}
+		
+		return hasConsistentCredentials;
+	}
+
+	// This function set the user if it's no stored, and monitors
+	// whether multiple users are registered.
+	// TDR Transfer Script only supports one user for all destinations instances, so
+	// only the first user registered is ever used.  If there are no credentials
+	// or different credentials, an error is logged.
+	protected boolean verifyCredentialsUser(Instance instance) {
+		boolean hasConsistentCredentials = true;
+		
+		String instUser = instance.getUser();
+		if (instUser != null) {
+			if (this.user == null) {
+				this.user = instUser;
+				return true;
+			}
+			if (instUser != this.user) {
 				hasConsistentCredentials = false;
-				logger.error("Instance " + instance.getName() + " (" + instance.getInternalIP() +
+				logger.warn("Instance " + instance.getName() + " (" + instance.getInternalIP() +
 						") has a different user than another " + E3Constant.TDR_COLLECTOR + " instance!");
 			}
 		} else {
@@ -286,10 +342,6 @@ public class TDRCollectorInstanceWatcher implements IEntryListener<String, Array
 	public void setTopologyClient(ITopologyClient topologyClient) {
 		this.topologyClient = topologyClient;
 	}
-	
-//	public void listenInstanceListener() {
-//		topologyClient.addInstanceListener(this);
-//	}
 	
 	public void listenInstanceTypeListener() {
 		topologyClient.addInstanceTypeListener(this);

@@ -34,6 +34,7 @@ public enum ExchangeConstantKeys {
 	// AUTH
 	E3_AUTH_IDENTITY, 
 	E3_AUTH_METHOD,
+	E3_AUTH_IDENTITY_APICONTEXT,
 
 	// Rate Limit / Quota
 	E3_RATELIMIT_ACTION,
@@ -66,4 +67,9 @@ public enum ExchangeConstantKeys {
 	
 	// HTTP status line reason phrase 
 	E3_HTTP_STATUS_LINE_REASON_PHRASE,
+	
+	E3_API,
+	
+	E3_HTTP_CONNECTION_TIMEOUT,
+	E3_HTTP_SOCKET_TIMEOUT,
 }

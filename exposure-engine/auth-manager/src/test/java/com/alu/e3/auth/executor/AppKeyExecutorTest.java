@@ -32,6 +32,7 @@ import org.junit.Test;
 import com.alu.e3.auth.MockAuthDataAccess;
 import com.alu.e3.common.camel.AuthReport;
 import com.alu.e3.common.camel.ExchangeConstantKeys;
+import com.alu.e3.data.model.Api;
 
 public class AppKeyExecutorTest {
 
@@ -43,6 +44,8 @@ public class AppKeyExecutorTest {
 	public void testWin() {
 		Exchange exchange = new DefaultExchange(context);
 		
+		Api api = new Api();
+		
 		// Setting the key in the request parameters
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put(appKeyName, "asdf");
@@ -51,9 +54,9 @@ public class AppKeyExecutorTest {
 		// Setting the key in the query - should be removed
 		exchange.getIn().setHeader(Exchange.HTTP_QUERY, appKeyName + "=asdf");
 		
-		AppKeyExecutor executor = new AppKeyExecutor(appKeyName, appHeaderName, "1234", new MockAuthDataAccess("asdf", null, null));
+		AppKeyExecutor executor = new AppKeyExecutor(appKeyName, appHeaderName, new MockAuthDataAccess("asdf", null, null));
 		
-		AuthReport authReport = executor.checkAllowed(exchange);
+		AuthReport authReport = executor.checkAllowed(exchange, api);
 		
 		assertNotNull("This authentication should have succeeded", authReport.getAuthIdentity());
 
@@ -66,12 +69,15 @@ public class AppKeyExecutorTest {
 		Exchange exchange = new DefaultExchange(context);
 		exchange.setProperty(ExchangeConstantKeys.E3_REQUEST_PARAMETERS.toString(), new HashMap<String, Object>());
 		
+		Api api = new Api();
+		api.setId("1234");
+
 		// Setting the key in the header - should be removed
 		exchange.getIn().setHeader(appHeaderName, "asdf");
 		
-		AppKeyExecutor executor = new AppKeyExecutor(appKeyName, appHeaderName, "1234", new MockAuthDataAccess("asdf", null, null));
+		AppKeyExecutor executor = new AppKeyExecutor(appKeyName, appHeaderName, new MockAuthDataAccess("asdf", null, null));
 		
-		AuthReport authReport = executor.checkAllowed(exchange);
+		AuthReport authReport = executor.checkAllowed(exchange, api);
 		
 		assertNotNull("This authentication should have succeeded", authReport.getAuthIdentity());
 
@@ -84,14 +90,17 @@ public class AppKeyExecutorTest {
 	public void testFailNotAllowed(){
 		Exchange exchange = new DefaultExchange(context);
 
+		Api api = new Api();
+		api.setId("1234");
+
 		// Setting the key in the request parameters
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put(appKeyName, "asdf");
 		exchange.setProperty(ExchangeConstantKeys.E3_REQUEST_PARAMETERS.toString(), parameters);
 		
-		AppKeyExecutor executor = new AppKeyExecutor(appKeyName, appHeaderName, "1234", new MockAuthDataAccess(null, null, null));
+		AppKeyExecutor executor = new AppKeyExecutor(appKeyName, appHeaderName, new MockAuthDataAccess(null, null, null));
 
-		AuthReport authReport = executor.checkAllowed(exchange);
+		AuthReport authReport = executor.checkAllowed(exchange, api);
 		
 		assertNull("This authentication should have failed", authReport.getAuthIdentity());
 	}
@@ -101,10 +110,13 @@ public class AppKeyExecutorTest {
 		Exchange exchange = new DefaultExchange(context);
 		exchange.setProperty(ExchangeConstantKeys.E3_REQUEST_PARAMETERS.toString(), new HashMap<String, Object>());
 		
+		Api api = new Api();
+		api.setId("1234");
+
 		// no parameter should fail
-		AppKeyExecutor executor = new AppKeyExecutor(appKeyName, appHeaderName, "1234", new MockAuthDataAccess("asdf", null, null));
+		AppKeyExecutor executor = new AppKeyExecutor(appKeyName, appHeaderName, new MockAuthDataAccess("asdf", null, null));
 		
-		AuthReport authReport = executor.checkAllowed(exchange);
+		AuthReport authReport = executor.checkAllowed(exchange, api);
 		
 		assertNull("This authentication should have failed", authReport.getAuthIdentity());
 	}
@@ -113,14 +125,17 @@ public class AppKeyExecutorTest {
 	public void testFailBadFormat(){
 		Exchange exchange = new DefaultExchange(context);
 		
+		Api api = new Api();
+		api.setId("1234");
+
 		// Setting the wrong key in the request parameters
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put(appKeyName.toUpperCase(), "asdf");
 		exchange.setProperty(ExchangeConstantKeys.E3_REQUEST_PARAMETERS.toString(), parameters);
 
-		AppKeyExecutor executor = new AppKeyExecutor(appKeyName, appHeaderName, "1234", new MockAuthDataAccess("asdf", null, null));
+		AppKeyExecutor executor = new AppKeyExecutor(appKeyName, appHeaderName, new MockAuthDataAccess("asdf", null, null));
 		
-		AuthReport authReport = executor.checkAllowed(exchange);
+		AuthReport authReport = executor.checkAllowed(exchange, api);
 		
 		assertNull("This authentication should have failed",  authReport.getAuthIdentity());
 	}
@@ -129,14 +144,17 @@ public class AppKeyExecutorTest {
 	public void testFailBadFormat2(){
 		Exchange exchange = new DefaultExchange(context);
 		
+		Api api = new Api();
+		api.setId("1234");
+
 		// Setting the null key in the request parameters
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put(appKeyName, null);
 		exchange.setProperty(ExchangeConstantKeys.E3_REQUEST_PARAMETERS.toString(), parameters);
 		
-		AppKeyExecutor executor = new AppKeyExecutor(appKeyName, appHeaderName, "1234", new MockAuthDataAccess("asdf", null, null));
+		AppKeyExecutor executor = new AppKeyExecutor(appKeyName, appHeaderName, new MockAuthDataAccess("asdf", null, null));
 		
-		AuthReport authReport = executor.checkAllowed(exchange);
+		AuthReport authReport = executor.checkAllowed(exchange, api);
 		
 		assertNull("This authentication should have failed", authReport.getAuthIdentity());
 	}

@@ -34,6 +34,8 @@ import com.alu.e3.common.camel.ExchangeConstantKeys;
 import com.alu.e3.common.logging.Category;
 import com.alu.e3.common.logging.CategoryLogger;
 import com.alu.e3.common.logging.CategoryLoggerFactory;
+import com.alu.e3.common.osgi.api.IDataManager;
+import com.alu.e3.data.model.Api;
 import com.alu.e3.gateway.common.camel.exception.GatewayException;
 import com.alu.e3.gateway.common.camel.exception.GatewayExceptionCode;
 import com.alu.e3.tdr.TDRConstant;
@@ -44,107 +46,136 @@ public class AuthProducer extends DefaultProducer {
 	private static final CategoryLogger logger = CategoryLoggerFactory.getLogger(AuthProducer.class, Category.AUTH);
 
 	private List<IAuthExecutor> executors;
+	private String apiId;
+	private IDataManager dataManager;
 
-
-	public AuthProducer(Endpoint endpoint, List<IAuthExecutor> executors) {
+	public AuthProducer(Endpoint endpoint, List<IAuthExecutor> executors, IDataManager dataManager, String apiId) {
 		super(endpoint);
 		if(!(endpoint instanceof AuthEndpoint)){
 			throw new RuntimeException("AuthProducer does not support endpoint type:"+endpoint.getClass().getName());
 		}
 
+		this.apiId = apiId;
 		this.executors = executors;
+		this.dataManager = dataManager;
 	}
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		
-		logger.debug("Authentication Processor is excuted");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Authentication Processor is excuted");
+		}
+
+		Api api = (Api)exchange.getProperty(ExchangeConstantKeys.E3_API.toString());
+		if(api == null) {
+			api = dataManager.getApiById(apiId);
+		}
 
 		AuthType authType = AuthType.NO_AUTH;
 		
-		boolean isBasicEnabled = false;
 		boolean isAllowed = false;
-		boolean isApiActive = false;
-		boolean isStatusChecked = false;
 		AuthIdentity authIdentity = null;
+		AuthReport report = null;
+		AuthType reportAuth = null;
 		
 		Iterator<IAuthExecutor> it = executors.iterator();
 		while(!isAllowed && it.hasNext()) {
 			
 			IAuthExecutor executor = it.next();
-			AuthReport authReport = executor.checkAllowed(exchange);  
+			AuthReport authReport = executor.checkAllowed(exchange, api);  
 			isAllowed = authReport.isAllowed();
 			
-			if(!isStatusChecked) {
-				isStatusChecked = authReport.isStatusChecked();
-				isApiActive = authReport.isApiActive();
-			}
-
-			if(!isBasicEnabled) { 
-				// Check that BasicAuth method is not enabled
-				GatewayExceptionCode code = executor.getErrorCode();
-				if(code == GatewayExceptionCode.AUTHORIZATION_BASIC) {
-					isBasicEnabled = true;
-				}
-			}			
-			
-			if(isAllowed) {
+			if (isAllowed) {
 				authIdentity = authReport.getAuthIdentity();
+				report = authReport;
+			} else {
+				if (report == null) {
+					report = authReport;
+					reportAuth = executor.getType();
+				} else {
+					if (report.compareTo(authReport) > 0) {
+						report = authReport;
+						reportAuth = executor.getType();
+					}
+				}
 			}
-			
 			// The last executor
 			authType = executor.getType();
 		}
 		
-		
-		if(isAllowed) {
-			logger.debug("Request allowed to use this Api");
+		if (isAllowed) {
+			if(logger.isDebugEnabled()) {
+				logger.debug("Request allowed to use this Api");
+			}
 		} else {
-			logger.debug("Request not allowed to use this Api");
-			manageError(isStatusChecked, isApiActive, isBasicEnabled, exchange);	
+			if(logger.isDebugEnabled()) {
+				logger.debug("Request not allowed to use this Api");
+			}
+			handleReport(exchange, report, reportAuth);
 		}
 
 		// Put this in the exchange for TDRs
 		TDRDataService.setTxTDRProperty(TDRConstant.AUTHENTICATION, authType.value(), exchange);
 		
 		// Set the authentication result in the exchange
-		exchange.setProperty(ExchangeConstantKeys.E3_AUTH_METHOD.toString(), authType.value());				
-		exchange.setProperty(ExchangeConstantKeys.E3_AUTH_IDENTITY.toString(), authIdentity);		
-	}
-	
-	private void manageError(boolean isStatusChecked, boolean isApiActive, boolean isBasicEnabled, Exchange exchange) {
+		exchange.setProperty(ExchangeConstantKeys.E3_AUTH_METHOD.toString(), authType.value());	
 		
+		//getting apiContext
+		String value = null;
+		if(authIdentity != null && authIdentity.getAuth() != null){
+				value = authIdentity.getAuth().getApiContext();
+		}
+		
+		exchange.setProperty(ExchangeConstantKeys.E3_AUTH_IDENTITY.toString(), authIdentity);
+		exchange.setProperty(ExchangeConstantKeys.E3_AUTH_IDENTITY_APICONTEXT.toString(), value);	
+	}
+
+	private void handleReport(Exchange exchange, AuthReport report, AuthType authType) {	
 		GatewayExceptionCode authErrorCode = null;
 		String authErrorMessage = null;
 		
-		if(isStatusChecked) {
-			
-			if(isApiActive) {
-				if(isBasicEnabled) {
-					logger.debug("The API is active but an authorization is required");
-					authErrorCode = GatewayExceptionCode.AUTHORIZATION_BASIC;
-					authErrorMessage = "Authorization required";
-				} else {
-					logger.debug("The API is active but the request is not allowed");
+		if (logger.isDebugEnabled()) {
+			logger.debug("AuthType: {}; {}", authType, report);
+		}
+		if ((report != null) && report.isStatusChecked()) {
+			if (report.isApiActive()) {
+				if (report.isAuthActive()) {
+					if(logger.isDebugEnabled()) {
+						logger.debug("The API is active but an authorization is required");
+					}
+					authErrorCode = authType.authErrorCode();
+					authErrorMessage = authType.authErrorMessage();
+				} else if (!report.isAuthNotFound()) {
+					if(logger.isDebugEnabled()) {
+						logger.debug("The Auth {} is not active, the request is rejected", authType.value());
+					}
 					authErrorCode = GatewayExceptionCode.AUTHORIZATION;
-					authErrorMessage = "Not Authorized";
-				}				
-				
+					authErrorMessage = "Authentication: " + authType.value() + " not active.";
+				} else {
+					if(logger.isDebugEnabled()) {
+						logger.debug("There is no Auth, the request is rejected");
+					}
+					authErrorCode = authType.authErrorCode();
+					authErrorMessage = authType.authErrorMessage();
+				}
 			} else {
-				logger.debug("The API is not active, the request is rejected");
+				if(logger.isDebugEnabled()) {
+					logger.debug("The API is not active, the request is rejected");
+				}
 				authErrorCode = GatewayExceptionCode.API_NOT_ACTIVATED;
 				authErrorMessage = "API not active";
 			}
-			
 		} else {
-			// the status of the API is not trusted, them we reject the call
-			logger.debug("The status of the API is not trusted, the request is rejected");
+			// the status of the API is not trusted, then we reject the call
+			if(logger.isDebugEnabled()) {
+				logger.debug("The status of the API is not trusted, the request is rejected");
+			}
 			authErrorCode = GatewayExceptionCode.AUTHORIZATION;
 			authErrorMessage = "Not Authorized";
 		}
 
 		Exception exception = new GatewayException(authErrorCode, authErrorMessage);
-		exchange.setException(exception);			
+		exchange.setException(exception);
 	}
-
 }

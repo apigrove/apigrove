@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alu.e3.data.model.enumeration.NBAuthType;
-import com.alu.e3.data.model.enumeration.StatusType;
 
 public class AuthDetail implements Serializable {
 	/**
@@ -31,7 +30,6 @@ public class AuthDetail implements Serializable {
 	 */
 	private static final long serialVersionUID = 1263666739020248605L;
 
-	private StatusType status;
 	private NBAuthType type;
 	private String authKeyValue;
 	private String clientId;
@@ -40,12 +38,6 @@ public class AuthDetail implements Serializable {
 	private byte[] password;
 	private List<String> whiteListedIps;
 
-	public StatusType getStatus() {
-		return status;
-	}
-	public void setStatus(StatusType status) {
-		this.status = status;
-	}
 	public NBAuthType getType() {
 		return type;
 	}

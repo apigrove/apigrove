@@ -35,6 +35,7 @@ import org.springframework.stereotype.Component;
 import com.alu.e3.auth.camel.endpoint.AuthEndpoint;
 import com.alu.e3.auth.executor.IAuthExecutor;
 import com.alu.e3.auth.executor.IAuthExecutorFactory;
+import com.alu.e3.common.osgi.api.IDataManager;
 
 @Component
 @Scope("singleton")
@@ -42,12 +43,18 @@ public class AuthComponent extends DefaultComponent {
 
 	private Map<String, IAuthExecutorFactory> factories = new HashMap<String, IAuthExecutorFactory>();
 	
+	private IDataManager dataManager;
+
 	public AuthComponent() {}
 	
 	public AuthComponent(CamelContext camelContext) {
 		super(camelContext);
 	}
 	
+	public void setDataManager(IDataManager dataManager) {
+		this.dataManager = dataManager;
+	}
+
 	@Override
 	protected Endpoint createEndpoint(String uri, String remaining, Map<String, Object> parameters) throws Exception {
 		if(!parameters.containsKey("apiId"))
@@ -63,13 +70,13 @@ public class AuthComponent extends DefaultComponent {
 			if(parameters.containsKey(pairs.getKey())){
 				Boolean key = getAndRemoveParameter(parameters, pairs.getKey(), Boolean.class);
 				if(key != null && key.equals(Boolean.TRUE)){
-					IAuthExecutor executor = pairs.getValue().getExecutor(this, apiId, parameters);
+					IAuthExecutor executor = pairs.getValue().getExecutor(this, parameters);
 					executors.add(executor);
 				}
 			}
 	    }
 
-		return new AuthEndpoint(uri, this, executors);
+		return new AuthEndpoint(uri, this, executors, dataManager, apiId);
 	}
 	
 	public void registerExecutorFactory(String name, IAuthExecutorFactory executor) {

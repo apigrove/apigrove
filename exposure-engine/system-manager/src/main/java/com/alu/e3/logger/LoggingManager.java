@@ -116,7 +116,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 	@Override
 	public void dataManagerReady() 
 	{
-		logger.debug("DataManager ready, registering as Log-Level Listener");
+		if(logger.isDebugEnabled()) {
+			logger.debug("DataManager ready, registering as Log-Level Listener");
+		}
 		dataManagerReady = true;
 		this.dataManager.addLogLevelListener(this);
 	}
@@ -126,7 +128,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 	 */
 	public void destroy() 
 	{
-		logger.debug("Destroying, removing as listener");
+		if(logger.isDebugEnabled()) {
+			logger.debug("Destroying, removing as listener");
+		}
 
 		dataManagerReady = false;
 		if (dataManager != null) {
@@ -200,7 +204,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
     			globalLevel = (instanceInt == 0);
     		} catch (NumberFormatException ex){
     			// ignore malformed instanceId, and assume globalLevel
-    			logger.debug("Got exception when trying to convert: {}", instanceId);
+    			if(logger.isDebugEnabled()) {
+    				logger.debug("Got exception when trying to convert: {}", instanceId);
+    			}
     		}
     	}
     	return globalLevel;
@@ -216,7 +222,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 	@Description(value = "REST API to retrieve the set of logging categories and the enable/disable status for each.")
     public Response restGetLoggingCategories() 
     {    	
-    	logger.debug("rest-api call to getLoggingCategories");
+    	if(logger.isDebugEnabled()) {
+    		logger.debug("rest-api call to getLoggingCategories");
+    	}
     	CategoryResponse response = new CategoryResponse(CategoryResponse.SUCCESS);
     	List<CategoryWrapper> categoryList = CategoryListWrapper.fromDataModel(Arrays.asList(Category.values()));
     	response.setCategories(categoryList);
@@ -234,7 +242,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 	@Description(value = "REST API to put the set of logging categories and the enable/disable status for each.")
     public Response restPutLoggingCategories(CategoryListWrapper categoryListWrapper) 
     {    	
-    	logger.debug("rest-api call to putLoggingCategories");
+    	if(logger.isDebugEnabled()) {
+    		logger.debug("rest-api call to putLoggingCategories");
+    	}
     	// The only exception possible is an IllegalArgumentException when trying to convert an illegal Category (enum) name
     	try {
     		// Just calling toDataModel on the Category list will set values for this (manager) instance
@@ -244,7 +254,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
     		} else {
     			for (Category c : requestCategories) {
     				// Set the shared values explicitly
-    				logger.debug("Requested category: {}: {}", c.name(), c.fullname() + ", " + c.description() + ", " + c.enabled());
+    				if(logger.isDebugEnabled()) {
+    					logger.debug("Requested category: {}: {}", c.name(), c.fullname() + ", " + c.description() + ", " + c.enabled());
+    				}
     				this.dataManager.setLoggingCategory(c, c.enabled());
     			}
     		}
@@ -274,7 +286,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
     public Response restGetLogLevel() 
     {
     	LogLevel logLevel = null;
-    	logger.debug("rest-api call to getLogLevel");
+    	if(logger.isDebugEnabled()) {
+    		logger.debug("rest-api call to getLogLevel");
+    	}
     	try {
 			// The parameterless (no instanceId) version could get either the
 			// local or the global log level.
@@ -292,7 +306,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 		}
     	
     	String content = LoggingResponseBuilder.createResponseContent(LoggingResponseBuilder.logLevelToXml(logLevel));
-    	logger.debug("LogLevel response: {}", content);
+    	if(logger.isDebugEnabled()) {
+    		logger.debug("LogLevel response: {}", content);
+    	}
     	return Response.ok(content, MediaType.APPLICATION_XML_TYPE).build();
     }
 
@@ -317,7 +333,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
     public Response restGetInstanceLogLevel(@PathParam("instanceId") String instanceId) 
     {
     	LogLevel logLevel = null;
-    	logger.debug("rest-api call to getInstanceLogLevel with instanceId: {}", (instanceId == null ? "(null)" : instanceId));
+    	if(logger.isDebugEnabled()) {
+    		logger.debug("rest-api call to getInstanceLogLevel with instanceId: {}", (instanceId == null ? "(null)" : instanceId));
+    	}
     	try {
     		logLevel = isGlobalInstanceId(instanceId) ? getGlobalLogLevel() : getLocalLogLevel();		
     	} catch (Exception e) {
@@ -332,7 +350,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 		}
     	
       	String content = LoggingResponseBuilder.createResponseContent(LoggingResponseBuilder.logLevelToXml(logLevel));
-    	logger.debug("LogLevel response: {}", content);
+      	if(logger.isDebugEnabled()) {
+      		logger.debug("LogLevel response: {}", content);
+      	}
     	return Response.ok(content, MediaType.APPLICATION_XML_TYPE).build();
     }
         
@@ -351,7 +371,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 	@Description(value = "REST API to set the global java log level.")
     public Response restSetLogLevel(String level) 
     {
-    	logger.debug("rest-api call to setLogLevel with level = {}", level != null ? level : "(null)"); 
+    	if(logger.isDebugEnabled()) {
+    		logger.debug("rest-api call to setLogLevel with level = {}", level != null ? level : "(null)");
+    	}
     	LogLevel logLevel = null;
     	try {
     		if (LogLevel.isValidLogLevel(level)) {
@@ -361,7 +383,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
     			// For now, it sets the global level.
     			setGlobalLogLevel(logLevel);
     		} else {
-       			logger.debug("Call to REST setLogLevel with invalid log level string: {}", level);
+    			if(logger.isDebugEnabled()) {
+    				logger.debug("Call to REST setLogLevel with invalid log level string: {}", level);
+    			}
     			String result = "Invalid logLevel '" + level + "' - must be one of " + LogLevel.Log4JLevel.valuesList;
     			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(result).build();
     		}
@@ -378,7 +402,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 		}
     	
       	String content = LoggingResponseBuilder.createResponseContent(LoggingResponseBuilder.logLevelToXml(logLevel));
-      	logger.debug("LogLevel response: {}", content);
+      	if(logger.isDebugEnabled()) {
+      		logger.debug("LogLevel response: {}", content);
+      	}
     	return Response.ok(content, MediaType.APPLICATION_XML_TYPE).build();
     }
        
@@ -415,7 +441,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
     				setLocalLogLevel(logLevel);
     			}
     		} else {
-    			logger.debug("Call to REST setLogLevel with invalid log level string: {}", level);
+    			if(logger.isDebugEnabled()) {
+    				logger.debug("Call to REST setLogLevel with invalid log level string: {}", level);
+    			}
     			String result = "Invalid logLevel '" + level + "' - must be one of " + LogLevel.Log4JLevel.valuesList;
     			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(result).build();    			
     		}
@@ -432,7 +460,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 		}
     	
       	String content = LoggingResponseBuilder.createResponseContent(LoggingResponseBuilder.logLevelToXml(logLevel));
-      	logger.debug("LogLevel response: {}", content);
+      	if(logger.isDebugEnabled()) {
+      		logger.debug("LogLevel response: {}", content);
+      	}
     	return Response.ok(content, MediaType.APPLICATION_XML_TYPE).build();
     }
 
@@ -447,7 +477,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
     public Response restGetSMXLogLevel() 
     {
     	LogLevel logLevel = null;
-    	logger.debug("rest-api call to getLogLevel");
+    	if(logger.isDebugEnabled()) {
+    		logger.debug("rest-api call to getLogLevel");
+    	}
     	try {
 			// The parameterless (no instanceId) version could get either the
 			// local or the global log level.
@@ -465,7 +497,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 		}
     	
     	String content = LoggingResponseBuilder.createResponseContent(LoggingResponseBuilder.logLevelToXml(logLevel));
-    	logger.debug("SMXLogLevel response: {}", content);
+    	if(logger.isDebugEnabled()) {
+    		logger.debug("SMXLogLevel response: {}", content);
+    	}
     	return Response.ok(content, MediaType.APPLICATION_XML_TYPE).build();
     }
 
@@ -490,7 +524,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
     public Response restGetInstanceSMXLogLevel(@PathParam("instanceId") String instanceId) 
     {
     	LogLevel logLevel = null;
-    	logger.debug("rest-api call to getInstanceSMXLogLevel with instanceId: {}", (instanceId == null ? "(null)" : instanceId));
+    	if(logger.isDebugEnabled()) {
+    		logger.debug("rest-api call to getInstanceSMXLogLevel with instanceId: {}", (instanceId == null ? "(null)" : instanceId));
+    	}
     	try {
     		logLevel = isGlobalInstanceId(instanceId) ? getGlobalSMXLogLevel() : getLocalSMXLogLevel();		
     	} catch (Exception e) {
@@ -505,7 +541,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 		}
     	
       	String content = LoggingResponseBuilder.createResponseContent(LoggingResponseBuilder.logLevelToXml(logLevel));
-    	logger.debug("SMXLogLevel response: {}", content);
+      	if(logger.isDebugEnabled()) {
+      		logger.debug("SMXLogLevel response: {}", content);
+      	}
     	return Response.ok(content, MediaType.APPLICATION_XML_TYPE).build();
     }
         
@@ -524,7 +562,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 	@Description(value = "REST API to set the global servicemix log level.")
     public Response restSetSMXLogLevel(String level) 
     {
-    	logger.debug("rest-api call to setSMXLogLevel with level = {}", level != null ? level : "(null)"); 
+    	if(logger.isDebugEnabled()) {
+    		logger.debug("rest-api call to setSMXLogLevel with level = {}", level != null ? level : "(null)");
+    	}
     	LogLevel logLevel = null;
     	try {
     		if (LogLevel.isValidLogLevel(level)) {
@@ -534,7 +574,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
     			// For now, it sets the global level.
     			setGlobalSMXLogLevel(logLevel);
     		} else {
-       			logger.debug("Call to REST setSMXLogLevel with invalid log level string: {}", level);
+    			if(logger.isDebugEnabled()) {
+    				logger.debug("Call to REST setSMXLogLevel with invalid log level string: {}", level);
+    			}
     			String result = "Invalid logLevel '" + level + "' - must be one of " + LogLevel.Log4JLevel.valuesList;
     			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(result).build();
     		}
@@ -551,7 +593,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 		}
     	
       	String content = LoggingResponseBuilder.createResponseContent(LoggingResponseBuilder.logLevelToXml(logLevel));
-      	logger.debug("SMXLogLevel response: {}", content);
+      	if(logger.isDebugEnabled()) {
+      		logger.debug("SMXLogLevel response: {}", content);
+      	}
     	return Response.ok(content, MediaType.APPLICATION_XML_TYPE).build();
     }
        
@@ -588,7 +632,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
     				setLocalSMXLogLevel(logLevel);
     			}
     		} else {
-    			logger.debug("Call to REST setSMXLogLevel with invalid log level string: {}", level);
+    			if(logger.isDebugEnabled()) {
+    				logger.debug("Call to REST setSMXLogLevel with invalid log level string: {}", level);
+    			}
     			String result = "Invalid logLevel '" + level + "' - must be one of " + LogLevel.Log4JLevel.valuesList;
     			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(result).build();    			
     		}
@@ -605,7 +651,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 		}
     	
       	String content = LoggingResponseBuilder.createResponseContent(LoggingResponseBuilder.logLevelToXml(logLevel));
-      	logger.debug("SMXLogLevel response: {}", content);
+      	if(logger.isDebugEnabled()) {
+      		logger.debug("SMXLogLevel response: {}", content);
+      	}
     	return Response.ok(content, MediaType.APPLICATION_XML_TYPE).build();
     }
 
@@ -619,7 +667,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 	@Description(value = "REST API to retrieve the global syslog level.")
     public Response restGetSyslogLevel() 
     {
-    	logger.debug("rest-api call to getSyslogLevel");
+    	if(logger.isDebugEnabled()) {
+    		logger.debug("rest-api call to getSyslogLevel");
+    	}
     	String syslogLevel = null;
     	try {
     		syslogLevel = getGlobalSyslogLevel();
@@ -635,7 +685,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 		}
     	
       	String content = LoggingResponseBuilder.createResponseContent(LoggingResponseBuilder.syslogLevelToXml(syslogLevel));
-      	logger.debug("LogLevel response: {}", content);
+      	if(logger.isDebugEnabled()) {
+      		logger.debug("LogLevel response: {}", content);
+      	}
     	return Response.ok(content, MediaType.APPLICATION_XML_TYPE).build();
     }
 
@@ -660,7 +712,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
     public Response restGetInstanceSyslogLevel(@PathParam("instanceId") String instanceId) 
     {
     	String syslogLevel = null;
-    	logger.debug("rest-api call to getInstanceSyslogLevel with instanceId: {}", (instanceId == null ? "(null)" : instanceId));
+    	if(logger.isDebugEnabled()) {
+    		logger.debug("rest-api call to getInstanceSyslogLevel with instanceId: {}", (instanceId == null ? "(null)" : instanceId));
+    	}
     	try {
     		syslogLevel = isGlobalInstanceId(instanceId) ? getGlobalSyslogLevel() : getLocalSyslogLevel();		
     	} catch (Exception e) {
@@ -675,7 +729,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 		}
     	
       	String content = LoggingResponseBuilder.createResponseContent(LoggingResponseBuilder.syslogLevelToXml(syslogLevel));
-    	logger.debug("SyslogLevel response: {}", content);
+      	if(logger.isDebugEnabled()) {
+      		logger.debug("SyslogLevel response: {}", content);
+      	}
     	return Response.ok(content, MediaType.APPLICATION_XML_TYPE).build();
     }
 
@@ -700,7 +756,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
    			validatedLevel = syslogLevel;
    		} 
    		if (validatedLevel == null) {
-   			logger.debug("Call to REST setSyslogLevel with invalid syslog level string: {}", syslogLevel);
+   			if(logger.isDebugEnabled()) {
+   				logger.debug("Call to REST setSyslogLevel with invalid syslog level string: {}", syslogLevel);
+   			}
 			String result = "Invalid syslog level '" + syslogLevel + "' - must be one of " + LogLevel.SyslogLevel.valuesList;
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(result).build();
 		}
@@ -718,7 +776,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 		}
     	
       	String content = LoggingResponseBuilder.createResponseContent(LoggingResponseBuilder.syslogLevelToXml(validatedLevel));
-      	logger.debug("SyslogLevel response: {}", content);
+      	if(logger.isDebugEnabled()) {
+      		logger.debug("SyslogLevel response: {}", content);
+      	}
     	return Response.ok(content, MediaType.APPLICATION_XML_TYPE).build();
     }
     
@@ -750,7 +810,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
    			validatedLevel = syslogLevel;
    		} 
    		if (validatedLevel == null) {
-   			logger.debug("Call to REST setSyslogLevel with invalid syslog level string: {}", syslogLevel);
+   			if(logger.isDebugEnabled()) {
+   				logger.debug("Call to REST setSyslogLevel with invalid syslog level string: {}", syslogLevel);
+   			}
 			String result = "Invalid syslog level '" + syslogLevel + "' - must be one of " + LogLevel.SyslogLevel.valuesList;
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(result).build();
 		}
@@ -772,7 +834,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
 		}
     	
       	String content = LoggingResponseBuilder.createResponseContent(LoggingResponseBuilder.syslogLevelToXml(validatedLevel));
-      	logger.debug("SyslogLevel response: {}", content);
+      	if(logger.isDebugEnabled()) {
+      		logger.debug("SyslogLevel response: {}", content);
+      	}
     	return Response.ok(content, MediaType.APPLICATION_XML_TYPE).build();
     }
 
@@ -788,7 +852,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
     @Description(value = "REST API to trigger log collection across all instances in the topology.")
     public Response forceLogCollection()
     {
-    	logger.debug("rest-api call to forceLogCollection");
+    	if(logger.isDebugEnabled()) {
+    		logger.debug("rest-api call to forceLogCollection");
+    	}
     	try {
     		startLogCollection();
     	} catch (Exception e) {
@@ -822,7 +888,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
    		try {
 			linesRequested = Integer.parseInt(numLines);
 		} catch (NumberFormatException ex){
-			logger.debug("Got exception when trying to convert: {}", numLines);
+			if(logger.isDebugEnabled()) {
+				logger.debug("Got exception when trying to convert: {}", numLines);
+			}
 			String result = "Invalid {numLines} parameter: " + numLines;
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(result).build();    			
 		}
@@ -855,7 +923,9 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
    		try {
 			linesRequested = Integer.parseInt(numLines);
 		} catch (NumberFormatException ex){
-			logger.debug("Got exception when trying to convert: {}", numLines);
+			if(logger.isDebugEnabled()) {
+				logger.debug("Got exception when trying to convert: {}", numLines);
+			}
 			String result = "Invalid {numLines} parameter: " + numLines;
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(result).build();    			
 		}

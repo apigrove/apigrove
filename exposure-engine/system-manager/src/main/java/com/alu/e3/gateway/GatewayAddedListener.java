@@ -20,6 +20,9 @@ package com.alu.e3.gateway;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alu.e3.common.E3Constant;
 import com.alu.e3.common.osgi.api.IDataManager;
 import com.alu.e3.common.osgi.api.ITopologyClient;
@@ -29,6 +32,8 @@ import com.alu.e3.data.topology.IInstanceListener;
 import com.alu.e3.data.topology.InstanceEvent;
 
 public class GatewayAddedListener implements IInstanceListener, IDataManagerListener{
+	
+	private static final Logger logger = LoggerFactory.getLogger(GatewayAddedListener.class);
 	
 	protected ITopologyClient topologyClient;
 	protected IDataManager dataManager;
@@ -67,11 +72,11 @@ public class GatewayAddedListener implements IInstanceListener, IDataManagerList
 	@Override
 	public void instanceAdded(InstanceEvent event) {
 		if (dataManager == null) {
-			System.out.println("WARN: GatewayAddedListener was not able to deal with an InstanceEvent because the attribute dataManager of  GatewayAddedListener is set to null");
+			logger.warn("No dataManager yet set to handle instanceAdded");
 			return;
 		}
 		if (event == null) {
-			System.out.println("ERROR: GatewayAddedListener was not able to deal with an InstanceEvent because the event null");
+			logger.warn("Null event on instanceAdded");
 			return;
 		}
 
@@ -81,7 +86,7 @@ public class GatewayAddedListener implements IInstanceListener, IDataManagerList
 			Instance gateway = event.getInstance();
 			
 			if (gateway == null) {
-				System.out.println("ERROR: GatewayAddedListener was not able to launch the provisioning of a gateway because the instance attribute of the event is null");
+				logger.warn("No instance set on event");
 				return;
 			}
 			

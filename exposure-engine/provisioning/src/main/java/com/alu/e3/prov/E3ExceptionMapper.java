@@ -139,7 +139,9 @@ public class E3ExceptionMapper implements ExceptionMapper<Exception> {
 		}
 
 		cause.setStackTrace(e3Stack.toArray(new StackTraceElement[e3Stack.size()]));
-		logger.error("E3 Runtime exception (HTTP status:" + status + ")", cause);
+		if(logger.isErrorEnabled()) {
+			logger.error("E3 Runtime exception (HTTP status:" + status + ")", cause);
+		}
 
 		resp.getError().setErrorCode(String.valueOf(applicationErrorCode));
 		ResponseBuilder builder = Response.status(status).type(MediaType.APPLICATION_XML).header("X-Application-Error-Code", applicationErrorCode).entity(resp);

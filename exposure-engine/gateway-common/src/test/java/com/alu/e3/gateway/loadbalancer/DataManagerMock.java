@@ -27,11 +27,12 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import com.alu.e3.common.E3Constant;
 import com.alu.e3.common.caching.ICacheManager;
 import com.alu.e3.common.caching.IEntryListener;
 import com.alu.e3.common.logging.Category;
 import com.alu.e3.common.osgi.api.IDataManager;
-import com.alu.e3.data.CacheAck;
+import com.alu.e3.data.DataEntryEvent;
 import com.alu.e3.data.IAuthMatcher;
 import com.alu.e3.data.IDataManagerListener;
 import com.alu.e3.data.IDataManagerUsedBucketIdsListener;
@@ -49,6 +50,7 @@ import com.alu.e3.data.model.SSLCRL;
 import com.alu.e3.data.model.sub.APIContext;
 import com.alu.e3.data.model.sub.ApiIds;
 import com.alu.e3.data.model.sub.Context;
+import com.alu.e3.data.model.sub.ForwardProxy;
 import com.alu.e3.data.model.sub.QuotaRLBucket;
 
 
@@ -70,8 +72,7 @@ public class DataManagerMock implements IDataManager {
 	
 	@Override
 	public void removeListener(IDataManagerListener listener) {
-		throw new RuntimeException("Not implemented");
-		
+		// Nothing to do			
 	}
 
 	
@@ -395,8 +396,7 @@ public class DataManagerMock implements IDataManager {
 	
 	@Override
 	public String getSettingString(String key) {
-		throw new RuntimeException("Not implemented");
-		
+		return null;		
 	}
 
 	
@@ -580,15 +580,6 @@ public class DataManagerMock implements IDataManager {
 	@Override
 	public void removeApiDeploymentListener(
 			IEntryListener<String, ApiJar> listener) {
-		throw new RuntimeException("Not implemented");
-		
-	}
-
-	
-	
-	@Override
-	public void postAcknowledgment(String localQueueName, CacheAck ack)
-			throws InterruptedException {
 		throw new RuntimeException("Not implemented");
 		
 	}
@@ -855,6 +846,61 @@ public class DataManagerMock implements IDataManager {
 	public boolean getLoggingCategory(Category category) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean isIpAllowed(Api api, String ip) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	protected IEntryListener<String, String> listenerX;
+	
+	@Override
+	public void removeGlobalProxyListener3(IEntryListener<String, String> listener) {
+		this.listenerX = null;
+	}
+
+	@Override
+	public void addGlobalProxyListener3(IEntryListener<String, String> listener) {
+		this.listenerX = listener;
+	}
+
+	protected ForwardProxy proxy;
+	
+	public void addGlobalProxy (ForwardProxy proxy) {
+		this.proxy = proxy;
+		if (listenerX != null) {
+			DataEntryEvent<String, String> event = new DataEntryEvent<String, String>(E3Constant.GLOBAL_PROXY_SETTINGS, proxy.serialize());
+			listenerX.entryAdded(event);
+		}
+	}
+	public void updateGlobalProxy (ForwardProxy proxy) {
+		this.proxy = proxy;
+		if (listenerX != null) {
+			DataEntryEvent<String, String> event = new DataEntryEvent<String, String>(E3Constant.GLOBAL_PROXY_SETTINGS, proxy.serialize());
+			listenerX.entryUpdated(event);
+		}
+	}
+	public void removeGlobalProxy () {
+		this.proxy = null;
+		if (listenerX != null) {
+			DataEntryEvent<String, String> event = new DataEntryEvent<String, String>(E3Constant.GLOBAL_PROXY_SETTINGS, null);
+			listenerX.entryAdded(event);
+		}
+	}
+
+	
+	public void addProxy(String proxy) {
+		listenerX.entryAdded(new DataEntryEvent<String, String> (E3Constant.GLOBAL_PROXY_SETTINGS, proxy));
+	}
+	
+	public void updateProxy(String proxy) {
+		listenerX.entryUpdated(new DataEntryEvent<String, String> (E3Constant.GLOBAL_PROXY_SETTINGS, proxy));
+	}
+	
+	public void removeProxy(String proxy) {
+		listenerX.entryRemoved(new DataEntryEvent<String, String> (E3Constant.GLOBAL_PROXY_SETTINGS, proxy));
 	}
 
 }

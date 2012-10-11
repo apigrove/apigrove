@@ -342,6 +342,8 @@
 
 			<xs:element name="status" type="StatusEnum" />
 
+			<xs:element name="ipWhiteList" type="IPWhiteList" minOccurs="0" maxOccurs="1" />
+
 			<xs:element name="contexts" type="APIContextsType" />
 
 			<xs:element name="tdrOnUse" type="TypeAttribute"
@@ -466,7 +468,7 @@
 			<xs:element name="grammar" type="xs:base64Binary"
 				minOccurs="1" />
 
-			<xs:element name="isMain" type="xs:boolean" minOccurs="1">
+			<xs:element name="isMain" type="xs:boolean" minOccurs="0" default="false">
 				<xs:annotation>
 					<xs:documentation>Only one resource must be designated as main
 					</xs:documentation>
@@ -502,7 +504,7 @@
 
 			<xs:choice minOccurs="1" maxOccurs="1">
 
-				<xs:element name="ipWhiteListAuth" type="IPWhiteListAuth" />
+				<xs:element name="ipWhiteListAuth" type="IPWhiteList" />
 				<xs:element name="authKeyAuth" type="AuthKeyAuth" />
 				<xs:element name="basicAuth" type="BasicAuth" />
 				<xs:element name="wsseAuth" type="WsseAuth" />
@@ -605,7 +607,7 @@
 		<xs:attribute name="id" type="xs:string" use="required" />
 	</xs:complexType>
 
-	<xs:complexType name="IPWhiteListAuth">
+	<xs:complexType name="IPWhiteList">
 		<xs:sequence>
 			<xs:element name="ip" type="IP" minOccurs="0" maxOccurs="unbounded" />
 		</xs:sequence>
@@ -621,7 +623,7 @@
 		<xs:all>
 			<xs:element name="username" type="xs:string" />
 			<xs:element name="password" type="xs:base64Binary" />
-			<xs:element name="passwordType" type="WsseAuthPassTypeEnum" />
+			<xs:element name="passwordType" type="WsseAuthPassTypeEnum" minOccurs="0"/>
 		</xs:all>
 	</xs:complexType>
 

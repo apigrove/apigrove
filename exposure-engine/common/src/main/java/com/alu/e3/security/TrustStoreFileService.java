@@ -31,7 +31,7 @@ import com.alu.e3.common.osgi.api.ITrustStoreService;
 
 public class TrustStoreFileService extends BaseStoreFileService implements ITrustStoreService {
 	
-	private static CategoryLogger LOG = CategoryLoggerFactory.getLogger(TrustStoreFileService.class, Category.AUTH);
+	private static CategoryLogger logger = CategoryLoggerFactory.getLogger(TrustStoreFileService.class, Category.AUTH);
 
 	private List<IStoreChangedListener> listeners;
 	
@@ -58,7 +58,9 @@ public class TrustStoreFileService extends BaseStoreFileService implements ITrus
 			keystore = loadStore();
 		}
 		catch (Exception e) {
-			LOG.error("Unable to load the truststore", e);
+			if (logger.isErrorEnabled()) {
+				logger.error("Unable to load the truststore", e);
+			}
 		}
 
 		return keystore;
@@ -71,7 +73,9 @@ public class TrustStoreFileService extends BaseStoreFileService implements ITrus
 			saveStore(ks);
 		}
 		catch (Exception e) {
-			LOG.error("Unable to save the truststore", e);
+			if (logger.isErrorEnabled()) {
+				logger.error("Unable to save the truststore", e);
+			}
 		}
 		
 		fireStoreChangedEvent();

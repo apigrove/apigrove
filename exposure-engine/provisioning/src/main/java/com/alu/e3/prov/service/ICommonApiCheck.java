@@ -26,4 +26,10 @@ public interface ICommonApiCheck {
 
 	public abstract boolean assertCompositionApiConsistency(Api provRequest);
 
+	/**
+	 * check that "<isMain>" exist and one is set to <code>true</code> when validation is set to SOAP
+	 * not in the case of XSD
+	 */
+	public abstract void assertHasIsMainForWSDLValidation(Api provRequest);
+
 }

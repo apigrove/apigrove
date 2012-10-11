@@ -267,7 +267,9 @@ public class PolicyManager extends BasicManager{
 						throw new IllegalArgumentException("All properties must have a name");
 				}
 
-				LOG.debug("Creating Policy:", policy.getId());
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Creating Policy:", policy.getId());
+				}
 
 				com.alu.e3.data.model.Policy policyDataModel = BeanConverterUtil.toDataModel(policy);
 				dataManager.addPolicy(policyDataModel);
@@ -300,7 +302,9 @@ public class PolicyManager extends BasicManager{
 						throw new IllegalArgumentException("All properties must have a name");
 				}
 
-				LOG.debug("Updating Policy:", policyId);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Updating Policy:", policyId);
+				}
 
 				if(policy.getId() == null || policy.getId().equals(""))
 					policy.setId(policyId);
@@ -326,7 +330,9 @@ public class PolicyManager extends BasicManager{
 			protected Object doAction(Object... params) {
 				String policyId = (String) params[0];
 
-				LOG.debug("Deleting Policy:", policyId);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Deleting Policy:", policyId);
+				}
 
 				dataManager.removePolicy(policyId);
 
@@ -346,7 +352,9 @@ public class PolicyManager extends BasicManager{
 			protected Object doAction(Object... params) {
 				String policyId = (String) params[0];
 
-				LOG.debug("Getting Policy:", policyId);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Getting Policy:", policyId);
+				}
 
 				com.alu.e3.data.model.Policy policyDataModel = dataManager.getPolicyById(policyId);
 				if(policyDataModel == null)
@@ -372,7 +380,9 @@ public class PolicyManager extends BasicManager{
 			@Override
 			protected Object doAction(Object... params) {
 
-				LOG.debug("Get all policies");
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Get all policies");
+				}
 
 				PolicyResponse response = new PolicyResponse(PolicyResponse.SUCCESS);
 
@@ -401,7 +411,9 @@ public class PolicyManager extends BasicManager{
 					authIds.setId(UUID.randomUUID().toString());
 				}
 
-				LOG.debug("Create bucket:", authIds.getId());
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Create bucket:", authIds.getId());
+				}
 
 				com.alu.e3.data.model.sub.QuotaRLBucket authIdsDataModel = BeanConverterUtil.toDataModel(authIds);
 				dataManager.createBucket(policyId, authIdsDataModel);
@@ -426,7 +438,9 @@ public class PolicyManager extends BasicManager{
 				String policyId = (String) params[0];
 				String bucketId = (String) params[1];
 
-				LOG.debug("Remove bucket:" + bucketId + " on policy:", policyId);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Remove bucket:" + bucketId + " on policy:", policyId);
+				}
 
 				dataManager.removeBucket(policyId, bucketId);
 
@@ -448,7 +462,9 @@ public class PolicyManager extends BasicManager{
 				String bucketId = (String) params[1];
 				AuthIdsNoIdType authIds = (AuthIdsNoIdType) params[2];
 
-				LOG.debug("Add auths to policy:" + policyId + " on bucket:", bucketId);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Add auths to policy:" + policyId + " on bucket:", bucketId);
+				}
 
 				com.alu.e3.data.model.sub.QuotaRLBucket authIdsDataModel = BeanConverterUtil.toDataModel(authIds);
 				dataManager.addAuthsToBucket(policyId, bucketId, authIdsDataModel);
@@ -471,7 +487,9 @@ public class PolicyManager extends BasicManager{
 				String bucketId = (String) params[1];
 				String authId = (String) params[2];
 
-				LOG.debug("Remove auth:" + authId + " from policy:" + policyId + "/bucket:" + bucketId);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Remove auth:" + authId + " from policy:" + policyId + "/bucket:" + bucketId);
+				}
 				dataManager.removeAuthFromBucket(policyId, bucketId, authId);
 
 				return new PolicyResponse(PolicyResponse.SUCCESS);
@@ -492,7 +510,9 @@ public class PolicyManager extends BasicManager{
 				String bucketId = (String) params[1];
 				AuthIdsNoIdType authIds = (AuthIdsNoIdType) params[2];
 
-				LOG.debug("Remove auths fromo policy:" + policyId + " on bucket:", bucketId);
+				if(LOG.isDebugEnabled()) {
+					LOG.debug("Remove auths fromo policy:" + policyId + " on bucket:", bucketId);
+				}
 
 				for (String authId : authIds.getAuthIds())
 				{

@@ -39,7 +39,9 @@ public class TDRStaticProcessor implements Processor {
 			// Processes all of the static rules
 			TdrProcessorHelper.processTdrRules(exchange, null, true);
 		} catch(Exception e){
-			logger.error(e.getMessage(), e);
+			if (logger.isErrorEnabled()) {
+				logger.error(e.getMessage(), e);
+			}
 		}
 
 	}

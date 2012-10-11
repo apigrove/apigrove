@@ -18,6 +18,8 @@
  */
 package com.alu.e3.gateway.security;
 
+import java.security.cert.CertStoreException;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
@@ -28,9 +30,8 @@ import org.springframework.osgi.context.support.OsgiBundleXmlApplicationContext;
 
 import com.alu.e3.common.osgi.api.IKeyStoreService;
 import com.alu.e3.common.osgi.api.IStoreChangedListener;
-import com.alu.e3.common.osgi.api.ITrustStoreService;
 
-public class SslJettyComponentReloader implements IStoreChangedListener {
+public class SslJettyComponentReloader implements IStoreChangedListener, PKIXConfigChangeListener {
 
 	private static final String SSLJETTY_REGISTRATION_BEAN_ID = "ssljettyRegistration";
 
@@ -43,7 +44,8 @@ public class SslJettyComponentReloader implements IStoreChangedListener {
 	private String contextXmlClasspath;
 	
 	private IKeyStoreService keyStoreService;
-	private ITrustStoreService trustStoreService;
+	private PKIXConfigProvider trustConfigProvider;
+	private int caCount;
 	
 	private ServiceRegistration sslJettyRegistration;
 	
@@ -82,12 +84,13 @@ public class SslJettyComponentReloader implements IStoreChangedListener {
 	}
 	
 	/**
-	 * Needs the {@link ITrustStoreService} to register on changed events.
-	 * @param trustStoreService
+	 * Needs the {@link PKIXConfigProvider} to register on changed events.
+	 * @param trustConfigProvider
 	 */
-	public void setTrustStoreService(ITrustStoreService trustStoreService) {
-		this.trustStoreService = trustStoreService;
+	public void setTrustConfigProvider(PKIXConfigProvider trustConfigProvider) {
+		this.trustConfigProvider = trustConfigProvider;
 	}
+
 	
 	/**
 	 * Inits listeners and child application context.
@@ -97,7 +100,13 @@ public class SslJettyComponentReloader implements IStoreChangedListener {
 
 		LOG.debug("Registering store changed listeners ...");
 		keyStoreService.addStoreChangedListener(this);
-		trustStoreService.addStoreChangedListener(this);
+		trustConfigProvider.addListener(this);
+		try {
+			caCount = trustConfigProvider.getConfig().getTrustedCerts().size();
+		} catch (CertStoreException e) {
+			LOG.error("SslJettyComponentReloader init error", e);
+			caCount = 0;
+		}
 		
 		LOG.debug("Creating child context ...");
 		String[] xmlConfigClassPathes = new String[]{contextXmlClasspath};
@@ -123,7 +132,7 @@ public class SslJettyComponentReloader implements IStoreChangedListener {
 		
 		LOG.debug("UNRegistering store changed listeners ...");
 		keyStoreService.removeStoreChangedListener(this);
-		trustStoreService.removeStoreChangedListener(this);
+		trustConfigProvider.removeListener(this);
 		
 		LOG.debug("SslJettyComponentReloader destroyed.");
 	}
@@ -137,7 +146,30 @@ public class SslJettyComponentReloader implements IStoreChangedListener {
 		reload();
 		LOG.debug("SslJettyComponent reloaded.");
 	}
-	
+
+	@Override
+	public void configChanged(PKIXConfig newConfig) {
+		boolean needReload;
+		synchronized (trustConfigProvider) {
+			try {
+				int newCaCount = newConfig.getTrustedCerts().size();
+				LOG.debug("old CA count = " + caCount + ", new CA count = " + newCaCount);
+				// Need to change the wantClientAuth flag in SSLContext
+				needReload = (newCaCount != caCount) && ((newCaCount == 0) || (caCount == 0));
+				caCount = newCaCount;
+			} catch (CertStoreException e) {
+				LOG.error("Could not retrieve CA certificates", e);
+				needReload = true;
+			}
+		}
+		
+		if (needReload) {
+			LOG.debug("SslJettyComponent reloading ...");
+			reload();
+			LOG.debug("SslJettyComponent reloaded.");
+		}
+	}
+
 	private void getOrUpdateServiceRegistration() {
 		LOG.debug("Getting service registration ...");
 		sslJettyRegistration = childApplicationContext.getBean(SSLJETTY_REGISTRATION_BEAN_ID, ServiceRegistration.class);

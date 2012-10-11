@@ -45,7 +45,9 @@ public class RateLimitProcessor implements Processor {
 	}
 
 	public void setGatewayRateMger(IGatewayRateManager gtwRateMger) {
-		log.debug("GatewayRateManager set in RateLimit processor");
+		if(log.isDebugEnabled()) {
+			log.debug("GatewayRateManager set in RateLimit processor");
+		}
 		this.rateManager = gtwRateMger;
 	}
 

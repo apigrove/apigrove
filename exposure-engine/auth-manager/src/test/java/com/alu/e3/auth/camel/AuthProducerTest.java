@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.alu.e3.auth.AuthHttpHeaders;
+import com.alu.e3.auth.access.data.MockDataManager;
 import com.alu.e3.auth.camel.component.AuthComponent;
 import com.alu.e3.auth.camel.endpoint.AuthEndpoint;
 import com.alu.e3.auth.camel.producer.AuthProducer;
@@ -53,7 +54,10 @@ public class AuthProducerTest {
 	
 	@Before
 	public void before(){
+		MockDataManager dataManager = new MockDataManager();
+		
 		component = new AuthComponent(new DefaultCamelContext());
+		component.setDataManager(dataManager);
 		component.registerExecutorFactory("authKey", new MockAppKeyExecutorFactory());
 		component.registerExecutorFactory("basic", new MockHttpBasicExecutorFactory());
 		component.registerExecutorFactory("ipList", new MockIpWhitelistExecutorFactory());

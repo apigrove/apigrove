@@ -33,7 +33,7 @@ import com.alu.e3.common.logging.CategoryLoggerFactory;
 
 public class BaseStoreFileService {
 
-	private static CategoryLogger LOG = CategoryLoggerFactory.getLogger(BaseStoreFileService.class, Category.AUTH);
+	private static CategoryLogger logger = CategoryLoggerFactory.getLogger(BaseStoreFileService.class, Category.AUTH);
 
 	private String storePath;
 	private String storePassword;
@@ -64,7 +64,9 @@ public class BaseStoreFileService {
 			ks.store(out, storePassword.toCharArray());
 		}
 		catch (Exception e) {
-			LOG.error("Unable to create the store", e);
+			if (logger.isErrorEnabled()) {
+				logger.error("Unable to create the store", e);
+			}
 		} 
 		finally {
 			if (out != null) {
@@ -84,7 +86,9 @@ public class BaseStoreFileService {
 				f.delete();
 			}
 		} catch (Exception e) {
-			LOG.warn("Unable to delete:{}", storePath, e);
+			if (logger.isWarnEnabled()) {
+				logger.warn("Unable to delete:{}", storePath, e);
+			}
 		}
 	}
 

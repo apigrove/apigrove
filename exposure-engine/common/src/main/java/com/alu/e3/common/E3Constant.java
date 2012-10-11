@@ -55,6 +55,8 @@ public class E3Constant {
 	public final static String SUBSCRIBER_ID_HEADER_NAME = "X-SubscriberID";
 	public final static String NOTIFY_URL_HEADER_NAME = "notifyUrl";
 	public final static String DEFAULT_APP_AUTHKEY_HEADER_NAME = "X-App-AuthKey";
+	public final static String HEADER_X_FORWARDED_FOR = "X-FORWARDED-FOR";
+	
 	
 	// TDR Collection Locations
 	public static final String TDR_BASE_PATH = "data/TDR";

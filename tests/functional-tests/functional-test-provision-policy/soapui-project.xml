@@ -1031,7 +1031,7 @@
 					<con:properties>
 						<con:property>
 							<con:name>policyNoId</con:name>
-							<con:value>72968eba-9643-45dd-9ab6-f48e092471a0</con:value>
+							<con:value>d193fcaa-a9e7-4bf0-b12a-c221339eb411</con:value>
 						</con:property>
 					</con:properties>
 				</con:config>
@@ -1165,7 +1165,7 @@
 						<con:jmsPropertyConfig/>
 						<con:parameters>
   <con:entry key="ID" value="p11"/>
-  <con:entry key="POLICY_ID" value="72968eba-9643-45dd-9ab6-f48e092471a0"/>
+  <con:entry key="POLICY_ID" value="d193fcaa-a9e7-4bf0-b12a-c221339eb411"/>
 </con:parameters>
 					</con:restRequest>
 				</con:config>
@@ -3494,7 +3494,7 @@
 			</con:testStep><con:testStep type="restrequest" name="Update auth">
 				<con:settings/>
 				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/auths/{AUTH_ID}" methodName="PUT" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-					<con:restRequest name="Copy of Update auth0" mediaType="application/xml" postQueryString="false">
+					<con:restRequest name="Update auth" mediaType="application/xml" postQueryString="false">
 						<con:settings>
 							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
 						</con:settings>
@@ -3568,5 +3568,293 @@
 					</con:restRequest>
 				</con:config>
 			</con:testStep><con:testStep type="restrequest" name="Delete auth"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/auths/{AUTH_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete auth" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="AUTH_ID" value="policy-provision-AuthBadContext" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Delete policy"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/policies/{POLICY_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete policy" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="POLICY_ID" value="policy-provision-PolicyBadContext" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/>
+		</con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="create policy with default contextID" searchProperties="true" id="c369e7f4-e32d-442d-a28c-040478037eb9">
+			<con:description>TestCase generated for REST Resource [/apis] located
+				at [/apis]</con:description>
+			<con:settings/>
+			<con:testStep type="restrequest" name="Delete API (if exists)">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis/{API_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Delete API (if exists)" mediaType="application/xml" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request/>
+						
+						
+						
+						<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters><entry key="API_ID" value="policy-provision-ApiDefaultContext" xmlns="http://eviware.com/soapui/config"/></con:parameters>
+					</con:restRequest>
+				</con:config>
+			</con:testStep>
+			<con:testStep type="restrequest" name="Delete auth (if exists)"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/auths/{AUTH_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete auth (if exists)" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="AUTH_ID" value="policy-provision-AuthDefaultContext" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep>
+			<con:testStep type="restrequest" name="Delete policy (if exists)"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/policies/{POLICY_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete policy (if exists)" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="POLICY_ID" value="policy-provision-PolicyDefaultContext" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep>
+			<con:testStep type="restrequest" name="Request - Create API">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Request - Create API" mediaType="application/xml" postQueryString="false" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request><![CDATA[<api>
+   <id>policy-provision-ApiDefaultContext</id>
+   <displayName>policy-provision-ApiDefaultContext</displayName>
+   <version>1</version>
+   <type>PassThrough</type>
+   <endpoint>end6</endpoint>
+   <https>false</https>
+   <authentication>
+      <supportedTypes>
+         <type>authKey</type>
+      </supportedTypes>
+      <authKey>
+         <keyName>key</keyName>
+      </authKey>
+   </authentication>
+   <tdrEnabled>
+      <enabled>false</enabled>
+   </tdrEnabled>
+   <status>active</status>
+   <contexts>
+      <context id="Production" default="true">
+         <status>active</status>
+         <loadBalancing type="roundRobin"/>
+         <targetHosts>
+            <targetHost>
+               <url>http://${#Project#Target1}:8080/proxySize</url>
+               <authentication>
+                  <type/>
+                  <data>
+                     <key name="key">value</key>
+                  </data>
+               </authentication>
+               <connectionParameters/>
+            </targetHost>
+         </targetHosts>
+  <maxRateLimitTPSThreshold>10000</maxRateLimitTPSThreshold>
+         <maxRateLimitTPSWarning>-1</maxRateLimitTPSWarning>
+         <maxRateLimitTPMThreshold>600000</maxRateLimitTPMThreshold>
+         <maxRateLimitTPMWarning>-1</maxRateLimitTPMWarning>
+      </context>
+   </contexts>
+   <tdrOnUse type=""/>
+   <tdrOnLimitReached type=""/>
+   <tdr/>
+   <headerTransEnabled>false</headerTransEnabled>
+   <headerTransformations/>
+   <allowedHttpMethods/>
+</api>]]></con:request>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration>
+								<codes>200</codes>
+							</con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath Match">
+							<con:configuration>
+								<path>/response/status</path>
+								<content>SUCCESS</content>
+								<allowWildcards>false</allowWildcards>
+								<ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+								<ignoreComments>false</ignoreComments>
+							</con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath apiID">
+							<con:configuration><path>/response/id</path><content>policy-provision-ApiDefaultContext</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+						</con:assertion>
+						<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep>
+			<con:testStep type="restrequest" name="Create auth"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/auths" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create auth" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request><![CDATA[<auth>
+   <id>policy-provision-AuthDefaultContext</id>
+   <status>active</status>
+   <type>authKey</type>
+   <policyContext id="policy-provision-PolicyDefaultContext"/>
+   <apiContext id="Production"/>
+   <authKeyAuth>
+      <keyValue>policy-provision-DefaultContextKey</keyValue>
+   </authKeyAuth>
+   <tdr/>
+   <headerTransformations/>
+</auth>]]></con:request><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/id</path><content>policy-provision-AuthDefaultContext</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match 1"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep>
+			<con:testStep type="restrequest" name="Create policy with default context"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/policies" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create policy" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request><![CDATA[<policy>
+   <id>policy-provision-PolicyDefaultContext</id>
+   <apiIds>
+      <apiId>policy-provision-ApiDefaultContext</apiId>
+   </apiIds>
+   <authIds>
+      <quotaRLBucket id="policy-provision-DefaultContext-bucketID">
+         <authId>policy-provision-AuthDefaultContext</authId>
+      </quotaRLBucket>
+   </authIds>
+   <contexts>
+      <context id="*">
+         <status>active</status>
+         <rateLimitPerMinute>
+            <status>active</status>
+            <action>reject</action>
+            <warning>0.0</warning>
+            <threshold>10000</threshold>
+         </rateLimitPerMinute>
+      </context>
+   </contexts>
+   <tdrOnLimitReached type="api_max_rate_limit"/>
+   <tdr/>
+   <headerTransformations/>
+</policy>]]></con:request><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/id</path><content>policy-provision-PolicyDefaultContext</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match 1"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep>
+			<con:testStep type="restrequest" name="Request Test API">
+				<con:settings/>
+				<con:config service="EndPoint-test" resourcePath="" methodName="GET With No Param" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Request Test API" mediaType="application/xml" accept="">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="SIZE" value="10" xmlns="http://eviware.com/soapui/config"/></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Gateway}/end6?key=policy-provision-DefaultContextKey</con:endpoint>
+						<con:request/>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration><codes>200</codes></con:configuration>
+						</con:assertion>
+						<con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/data</path><content>9876543210</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Update Policy remove default context"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/policies/{POLICY_ID}" methodName="PUT" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Update Policy" mediaType="application/xml" postQueryString="false">
+					<con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings>
+					<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+					<con:request><![CDATA[<policy>
+   <id>policy-provision-PolicyDefaultContext</id>
+   <apiIds>
+      <apiId>policy-provision-ApiDefaultContext</apiId>
+   </apiIds>
+   <authIds>
+      <quotaRLBucket id="policy-provision-DefaultContext-bucketID">
+         <authId>policy-provision-AuthDefaultContext</authId>
+      </quotaRLBucket>
+   </authIds>
+   <contexts>
+      <context id="policy-provision-PolicyDefaultContext-NonExist">
+         <status>active</status>
+         <rateLimitPerMinute>
+            <status>active</status>
+            <action>reject</action>
+            <warning>0.0</warning>
+            <threshold>10000</threshold>
+         </rateLimitPerMinute>
+      </context>
+   </contexts>
+   <tdrOnLimitReached type="api_max_rate_limit"/>
+   <tdr/>
+   <headerTransformations/>
+</policy>]]></con:request><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="POLICY_ID" value="policy-provision-PolicyDefaultContext" xmlns="http://eviware.com/soapui/config"/></con:parameters>
+				</con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Request Test API 2 (must fail)">
+				<con:settings/>
+				<con:config service="EndPoint-test" resourcePath="" methodName="GET With No Param" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Request Test API 2" mediaType="application/xml" accept="">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="SIZE" value="10" xmlns="http://eviware.com/soapui/config"/></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Gateway}/end6?key=policy-provision-DefaultContextKey</con:endpoint>
+						<con:request/>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration><codes>429</codes></con:configuration>
+						</con:assertion>
+						<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Delete policy"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/policies/{POLICY_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete policy" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="POLICY_ID" value="policy-provision-PolicyDefaultContext" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create policy without default context"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/policies" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create policy without default context" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request><![CDATA[<policy>
+   <id>policy-provision-PolicyDefaultContext</id>
+   <apiIds>
+      <apiId>policy-provision-ApiDefaultContext</apiId>
+   </apiIds>
+   <authIds>
+      <quotaRLBucket id="policy-provision-DefaultContext-bucketID">
+         <authId>policy-provision-AuthDefaultContext</authId>
+      </quotaRLBucket>
+   </authIds>
+   <contexts>
+      <context id="policy-provision-PolicyDefaultContext-NonExist">
+         <status>active</status>
+         <rateLimitPerMinute>
+            <status>active</status>
+            <action>reject</action>
+            <warning>0.0</warning>
+            <threshold>10000</threshold>
+         </rateLimitPerMinute>
+      </context>
+   </contexts>
+   <tdrOnLimitReached type="api_max_rate_limit"/>
+   <tdr/>
+   <headerTransformations/>
+</policy>]]></con:request><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/id</path><content>policy-provision-PolicyDefaultContext</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match 1"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Request Test API 3 (must fail)">
+				<con:settings/>
+				<con:config service="EndPoint-test" resourcePath="" methodName="GET With No Param" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Request Test API 3 (must fail)" mediaType="application/xml" accept="">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="SIZE" value="10" xmlns="http://eviware.com/soapui/config"/></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Gateway}/end6?key=policy-provision-DefaultContextKey</con:endpoint>
+						<con:request/>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration><codes>429</codes></con:configuration>
+						</con:assertion>
+						<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters/>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Delete APi">
+				<con:settings/>
+				<con:config service="smoke" resourcePath="/cxf/e3/prov/v1/apis/{API_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<con:restRequest name="Delete APi" mediaType="application/xml" accept="application/xml">
+						<con:settings>
+							<con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Accept" value="application/xml"/>
+  <con:entry key="Content-Type" value="application/xml; charset=UTF-8"/>
+  <con:entry key="Connection" value="Keep-Alive"/>
+  <con:entry key="Cache-Control" value="nocache"/>
+</xml-fragment>]]></con:setting>
+						</con:settings>
+						<con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint>
+						<con:request/>
+						<con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+							<con:configuration>
+								<codes>200</codes>
+							</con:configuration>
+						</con:assertion>
+						
+						<con:assertion type="XPath Match" name="XPath Match - status">
+							<con:configuration>
+								<path>/response/status</path>
+								<content>SUCCESS</content>
+								<allowWildcards>false</allowWildcards>
+								<ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+								<ignoreComments>false</ignoreComments>
+							</con:configuration>
+						</con:assertion>
+						<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+						<con:jmsPropertyConfig/>
+						<con:parameters><entry key="API_ID" value="policy-provision-ApiDefaultContext" xmlns="http://eviware.com/soapui/config"/></con:parameters>
+					</con:restRequest>
+				</con:config>
+			</con:testStep><con:testStep type="restrequest" name="Delete auth"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/auths/{AUTH_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete auth" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="AUTH_ID" value="policy-provision-AuthDefaultContext" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Delete policy 2"><con:settings/><con:config service="smoke" resourcePath="/cxf/e3/prov/v1/policies/{POLICY_ID}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete policy" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://${#Project#E3Manager}:8181</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="XPath Match" name="XPath Match"><con:configuration><path>/response/status</path><content>SUCCESS</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="POLICY_ID" value="policy-provision-PolicyDefaultContext" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/>
 		</con:testCase><con:properties/>
-	</con:testSuite><con:properties><con:property><con:name>E3Manager</con:name><con:value>192.168.84.105</con:value></con:property><con:property><con:name>E3Gateway</con:name><con:value>192.168.84.105</con:value></con:property><con:property><con:name>Target1</con:name><con:value>192.168.84.90</con:value></con:property><con:property><con:name>uniq</con:name><con:value>delete</con:value></con:property></con:properties><con:wssContainer/><con:sensitiveInformation/></con:soapui-project>
+	</con:testSuite><con:properties><con:property><con:name>E3Manager</con:name><con:value>192.168.84.89</con:value></con:property><con:property><con:name>E3Gateway</con:name><con:value>192.168.84.89</con:value></con:property><con:property><con:name>Target1</con:name><con:value>192.168.84.90</con:value></con:property><con:property><con:name>uniq</con:name><con:value>delete</con:value></con:property></con:properties><con:wssContainer/><con:sensitiveInformation/></con:soapui-project>

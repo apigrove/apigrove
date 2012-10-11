@@ -51,12 +51,8 @@
 		<property name="authComponent" ref="auth"  />
 	</bean>
 	
-	<bean id="wsseExecutorFactory" init-method="init" class="com.alu.e3.auth.executor.WsseExecutorFactory">
-		<property name="dataAccess" ref="authDataAccess"  />
-		<property name="authComponent" ref="auth"  />
-	</bean>
-	
 	<bean id="auth" class="com.alu.e3.auth.camel.component.AuthComponent">
+	    <property name="dataManager" ref="dataManager"  />
 	</bean>
 	
 	<osgi:service ref="auth" interface="org.apache.camel.Component" />

@@ -31,7 +31,7 @@ import com.alu.e3.common.osgi.api.IStoreChangedObservable;
 
 public class KeyStoreFileService extends BaseStoreFileService implements IKeyStoreService {
 
-	private static CategoryLogger LOG = CategoryLoggerFactory.getLogger(KeyStoreFileService.class, Category.AUTH);
+	private static CategoryLogger logger = CategoryLoggerFactory.getLogger(KeyStoreFileService.class, Category.AUTH);
 	
 	private List<IStoreChangedListener> listeners;
 	
@@ -58,7 +58,9 @@ public class KeyStoreFileService extends BaseStoreFileService implements IKeySto
 			keystore = loadStore();
 		}
 		catch (Exception e) {
-			LOG.error("Unable to load the keystore", e);
+			if (logger.isErrorEnabled()) {
+				logger.error("Unable to load the keystore", e);
+			}
 		}
 
 		return keystore;
@@ -71,7 +73,9 @@ public class KeyStoreFileService extends BaseStoreFileService implements IKeySto
 			saveStore(ks);
 		}
 		catch (Exception e) {
-			LOG.error("Unable to save the truststore", e);
+			if (logger.isErrorEnabled()) {
+				logger.error("Unable to save the truststore", e);
+			}
 		}
 		
 		fireStoreChangedEvent();

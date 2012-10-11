@@ -42,29 +42,39 @@ public class SslJettyComponentWatcher implements OsgiServiceLifecycleListener {
 	}
 	
 	public SslJettyComponentWatcher() {
-		LOG.debug("SslJettyComponentWatcher construction.");
+		if(LOG.isDebugEnabled()) {
+			LOG.debug("SslJettyComponentWatcher construction.");
+		}
 	}
 	
 	protected void init() {
-		LOG.debug("SslJettyComponentWatcher initialization ...");
+		if(LOG.isDebugEnabled()) {
+			LOG.debug("SslJettyComponentWatcher initialization ...");
+		}
 	}
 	
 	protected void destroy() {
-		LOG.debug("SslJettyComponentWatcher destruction ...");
+		if(LOG.isDebugEnabled()) {
+			LOG.debug("SslJettyComponentWatcher destruction ...");
+		}
 		localCamelContext = null;
 	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
 	public void bind(Object service, Map properties) throws Exception {
-		LOG.debug("Starting local camel context ...");
+		if(LOG.isDebugEnabled()) {
+			LOG.debug("Starting local camel context ...");
+		}
 		localCamelContext.start();
 	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
 	public void unbind(Object service, Map properties) throws Exception {
-		LOG.debug("Stopping local camel context ...");
+		if(LOG.isDebugEnabled()) {
+			LOG.debug("Stopping local camel context ...");
+		}
 		localCamelContext.stop();
 	}
 }

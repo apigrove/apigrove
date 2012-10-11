@@ -26,12 +26,24 @@
 
 package com.alu.e3.auth.model;
 
+import com.alu.e3.gateway.common.camel.exception.GatewayExceptionCode;
+
 /**
  * Enum for supported North Bound authentication types : basic, authKey, IP White List  
  */
 public enum AuthType {
 
-	BASIC("basic"),
+	BASIC("basic") {
+		@Override
+		public String authErrorMessage() {
+			return "Authorization required";
+		}
+		
+		@Override
+		public GatewayExceptionCode authErrorCode() {
+			return GatewayExceptionCode.AUTHORIZATION_BASIC;
+		}
+	},
 	AUTHKEY("authKey"),
 	IP_WHITE_LIST("ipWhiteList"),
 	NO_AUTH("noAuth"),
@@ -49,6 +61,14 @@ public enum AuthType {
 		return value;
 	}
 
+	public String authErrorMessage() {
+		return "Not Authorized";
+	}
+	
+	public GatewayExceptionCode authErrorCode() {
+		return GatewayExceptionCode.AUTHORIZATION;
+	}
+	
 	public static AuthType fromValue(String v) {
 		for (AuthType c: AuthType.values()) {
 			if (c.value.equals(v)) {
