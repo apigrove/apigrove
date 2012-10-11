@@ -58,6 +58,7 @@ import com.alu.e3.data.model.AuthDetail;
 import com.alu.e3.data.model.CallDescriptor;
 import com.alu.e3.data.model.Certificate;
 import com.alu.e3.data.model.CertificateDetail;
+import com.alu.e3.data.model.CertificateRequest;
 import com.alu.e3.data.model.Instance;
 import com.alu.e3.data.model.Key;
 import com.alu.e3.data.model.KeyDetail;
@@ -1888,6 +1889,33 @@ public class DataManager implements IDataManager, IInstanceListener {
 
 		cachingTableCertificate.remove(id);
 		cachingTableCertificateDetails.remove(id);
+	}
+
+	/**
+	 * Generate a new Key with BouncyCastle
+	 */
+	@Override
+	public Key generateKey(String id) {
+		//TODO implement bouncycastle key generation
+		return null;
+	}
+
+	/**
+	 * Generate a CSR with bouncycastle
+	 */
+	@Override
+	public CertificateRequest getCSR(String keyId){
+		//TODO: implement bouncycastle csr generation
+		return null;
+	}
+
+	/**
+	 * Self-Sign a key with bouncycastle
+	 */
+	@Override
+	public Certificate selfSignKey(String keyId, CertificateRequest csr){
+		//TODO: implement bouncycastle self-signing
+		return null;
 	}
 
 	@Override
