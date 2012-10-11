@@ -223,8 +223,8 @@ public class ApiService implements IApiService {
 		// otherwise.
 		apiChecker.assertHasDefaultContext(api);
 		
-		//checking if the API is set to validate, and validation content is correct
-		apiChecker.assertHasIsMainForWSDLValidation(api);
+		//checking that given XML grammar stream is ok
+		apiChecker.assertValidatioSchemaConsystency(api);
 
 		// Checking PassThrough/Composite/Notification/Subscription
 		// consistency
@@ -266,6 +266,9 @@ public class ApiService implements IApiService {
 		// Checking if the API has one default context, throw an exception
 		// otherwise.
 		apiChecker.assertHasDefaultContext(api);
+
+		//checking that given XML grammar stream is ok
+		apiChecker.assertValidatioSchemaConsystency(api);
 
 		// Checking PassThrough/Composite/Notification/Subscription consistency
 		canCreateJarFile =  apiChecker.assertCompositionApiConsistency(api);

@@ -16,25 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.alu.e3.prov.service;
+package com.alu.e3.common.util.sax;
 
-import com.alu.e3.prov.restapi.model.Api;
-
-public interface ICommonApiCheck {
-
-	public abstract void assertHasDefaultContext(Api provRequest);
-
-	public abstract boolean assertCompositionApiConsistency(Api provRequest);
-
-	/**
-	 * checks that validation schema section is OK 
-	 * - file names are unique
-	 * - file extension matches grammar type xsd / wsdl
-	 * - xml stream is consistent
-	 * - in wsdl check that one and only one resource has isMain = true
-	 * @param provRequest
-	 */
-	public abstract void assertValidatioSchemaConsystency(Api provRequest);
+import org.xml.sax.Attributes;
 
 
+public class UselessNode extends XmlNodeAbstract {
+  public UselessNode(String childTagName) {
+    super(childTagName);
+  }
+
+  public XmlNodeAbstract createSubNode(String childTagName, Attributes xmlAttrs) {
+    return new UselessNode(childTagName);
+  }
 }

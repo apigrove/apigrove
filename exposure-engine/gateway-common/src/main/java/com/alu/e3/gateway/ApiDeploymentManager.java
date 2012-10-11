@@ -286,8 +286,9 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 				logger.debug("Starting bundle for apiId " + apiId + ": " + bundle.getSymbolicName());
 			}
 			bundle.start();
-			startActionSemaphore.tryAcquire(10L, TimeUnit.SECONDS);
-			
+			if ( ! startActionSemaphore.tryAcquire(2L, TimeUnit.MINUTES) ) { // watch out this timeout can lead to rejected bundle if GW is overloaded 
+				throw new BundleException ("bundle start failed");
+			}
 			waitingActions.remove(location);
 		} catch(Exception e) {
 			if(logger.isDebugEnabled()) {
