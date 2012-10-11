@@ -483,7 +483,7 @@ $(document).ready(function() {
         // If this constant is true, text input fields show tips on focus
         // If false, tips are shown on hover (default behavior)
         var TEXT_INPUT_TIP_ON_FOCUS = false;
-        var TOOLTIP_DELAY_SHOW = 1000;
+        var TOOLTIP_DELAY_SHOW = 2000;
         var TOOLTIP_DELAY_HIDE = 0;
 
         $('[rel=tooltip]').each(function(index, element) {
