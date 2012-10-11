@@ -41,6 +41,7 @@ import com.alu.e3.data.model.ApiJar;
 import com.alu.e3.data.model.Auth;
 import com.alu.e3.data.model.CallDescriptor;
 import com.alu.e3.data.model.Certificate;
+import com.alu.e3.data.model.CertificateRequest;
 import com.alu.e3.data.model.Key;
 import com.alu.e3.data.model.Limit;
 import com.alu.e3.data.model.LogLevel;
@@ -502,6 +503,32 @@ public class DataManagerMock implements IDataManager {
 		
 	}
 
+	
+	
+	@Override
+	public Key generateKey(String id) {
+		throw new RuntimeException("Not implemented");
+		
+	}
+
+	
+	
+	@Override
+	public CertificateRequest getCSR(String keyId) {
+		throw new RuntimeException("Not implemented");
+		
+	}
+
+	
+	
+	@Override
+	public Certificate selfSignKey(String keyId, CertificateRequest csr) {
+		throw new RuntimeException("Not implemented");
+		
+	}
+
+	
+	
 	@Override
 	public void removeKeyListener(IEntryListener<String, Key> listener) {
 		throw new RuntimeException("Not implemented");
