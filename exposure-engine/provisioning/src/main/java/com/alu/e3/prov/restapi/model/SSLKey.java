@@ -38,8 +38,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlRootElement(name="key")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "key", propOrder = { 
-		"id", 
+@XmlType(name = "key", propOrder = {  
 		"activeCertId",
 		"keyPassphrase",
 		"content",

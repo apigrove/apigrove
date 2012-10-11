@@ -41,7 +41,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlRootElement(name="cert")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "cert", propOrder = {
-    "id",
     "content",
     "displayName"
 })
