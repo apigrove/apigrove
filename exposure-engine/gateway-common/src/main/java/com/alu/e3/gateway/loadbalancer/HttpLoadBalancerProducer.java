@@ -23,6 +23,8 @@ import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Set;
 
+import javax.ws.rs.core.HttpHeaders;
+
 import org.apache.camel.CamelExchangeException;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -56,6 +58,8 @@ public class HttpLoadBalancerProducer extends HttpProducer {
 		httpConnectionParamBean.setConnectionTimeout(connectionTimeout);
 		
 		httpConnectionParamBean.setSoTimeout(socketTimeout);
+
+		exchange.getIn().setHeader(HttpHeaders.HOST, httpRequest.getURI().getHost());
 
 		return httpRequest;
 	}
