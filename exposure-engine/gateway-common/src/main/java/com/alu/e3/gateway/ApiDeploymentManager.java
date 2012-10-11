@@ -52,6 +52,7 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 
 	protected static int SERVICES_LOOP_ATTEMPTS = 20;
 	protected static int SERVICES_LOOP_DURATION = 500; // in milliseconds
+	protected static long SEMAPHORE_TIMEOUT = SERVICES_LOOP_DURATION * SERVICES_LOOP_ATTEMPTS; // in milliseconds
 
 	// Prefix for bundle's location
 	protected static String BUNDLE_LOCATION_URI_PREFIX = "api://";
@@ -183,41 +184,8 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 		// The bundle to remove
 		Bundle bundle = getBundle(location);
 
-		if(bundle != null) {
-			try {
-				Semaphore stopActionSemaphore = new Semaphore(0);
-				waitingActions.put(location, stopActionSemaphore);
-				
-				// Stopping the bundle
-				if(logger.isDebugEnabled()) {
-					logger.debug("Stopping bundle for apiId " + apiId + ": " + bundle.getSymbolicName());
-				}
-				bundle.stop();
-				stopActionSemaphore.tryAcquire(10L, TimeUnit.SECONDS);
-				if(logger.isDebugEnabled()) {
-					logger.debug("Stop unlocked for apiId " + apiId);
-				}
-
-				// Uninstalling the bundle
-				// The ACK will be post in "bundleChanged" method, when the event "UNINSTALLED" will be fired for this bundle
-				if(logger.isDebugEnabled()) {
-					logger.debug("Uninstalling bundle for apiId " + apiId + ": " + bundle.getSymbolicName());
-				}
-				bundle.uninstall();
-				stopActionSemaphore.tryAcquire(10L, TimeUnit.SECONDS);
-				if(logger.isDebugEnabled()) {
-					logger.debug("Uninstall unlocked for apiId " + apiId);
-				}
-				
-			} catch (Exception e) {
-				logger.error("Error stopping/uninstalling bundle " + bundle.getSymbolicName() + " after update ", e);				
-
-				// post back the error in the queue
-				throw new RuntimeException("Error stopping/uninstalling bundle " + bundle.getSymbolicName() + " after update ");
-			} finally {
-				// removing the queueName to prevent any later BundleEvent handling
-				waitingActions.remove(location);
-			}
+		if(bundle != null) {				
+			stopAndUnistallBundle(bundle);
 		} else {
 			// No bundle found, ignoring the request and sending an OK ack.
 			logger.warn("Bundle " + location + " not found in current context");
@@ -236,38 +204,17 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 		Bundle existingBundle = getBundle(location);
 		try {
 			if(existingBundle != null) {
-				Semaphore stopActionSemaphore = new Semaphore(0);
-				waitingActions.put(location, stopActionSemaphore);
-				
-				// Stopping the bundle
-				if(logger.isDebugEnabled()) {
-					logger.debug("Stopping bundle for apiId " + apiId + ": " + existingBundle.getSymbolicName());
-				}
-				existingBundle.stop();
-				stopActionSemaphore.tryAcquire(10L, TimeUnit.SECONDS);
-
-				// Uninstalling the bundle
-				// The ACK will be post in "bundleChanged" method, when the event "UNINSTALLED" will be fired for this bundle
-				if(logger.isDebugEnabled()) {
-					logger.debug("Uninstalling bundle for apiId " + apiId + ": " + existingBundle.getSymbolicName());
-				}
-				existingBundle.uninstall();
-				stopActionSemaphore.tryAcquire(10L, TimeUnit.SECONDS);
-				
-				waitingActions.remove(location);
+				stopAndUnistallBundle(existingBundle);
 			}
 			
 			// no previous bundle, it's a fresh install so let's do it
 			installApiJar(location, jar, apiId);
-
 
 		} catch(Exception e) {
 			if(logger.isDebugEnabled()) {
 				logger.error("An error occured while installing the bundle", e);
 			}
 			throw new RuntimeException("An error occured while installing the bundle");
-		} finally {
-			waitingActions.remove(location);
 		}
 	}
 
@@ -286,18 +233,20 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 				logger.debug("Starting bundle for apiId " + apiId + ": " + bundle.getSymbolicName());
 			}
 			bundle.start();
-			if ( ! startActionSemaphore.tryAcquire(2L, TimeUnit.MINUTES) ) { // watch out this timeout can lead to rejected bundle if GW is overloaded 
-				throw new BundleException ("bundle start failed");
+			if ( ! startActionSemaphore.tryAcquire(SEMAPHORE_TIMEOUT, TimeUnit.MILLISECONDS) ) { // watch out this timeout can lead to rejected bundle if GW is overloaded 
+				if(!isBundleStarted(bundle)) {
+					throw new BundleException ("bundle start failed");
+				}
 			}
-			waitingActions.remove(location);
+
 		} catch(Exception e) {
 			if(logger.isDebugEnabled()) {
 				logger.error("An error occured while starting the bundle", e);
 			}
 			//try uninstall if error or bundle in failed state.
 			try {
-				bundle.uninstall();
-			} catch (BundleException be){
+				stopAndUnistallBundle(bundle);
+			} catch (Exception be){
 				if(logger.isDebugEnabled()) {
 					logger.error("An error occured while uninstalling the bundle (After failure to start)", be);
 				}
@@ -306,6 +255,55 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 		} finally {
 			waitingActions.remove(location);
 		}
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug("Started bundle for apiId {} : {}", apiId, bundle.getSymbolicName());
+		}
+	}
+	
+	/**
+	 * stops then remove a bundle
+	 */
+	private void stopAndUnistallBundle(Bundle bundle) {
+
+		try {
+			Semaphore stopActionSemaphore = new Semaphore(0);
+			waitingActions.put(bundle.getLocation(), stopActionSemaphore);
+			
+			// Stopping the bundle
+			if(logger.isDebugEnabled()) {
+				logger.debug("Stopping bundle for api {} ", bundle.getSymbolicName());
+			}
+			bundle.stop();
+			
+			// Waiting for bundle to stop
+			stopActionSemaphore.tryAcquire(SEMAPHORE_TIMEOUT, TimeUnit.MILLISECONDS);
+			if(logger.isDebugEnabled()) {
+				logger.debug("Stop unlocked for api {} ", bundle.getSymbolicName());
+			}
+
+			// Uninstalling the bundle
+			if(logger.isDebugEnabled()) {
+				logger.debug("Uninstalling bundle for api {} ", bundle.getSymbolicName());
+			}
+			bundle.uninstall();
+			
+			// Waiting for bundle to be uninstalled
+			stopActionSemaphore.tryAcquire(SEMAPHORE_TIMEOUT, TimeUnit.MILLISECONDS);
+			if(logger.isDebugEnabled()) {
+				logger.debug("Uninstall unlocked for api {} ", bundle.getSymbolicName());
+			}
+			
+		} catch (Exception e) {
+			logger.error("Error stopping/uninstalling bundle " + bundle.getSymbolicName() + " after update ", e);				
+
+			// post back the error in the queue
+			throw new RuntimeException("Error stopping/uninstalling bundle " + bundle.getSymbolicName() + " after update ");
+		} finally {
+			// removing the semaphore
+			waitingActions.remove(bundle.getLocation());
+		}
+		
 	}
 
 	/**
@@ -349,20 +347,34 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 			// but took up to 20s to be notified for route startup (really random time)
 			boolean isBundleStarted = waitForBundleStarted(bundle);
 			if(isBundleStarted) {
+				// Started and route UP => Releasing semaphore
 				if (actionSemaphore!=null) actionSemaphore.release();
 			} else {
 				logger.error("Bundle " + bundle.getSymbolicName() + " not started in time");
 			}
 			break;
+			
+		case BundleEvent.STOPPED:
+			if(logger.isDebugEnabled()) {
+				logger.debug("Bundle " + bundle.getSymbolicName() + " STOPPED");
+			}
+			
+			// Stopped => Releasing semaphore
+			if (actionSemaphore!=null) actionSemaphore.release();
+			
+			break;
+			
 		case BundleEvent.UNINSTALLED:
 			if(logger.isDebugEnabled()) {
 				logger.debug("Bundle " + bundle.getSymbolicName() + " UNINSTALLED");
 			}
 			
+			// Uninstalled => Releasing semaphore
 			if (actionSemaphore!=null) actionSemaphore.release();
 			
 			break;
 
+		// Other (ignored) states
 		case BundleEvent.INSTALLED:
 			if(logger.isDebugEnabled()) {
 				logger.debug("Bundle " + bundle.getSymbolicName() + " INSTALLED");
@@ -376,12 +388,6 @@ public class ApiDeploymentManager implements IDataManagerListener, IEntryListene
 		case BundleEvent.STARTING:
 			if(logger.isDebugEnabled()) {
 				logger.debug("Bundle " + bundle.getSymbolicName() + " STARTING");
-			}
-			break;
-		case BundleEvent.STOPPED:
-			if (actionSemaphore!=null) actionSemaphore.release();
-			if(logger.isDebugEnabled()) {
-				logger.debug("Bundle " + bundle.getSymbolicName() + " STOPPED");
 			}
 			break;
 		case BundleEvent.STOPPING:
