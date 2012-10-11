@@ -11,8 +11,11 @@
 	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	
     <!-- USED BY ROUTE -->
-	<!-- Validation route beans -->
+	<bean id="subscriberIDExtractor" class="com.alu.e3.gateway.common.camel.processor.SubscriberIDExtractor" >
+        <property name="dataManager" ref="dataManager" />
+	</bean> 
 
+	<!-- Validation route beans -->
 	<bean id="validator" class="com.alu.e3.gateway.valid.camel.component.ValidatorComponent" >
 	</bean>
 		

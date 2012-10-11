@@ -22,58 +22,85 @@ import java.util.List;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+
 import com.alu.e3.common.E3Constant;
+import com.alu.e3.common.InvalidIDException;
 import com.alu.e3.common.camel.AuthIdentity;
 import com.alu.e3.common.camel.ExchangeConstantKeys;
 import com.alu.e3.common.osgi.api.IDataManager;
-import com.alu.e3.data.model.Api;
 import com.alu.e3.data.model.Auth;
-
 import com.alu.e3.data.model.CallDescriptor;
+import com.alu.e3.gateway.common.camel.exception.GatewayException;
+import com.alu.e3.gateway.common.camel.exception.GatewayExceptionCode;
 
 public class SubscriberIDExtractor implements Processor {
 
-	private IDataManager dataManager;
-	
+	protected  IDataManager dataManager;
+
+
 	public void setDataManager(IDataManager dataManager) {
 		this.dataManager = dataManager;
 	}
-	
-	public SubscriberIDExtractor() {}
-	
+
 	@Override
 	public void process(Exchange exchange) throws Exception {
 
-		String subscriberId = exchange.getIn().getHeader(E3Constant.SUBSCRIBER_ID_HEADER_NAME, String.class); 
+		// Get current AuthIdentity
+		AuthIdentity authIdentity = exchange.getProperty( ExchangeConstantKeys.E3_AUTH_IDENTITY.toString(), AuthIdentity.class);
 
-		if(subscriberId == null)
-			return;
+		// extracts subscriber id and checks authorization
+		String subscriberId = extractSubscriberId(exchange);
+		if (null == subscriberId) return ;
+
+		List<CallDescriptor> callDescriptors = checkSubscriberIdAuth(subscriberId, authIdentity);// throws if failed
+		// merge call descriptor
+		mergeCallDescriptor(callDescriptors, authIdentity);					
+	}
+
+	protected String extractSubscriberId(Exchange exchange) throws GatewayException {
+
+		String subscriberId = exchange.getIn().getHeader(E3Constant.SUBSCRIBER_ID_HEADER_NAME, String.class);
+
+		if (subscriberId == null || subscriberId.isEmpty()) return null;
 
 		String[] parts = subscriberId.split("\\|");
 
-		if(parts.length != 2)
-			return;
+		if (parts.length != 2 || parts[1].isEmpty()) return null;
 
+		return parts[1];
+	}
+
+
+	protected List<CallDescriptor> checkSubscriberIdAuth(String subscriberId, AuthIdentity authIdentity) throws GatewayException {
+
+		// Get subscriber matching CallDescriptors
+		Auth auth;
 		try {
-			// Get current AuthIdentity
-			AuthIdentity authIdentity = exchange.getProperty(ExchangeConstantKeys.E3_AUTH_IDENTITY.toString(), AuthIdentity.class);
-						
-			// Get subscriber matching CallDescriptors
-			Api api = authIdentity.getApi();
-			Auth auth = dataManager.getAuthById(parts[1]);
-			List<CallDescriptor> subscriberDescriptors = dataManager.getMatchingPolicies(api, auth);
-
-			// Merge lists of CallDescriptors on the current AuthIdentity
-			List<CallDescriptor> descriptors = authIdentity.getCallDescriptors();
-			for(CallDescriptor c : subscriberDescriptors) {
-				if(!descriptors.contains(c)) {
-					descriptors.add(c);
-				}
-			}
-		} catch(Exception e) {
-			// Do nothing in case of errors
+			auth = dataManager.getAuthById(subscriberId);
+		} catch (InvalidIDException e) {
+			throw new GatewayException(GatewayExceptionCode.AUTHORIZATION, e.getMessage() );
 		}
 
+		if (auth == null || !auth.getStatus().isActive()) {
+			throw new GatewayException(GatewayExceptionCode.AUTHORIZATION, "Authorization status is invalid");
+		} 
+
+		return 	dataManager.getMatchingPolicies(authIdentity.getApi(), auth);
+
+	}
+
+	protected void mergeCallDescriptor(List<CallDescriptor> callDescriptors, AuthIdentity authIdentity) {
+
+		if ( null == callDescriptors)return; // no specific descriptor 
+
+		// Merge lists of CallDescriptors on the current AuthIdentity
+		List<CallDescriptor> descriptors = authIdentity.getCallDescriptors();
+
+		for (CallDescriptor callDescriptor : callDescriptors) {
+			if (!descriptors.contains(callDescriptor)) {
+				descriptors.add(callDescriptor);
+			}
+		}
 	}
 
 }

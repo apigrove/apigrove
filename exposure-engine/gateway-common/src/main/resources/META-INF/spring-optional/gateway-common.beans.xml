@@ -57,9 +57,6 @@
 	<bean id="logCorrelationIDGenerator" class="com.alu.e3.gateway.common.camel.processor.LogCorrelationIDGenerator" />
 	<bean id="subscriberIDGenerator" class="com.alu.e3.gateway.common.camel.processor.SubscriberIDGenerator" />
 	<bean id="logCorrelationIDExtractor" class="com.alu.e3.gateway.common.camel.processor.LogCorrelationIDExtractor" />
-	<bean id="subscriberIDExtractor" class="com.alu.e3.gateway.common.camel.processor.SubscriberIDExtractor" >
-        <property name="dataManager" ref="dataManager" />
-	</bean>
 	<bean id="notifyUrlHeaderProcessor" class="com.alu.e3.gateway.common.camel.processor.NotifyUrlHeaderProcessor" />
 	<bean id="notifyUrlWSAProcessor" class="com.alu.e3.gateway.common.camel.processor.NotifyUrlWSAProcessor" />
 	
