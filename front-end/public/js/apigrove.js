@@ -248,9 +248,23 @@ $(document).ready(function() {
                 }
                 break;
         }
-        //ele.addClass("active");
+
+        updateSubmitAndAuthButton();
     }
 
+    function updateSubmitAndAuthButton(){
+        if($("#provauth-authKey").val() === "1" ||
+            $("#provauth-basic").val() === "1" ||
+            $("#provauth-wsse").val() === "1" ||
+            $("#provauth-ipWhiteList").val() === "1")
+        {
+
+            $("#submitAndAuthButton").show('fast');
+        }
+        else{
+            $("#submitAndAuthButton").hide('fast');
+        }
+    }
 
 
     var type = $('#type').attr('value');

@@ -77,6 +77,10 @@ class AuthController extends FlowController
             $auth = new Auth();
             $auth->id = $id;
             $auth->type = AuthType::$AUTHKEY;
+            if(isset($flowScope['preSelectedAuthType'])){
+                $auth->type = $flowScope['preSelectedAuthType'];
+                $flowScope['authTypeLocked'] = true;
+            }
             $auth->apiContext = "actx";
             $auth->policyContext = "pctx";
             $flowScope['isNew'] = true;
@@ -254,6 +258,8 @@ class AuthController extends FlowController
         else{
             $this->_helper->FlashMessenger("Successfully Updated Auth");
         }
+
+        $flowScope['authIds'] = array_keys($creds);
 
         return "valid";
     }

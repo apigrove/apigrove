@@ -17,9 +17,12 @@
  *
  */
 require_once APPLICATION_PATH . "/managers/ApiManager.class.php";
+require_once APPLICATION_PATH . "/managers/PolicyManager.class.php";
 require_once APPLICATION_PATH . "/models/Api.class.php";
 require_once APPLICATION_PATH . "/models/Context.class.php";
 require_once APPLICATION_PATH . "/models/Status.class.php";
+require_once APPLICATION_PATH . "/controllers/AuthController.php";
+require_once APPLICATION_PATH . "/controllers/PolicyController.php";
 
 require_once "flow/FlowController.php";
 require_once "Logging/LoggerInterface.php";
@@ -43,7 +46,7 @@ class ApiController extends FlowController {
         }
         return $this->manager;
     }
-	
+
     /**
      * Function to handle requests to show the list of APIs
      */
@@ -323,6 +326,8 @@ class ApiController extends FlowController {
 
         // If I don't have access to the view, set error messages in the flow scope
         $flowScope["validationErrors"]= $validationErrors;
+
+        $flowScope['gotoAuthsubflow'] = ($action === "submitAndAuth");
         return count($validationErrors) === 0 ? "valid" : "invalid";
     }
 
@@ -364,7 +369,11 @@ class ApiController extends FlowController {
         }
 
         if( (string)$xmlresponse->status === "SUCCESS" && isset($xmlresponse->id) ) {
-            return "success";
+            if($flowScope['gotoAuthsubflow']){
+                return "successAuth";
+            }
+            else
+                return "success";
         } else {
             if(isset($xmlresponse->error)) {
                 $flowScope["validationErrors"]= array("default"=>$translate->translate("Error: ").(string)$xmlresponse->error->errorText);
@@ -374,6 +383,52 @@ class ApiController extends FlowController {
             return "failed";
         }
 
+    }
+
+    /**
+     * Callback function for the on-exit of the Auth subflow
+     * We have already created the API and the Auth(s) so now we need to create a Policy
+     * to hook them together
+     * @param $action
+     * @param $flowScope
+     */
+    public function postAuthSubflow($action, &$flowScope){
+        $registry = Zend_Registry::getInstance();
+        $translate = $registry->get("Zend_Translate");
+        $authIds = $flowScope['authIds'];
+        /**  @var Api $api*/
+        $api = $flowScope['api'];
+        $policy = PolicyController::createBasicPolicy(null, array($api->id), $authIds);
+
+        $pm = new PolicyManager();
+        $result = $pm->createPolicy($policy);
+        if($result){
+            $this->_helper->FlashMessenger($translate->translate("Policy Created: ").$policy->id);
+        }
+        else{
+            $this->_helper->FlashMessenger($translate->translate("Error creating Policy"));
+        }
+
+    }
+
+    /**
+     * Callback function for the on-enter of the Auth subflow state
+     * @param $action
+     * @param $flowScope
+     */
+    public function preAuthSubflow($action, &$flowScope){
+        // Pass the id to the subflow and tell it to do create
+        $flowScope['authid'] = 'create';
+        /** @var $api Api */
+        $api = $flowScope['api'];
+        $authTypes = $api->getAuthentication()->getAuths();
+        foreach($authTypes as $authType){
+            // Find the first type that is not noAuth
+            if($authType !== AuthType::$NOAUTH){
+                $flowScope['preSelectedAuthType'] = $authType;
+                break;
+            }
+        }
     }
 
     public function callAction() {

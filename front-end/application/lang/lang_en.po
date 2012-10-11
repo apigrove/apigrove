@@ -23,99 +23,75 @@ msgstr ""
 msgid "Error deleting api "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:76
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:74
 msgid "The delete action errored but didn't say why!"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:79
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:77
 msgid "Exception when deleting api "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:82
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:80
 msgid "Api id is empty!"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:136
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:132
 msgid "Error fetching api "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:159
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:153
 msgid "Apis must have a name."
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:165
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:159
 msgid "Apis must have an endpoint."
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:178
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:172
 msgid "Apis must have at least one targethost."
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:229
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:223
 msgid "Apis must have at least one auth type."
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:237
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:231
 msgid "With https on, TLS Mode must be 1way or 2way"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:273
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:267
 msgid "Transactions-per-second warning trigger must be a number"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:276
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:270
 msgid "Transactions-per-second cutoff threshold must be a number"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:279
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:273
 msgid "Transactions-per-minute warning trigger must be a number"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:282
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:276
 msgid "Transactions-per-minute cutoff threshold must be a number"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:333
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:325
 msgid "This targethost cannot be empty"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:342
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:332
 msgid "Auth Key Key cannot be empty"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:370
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:358
 msgid "Error: "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:372
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ApiController.php:360
 msgid "Unknown error when posting this Api"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/AuthController.php:42
-msgid "Auth Deleted"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/AuthController.php:63
-msgid "Resource Not Found"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/AuthController.php:165
-msgid "For authKey auth, you must specify a key"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/AuthController.php:170
-msgid "Username is required"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/AuthController.php:174
-msgid "Password is required"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/AuthController.php:177
-msgid "IP list is required"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:66
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:64
 msgid "Unable to retrieve key "
 msgstr ""
 
@@ -126,155 +102,155 @@ msgstr ""
 msgid "Error "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:123
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:119
 msgid "Couldn't update key with new active certificate: "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:131
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:127
 msgid "Successfully Created Key"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:131
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:127
 msgid "Successfully Updated Key"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:151
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:145
 msgid "Successfully Deleted Key"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:166
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:158
 msgid "The key name must be only alpha-numeric characters"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:181
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:173
 msgid "There was an error getting contents of Key file."
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:184
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:227
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:344
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:461
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:176
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:217
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:328
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:437
 msgid "There was an error uploading file: "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:188
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:180
 msgid "Please upload a key file."
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:213
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:203
 msgid "The certificate name must be only alpha-numeric characters"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:224
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:214
 msgid "There was an error getting contents of Certificate file."
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:231
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:221
 msgid "Please upload a certificate file."
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:294
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:282
 msgid "Successfully Created Certificate Authority"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:294
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:282
 msgid "Successfully Updated Certificate Authority"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:312
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:298
 msgid "Successfully Deleted Certificate Authority"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:331
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:315
 msgid "The CA name must be only alpha-numeric characters"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:341
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:325
 msgid "There was an error getting contents of CA file."
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:347
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:331
 msgid "Please upload a CA file."
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:383
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:365
 msgid "Unable to retrieve CRL "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:411
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:391
 msgid "Successfully Created Certificate Revocation List"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:411
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:391
 msgid "Successfully Updated Certificate Revocation List"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:429
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:407
 msgid "Successfully Deleted Certificate Revocation List"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:448
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:424
 msgid "The CRL name must be only alpha-numeric characters"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:458
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:434
 msgid "There was an error getting contents of CRL file."
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:464
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/CertificateController.php:440
 msgid "Please upload a CRL file."
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:29
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:27
 msgid "Backend Host is required"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:39
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:37
 msgid "Preferences Updated"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:23
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:21
 msgid "You have reached the error page"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:34
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:32
 msgid "Page not found"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:40
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:38
 msgid "Application error"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:47
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ErrorController.php:45
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/error/error.phtml:34
 msgid "Request Parameters"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/LoggingController.php:51
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/LoggingController.php:49
 msgid "There was an error getting logs: "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:110
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:108
 msgid "Unable to retrieve policy "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:133
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:129
 msgid "Error creating policy: "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:138
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:134
 msgid "Successfully Created Policy"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:162
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:156
 msgid "Policy updated!"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:165
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:159
 msgid "Error updating policy: "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:170
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:164
 msgid "Successfully Updated Policy"
 msgstr ""
 
@@ -282,82 +258,44 @@ msgstr ""
 msgid "The policy ID must be at least 1 and at most 256 characters"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:345
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:335
 msgid ""
 " Threshold must be a positive integer if you want to include this Quota. "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:348
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:338
 msgid " Warning must be a non-negative integer. "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:351
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:341
 msgid " Warning may not be greater than the Threshold. "
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:434
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:422
 msgid "Per-Second"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:436
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:424
 msgid "Per-Minute"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:438
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:426
 msgid "Hourly"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:440
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:186
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:428
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:164
 msgid "Daily"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:442
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:203
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:430
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:177
 msgid "Weekly"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:444
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:220
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/PolicyController.php:432
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:190
 msgid "Monthly"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:73
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:203
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:214
-msgid "Name is required"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:77
-msgid "Timing is required"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:82
-msgid "Action is required"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:86
-msgid "Type and Value are required"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:128
-msgid "Key is required"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:130
-msgid "Value is required"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:197
-msgid "Extract from is required"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:200
-msgid "Http Header Name is required"
-msgstr ""
-
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/SharedViewUtility.php:211
-msgid "Value or Property Name required"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:94
@@ -369,13 +307,13 @@ msgid "Edit API"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:106
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:27
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:37
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:21
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:29
 msgid "Name"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:115
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/list.phtml:35
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/list.phtml:34
 msgid "Endpoint"
 msgstr ""
 
@@ -398,29 +336,29 @@ msgid "Remove target host"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:173
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:128
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:145
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:100
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:131
 msgid "Advanced"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:179
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:182
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:291
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:135
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:139
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:107
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:110
 msgid "Enabled"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:183
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:292
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:141
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:111
 msgid "Disabled"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:189
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:69
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/index.phtml:40
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:51
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:54
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/index.phtml:37
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:42
 msgid "Type"
 msgstr ""
 
@@ -429,23 +367,23 @@ msgid "No Auth"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:193
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:74
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:57
 msgid "Basic"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:194
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:77
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:107
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:58
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:82
 msgid "Auth Key"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:195
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:80
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:59
 msgid "WSSE"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:196
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:83
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:60
 msgid "IP Whitelist"
 msgstr ""
 
@@ -479,30 +417,30 @@ msgid "2-Way TLS"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:241
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:161
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:178
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:195
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:212
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:229
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:145
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:158
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:171
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:184
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:197
 msgid "Warning"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:242
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:164
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:181
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:146
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:159
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:172
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:185
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:198
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:215
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:232
 msgid "Threshold"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:246
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:152
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:138
 msgid "TPS"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:255
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:169
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:151
 msgid "TPM"
 msgstr ""
 
@@ -531,9 +469,9 @@ msgid "TDRs"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/api-flow-form1.phtml:302
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:158
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:128
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/authentication/edit.phtml:59
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:46
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:36
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/config/index.phtml:35
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/logging/config.phtml:38
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/logging/config.phtml:56
@@ -554,14 +492,14 @@ msgstr ""
 msgid "Choose an API from the list below to edit"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/list.phtml:34
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/list.phtml:33
 msgid "API Name"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/list.phtml:65
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/index.phtml:70
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/api/list.phtml:58
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/index.phtml:64
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/authentication/index.phtml:34
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/index.phtml:77
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/index.phtml:70
 msgid "Delete"
 msgstr ""
 
@@ -618,34 +556,34 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:52
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:39
 msgid "Update"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:52
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:39
 msgid "Auth"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:55
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:21
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:59
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:42
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:15
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:49
 msgid "Server Error"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:61
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:74
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:48
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:64
 msgid "ID"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:65
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:50
 msgid "create"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:65
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:50
 msgid "disabled"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:90
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:67
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/authentication/edit.phtml:32
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/authentication/index.phtml:24
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/authentication/login.phtml:28
@@ -653,18 +591,18 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:98
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:74
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/authentication/edit.phtml:39
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/authentication/login.phtml:35
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/index/index.phtml:23
 msgid "Password"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:115
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:89
 msgid "IPs"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:120
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/form.phtml:92
 msgid "Comma separated"
 msgstr ""
 
@@ -682,15 +620,15 @@ msgstr ""
 msgid "Auths"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/index.phtml:25
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/index.phtml:22
 msgid "Choose an Auth from the list below to edit"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/index.phtml:39
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/index.phtml:36
 msgid "Auth ID"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/index.phtml:41
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/auth/index.phtml:38
 msgid "Details"
 msgstr ""
 
@@ -747,23 +685,23 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:18
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:12
 msgid "Edit"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:18
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:12
 msgid "Trusted Certificate Authority"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:36
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:29
 msgid "Certificate"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:39
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:31
 msgid "Choose file"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:46
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/certificate/ca.phtml:36
 msgid "Certificate Authority"
 msgstr ""
 
@@ -924,11 +862,11 @@ msgstr ""
 msgid "Logs"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/logging/index.phtml:37
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/logging/index.phtml:34
 msgid "Depth"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/logging/index.phtml:98
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/logging/index.phtml:95
 msgid "No logs to display"
 msgstr ""
 
@@ -968,36 +906,36 @@ msgstr ""
 msgid "Create Policy"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:56
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:46
 msgid "Edit Policy"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:83
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/index.phtml:40
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:71
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/index.phtml:36
 msgid "APIs"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:97
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:84
 msgid "Choose which APIs this Policy will apply to."
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:115
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:101
 msgid "Choose which Auths this Policy will apply to"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:156
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:173
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:190
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:207
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:224
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:142
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:155
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:168
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:181
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:194
 msgid "Ignore"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:157
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:174
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:191
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:208
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:225
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:143
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:156
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:169
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:182
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/form.phtml:195
 msgid "Reject"
 msgstr ""
 
@@ -1013,16 +951,16 @@ msgstr ""
 msgid "Policies"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/index.phtml:25
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/index.phtml:21
 msgid "Choose a Policy from the list below to edit"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/index.phtml:39
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/index.phtml:35
 msgid "Policy ID"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/index.phtml:55
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/index.phtml:65
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/index.phtml:49
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/policy/index.phtml:58
 msgid "None"
 msgstr ""
 
@@ -1062,37 +1000,37 @@ msgstr ""
 msgid "Timing"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:41
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:64
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:32
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:54
 msgid "Request"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:42
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:65
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:33
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:55
 msgid "Response"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:45
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:36
 msgid "Action"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:47
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:38
 msgid "Remove"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:52
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:55
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:43
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:46
 msgid "Property"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:53
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:56
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:44
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:47
 msgid "Static"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:57
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/properties.phtml:41
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:76
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/headerTransformations.phtml:46
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/properties.phtml:34
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:66
 msgid "Value"
 msgstr ""
 
@@ -1112,11 +1050,11 @@ msgstr ""
 msgid "Remove property"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/properties.phtml:35
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/properties.phtml:29
 msgid "Properties"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/properties.phtml:38
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/properties.phtml:32
 msgid "Key"
 msgstr ""
 
@@ -1144,10 +1082,16 @@ msgstr ""
 msgid "Remove rule"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:41
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:33
 msgid "TDR Rules"
 msgstr ""
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:57
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/snippets/tdrRules.phtml:48
 msgid "Dynamic"
+msgstr ""
+
+msgid "Policy Created: "
+msgstr ""
+
+msgid "Error creating Policy"
 msgstr ""

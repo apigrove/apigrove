@@ -111,6 +111,7 @@ class ApiManager {
         LoggerInterface::log(($insertMode ? "Creating" : "Updating") . " API: {$api->toXML()}\nEndpoint: ($method) $path", LoggerInterface::INFO);
         $reply = $this->restClient->makeCall($path, $method, $api->toXML());
         $xml = simplexml_load_string($reply->getPayload());
+        $api->setId((string) $xml->id);
 
         return $xml;
     }

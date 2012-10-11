@@ -70,6 +70,8 @@ class Flow{
      */
     public $flashMessage;
 
+    public $isSubflow = false;
+
     public function __construct($xmlPath, $uri, &$controller, $controllerName){
         $this->uri = $uri;
         $this->xmlPath = $xmlPath;
@@ -127,7 +129,7 @@ class Flow{
         else if(array_key_exists($action, $this->currentState->transitions)){
             $transition = $this->currentState->transitions[$action];
 
-            // give the message to drupal
+
             if(!empty($transition->flashMessage)){
                 $this->controller->getZendFlashMessenger()->addMessage($transition->flashMessage);
                 $this->flashMessage = $transition->flashMessage;
@@ -149,6 +151,9 @@ class Flow{
             // want to try to transition.
             if(!empty($result)){
                 return $this->process($result);
+            }
+            else if($this->isSubflow && $this->currentState->type === FlowStateType::END){
+                return $action;
             }
         }
         else if(empty($action)){
@@ -255,6 +260,7 @@ class Flow{
 
         $subflow = new Flow($controller->getFlowFile(), $this->uri, $controller, $this->currentState->subflowControllerName);
         $subflow->setFlowScope($this->flowScope);
+        $subflow->isSubflow = true;
 
         return $subflow;
     }
@@ -264,7 +270,7 @@ class Flow{
      * @param $flowScope
      */
     public function setFlowScope(&$flowScope){
-        $this->flowScope = $flowScope;
+        $this->flowScope = &$flowScope;
     }
 
 

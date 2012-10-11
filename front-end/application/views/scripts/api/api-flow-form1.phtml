@@ -116,6 +116,7 @@ $httpMethodDeleteTip = $this->translate("Use HTTP Delete with this API");
 $tdrsEnabledTip = $this->translate("Enable TDRs for this API");
 $tdrsDisabledTip = $this->translate("Disable TDRs for this API");
 $saveButtonTip = $this->translate("Click to post and return to API list");
+$saveButtonAuthTip = $this->translate("Click to save the API and create Auths for it");
 
 ?>
 
@@ -130,7 +131,7 @@ $saveButtonTip = $this->translate("Click to post and return to API list");
         <p><?=$validationErrors["default"]?></p>
     </div>
 <?  endif; ?>
-    <form id="form1" class="well form-horizontal" method="post" data-behavior="confirm" action="<?=$flow->flowURI()?>&_faction=submit">
+    <form id="form1" class="well form-horizontal" method="post" data-behavior="confirm" action="<?=$flow->flowURI()?>">
         <fieldset>
             <div class="control-group <?=isset($validationErrors["name"])?"error":""?>">
                 <label class="control-label" for="input01"><? echo $this->translate("Name")?></label>
@@ -369,7 +370,13 @@ $saveButtonTip = $this->translate("Click to post and return to API list");
                 </span>
             </div>
             <input class="btn" type="submit" value="<? echo $this->translate("Save")?>"
-                rel="tooltip" title="<?=$saveButtonTip?>" data-placement="right"/>
+                rel="tooltip" title="<?=$saveButtonTip?>" data-placement="bottom"/>
+            <? $showSubmitAndAuth = $auth_authKey === 1 || $auth_basic === 1 || $auth_wsse === 1 || $auth_ipWhiteList === 1; ?>
+            <input class="btn" type="submit" value="<? echo $this->translate("Save and Create Auths")?>"
+                            rel="tooltip" title="<?=$saveButtonAuthTip?>" data-placement="right"
+                            onclick="$('#_faction').val('submitAndAuth');"
+                            style="<?=$showSubmitAndAuth?"":"display:none;"?>" id="submitAndAuthButton"/>
+            <input type="hidden" value="submit" name="_faction" id="_faction" value="submit" />
         </fieldset>
     </form>
 </div> <!-- /container -->

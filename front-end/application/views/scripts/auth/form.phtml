@@ -27,6 +27,7 @@ $validationErrors = @$flow->flowScope['validationErrors'];
 $username = "";
 $password = "";
 $howMany = $flow->flowScope['howMany'];
+$authTypeLocked = @$flow->flowScope['authTypeLocked'];
 
 if($auth->type === AuthType::$BASIC){
     $username = $auth->basicAuth->username;
@@ -78,7 +79,8 @@ $saveButtonTip = $this->translate("Post and return to Auth list");
                            value="<?=$auth->id===$this->translate("create")?"":$auth->id?>" <?=($flow->flowScope['isNew'])?"":$this->translate("disabled")?>/>
                 </div>
             </div>
-            <div class="control-group ">
+
+            <div class="control-group " style="<?=empty($authTypeLocked)?"":"display:none;"?>">
                 <label class="control-label" for="authCheck" reado><? echo $this->translate("Type")?></label>
                 <div class="controls">
                     <div class="btn-group" data-toggle="buttons-radio" id="authCheck">

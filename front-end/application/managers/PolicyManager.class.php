@@ -109,7 +109,6 @@ class PolicyManager {
         $xml = simplexml_load_string($reply->getPayload());
         if($reply->getHTTPCode() === "200"){
             if($insertMode){
-                $policy = new Policy();
                 if ($policy->getId() == NULL){
                     $policy->setId((string) $xml->id);
                 }

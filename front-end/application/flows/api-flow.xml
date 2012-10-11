@@ -15,6 +15,7 @@
       <on-enter callback="fill_form"/>
       <transition on="submit" to="validateForm1" />
       <transition on="cancel" to="cancelled" />
+      <transition on="submitAndAuth" to="validateForm1" />
    </state>
 
    <state id="validateForm1" >
@@ -26,7 +27,14 @@
    <state id="apiPost" >
       <on-enter callback="api_post_new"/>
       <transition on="success" to="success" flashMessage="Successfully Created/Updated API"/>
+      <transition on="successAuth" to="authSubflow" />
       <transition on="failed" to="form1"  />
+   </state>
+
+   <state id="authSubflow" subflow="Auth">
+       <on-enter callback="preAuthSubflow" />
+       <transition on="valid" to="success" />
+       <on-exit callback="postAuthSubflow" />
    </state>
 
    <state id="success" view="redirect:/api" type="end"/>
