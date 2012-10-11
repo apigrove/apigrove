@@ -30,7 +30,7 @@ numero=0
 while [ $numero != $nbWait ]
 do
     # Check if component is running
-    result=`$E3_HOME/$SMX_LINK_DIRNAME/bin/client -p $SMX_PWD -u $SMX_USER list | grep "E3 Bundle" | grep Active`
+    result=`$E3_HOME/$SMX_LINK_DIRNAME/bin/client -p $SMX_PWD -u $SMX_USER list | grep "E3 Bundle"`
     if [[ $result = *Failed* ]]; then
         echo "E3 Bundle component failed start"
         exit 1
