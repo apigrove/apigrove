@@ -29,8 +29,8 @@ import java.nio.channels.FileChannel;
 import java.util.Iterator;
 import java.util.List;
 
-import com.alu.e3.common.E3Constant;
 import com.alu.e3.common.logging.CategoryLogger;
+import com.alu.e3.common.tools.CommonTools;
 import com.alu.e3.data.model.Instance;
 import com.alu.e3.installer.NonExistingManagerException;
 
@@ -89,7 +89,7 @@ public class Utilities {
 		Iterator<Instance> iter = instances.iterator();
 		
 		Instance manager = null;
-		
+		logger.debug("Calling getManagerByIP with hostName='{}' and ip='{}'", managerHostName, managerIP);
 		while (!found && iter.hasNext()) {
 			Instance currentInstance = iter.next();
 			String currentIP = currentInstance.getInternalIP();
@@ -97,17 +97,13 @@ public class Utilities {
 				logger.warn("Encountered instance in topology with null internal IP: {}", currentInstance);
 				continue;
 			}
-			if(logger.isDebugEnabled()) {
-				logger.debug("Comparing manager ip '" + managerIP + "' with current instance internal ip '" + currentIP + "'");
-			}
+			logger.debug("Comparing manager ip '{}' with current instance internal ip '{}'", managerIP, currentIP);
+
 			//instance internal ip has to match manager ip or manager hostname (allows to work with both) 
-			//for AIB install, the internalIP for the manager is "localhost", so for AIB allow match on "localhost"
-			if (currentIP.equals(managerIP) || currentIP.equals(managerHostName) || currentIP.equals(E3Constant.localhost)) {
-					//(CommonTools.isLocal(managerIP) && CommonTools.isLocal(currentIP))) {
+			//for AIB install, the internalIP for the manager is "localhost", so also check for case when manager is localhost
+			if (currentIP.equals(managerIP) || currentIP.equals(managerHostName) || 
+					(CommonTools.isLocal(managerIP) && CommonTools.isLocal(currentIP))) {
 				found = true;
-				if(logger.isDebugEnabled()) {
-					logger.debug("Found manager with ip '" + managerIP + "' found");
-				}
 				manager = currentInstance;
 			}
 		}
@@ -116,7 +112,7 @@ public class Utilities {
 			if(logger.isErrorEnabled()) {
 				logger.error("No manager with ip '" + managerIP + "' found");
 			}
-			throw new NonExistingManagerException("No manager with ip '" + managerIP + "' found");
+			throw new NonExistingManagerException("No manager with ip '" + managerIP + "' or hostname '" + managerHostName + "' found");
 		}
 		
 		return manager;
