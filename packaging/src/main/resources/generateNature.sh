@@ -187,11 +187,16 @@ if [ $IS_GATEWAY = 1 ] ; then
 	if [ ! $IS_E3_AIB ] ; then
 		iptables -A E3-Firewall-INPUT -p tcp --dport 15701 -j ACCEPT $SOURCE_RESTICT
 	fi
-	
-	iptables -A E3-Firewall-INPUT -p tcp --dport 25100 -j ACCEPT
-	iptables -A E3-Firewall-INPUT -p tcp --dport 25101 -j ACCEPT
+
+	# Block 25100 and 25101 in nat table here because they must be accepted
+	# further by firewall rules after redirection
+	iptables -t nat -A PREROUTING -p tcp --dport 25100 -j REJECT --reject-with icmp-host-prohibited
+	iptables -t nat -A PREROUTING -p tcp --dport 25101 -j REJECT --reject-with icmp-host-prohibited
 	iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 25100
 	iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 25101
+
+	iptables -A E3-Firewall-INPUT -p tcp --dport 25100 -j ACCEPT
+	iptables -A E3-Firewall-INPUT -p tcp --dport 25101 -j ACCEPT
 	iptables -A OUTPUT -t nat -p TCP --dport 25100 -j REDIRECT --to-ports 80
 	iptables -A OUTPUT -t nat -p TCP --dport 25101 -j REDIRECT --to-ports 443
 fi
@@ -245,23 +250,23 @@ if [ $IS_MANAGER = 1 ] ; then
 	fi	
 fi
 
-iptables -A E3-Firewall-INPUT -p tcp --dport 8888 -j ACCEPT
-iptables -A E3-Firewall-INPUT -p tcp --dport 8889 -j ACCEPT
-iptables -A E3-Firewall-INPUT -p tcp --dport 8988 -j ACCEPT
-
 if [ ! $IS_E3_AIB ] ; then
-    iptables -A E3-Firewall-INPUT -p tcp --dport 8082 -j ACCEPT $SOURCE_RESTICT
+	iptables -A E3-Firewall-INPUT -p tcp --dport 8888 -j ACCEPT
+	iptables -A E3-Firewall-INPUT -p tcp --dport 8889 -j ACCEPT
+	iptables -A E3-Firewall-INPUT -p tcp --dport 8988 -j ACCEPT
+
+	iptables -A E3-Firewall-INPUT -p tcp --dport 8082 -j ACCEPT $SOURCE_RESTICT
     
 	if [ $IS_GATEWAY = 1 ] ; then
-    	iptables -A E3-Firewall-INPUT -p tcp --dport 8083 -j ACCEPT $SOURCE_RESTICT
-    fi
-    
-    if [ $IS_SPEAKER = 1 ] ; then
-	    iptables -A E3-Firewall-INPUT -p tcp --dport 8084 -j ACCEPT $SOURCE_RESTICT
+		iptables -A E3-Firewall-INPUT -p tcp --dport 8083 -j ACCEPT $SOURCE_RESTICT
+	fi
+
+	if [ $IS_SPEAKER = 1 ] ; then
+		iptables -A E3-Firewall-INPUT -p tcp --dport 8084 -j ACCEPT $SOURCE_RESTICT
 	fi
 	
 	if [ $IS_MANAGER = 1 ] ; then
-	    iptables -A E3-Firewall-INPUT -p tcp --dport 8085 -j ACCEPT $SOURCE_RESTICT
+		iptables -A E3-Firewall-INPUT -p tcp --dport 8085 -j ACCEPT $SOURCE_RESTICT
 	fi
 fi
 
