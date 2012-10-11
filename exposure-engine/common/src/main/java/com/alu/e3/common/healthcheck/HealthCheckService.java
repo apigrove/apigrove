@@ -167,6 +167,9 @@ public class HealthCheckService implements IHealthCheckService, Runnable {
 			if (LOG.isDebugEnabled()) {
 				LOG.debug("Exception while checking health service for " + host, e);
 			}
+			
+			// for nightly build testing, I will remove it once the nightly is done
+			LOG.error("Exception while checking health service for " + host, e);
 		}
 		
 		return bCheck;
