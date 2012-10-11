@@ -10,6 +10,9 @@
  * KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
  */
 
+body{
+    padding-top:0px;
+}
 .btn {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
