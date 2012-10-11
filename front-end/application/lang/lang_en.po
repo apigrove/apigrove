@@ -202,7 +202,11 @@ msgid "Please upload a CRL file."
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:27
-msgid "Backend Host is required"
+msgid "Manager Host is required"
+msgstr ""
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:27
+msgid "Gateway Host is required"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:37
@@ -783,7 +787,11 @@ msgid "Only change the settings below if you really know what you are doing"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/config/index.phtml:29
-msgid "Backend Host"
+msgid "Manager Host"
+msgstr ""
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/config/index.phtml:29
+msgid "Gateway Host"
 msgstr ""
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/error/error.phtml:17

@@ -26,11 +26,15 @@ class ConfigController extends Zend_Controller_Action
         if($this->getRequest()->isPost()){
             $c = $this->_getParam('config');
             if(empty($c['manager_host'])){
-                $validationErrors['manager_host'] = $translate->translate("Backend Host is required");
+                $validationErrors['manager_host'] = $translate->translate("Manager host is required");
+            }
+            if(empty($c['gateway_host'])){
+                $validationErrors['gateway_host'] = $translate->translate("Gateway host is required");
             }
 
             if(empty($validationErrors)){
                 $config->manager_host = $c['manager_host'];
+                $config->gateway_host = $c['gateway_host'];
                 $writer = new Zend_Config_Writer_Ini(
                     array('config'=>$config,
                           'filename' => APPLICATION_PATH . '/configs/manager.ini')

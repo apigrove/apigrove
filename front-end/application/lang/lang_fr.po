@@ -226,9 +226,13 @@ msgstr "Il y avait une erreur se le contenu du fichier CRL."
 msgid "Please upload a CRL file."
 msgstr "S'il vous plaît télécharger un fichier CRL."
 
-#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:29
-msgid "Backend Host is required"
-msgstr "Hôte backend est nécessaire"
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:27
+msgid "Manager Host is required"
+msgstr "Gestionnaire est tenu d'accueil"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:27
+msgid "Gateway Host is required"
+msgstr "Hôte passerelle est nécessaire"
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/controllers/ConfigController.php:39
 msgid "Preferences Updated"
@@ -851,8 +855,12 @@ msgstr ""
 "faites"
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/config/index.phtml:29
-msgid "Backend Host"
-msgstr "Hôte backend"
+msgid "Manager Host"
+msgstr "Hôte gestionnaire"
+
+#: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/config/index.phtml:29
+msgid "Gateway Host"
+msgstr "Hôte passerelle"
 
 #: C:\Users\David\Desktop\project_sites\apiGrove/application/views/scripts/error/error.phtml:17
 msgid "Whoops"

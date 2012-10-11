@@ -25,11 +25,24 @@ $validationErrors = $this->validationErrors;
     <? endif ?>
     <form method="POST" class="well form-horizontal">
         <fieldset>
-            <div class="control-group <?=empty($validationErrors['manager_host'])?"":"error"?>">
-                <label class="control-label" for="aghost"><? echo $this->translate("Backend Host")?></label>
+            <div class="control-group <?=empty($validationErrors['manager_host'])?"":"error"?>" id="ctl-group-manager">
+                <label class="control-label" for="aghost"><? echo $this->translate("Manager Host")?></label>
                 <div class="controls">
-                    <input type="text" name="config[manager_host]" id="aghost" value="<?=@$config->manager_host?>"/>
-                    <span class="help-inline"><?=@$validationErrors['manager_host']?></span>
+                    <input type="text" name="config[manager_host]" id="aghost" value="<?=@$config->manager_host?>"
+                            placeholder="127.0.0.1" />
+                    <span class="help-inline">
+                        <?=@$validationErrors['manager_host']?>
+                    </span>
+                </div>
+            </div>
+            <div class="control-group <?=empty($validationErrors['gateway_host'])?"":"error"?>" id="ctl-group-gateway">
+                <label class="control-label" for="gateway_host"><? echo $this->translate("Gateway Host")?></label>
+                <div class="controls">
+                    <input type="text" name="config[gateway_host]" id="gateway_host" value="<?=@$config->gateway_host?>"
+                           placeholder="127.0.0.1" />
+                    <span class="help-inline">
+                        <?=@$validationErrors['gateway_host']?>
+                    </span>
                 </div>
             </div>
             <input type="submit" class="btn btn-primary" value="<? echo $this->translate("Save")?>"/>
