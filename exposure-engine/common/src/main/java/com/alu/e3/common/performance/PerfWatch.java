@@ -53,15 +53,15 @@ public class PerfWatch {
 		
 		if (iterationCount.intValue()>10000)
 		{
+			/* Uncomment for performance measure
 			if (logger.isInfoEnabled())
 			{
 				logger.info(" PerfWatch : " + str + " : " + iterationCount + " iteration in " + (elapsedTime.longValue()/1000000.0) + " ms");
 			}
+			*/
 			
 			iterationCount.set(0);
 			elapsedTime.set(0);
-			
-
 		}
 		
 	}
