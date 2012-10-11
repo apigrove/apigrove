@@ -35,6 +35,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.params.HttpConnectionParamBean;
 import org.apache.http.params.HttpParams;
 
+import com.alu.e3.common.E3Constant;
 import com.alu.e3.common.camel.ExchangeConstantKeys;
 
 public class HttpLoadBalancerProducer extends HttpProducer {
@@ -47,14 +48,14 @@ public class HttpLoadBalancerProducer extends HttpProducer {
 		HttpRequestBase httpRequest = super.createMethod(exchange);
 		HttpParams params = httpRequest.getParams();
 
-		Integer connectionTimeout = exchange.getProperty(ExchangeConstantKeys.E3_HTTP_CONNECTION_TIMEOUT.toString(), Integer.class);
-		Integer socketTimeout = exchange.getProperty(ExchangeConstantKeys.E3_HTTP_SOCKET_TIMEOUT.toString(), Integer.class);
+		Integer connectionTimeout = exchange.getProperty(ExchangeConstantKeys.E3_HTTP_CONNECTION_TIMEOUT.toString(), E3Constant.DEFAULT_HTTP_CONNECTION_TIMETOUT, Integer.class);
+		Integer socketTimeout = exchange.getProperty(ExchangeConstantKeys.E3_HTTP_SOCKET_TIMEOUT.toString(), E3Constant.DEFAULT_HTTP_SOCKET_TIMEOUT, Integer.class);
 
 		HttpConnectionParamBean httpConnectionParamBean = new HttpConnectionParamBean(params);
-		if (connectionTimeout != null)
-			httpConnectionParamBean.setConnectionTimeout(connectionTimeout);
-		if (socketTimeout != null)
-			httpConnectionParamBean.setSoTimeout(socketTimeout);
+		
+		httpConnectionParamBean.setConnectionTimeout(connectionTimeout);
+		
+		httpConnectionParamBean.setSoTimeout(socketTimeout);
 
 		return httpRequest;
 	}

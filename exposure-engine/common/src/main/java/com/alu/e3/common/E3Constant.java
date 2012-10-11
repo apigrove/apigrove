@@ -71,4 +71,7 @@ public class E3Constant {
 	public static final String IS_GATEWAY_PROPERTY_ENTRY = "e3.gateway";
 	
 	public static final String MANAGER_IP_REPLACE_PATTERN = "%IP%";
+	
+	public static final int DEFAULT_HTTP_CONNECTION_TIMETOUT = 5000;
+	public static final int DEFAULT_HTTP_SOCKET_TIMEOUT = 2000;
 }
