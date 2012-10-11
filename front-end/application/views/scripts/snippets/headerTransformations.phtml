@@ -29,7 +29,7 @@ $hdrTransRemoveTip = $translate->translate("Remove header transformation");
 
 for($count = 0; $count <= count($headerTransformations); $count++):
     $ht = @$headerTransformations[$count]; if(empty($ht)) $ht = new HeaderTransformation();?>
-<div class="control-group headerTrans <?=!empty($validationErrors['header'][$count])?"error":""?>" count="<?=$i?>" id="headerTransGroup<?=$count?>">
+<div class="control-group headerTrans <?=!empty($validationErrors['header'][$count])?"error":""?>" count="<?=$count?>" id="headerTransGroup<?=$count?>">
     <? if ($count === 0): ?>
     <label class="control-label" for="headerTrans"><? echo $translate->translate("Header Transformations")?></label>
     <? endif ?>

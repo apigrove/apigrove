@@ -345,10 +345,10 @@ $saveButtonTip = $this->translate("Click to post and return to API list");
                     </div>
                 </div>
                 <div id="propertyGroup">
-                    <? SharedViewUtility::includePropertiesSnippet($policy->properties, $validationErrors); ?>
+                    <? SharedViewUtility::includePropertiesSnippet($api->properties, $validationErrors); ?>
                 </div>
                 <div id="headerTransGroup">
-                    <? SharedViewUtility::includeHeaderTransformationsSnippet($policy->headerTransformations, $validationErrors); ?>
+                    <? SharedViewUtility::includeHeaderTransformationsSnippet($api->headerTransformations, $validationErrors); ?>
                 </div>
                 <div id="tdrRuleGroup">
                     <div class="control-group" >

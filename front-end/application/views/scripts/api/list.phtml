@@ -48,7 +48,7 @@ $editLinkTip = $this->translate("Select to edit API");
             <div class="listItem">
                 <div class="item-div pull-left">
                     <label class="item1" rel="tooltip" title="<?=$editLinkTip?>"><p>
-                    <a id="edit-<?=$name?>" href="api/<?=$id?>"><strong><?if(strlen($name) > 15){ echo substr($name, 0, 15) . "...";}else{ echo $name;} ;?></strong></a>
+                    <a id="edit-<?=$endpoint?>" href="api/<?=$id?>"><strong><?if(strlen($name) > 15){ echo substr($name, 0, 15) . "...";}else{ echo $name;} ;?></strong></a>
                     </p></label>
                 </div>
                 <div class="item-div pull-left"><span class="item2"><p><?if(strlen($endpoint) > 15){ echo substr($endpoint, 0, 15) . "...";}else{ echo $endpoint;} ;?></p></span></div>
@@ -62,7 +62,7 @@ $editLinkTip = $this->translate("Select to edit API");
                 ?>
                 <div class="item-div pull-left">
                         <span class="item5">
-                            <a href="/api/<?=$api->getId()?>/delete" class="btn btn-danger delete" id="delete-<?=$api->getId()?>"><? echo $this->translate("Delete")?></a>
+                            <a href="/api/<?=$api->getId()?>/delete" class="btn btn-danger delete" id="delete-<?=$endpoint?>"><? echo $this->translate("Delete")?></a>
                         </span>
                 </div>
             </div>
