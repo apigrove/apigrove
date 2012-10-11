@@ -6,7 +6,7 @@
   <groupId>com.alu.e3</groupId>
   <artifactId>e3-bundle</artifactId>
   <name>E3 Bundle</name>
-  <version>0.0.0.2962</version>
+  <version>0.0.1.2962</version>
   
   <packaging>bundle</packaging>
   
