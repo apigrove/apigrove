@@ -141,10 +141,12 @@ public class HealthCheckService implements IHealthCheckService, Runnable {
 					// listening our answer.
 					LOG.debug("Communication problem", e);
 				}
+				LOG.error("Communication problem " + e.getMessage());
 			} catch (IOException e) {
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("IO problem", e);
 				}
+				LOG.error("IO problem " + e.getMessage());
 			}
 		}
 	}
@@ -164,6 +166,7 @@ public class HealthCheckService implements IHealthCheckService, Runnable {
 			clientSocket.close();
 			
 		} catch (Exception e) {
+			LOG.error("check problem " + e.getMessage());
 		}
 		
 		return bCheck;
