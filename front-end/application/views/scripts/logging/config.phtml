@@ -19,14 +19,19 @@
  */
 require_once APPLICATION_PATH . '/models/LogConfig.class.php';
 ?>
-
+<?$t = new Zend_Translate(
+    'gettext',  //the adapter
+    APPLICATION_PATH.'/lang', //where the lang files will be stored
+    'auto',  //set to auto include .mo files
+    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
+);?>
 <div class="container">
-    <h1>Logging Configuration</h1>
+    <h1><? echo $t->_("Logging Configuration")?></h1>
     <? if($this->warning){print $this->warning;}?>
     <div class="well">
     <form class="form-horizontal" id="java_form" action="/logging/config" method="POST">
         <fieldset>
-            <label class="control-label"><strong>Java Log Level</strong></label>
+            <label class="control-label"><strong><? echo $t->_("Java Log Level")?></strong></label>
             <div class="btn-toolbar">
             <div class="btn-group controls" data-toggle="buttons-radio" id="java_level_buttons" style="margin-left:40px;">
                 <?php foreach (LogConfig::$log4JLevels as $level): ?>
@@ -36,7 +41,7 @@ require_once APPLICATION_PATH . '/models/LogConfig.class.php';
                 <input type="hidden" id="log_level_java" name="log_level[java]" value="<?php echo $this->javaLogLevel; ?>" />
             </div>
             <div class="btn-group">
-            <input type="submit" class="btn btn-inverse" value="Save" />
+            <input type="submit" class="btn btn-inverse" value="<? echo $t->_("Save")?>" />
             </div>
 <!--        <label>Current level: --><?php //echo $this->escape($this->javaLogLevel); ?><!--</label>-->
         </fieldset>
@@ -44,7 +49,7 @@ require_once APPLICATION_PATH . '/models/LogConfig.class.php';
 
     <form class="form-horizontal" id="smx_form" action="/logging/config" method="POST">
         <fieldset>
-            <label class="control-label"><strong>ServiceMix Log Level</strong></label>
+            <label class="control-label"><strong><? echo $t->_("ServiceMix Log Level")?></strong></label>
             <div class="btn-toolbar">
             <div class="btn-group controls" data-toggle="buttons-radio" id="smx_level_buttons" style="margin-left:40px;">
                 <?php foreach (LogConfig::$log4JLevels as $level): ?>
@@ -54,7 +59,7 @@ require_once APPLICATION_PATH . '/models/LogConfig.class.php';
                 <input type="hidden" id="log_level_smx" name="log_level[smx]" value="<?php echo $this->smxLogLevel; ?>" />
             </div>
             <div class="btn-group">
-                <input type="submit" class="btn btn-inverse" value="Save" />
+                <input type="submit" class="btn btn-inverse" value="<? echo $t->_("Save")?>" />
             </div>
 <!--            <label>Current level: --><?php //echo $this->smxLogLevel ?><!--</label>-->
         </fieldset>
@@ -62,7 +67,7 @@ require_once APPLICATION_PATH . '/models/LogConfig.class.php';
 
     <form class="form-horizontal" id="syslog_form" action="/logging/config" method="POST">
         <fieldset>
-            <label class="control-label"><strong>Syslog Log Level</strong></label>
+            <label class="control-label"><strong><? echo $t->_("Syslog Log Level")?></strong></label>
             <div class="btn-toolbar">
             <div class="btn-group controls" data-toggle="buttons-radio" id="syslog_level_buttons" style="margin-left:40px;">
                 <?php foreach (LogConfig::$syslogLevels as $level): ?>
@@ -72,14 +77,14 @@ require_once APPLICATION_PATH . '/models/LogConfig.class.php';
                 <input type="hidden" id="log_level_syslog" name="log_level[syslog]" value="<?php echo $this->syslogLogLevel; ?>" />
             </div>
             <div class="btn-group">
-                <input type="submit" class="btn btn-inverse" value="Save" />
+                <input type="submit" class="btn btn-inverse" value="<? echo $t->_("Save")?>" />
             </div>
         </fieldset>
     </form>
 
     <form class="form-horizontal" id="categories_form" action="/logging/config" method="POST">
         <fieldset>
-            <label class="control-label"><strong>Logging Categories</strong></label>
+            <label class="control-label"><strong><? echo $t->_("Logging Categories")?></strong></label>
             <div class="btn-toolbar">
             <div class="btn-group controls" data-toggle="buttons-checkbox" id="category_buttons" style="margin-left:40px;">
                 <?php foreach ($this->loggingCategories as $category): ?>
@@ -93,7 +98,7 @@ require_once APPLICATION_PATH . '/models/LogConfig.class.php';
                 <?php endforeach ?>
             </div>
                 <div class="btn-group">
-                <input type="submit" class="btn btn-inverse" value="Save" />
+                <input type="submit" class="btn btn-inverse" value="<? echo $t->_("Save")?>" />
             </div>
         </fieldset>
     </form>

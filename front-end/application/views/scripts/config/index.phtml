@@ -14,10 +14,15 @@
 $config = $this->config;
 $validationErrors = $this->validationErrors;
 ?>
-
+<?$t = new Zend_Translate(
+    'gettext',  //the adapter
+    APPLICATION_PATH.'/lang', //where the lang files will be stored
+    'auto',  //set to auto include .mo files
+    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
+);?>
 <div class="container">
-    <h1>Preferences</h1>
-    <p>Only change the settings below if you really know what you are doing :)</p>
+    <h1><? echo $t->_("Preferences")?></h1>
+    <p><? echo $t->_("Only change the settings below if you really know what you are doing")?> :)</p>
     <? if(!empty($this->flashMessage)): ?>
     <div class="control-group success"><span class="help-block"><?=$this->flashMessage?></span></div>
     <? endif ?>
@@ -27,13 +32,13 @@ $validationErrors = $this->validationErrors;
     <form method="POST" class="well form-horizontal">
         <fieldset>
             <div class="control-group <?=empty($validationErrors['manager_host'])?"":"error"?>">
-                <label class="control-label" for="aghost">Backend Host</label>
+                <label class="control-label" for="aghost"><? echo $t->_("Backend Host")?></label>
                 <div class="controls">
                     <input type="text" name="config[manager_host]" id="aghost" value="<?=@$config->manager_host?>"/>
                     <span class="help-inline"><?=@$validationErrors['manager_host']?></span>
                 </div>
             </div>
-            <input type="submit" class="btn btn-primary" value="Save"/>
+            <input type="submit" class="btn btn-primary" value="<? echo $t->_("Save")?>"/>
         </fieldset>
     </form>
 </div>

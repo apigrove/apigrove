@@ -16,10 +16,16 @@
  */
 $auths = $this->auths;
 ?>
+<?$t = new Zend_Translate(
+    'gettext',  //the adapter
+    APPLICATION_PATH.'/lang', //where the lang files will be stored
+    'auto',  //set to auto include .mo files
+    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
+);?>
 <div class="container">
     <div class="hero-unit">
-        <h1>Auths</h1>
-        <p>Choose an Auth from the list below to edit</p>
+        <h1><? echo $t->_("Auths")?></h1>
+        <p><? echo $t->_("Choose an Auth from the list below to edit")?></p>
     </div>
     <? if(!empty($this->messages)): ?>
     <div class="control-group success">
@@ -33,9 +39,9 @@ $auths = $this->auths;
     <div class="well">
         <div id="list">
             <div class="listItem">
-                <div class="item-div pull-left"><span class="item1"><strong>Auth ID</strong></span></div>
-                <div class="item-div pull-left"><span class="item2"><strong>Type</strong></span></div>
-                <div class="item-div pull-left"><span class="item3"><strong>Details</strong></span></div>
+                <div class="item-div pull-left"><span class="item1"><strong><? echo $t->_("Auth ID")?></strong></span></div>
+                <div class="item-div pull-left"><span class="item2"><strong><? echo $t->_("Type")?></strong></span></div>
+                <div class="item-div pull-left"><span class="item3"><strong><? echo $t->_("Details")?></strong></span></div>
                 <div class="item-div pull-left" align="center"><span class="item4"><a href="/auth/create" class="btn btn-success">+</a></div>
             </div>
             <? foreach($auths as $auth){?>
@@ -61,7 +67,7 @@ $auths = $this->auths;
                     }?></span></div>
                 <div class="item-div pull-left" align="center">
                       <span class="item4">
-                      <a class="btn btn-danger delete" href="/auth/<?=$auth->id?>/delete" id="delete-<?=$auth->id?>">Delete</a>
+                      <a class="btn btn-danger delete" href="/auth/<?=$auth->id?>/delete" id="delete-<?=$auth->id?>"><? echo $t->_("Delete")?></a>
                       </span>
                 </div>
             </div>

@@ -23,20 +23,26 @@ $keys = @array_keys($properties);
 $values = @array_values($properties);
 for($i = 0; $i <= count($properties); $i++):
 ?>
+<?$t = new Zend_Translate(
+    'gettext',  //the adapter
+    APPLICATION_PATH.'/lang', //where the lang files will be stored
+    'auto',  //set to auto include .mo files
+    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
+);?>
 
-<div class="control-group property <?= !empty($validationErrors['property'][$i])?"error":""?>" id="propertyGroup<?=$i?>">
+<div class="control-group property <?= !empty($validationErrors['property'][$i])?"error":""?>" count="<?=$i?>" id="propertyGroup<?=$i?>">
     <? if($i === 0): ?>
-    <label class="control-label" for="properties<?=$i?>">Properties</label>
+    <label class="control-label" for="properties<?=$i?>"><? echo $t->_("Properties")?></label>
     <? endif ?>
     <div class="controls">
-        <input type="text" class="input-small" placeholder="Key"
+        <input type="text" class="input-small" placeholder="<? echo $t->_("Key")?>"
                id="properties<?=$i?>" name="property[<?=$i?>][name]" value="<?=@$keys[$i]?>">
-        <input type="text" class="input-small" placeholder="Value"
+        <input type="text" class="input-small" placeholder="<? echo $t->_("Value")?>"
                name="property[<?=$i?>][value]" value="<?=@$values[$i]?>">
         <? if($i === 0): ?>
-        <button class="btn newItem" type="property" title="Add additional property" id="propertyPlus"><i class="icon-plus"></i></button>
+        <button class="btn newItem" type="property" title="<? echo $t->_("Add additional property")?>" id="propertyPlus"><i class="icon-plus"></i></button>
         <? else: ?>
-        <button class="btn removeItem" type="property" number="<?=$i?>" title="Remove property"><i class="icon-minus"></i></button>
+        <button class="btn removeItem" type="property" number="<?=$i?>" title="<? echo $t->_("Remove property")?>"><i class="icon-minus"></i></button>
         <? endif ?>
         <span class="help-inline">
         <?if(!empty($validationErrors['property'][$i])):

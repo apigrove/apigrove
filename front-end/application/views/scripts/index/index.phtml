@@ -12,17 +12,23 @@
  */
 
 ?>
+<?$t = new Zend_Translate(
+    'gettext',  //the adapter
+    APPLICATION_PATH.'/lang', //where the lang files will be stored
+    'auto',  //set to auto include .mo files
+    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
+);?>
 <? if(Zend_Auth::getInstance()->getIdentity() == null): ?>
 <div class="sidebar" align="right">
     <form method="POST" class="form-horizontal" action="/login">
         <fieldset>
             <div class="control-group">
-                    <input type="text" class="input-medium" name="username" id="username" placeholder="Username"/>
+                    <input type="text" class="input-medium" name="username" id="username" placeholder="<? echo $t->_("Username")?>"/>
             </div>
             <div class="control-group">
-                    <input type="password" class="input-medium" name="password" id="password" placeholder="Password"/>
+                    <input type="password" class="input-medium" name="password" id="password" placeholder="<? echo $t->_("Password")?>"/>
             </div>
-            <input type="submit" class="btn btn-inverse" value="Login"/>
+            <input type="submit" class="btn btn-inverse" value="<? echo $t->_("Login")?>"/>
         </fieldset>
     </form>
 </div>
@@ -30,11 +36,11 @@
     <span class="hero-logo center"></span>
     <div style="width:80%" class="center">
         <div class="page-header" align='center'>
-            <h1>Welcome to apiGrove</h1>
+            <h1><? echo $t->_("Welcome to apiGrove")?></h1>
         </div>
         <div class="well well-small">
-            <p style="font-size: 18px;">The graphical interface to apiGrove does not provide all the capability of the command line tools, but it will handle most common tasks.</p>
-            <p style="font-size: 18px;">For tutorials, please see the <a href="https://github.com/apigrove/apigrove/tree/master/Documentation">documentation</a> in the apiGrove GitHub repository. If you have questions or feedback, please see the <a href="http://apigrove.net/forum/">apiGrove Forum</a>.</p>
+            <p style="font-size: 18px;"><? echo $t->_("The graphical interface to apiGrove does not provide all the capability of the command line tools, but it will handle most common tasks.")?></p>
+            <p style="font-size: 18px;"><? echo $t->_("For tutorials, please see the ")?><a href="https://github.com/apigrove/apigrove/tree/master/Documentation"><? echo $t->_("documentation")?></a> <? echo $t->_("in the apiGrove GitHub repository. If you have questions or feedback, please see the")?> <a href="http://apigrove.net/forum/"><? echo $t->_("apiGrove Forum")?></a>.</p>
         </div>
     </div>
 </div>

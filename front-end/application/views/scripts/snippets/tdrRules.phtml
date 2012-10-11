@@ -28,9 +28,15 @@ for($i = 0; $i <= $totalCount; $i++):
         $rule = new stdClass();
     }
     ?>
-<div class="control-group tdrRule <?=!empty($validationErrors['tdr'][$i])?"error":""?>" id="tdrRuleGroup<?=$i?>">
+<?$t = new Zend_Translate(
+    'gettext',  //the adapter
+    APPLICATION_PATH.'/lang', //where the lang files will be stored
+    'auto',  //set to auto include .mo files
+    array('scan' => Zend_Translate::LOCALE_FILENAME) //set to scan lang files
+);?>
+<div class="control-group tdrRule <?=!empty($validationErrors['tdr'][$i])?"error":""?>" count="<?=$i?>" id="tdrRuleGroup<?=$i?>">
     <? if($i === 0): ?>
-    <label class="control-label" for="tdrRules">TDR Rules</label>
+    <label class="control-label" for="tdrRules"><? echo $t->_("TDR Rules")?></label>
     <? endif ?>
     <div class="controls">
         <input type="text" class="input-small" placeholder="Name" name="tdr[<?=$i?>][name]" id="tdrRules" value="<?=@$rule->tdrPropName?>">
@@ -43,16 +49,16 @@ for($i = 0; $i <= $totalCount; $i++):
         ?>
         <select class="input-small tdrType" name="tdr[<?=$i?>][type]" item="<?=$i?>">
             <option>Type</option>
-            <option <?= $selected == 1?"selected":""?>>Property</option>
-            <option <?= $selected == 2?"selected":""?>>Static</option>
-            <option <?= $selected == 3?"selected":""?>>Dynamic</option>
+            <option <?= $selected == 1?"selected":""?>><? echo $t->_("Property")?></option>
+            <option <?= $selected == 2?"selected":""?>><? echo $t->_("Static")?></option>
+            <option <?= $selected == 3?"selected":""?>><? echo $t->_("Dynamic")?></option>
         </select>
         <? $showExtractFrom = ($rule instanceof DynamicTdr); ?>
         <select class="input-small" name="tdr[<?=$i?>][extractFrom]" style="<?=$showExtractFrom?"":"display: none;"?> width: 120px;" id="tdrRuleExtractFrom<?=$i?>">
             <option>Extract From</option>
             <? /** @var StaticTdr $rule */?>
-            <option <?= @$rule->extractFrom===TdrRuleExtractFrom::REQUEST?"selected":""?>>Request</option>
-            <option <?= @$rule->extractFrom===TdrRuleExtractFrom::RESPONSE?"selected":""?>>Response</option>
+            <option <?= @$rule->extractFrom===TdrRuleExtractFrom::REQUEST?"selected":""?>><? echo $t->_("Request")?></option>
+            <option <?= @$rule->extractFrom===TdrRuleExtractFrom::RESPONSE?"selected":""?>><? echo $t->_("Response")?></option>
         </select>
         <? $value = "";
         if($rule instanceof StaticTdr){
@@ -63,12 +69,12 @@ for($i = 0; $i <= $totalCount; $i++):
             $value = $rule->httpHeaderName;
         }
         ?>
-        <input type="text" class="input-small" placeholder="Value"
+        <input type="text" class="input-small" placeholder="<? echo $t->_("Value")?>"
                name="tdr[<?=$i?>][value]" value="<?=$value?>" id="tdrRuleValue<?=$i?>" style="width: 120px">
         <? if($i === 0): ?>
-        <button class="btn newItem" type="tdrRule" title="Add additional property" id="tdrPlus"><i class="icon-plus"></i></button>
+        <button class="btn newItem" type="tdrRule" title="<? echo $t->_("Add additional property")?>" id="tdrPlus"><i class="icon-plus"></i></button>
         <? else: ?>
-        <button class="btn removeItem" type="tdrRule" number="<?=$i?>" title="Remove property"><i class="icon-minus"></i></button>
+        <button class="btn removeItem" type="tdrRule" number="<?=$i?>" title="<? echo $t->_("Remove property")?>"><i class="icon-minus"></i></button>
         <? endif ?>
         <span class="help-inline">
                 <?if(!empty($validationErrors['tdr'][$i])):
