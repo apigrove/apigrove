@@ -7,6 +7,16 @@ source $DIR/variables.sh
 
 PATH_TO_TAR_GZ=$1
 
+#checking the update with --force mode activated
+FORCE=false
+for i in $*
+do
+	if [ "$i" = "--force" ] || [ "$i" = "-f" ]
+	then
+		FORCE=true
+	fi
+done
+
 # Checking if path is absolute
 if [[ $PATH_TO_TAR_GZ = /* ]]
 then
@@ -36,6 +46,25 @@ then
     exit 1
 fi
 
-# Call install
-sh $DIR/install_e3_cluster.sh $PATH_TO_TAR_GZ
+
+#checking the parameter
+if [ "$FORCE" = "true" ]
+then
+    echo "update process started with '--force' option"
+	# Call install
+	sh $DIR/install_e3_cluster.sh $PATH_TO_TAR_GZ 
+else
+	# Call update
+	sh $DIR/install_e3_cluster.sh $PATH_TO_TAR_GZ --update
+fi
+
+
+if [ $? != 0 ]
+then
+    echo "Upgrade failed, exiting"
+    exit 1
+fi
+
+
+
 

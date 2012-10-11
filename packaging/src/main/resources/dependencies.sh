@@ -5,6 +5,14 @@ DIR=`dirname $ABS_PATH_NAME`
 
 source $DIR/variables.sh
 
+#checking running mode
+if [ "$1" = "--update" ]
+then
+	MODE=update
+else
+	MODE=install
+fi
+
 # this function installs java if java is not present in OS
 function redhat_java {
     # Get input parameters
@@ -138,8 +146,20 @@ function universal_esb {
         service karaf-service stop
 		rm -rf $E3_HOME/$SMX_LINK_DIRNAME
         rm -rf $E3_HOME/$ESB_NAME
-        rm -f $MODE_CONF_PATH
-		rm -f $E3_HOME/topology.xml
+		#removing configuration file id update if option is activated
+		if [ "$MODE" = "update" ]
+		then
+			sh $DIR/mergeProperties.sh $MODE_CONF_PATH $DIR/configuration.properties
+			
+			if [ $? != 0 ]
+			then
+				echo "error during merge process of configuration file"
+				exit 1
+			fi			
+		else
+			rm -f $MODE_CONF_PATH
+		fi
+        rm -f $E3_HOME/topology.xml
 		rm -f $E3_HOME/system_topology.xml
 		rm -f $E3_HOME/installer-config.xml
 		rm -rf $E3_HOME/TDR_ProcessScript

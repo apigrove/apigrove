@@ -11,6 +11,16 @@ then
     exit 1
 fi
 
+#checking the update mode activated
+UPDATE=false
+for i in $*
+do
+	if [ "$i" = "--update" ]
+	then
+		UPDATE=true
+	fi
+done
+
 # treat the manager ip parameter passed through the option -ip
 if [ "$1" = "-ip" ]
 then
@@ -24,7 +34,16 @@ fi
 useradd $USER -d "$E3_HOME" -m -s "/bin/bash"
   
 if [ -e $DIR/dependencies.sh ] ; then
-	sh $DIR/dependencies.sh
+	
+	if [ "$UPDATE" = "true" ]
+	then
+		echo "install.sh running in udpdate mode"
+		sh $DIR/dependencies.sh --update
+	else
+		echo "install.sh running in install mode"
+		sh $DIR/dependencies.sh
+	fi
+	
 	if [ $? != 0 ]
 	then
 		echo "Unable to assume the dependencies"

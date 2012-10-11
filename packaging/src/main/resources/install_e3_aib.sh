@@ -7,7 +7,16 @@ source $DIR/variables.sh
 
 export IS_E3_AIB=1
 
-sh $DIR/install.sh manager gateway
+#checking if it's a update process or not
+if [ "$1" = "--update" ]
+then
+	echo "install_e3_aib.sh running in update mode"
+    sh $DIR/install.sh manager gateway --update
+else
+	echo "install_e3_aib.sh running in install mode"
+	sh $DIR/install.sh manager gateway
+fi
+
 if [ $? != 0 ]
 then
     echo "E3 manager/gateway installation failed, exiting"

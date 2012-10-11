@@ -13,6 +13,18 @@ fi
 
 PATH_TO_TAR_GZ=$1
 
+
+#checking the update mode activated
+UPDATE=false
+for i in $*
+do
+	if [ "$i" = "--update" ]
+	then
+		UPDATE=true
+	fi
+done
+
+
 if [[ $PATH_TO_TAR_GZ = /* ]]
 then
 	if [ ! -e $PATH_TO_TAR_GZ ]
@@ -27,7 +39,15 @@ fi
 
 
 # Install manager
-sh $DIR/install.sh manager
+if [ "$UPDATE" = "true" ]
+then
+	echo "install.sh running in udpdate mode"
+	sh $DIR/install.sh manager --update
+else
+	echo "install.sh running in install mode"
+	sh $DIR/install.sh manager
+fi
+
 if [ $? != 0 ]
 then
     echo "E3 manager installation failed, exiting"
