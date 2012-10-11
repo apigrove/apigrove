@@ -40,6 +40,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -109,6 +110,13 @@ public class LogCollector implements Callable<Long> {
 	// Reader should ignore these files - collector is currently writing
 	private static final String workingFileSuffix = "~";	
 		
+	// Each logCollector instance gets its own serial number
+	// A class-static atomic variable keeps the serial numbers unique
+	private static final AtomicLong serialNumber = new AtomicLong();
+	private static long generateSerialNumber() { return serialNumber.getAndIncrement(); }
+	private static final AtomicLong lastCompletedCollector = new AtomicLong();
+	private final long collectorSerialNumber;
+	
 	// Each collector can have its own topology (we could split large
 	// topologies for collection by multiple collectors)
 	private final ITopology topology;
@@ -161,6 +169,17 @@ public class LogCollector implements Callable<Long> {
 	public LogCollector(ITopology topology) 
 	{
 		this.topology = topology;
+		this.collectorSerialNumber = LogCollector.generateSerialNumber();
+	}
+	
+	public long getCollectorID()
+	{
+		return collectorSerialNumber;
+	}
+	
+	public static long getLastCollectorID() 
+	{
+		return lastCompletedCollector.longValue();
 	}
 	
 	/**
@@ -192,14 +211,16 @@ public class LogCollector implements Callable<Long> {
 	 */
 	public long collectAllLogs(long waitTimeout, TimeUnit unit) throws InterruptedException, TimeoutException, NonExistingManagerException
 	{
-		if(logger.isDebugEnabled()) {
-			logger.debug("Launching system-manager log-file collection ...");
-		}
+		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss z");
+		String launchDate = dateFormat.format(new Date());
+		logger.debug("Launching system-manager log-file collection ({}) ...", launchDate);
+
 		if (!LogCollector.writerLock.tryLock(waitTimeout, unit)) {
 			logger.warn("Attempt to run log collector but cannot acquire lock (another collection must be running)");
 			throw new TimeoutException("Timeout waiting to acquire log collector write lock");
 		}
 		long collectionCount = 0L;
+		logger.debug("LogCollector ID: {}", getCollectorID());
 
 		try {
 			Set<String> visitedIPs = new HashSet<String>();
@@ -211,8 +232,7 @@ public class LogCollector implements Callable<Long> {
 				return 0L;
 			}
 
-			// Iterate through all instances in the current topology
-			
+			// Iterate through all instances in the current topology			
 			Instance logCollectorInstance = Utilities.getManagerByIP(CommonTools.getLocalHostname(), CommonTools.getLocalAddress(),  topology.getInstancesByType(E3Constant.E3MANAGER), logger);
 			List<Instance> instances = getInstanceList(this.topology);
 			if(logger.isDebugEnabled()) {
@@ -278,7 +298,10 @@ public class LogCollector implements Callable<Long> {
 						}
 					}
 				}
-
+				// At this point the collection has "completed", even if IOExceptions could have
+				// occurred and been caught above
+				LogCollector.lastCompletedCollector.set(getCollectorID());
+				logger.debug("Completed log collection with ID: {} ({})", getCollectorID(), dateFormat.format(new Date()));
 			}
 		} finally {
 			LogCollector.writerLock.unlock();
@@ -760,7 +783,7 @@ public class LogCollector implements Callable<Long> {
 			logger.warn("Localhost log-config file ({}) does not specify servicemix log location, using default", LoggingUtil.defaultConfigPath);
 			logFilePath = LoggingUtil.defaultSMXLogPath;
 		}
-   		logger.trace("smx log file path {}", logFilePath);
+   		logger.trace("local smx log file path {}", logFilePath);
 	   	File smxLogFile = new File(logFilePath);
 	   	logLines = execTailOnFile(smxLogFile, numLines);
    		if (logLines != null) {
@@ -774,7 +797,7 @@ public class LogCollector implements Callable<Long> {
 			logFilePath = NonJavaLogger.defaultLogFilePath;
 			logger.warn("Localhost syslog-config file does not specify an E3-specific log location, using default: {}", LoggingUtil.defaultLogPath);
 	   	}
-	   	logger.trace("syslog file path: {}", logFilePath);
+	   	logger.trace("local syslog file path: {}", logFilePath);
 	   	logFile = new File(logFilePath);
 	   	logLines = execTailOnFile(logFile, numLines);
    		if (logLines != null) {
@@ -919,36 +942,47 @@ public class LogCollector implements Callable<Long> {
 		} else if (numLines == 0) {
 			return "";
 		}
-		Process p = new ProcessBuilder("/usr/bin/tail", "-n " + numLinesArg, file.getAbsolutePath()).start();
+		ProcessBuilder processBuilder = new ProcessBuilder("/usr/bin/tail", "-n " + numLinesArg, file.getAbsolutePath());
+		File workingDirectory = file.getParentFile();
+		if (workingDirectory != null) {
+			processBuilder.directory(workingDirectory);
+		}
+		Process p = processBuilder.start();
+		
+		// Get tail's output: its InputStream
+		InputStream is = p.getInputStream();
+		InputStreamReader isr = new InputStreamReader(is);
+		BufferedReader reader = new BufferedReader(isr); 
+		StringBuilder sb = new StringBuilder();
+		String line;
+
+		if (reader != null) {
+			try {
+				while ((line = reader.readLine()) != null) {
+					sb.append(line).append("\n");
+				}
+			} finally {
+				try {
+					if (reader != null) {
+						reader.close();
+					}
+					if (is != null) {
+						is.close();
+					}
+				} catch (IOException ioe) {
+					// Nothing to do on close exception
+				}
+			}
+		}
+		/*		
+		 // We only need to wait for p to finish if we want the exit value
 		try {
 			p.waitFor();
 		} catch (InterruptedException ex) {
 			logger.warn("Tail on logfile {} interrupted!", file.getAbsoluteFile());
 		}
-		logger.trace("Tail process exited with code {} ", String.valueOf(p.exitValue()));
-		// Get tail's output: its InputStream
-		InputStream is = p.getInputStream();
-		BufferedReader reader = null; 
-
-		StringBuilder sb = new StringBuilder();
-		try {
-			reader = new BufferedReader(new InputStreamReader(is));
-
-			String s;
-			while ((s = reader.readLine()) != null) {
-				sb.append(s + "\n");
-			}
-			is.close();
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException ioe) {
-					// Nothing to do
-				}
-			}
-		}
-
+		logger.debug("Tail process exited with code {} ", String.valueOf(p.exitValue()));
+		*/
 		return sb.toString();
 	}
 

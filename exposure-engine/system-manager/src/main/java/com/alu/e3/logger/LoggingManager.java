@@ -478,7 +478,7 @@ public class LoggingManager implements IDataManagerListener, IEntryListener<Stri
     {
     	LogLevel logLevel = null;
     	if(logger.isDebugEnabled()) {
-    		logger.debug("rest-api call to getLogLevel");
+    		logger.debug("rest-api call to getSMXLogLevel");
     	}
     	try {
 			// The parameterless (no instanceId) version could get either the
