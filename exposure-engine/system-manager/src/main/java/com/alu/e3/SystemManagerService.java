@@ -89,6 +89,7 @@ public class SystemManagerService {
 		File dstConfigFile = new File(configFilePath);
 		File dstTopologyFile = new File(topologyFilePath);
 
+		StringBuffer warnings = new StringBuffer();
 
 
 		try {
@@ -100,7 +101,7 @@ public class SystemManagerService {
 			}
 			
 			Installer installer = new Installer(srcConfigFile.getAbsolutePath(), tmpTopology, springContextBootstrapper);
-			installer.deploy();
+			installer.deploy(warnings);
 			
 			if(logger.isDebugEnabled()) {
 				logger.debug("Installation of all topology targets done.");
@@ -116,7 +117,7 @@ public class SystemManagerService {
 				logger.debug("No listening on the topology.");
 			}
 				
-			return Response.ok("Install successful").build();
+			return Response.ok("Install successful").entity(warnings.toString()).build();
 			
 		} catch (Exception e) {
 			
@@ -125,6 +126,9 @@ public class SystemManagerService {
 			}
 			
 			String result = "Path = " + pathToConfigFilesDirectory + "\n\n";
+			result += "Warnings:\n";
+			result += warnings.toString();
+			result += "\n\nError:\n";
 			result += e.getMessage();
 			result += "\n\n";
 			result += Utilities.getStackTrace(e);

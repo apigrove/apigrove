@@ -24,9 +24,12 @@ REPLACE_STRING=$DIR
 
 FILE=$FEATURES
 
+# create features.xml each time from the template
+cp -f $FEATURES_TMPL $FEATURES
+
 EXPR="s#${SEARCH_STRING}#${REPLACE_STRING}#g"
 
-sed -i -e  $EXPR $FILE
+sed -i -e  $EXPR $FEATURES
 
 # Default Key/Cert file installation ...
 DEFAULT_KEY_CERT_LOCATION=$E3_HOME/.grove

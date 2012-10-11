@@ -72,7 +72,7 @@
 		<file>
 			<source>${basedir}/target/classes/Template_features.xml</source>
 			<outputDirectory>features</outputDirectory>
-			<destName>features.xml</destName>
+			<destName>Template_features.xml</destName>
 		</file>
 		<file>
 			<source>${basedir}/packaging/src/main/resources/karaf-wrapper.conf</source>

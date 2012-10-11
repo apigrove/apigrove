@@ -32,6 +32,14 @@ fi
 
 # create the user $USER
 useradd $USER -d "$E3_HOME" -m -s "/bin/bash"
+
+# moved up before dependencies.sh to create features.xml first
+sh $DIR/copyFiles.sh
+if [ $? != 0 ]
+then
+	echo "Unable to copy files"
+    exit 1
+fi
   
 if [ -e $DIR/dependencies.sh ] ; then
 	
@@ -49,13 +57,6 @@ if [ -e $DIR/dependencies.sh ] ; then
 		echo "Unable to assume the dependencies"
 	    exit 1
 	fi  
-fi
-
-sh $DIR/copyFiles.sh
-if [ $? != 0 ]
-then
-	echo "Unable to copy files"
-    exit 1
 fi
 
 

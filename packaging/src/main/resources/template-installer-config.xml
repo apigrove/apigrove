@@ -5,9 +5,9 @@
 	<Configuration 
 		type="E3Gateway"
 		packageURL="${e3.package.url}"
-		installerCmd="sh bin/install.sh -ip %IP% gateway"
-		sanityCheckCmd="sh bin/sanityCheck.sh"
-		generateNatureCmd="sh bin/generateNature.sh -ip %IP% gateway"
+		installerCmd="sh bin/install.sh -ip %IP% gateway > install.log.txt 2>&amp;1"
+		sanityCheckCmd="sh bin/sanityCheck.sh > sanityCheck.log.txt 2>&amp;1"
+		generateNatureCmd="sh bin/generateNature.sh -ip %IP% gateway > generateNature.log.txt 2>&amp;1"
 		version="${e3.package.version}"
 		name="${e3.package.name}"
 	/>

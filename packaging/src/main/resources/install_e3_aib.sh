@@ -23,10 +23,17 @@ then
     exit 1
 fi
 
-cp $DIR/aib_topology.xml $E3_HOME/topology.xml
+chmod 400 $DIR/../topology.xml
 if [ $? != 0 ]
 then
-    echo "unable to copy the topology, exiting"
+    echo "unable to chmod the topology."
+    exit 1
+fi
+
+cp -f $DIR/../topology.xml $E3_HOME/topology.xml
+if [ $? != 0 ]
+then
+    echo "unable to copy the topology, you need to have a topology.xml file in $DIR/.."
     exit 1
 fi
 

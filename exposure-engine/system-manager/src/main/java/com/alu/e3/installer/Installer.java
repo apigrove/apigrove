@@ -116,7 +116,7 @@ public class Installer {
 	 * @throws JSchException 
 	 * @throws InstallerParserException 
 	 */
-	public void deploy() throws Exception {
+	public void deploy(StringBuffer report) throws Exception {
 		
 		/* Get local ip and host name. */
 		String managerIP = CommonTools.getLocalAddress();
@@ -180,7 +180,7 @@ public class Installer {
 								}
 								
 								/* check if the destination directory already exists. */
-								ShellCommandResult dirExistResult = cmd.execShellCommand("ls "+ config.getRemotePath());
+								ShellCommandResult dirExistResult = cmd.execShellCommand("ls "+ config.getRemotePath() + "/bin/install.sh");
 								if (dirExistResult.getExitStatus() != 0)
 								{
 									/* Create the destination directory */
@@ -216,6 +216,15 @@ public class Installer {
 										/* unzip has failed, display output. TODO: handle failure */
 										throw new InstallerDeployException("Unzip archive" + strFilename + " failed (returned code: "+ cmdRes + ")");
 									}
+								} else{
+									// version already installed in the gateway									
+									if(logger.isErrorEnabled()) {
+										logger.error("WARNING: " + config.getRemotePath() + " already exist on gateway " + localizedGatewayIP);
+									}
+									
+									report.append("WARNING: " + config.getRemotePath() + " already exist on gateway " + localizedGatewayIP + ". " +
+											"Be carefull this existing binary was used. Remove it first to use the new binary content !!! \n");
+
 								}
 								
 								String fullyQualifiedInstallerCmd = replaceManagerIPPattern(config.getInstallerCmd(), managerIP);

@@ -15,6 +15,7 @@ INSTALLER_HOME=$DIR/..
 
 BUNDLES=$DIR/../bundles/
 
+FEATURES_TMPL=$DIR/../features/Template_features.xml
 FEATURES=$DIR/../features/features.xml
 
 JCE_PROVIDER_LIB=$BUNDLES/bcprov-jdk16-1.46.jar
