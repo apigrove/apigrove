@@ -62,7 +62,7 @@ class AuthController extends FlowController
         if(empty($id))
             throw new Zend_Controller_Action_Exception($translate->translate('Resource Not Found'), 404);
 
-        $howMany = !isset($flowScope['howMany'])?1:$flowScope['howMany'];
+        $howMany = !isset($flowScope['howMany'])?"1":$flowScope['howMany'];
         $flowScope['howMany'] = $howMany;
 
         // Set the id is the flowscope
@@ -176,11 +176,11 @@ class AuthController extends FlowController
         }
 
         if($shouldValidateCreds && ($auth->type === AuthType::$BASIC || $auth->type === AuthType::$WSSE)
-            && empty($auth->basicAuth->username)){
+            && empty($auth->basicAuth->username) && empty($auth->wsseAuth->username)){
             $validationErrors['username'] = $translate->translate("Username is required");
         }
         if($shouldValidateCreds && ($auth->type === AuthType::$BASIC || $auth->type === AuthType::$WSSE)
-            && empty($auth->basicAuth->password)){
+            && empty($auth->basicAuth->password) && empty($auth->wsseAuth->password)){
             $validationErrors['password'] = $translate->translate("Password is required");
         }
         if($shouldValidateCreds && $auth->type === AuthType::$IPWHITELIST && empty($auth->ipWhiteListAuth->ips)){

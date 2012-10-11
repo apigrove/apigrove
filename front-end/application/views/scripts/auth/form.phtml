@@ -63,10 +63,10 @@ $saveButtonTip = $this->translate("Post and return to Auth list");
                 <label class="control-label" for="howMany">How Many?</label>
                 <div class="controls" >
                     <div class="btn-group inline" data-toggle="buttons-radio" id="howMany-group">
-                        <a class="btn howMany <?=$howMany === 1?"active":""?>" id="howMany-one">1</a>
-                        <a class="btn howMany <?=($howMany > 1) || empty($howMany)?"active":""?>" id="howMany-more">More</a>
+                        <a class="btn howMany <?=$howMany === "1"?"active":""?>" id="howMany-one">1</a>
+                        <a class="btn howMany <?=($howMany !== "1") || empty($howMany)?"active":""?>" id="howMany-more">More</a>
                     </div>
-                    <input type="text" name="howMany" value="<?=$howMany?>" id="howMany" style="<?=$howMany === 1?"display: none;":""?>" class="input-mini inline" placeholder="#"/>
+                    <input type="text" name="howMany" value="<?=$howMany?>" id="howMany" style="<?=$howMany === "1"?"display: none;":""?>" class="input-mini inline" placeholder="#"/>
                     <span class="help-inline inline"><?=@$validationErrors['howMany']?></span>
                 </div>
             </div>
