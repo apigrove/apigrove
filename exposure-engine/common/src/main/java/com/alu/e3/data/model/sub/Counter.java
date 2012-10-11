@@ -36,6 +36,7 @@ public class Counter implements Serializable {
 	private float warning;
 	private long threshold;
 	private transient Integer _REAL_warning;
+	private int warningPercentLimit;
 	
 	public Counter() {
 		
@@ -46,6 +47,7 @@ public class Counter implements Serializable {
 		this.threshold = threshold;
 		this.status = StatusType.ACTIVE;
 		this.action = E3Constant.DEFAULT_ERROR_ACTION;
+		this.warningPercentLimit = (int) (this.threshold * (this.warning / 100));
 	}
 
 	public StatusType getStatus() {
@@ -78,6 +80,14 @@ public class Counter implements Serializable {
 
 	public void setThreshold(long threshold) {
 		this.threshold = threshold;
+	}
+	
+	public int getWarningPercentLimit() {
+		return warningPercentLimit;
+	}
+	
+	public void setWarningPercentLimit(int warningPercentLimit) {
+		this.warningPercentLimit = warningPercentLimit;
 	}
 	
 	public Integer get_REAL_warning() {

@@ -836,6 +836,7 @@ public final class BeanConverterUtil {
 		c.setStatus		(toDataModel(counterType.getStatus()));
 		c.setThreshold	(counterType.getThreshold());
 		c.setWarning	(counterType.getWarning());
+		c.setWarningPercentLimit((int) (counterType.getThreshold() * (counterType.getWarning() / 100)));
 
 		return c;
 	}
