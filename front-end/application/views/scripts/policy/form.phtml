@@ -23,11 +23,21 @@ $flow = $this->flow;
 /**
  * @var Policy $policy
  */
-$policy = empty($this->policy) ? new Policy() : $this->policy; //$flow->flowScope['policy'];
+$policy = $flow->flowScope['policy'];
+$validationErrors = @$flow->flowScope['validationErrors'];
+
+/*
+$policy = empty($this->policy) ? new Policy() : $this->policy;
+*/
+
+$id = $policy->getId();
 $authBucketArray = $policy->getAuthIds();
 $authBucketId = (count($authBucketArray) > 0) ? $authBucketArray[0]->getId() : "";
 $contexts = $policy->getContexts();
 $context = empty($contexts) ? new Context() : (count($contexts) > 0 ? $contexts[0] : new Context());
+
+$this->apis = $flow->flowScope['apis'];
+$this->auths = $flow->flowScope['auths'];
 
 if (empty($this->apis)) {
     // This should probably be an error condition; use empty array to avoid problems
@@ -37,12 +47,17 @@ if (empty($this->auths)) {
     // This should probably be an error condition; use empty array to avoid problems
     $this->auths = array();
 }
+/*
 $validationErrors = $this->validationErrors; //@$flow->flowScope['validationErrors'];
 $id = $policy->getId();
 if (!isset($this->isNew)) { $this->isNew = empty($id); }
+*/
+
+$this->isNew = $flow->flowScope['isNew'];
+
 $formAction = $this->isNew ? "/policy/create" : "/policy/".$id;
 
-$relatedProperties = $this->relatedProperties;
+$relatedProperties = @$flow->flowScope["relatedProperties"];
 
 $idTip = $this->isNew ? $this->translate("Enter a unique ID for this Policy") :
     $this->translate("The ID for an existing Policy cannot be changed");
@@ -324,6 +339,8 @@ $submitButtonTip = $this->translate("Post and return to Policy list");
                     print htmlentities($relatedProperties);
                 ?></div>
             </div>
+            <input type="hidden" name="_faction" value="submit" />
+            <input type="hidden" name="_fid" value="<?php echo $flow->id; ?>" />
             <input type="submit" class="btn" rel="tooltip" title="<?=$submitButtonTip?>" data-placement="right" />
         </fieldset>
     </form>

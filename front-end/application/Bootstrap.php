@@ -96,12 +96,20 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         /**
          * Routes for Policy provisioning
          */
-        $router->addRoute('policyForm', // Name
+        $router->addRoute('policy', // Name
+            new Zend_Controller_Router_Route(
+                'policy', // Defines the url.  Could be something like api/:id
+                array( // defaults
+                    'controller' => 'policy', // Directs to use the ApiController class
+                    'action'=>'index'       // Directs to use the ApiController::indexAction method
+                )));
+
+        $router->addRoute('policyEdit', // Name
             new Zend_Controller_Router_Route(
                 'policy/:id', // Defines the url.  Could be something like policy/:id or policy/create
                 array( // defaults
                     'controller' => 'policy', // Directs to use the PolicyController class
-                    'action'=>'form'       // Directs to use the PolicyController::formAction method
+                    'action'=>'request'       // Directs to use the PolicyController::formAction method
                 )));
 
         $router->addRoute('policyDelete', // Name
