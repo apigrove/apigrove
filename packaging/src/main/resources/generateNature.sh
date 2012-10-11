@@ -258,7 +258,7 @@ if [ ! $IS_E3_AIB ] ; then
 	iptables -A E3-Firewall-INPUT -p tcp --dport 8082 -j ACCEPT $SOURCE_RESTICT
     
 	if [ $IS_GATEWAY = 1 ] ; then
-		iptables -A E3-Firewall-INPUT -p tcp --dport 8083 -j ACCEPT $SOURCE_RESTICT
+		iptables -A E3-Firewall-INPUT -p tcp --dport 8083 -j ACCEPT
 	fi
 
 	if [ $IS_SPEAKER = 1 ] ; then
