@@ -415,18 +415,6 @@ public class MockDataManager implements IDataManager {
 	}
 
 	@Override
-	public Key generateKey(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public CertificateRequest getCSR(String keyId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void updateCert(Certificate certificate) {
 		// TODO Auto-generated method stub
 
@@ -434,12 +422,6 @@ public class MockDataManager implements IDataManager {
 
 	@Override
 	public Set<String> getAllCertIdsForKeyId(String keyId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Certificate selfSignKey(String keyId, CertificateRequest csr) {
 		// TODO Auto-generated method stub
 		return null;
 	}
