@@ -266,39 +266,6 @@ function universal_esb {
         exit 1
     fi
 
-    # install patched version of http feature   
-    # add features url
-    echo 'Adding patched features list...'
-    $E3_HOME/$SMX_LINK_DIRNAME/bin/client -p $SMX_PWD -u $SMX_USER "features:addurl file:$FEATURES"
-    if ! [ $? = 0 ] ; then
-        echo 'Failed to add patched features list'
-        exit 1
-    fi
-
-    # refresh feature urls
-    echo 'Refreshing feature urls...'
-    $E3_HOME/$SMX_LINK_DIRNAME/bin/client -p $SMX_PWD -u $SMX_USER 'features:refreshurl'
-    if ! [ $? = 0 ] ; then
-        echo 'Failed to refresh feature urls'
-        exit 1
-    fi
-
-    # uninstall http feature
-    echo 'Uninstalling http feature...'
-    $E3_HOME/$SMX_LINK_DIRNAME/bin/client -p $SMX_PWD -u $SMX_USER 'features:uninstall http'
-    if ! [ $? = 0 ] ; then
-        echo 'Failed to uninstall http feature'
-        exit 1
-    fi
-
-    # install patched http feature
-    echo 'Installing patched http feature...'
-    $E3_HOME/$SMX_LINK_DIRNAME/bin/client -p $SMX_PWD -u $SMX_USER 'features:install http-patched'
-    if ! [ $? = 0 ] ; then
-        echo 'Failed to install patched http feature'
-        exit 1
-    fi
-
     # stopping karaf
     echo 'Stopping karaf...'
     $E3_HOME/$SMX_LINK_DIRNAME/bin/stop
