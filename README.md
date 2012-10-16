@@ -1,3 +1,6 @@
+For an overview of the apiGrove project, please see http://apigrove.github.com/apigrove/
+
+
 IMPORTANT
 =========
 apiGrove is infrastructure software. It is best to install and run it on a box or instance that is not being used for other purposes. Even if you never read documentation, now is a good time to start. Thank you. 
