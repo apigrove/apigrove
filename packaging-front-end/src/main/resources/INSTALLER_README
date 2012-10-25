@@ -1,0 +1,35 @@
+
+#########
+## The Api Grove Front End packaged-installer
+#########
+
+This installer package has been strictly designed for RHEL 5.8 x86_64. Do not
+run this installer package on other operating systems.
+
+Unpack the Api Grove Front End installer with:
+
+    mkdir apigrove-installer-front-end-module
+    tar xzf apigrove-installer-front-end-module_5.0.12-SNAPSHOT.tar.gz -C apigrove-installer-front-end-module
+
+After unpacking the installer, cd into the scripts directory:
+
+    cd apigrove-installer-front-end-module/scripts
+
+Back up your yum repository settings in "/etc/yum.repos.d". These repos will
+also be backed up to "repobkp" in the scripts directory.
+
+	tar cf /etc/yum.repos.d_backup.tar -C /etc yum.repos.d
+
+Run the installer with /bin/sh:
+
+    /bin/sh install.sh
+
+The install script will create and install a local and very limited yum
+repository. Restore your yum repos by copying files back into yum.repos.d
+
+	cp repobkp/* /etc/yum.repos.d
+
+    
+Zend will now be installed in /usr/local/share/php. The front-end webapp will
+be installed in /var/www/front-end. The application will be hosted on port
+24100.

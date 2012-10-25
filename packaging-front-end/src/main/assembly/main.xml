@@ -1,0 +1,43 @@
+<assembly
+	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+	<id>client</id>
+	<formats>
+		<format>tar.gz</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+
+	<files>
+		<file>
+			<source>${basedir}/packaging-front-end/src/main/resources/INSTALLER_README</source>
+			<destName>README</destName>
+			<outputDirectory>/</outputDirectory>
+		</file>
+	</files>
+	<fileSets>
+		<fileSet>
+			<directory>${basedir}/packaging-front-end/src/main/resources/scripts</directory>
+			<outputDirectory>scripts</outputDirectory>
+			<includes>
+				<include>*</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>${basedir}/packaging-front-end/src/main/resources/dependencies</directory>
+			<outputDirectory>dependencies</outputDirectory>
+			<includes>
+				<include>*</include>
+			</includes>
+		</fileSet>
+    </fileSets>
+    <dependencySets>
+        <dependencySet>
+            <!--outputFileNameMapping>${artifact.artifactId}-${project.parent.version}${dashClassifier?}.${artifact.extension}</outputFileNameMapping-->
+            <includes>
+                <include>com.alu.opensource:*</include>
+            </includes>
+            <outputDirectory>php</outputDirectory>
+        </dependencySet>
+    </dependencySets>
+</assembly>

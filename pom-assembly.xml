@@ -147,7 +147,7 @@
 					<groupId>com.alu.opensource</groupId>
 					<artifactId>front-end</artifactId>
 					<!-- Take the latest version -->
-					<version>[0.0.1-SNAPSHOT,)</version>
+					<version>0.0.1.3086</version>
 					<type>zip</type>
 				</dependency>
 			</dependencies>
