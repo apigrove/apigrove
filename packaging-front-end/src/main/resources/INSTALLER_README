@@ -9,7 +9,7 @@ run this installer package on other operating systems.
 Unpack the Api Grove Front End installer with:
 
     mkdir apigrove-installer-front-end-module
-    tar xzf apigrove-installer-front-end-module_5.0.12-SNAPSHOT.tar.gz -C apigrove-installer-front-end-module
+    tar xzf apigrove-front-end-[VERSION]-installer.tar.gz -C apigrove-installer-front-end-module
 
 After unpacking the installer, cd into the scripts directory:
 
